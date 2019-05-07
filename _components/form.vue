@@ -129,6 +129,7 @@
         
         siteService.updateOrCreate('apiRoutes.site.settings',data).then(response => {
           this.submitModule = false
+          this.$emit('getData',true)
           alert.success('Module updated', 'top')
         }).catch(error => {
           this.submitModule = false
@@ -148,7 +149,6 @@
                 data[setting.name][this.defaultLocale] = setting.value
             })
           }else{
-            if(!setting.type=='file' || setting.value.medias_single[setting.name]!='')
               data[setting.name] = setting.value
           }
         }
