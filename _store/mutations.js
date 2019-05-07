@@ -22,8 +22,8 @@ export function SET_SELECTED_LOCALES(state) {
   //Search locale settigns
   let locales = state.settings.find(item => item.name == 'core::locales')
   locales = locales ? locales.value : []
-  //Set locales to state
-  state.selectedLocales = locales
+  //Set locales to state. sort
+  state.selectedLocales = locales.sort()
 }
 
 export function SET_DEFAULT_LOCALE(state, data) {
