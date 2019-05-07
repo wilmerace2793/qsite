@@ -1,53 +1,24 @@
 {
-  "_from": "@imagina/qsite",
-  "_id": "@imagina/qsite@0.0.1",
-  "_inBundle": false,
-  "_integrity": "sha512-y0sdyUC3YD+GRi47NpDMLqixU/NtmVAb3B+kA9x5hSvz+OuYFEomFjYpL0Mbf1UTkuxJ+KvyyWLVY1oHRv37Jg==",
-  "_location": "/@imagina/qsite",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "@imagina/qsite",
-    "name": "@imagina/qsite",
-    "escapedName": "@imagina%2fqsite",
-    "scope": "@imagina",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/@imagina/qsite/-/qsite-0.0.1.tgz",
-  "_shasum": "eb417bbfd0645ab68a5289451569a7b7a97ace36",
-  "_spec": "@imagina/qsite",
-  "_where": "D:\\imagina\\projects\\Purple\\front-end",
-  "author": {
-    "name": "http://imaginacolombia.com/"
-  },
-  "bugs": {
-    "url": "https://github.com/imagina/qsite/issues"
-  },
-  "bundleDependencies": false,
-  "deprecated": false,
+  "name": "@imagina/qsite",
+  "version": "0.0.2",
   "description": "Module for manage settings system",
-  "homepage": "https://github.com/imagina/qsite#readme",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imagina/qsite.git"
+  },
   "keywords": [
     "site",
     "settings",
     "modules"
   ],
+  "author": "http://imaginacolombia.com/",
   "license": "ISC",
-  "main": "index.js",
-  "name": "@imagina/qsite",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/imagina/qsite.git"
+  "bugs": {
+    "url": "https://github.com/imagina/qsite/issues"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "version": "0.0.1"
+  "homepage": "https://github.com/imagina/qsite#readme"
 }

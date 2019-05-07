@@ -8,7 +8,9 @@ const api_url = base_url + '/api/isite/v1';
 
 export default {
   baseUrl: base_url,
+  appVersion: api_url+'/app/version',
   apiUrl : api_url,
   siteSettings : api_url + '/tmp',
   settings: api_url + '/settings',
+  permissions: api_url + '/app/permissions',
 }

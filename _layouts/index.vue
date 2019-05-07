@@ -30,7 +30,7 @@
           
         </div>
         <div class="col-12 col-md-9">
-          <site-form :module="moduleSelected" />
+          <site-form :module="moduleSelected" :module-name="nameModuleSelected" />
           <pre>
   
           </pre>
@@ -74,7 +74,15 @@
     methods: {
       getData(refresh = false){
         this.loadingModules = true
-        siteService.crud.index('apiRoutes.site.settings',{remember:false}).then(response => {
+        let params = {
+          params:{
+            filter:{
+              allTranslations: true
+            },
+          },
+          remember:false
+        }
+        siteService.crud.index('apiRoutes.site.settings',params).then(response => {
           this.modules = response.data;
           this.getSingleModule(this.nameModuleSelected)
           this.loadingModules = false
