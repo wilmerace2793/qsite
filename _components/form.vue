@@ -1,5 +1,5 @@
 <template>
-  <div id="siteForm">
+  <div id="siteForm" class="position-relative">
 
     <q-card class="q-box no-shadow col-12 q-mb-sm" v-if="hasTranslatables">
     
@@ -57,20 +57,36 @@
         </div>
       </q-collapsible>
     </q-card>
+    
+    <div class="col-12 text-right">
+      <q-btn color="primary" :label="'Save: '+moduleName" size="sm" @click="submit" class="q-my-sm"/>
+    </div>
   
-   
+    <q-inner-loading :visible="submitModule">
+      <q-spinner-gears size="50px" color="primary"></q-spinner-gears>
+    </q-inner-loading>
 
   </div>
 </template>
 <script>
+  /*Plugins*/
   import {alert} from '@imagina/qhelper/_plugins/alert'
-  
+
+  /*Components*/
   import field from '@imagina/qsite/_components/field'
+
+  /*Services*/
+  import siteService from '@imagina/qsite/_services/index'
+  
   export default {
     props: {
       module: {
         type: Object,
-        default: {}
+        default: () => {return {}}
+      },
+      moduleName: {
+        type: String,
+        default: ''
       },
     },
     components: {
@@ -101,9 +117,45 @@
       return {
         translatableCollapse: true,
         noTranslatableCollapse: true,
+        submitModule: false,
+        selectedLocales: this.$store.getters['site/getSettingValueByName']('core::locales'),
+        defaultLocale: this.$store.getters['site/getDefaultLocale']
       }
     },
-    methods: {}
+    methods: {
+      submit(){
+        this.submitModule = true
+        let data = this.transformData();
+        
+        siteService.updateOrCreate('apiRoutes.site.settings',data).then(response => {
+          this.submitModule = false
+          this.$emit('getData',true)
+          alert.success('Module updated', 'top')
+        }).catch(error => {
+          this.submitModule = false
+          alert.error('Module not updated', 'bottom', false, 2500)
+        })
+      },
+      transformData(){
+        let data = {}
+        for (const settingName in this.module){
+          let setting = this.module[settingName];
+          if(setting.isTranslatable){
+            data[setting.name] = {}
+            this.selectedLocales.forEach(locale => {
+              if(setting[locale])
+                data[setting.name][locale] = setting[locale].value
+              else
+                data[setting.name][this.defaultLocale] = setting.value
+            })
+          }else{
+              data[setting.name] = setting.value
+          }
+        }
+        return data
+      }
+      
+    }
     
   }
 </script>

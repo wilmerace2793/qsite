@@ -12,9 +12,8 @@ export const GET_SITE_SETTINGS = ({commit, dispatch}) => {
     	let data = response.data
       commit('SET_SITE_SETTINGS', data.siteSettings)
       commit('SET_AVAILABLE_LOCALES', data.availableLocales)
-			commit('SET_SELECTED_LOCALES')
-			commit('SET_DEFAULT_LOCALE', data.defaultLocale)
-			commit('SET_AVAILABLE_THEMES', data.availableThemes)
+      commit('SET_AVAILABLE_THEMES', data.availableThemes)
+      commit('SET_DEFAULT_LOCALE', data.defaultLocale)
 			resolve(true)
 		}).catch(error => {
 			console.error('Error Store getting site settings', error)

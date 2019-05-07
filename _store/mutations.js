@@ -3,11 +3,11 @@ export const RESET = (state) => {
   state.availableLocales = []
   state.availableThemes = []
   state.selectedLocales = []
+  state.defaultLocale = ''
 };
 
-//Set settings and set selected locales
 export function SET_SITE_SETTINGS(state, data) {
-  state.settings = data//Add setting state
+  state.settings = data
 }
 
 export function SET_AVAILABLE_LOCALES(state, data) {
