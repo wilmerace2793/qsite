@@ -1,7 +1,8 @@
 <template>
+  <!--Button toogle with locales-->
   <q-btn-toggle
     class="no-shadow"
-    v-model="response.language"
+    v-model="locale.language"
     toggle-color="primary"
     color="grey-2"
     text-color="grey-8"
@@ -23,18 +24,20 @@
     },
     components: {},
     watch: {
-      'response.formTemplate': {
+      //Watch form template from value, to update form by locale
+      'value.formTemplate': {
         deep: true,
         handler: function (newValue) {
-          this.setDataByLocale()
+          this.setDataByLocale()//Set data in form by locale
         },
       },
-      'response.form' : {
+      //Watch form from value, to init
+      'value.form': {
         deep: true,
         handler: function (newValue) {
-          this.updateFormTempleate()
+          this.init()//init all locale data
         },
-      }
+      },
     },
     mounted() {
       this.$nextTick(function () {
@@ -46,10 +49,10 @@
     },
     data() {
       return {
-        response: {
+        locale: {
           form: {},//Return data with format to request
           fields: {},//Fields not translatable
-          loaded: false,//Status  component
+          success: false,//Status  component
           validations: {},//Fields to validate
           formTemplate: {},//Form with fields to render template
           formValidations: {},//Object with validations structure
@@ -59,81 +62,149 @@
         }
       }
     },
+    computed: {
+      //Merge value and locale data
+      interfaceSet() {
+        const data = _cloneDeep(this.value)
+        const locale = _cloneDeep(this.locale)
+        this.locale = _cloneDeep(Object.assign(locale, data))
+      },
+      //Return clone from locale data
+      interfaceGet() {
+        return _cloneDeep(this.locale)
+      },
+      //Return clone from value data
+      interfaceGetValue() {
+        return _cloneDeep(this.value)
+      },
+      //Emmit a clone from locale data
+      interfaceEmit() {
+        //Check if there is fields in from template to change status from component
+        const lengthFormTemplate = Object.keys(this.locale.formTemplate).length
+        this.locale.success = lengthFormTemplate ? true : false
+        //Emmit data
+        this.$emit('input', _cloneDeep(this.locale))
+      },
+      //check if form template is same in value and local
+      formTemplateIsSame() {
+        const locale = this.interfaceGet//Get clone local data
+        const value = this.interfaceGetValue//Get clone value data
+        if (JSON.stringify(locale.formTemplate) == JSON.stringify(value.formTemplate))
+          return true
+        else return false
+      },
+      //check if form is same in value and local
+      formIsSame() {
+        const locale = this.interfaceGet//Get clone local data
+        const value = this.interfaceGetValue//Get clone value data
+        if (JSON.stringify(locale.form) == JSON.stringify(value.form))
+          return true
+        else return false
+      }
+    },
     methods: {
       //Init component
       init() {
-        //Merge data from v-model
-        this.response = _cloneDeep(Object.assign(this.response, this.value))
-        this.orderFields()//Order fields
-        this.orderValidations()//Order validations
-        this.updateFormTempleate()//Update data of form template about locale
-        this.response.loaded = true//Status of component
-        this.$emit('input', this.response)//Emit data
+        if (!this.formIsSame) {
+          this.interfaceSet//Set data form value
+          this.orderFields()//Order fields
+          this.orderValidations()//Order validations
+          this.updateFormTempleate()//Update data of form template according to locale
+          this.interfaceEmit//Emit clone of locale data
+        }
       },
       //Load fields on form and form template
       orderFields() {
-        const response = _cloneDeep(this.response)//Clone response
-        const locales = this.$store.state.site.selectedLocales//Get selected locales
+        const locale = _cloneDeep(this.locale)//Clone locale
+        const locales = this.$store.state.site.selectedLocales//Get selected locales from store
 
-        //Create fields translatble by locale
-        let formLanguages = {}
-        locales.forEach(locale => {
-          formLanguages[locale] = _cloneDeep(response.fieldsTranslatable)
+        //Merge fields and fields translatable to formTemplate
+        this.locale.formTemplate = _cloneDeep(Object.assign({},
+          locale.fields, locale.fieldsTranslatable
+        ))
+
+        //Create and sync fields translatable by locale
+        let fieldsTranslatable = {}
+        locales.forEach(language => {
+          if (locale.form[language])//Sync fields translatable from form
+            Object.keys(locale.form[language]).forEach(fieldName => {
+              if (!fieldsTranslatable[language]) fieldsTranslatable[language] = {}
+              fieldsTranslatable[language][fieldName] = locale.form[language][fieldName]
+            })
+          else//Set default fields translatable
+            fieldsTranslatable[language] = _cloneDeep(locale.fieldsTranslatable)
+        })
+
+        //Create or sync fields with fields from form
+        let fields = {}
+        Object.keys(locale.fields).forEach(field => {
+          fields[field] = locale.form[field] ? locale.form[field] : locale.fields[field]
         })
 
         //Merge all fields with fields by locale
-        this.response.form = _cloneDeep(Object.assign(formLanguages, response.fields, response.form))
-
-        //Merge fields and fields translatable to formTemplate
-        this.response.formTemplate = _cloneDeep(Object.assign(
-          response.fields, response.fieldsTranslatable, response.formTemplate
-        ))
+        this.locale.form = _cloneDeep(Object.assign({},fields, fieldsTranslatable))
       },
       //Order fields validations
       orderValidations() {
-        if (Object.keys(this.response.validations).length) {
-          this.response.formValidations = _cloneDeep({
-            formTemplate: this.response.validations
+        //Order validations by locale
+        if (Object.keys(this.locale.validations).length) {
+          this.locale.formValidations = _cloneDeep({
+            formTemplate: this.locale.validations
           })
         }
       },
       //Set data from formTemplate in form by locale
       setDataByLocale() {
-        const response = _cloneDeep(this.response)
+        if (!this.formTemplateIsSame) {
+          this.syncFormTemplate()//Sync data formTemplate
+          const locale = this.interfaceGet//Get clone local data
+          const value = this.interfaceGetValue//Get clone value data
 
-        //Set fields not translatables
-        for (var item in response.fields) {
-          this.response.form[item] = _cloneDeep(response.formTemplate[item])
+          //Set fields not translatables
+          for (var item in locale.fields) {
+            locale.form[item] = locale.formTemplate[item]
+          }
+
+          //Set fields translatables
+          for (var item in locale.fieldsTranslatable) {
+            locale.form[locale.language][item] = locale.formTemplate[item]
+          }
+
+          this.locale.form = _cloneDeep(locale.form)
+          this.interfaceEmit//Emit data
         }
-
-        //Set fields translatables
-        for (var item in response.fieldsTranslatable) {
-          this.response.form[response.language][item] = _cloneDeep(response.formTemplate[item])
-        }
-
-        this.$emit('input', this.response)//Emit data
+      },
+      //Sync form template
+      syncFormTemplate() {
+        const locale = this.interfaceGet//Get clone local data
+        const value = this.interfaceGetValue//Get clone value data
+        this.locale.formTemplate = _cloneDeep(value.formTemplate)
       },
       //Change data of form template about locale
       updateFormTempleate() {
-        const response = _cloneDeep(this.response)
+        const locale = this.interfaceGet
 
-        console.warn('>>>>>>|||||||||',response.form)
-        //Change form template for form by locale
-        Object.keys(response.fields).forEach(fieldName => {
-          console.warn(fieldName, response.form[fieldName])
+        //Change fields by locale of form template
+        Object.keys(locale.fieldsTranslatable).forEach(fieldName => {
+          locale.formTemplate[fieldName] = locale.form[locale.language][fieldName]
         })
 
-        //Emmit response
-        this.$emit('input', this.response)
+        //Change fields of form template
+        Object.keys(locale.fields).forEach(fieldName => {
+          locale.formTemplate[fieldName] = _cloneDeep(locale.form[fieldName])
+        })
+
+        this.locale.formTemplate = _cloneDeep(locale.formTemplate)
+        this.interfaceEmit//Emit data
       },
       //Validate all fields
       vTouch() {
-        if (Object.keys(this.response.validations).length) {
-          const response = _cloneDeep(this.response)
-          const currentLanguage = response.language
+        if (Object.keys(this.locale.validations).length) {
+          const locale = _cloneDeep(this.locale)
+          const currentLanguage = locale.language
 
-          for (var locale of this.response.languages) {
-            this.response.language = locale//Change language
+          for (var locale of this.locale.languages) {
+            this.locale.language = locale//Change language
             this.updateFormTempleate()//Update form about language
             this.$v.$touch() //Touch validations
             //Check if fields is invalid
@@ -142,15 +213,15 @@
               return false
             } else {
               this.$v.$reset//Reset Validations
-              this.response.language = currentLanguage//Set current language
+              this.locale.language = currentLanguage//Set current language
             }
           }
         }
       },
       //Return obj to validate fields
       objValidations() {
-        if (Object.keys(this.response.validations).length)
-          return {response: _cloneDeep(this.response.formValidations)}
+        if (Object.keys(this.locale.validations).length)
+          return {locale: _cloneDeep(this.locale.formValidations)}
         else
           return {}
       }
