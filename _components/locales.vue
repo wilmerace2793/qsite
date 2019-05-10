@@ -178,7 +178,7 @@
       syncFormTemplate() {
         const locale = this.interfaceGet//Get clone local data
         const value = this.interfaceGetValue//Get clone value data
-        this.locale.formTemplate = _cloneDeep(value.formTemplate)
+        this.locale.formTemplate = _cloneDeep(Object.assign({},locale.formTemplate, value.formTemplate))
       },
       //Change data of form template about locale
       updateFormTempleate() {

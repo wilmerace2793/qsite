@@ -1,62 +1,17 @@
 <template>
   <div id="siteForm" class="position-relative">
+    <locales v-model="locale" ref="locales" @validate="$v.$touch()" v-show="hasTranslatables"></locales>
 
-    <q-card class="q-box no-shadow col-12 q-mb-sm" v-if="hasTranslatables">
-    
-      <q-card-title class="no-border q-py-none bg-grey-2">
-        <div class="row justify-between">
-          <div class="q-subheading text-primary">
-            Translatable Settings
-          </div>
-          <q-toggle
-            v-model="translatableCollapse"
-            checked-icon="visibility"
-            unchecked-icon="visibility_off"
-            style="margin-left: 25px"
-          />
-        </div>
-    
-      </q-card-title>
-      <q-collapsible header-style="display: none" v-model="translatableCollapse">
         <div
           v-for="(setting,index) in module"
           :key="index"
-          v-if="setting.translatable">
-          
-          <field :setting="setting" />
+          v-if="locale.success">
+        
+          <field :key="index" :setting="setting" v-model="locale.formTemplate[setting.name]" :label="label(setting)" />
        
           
         </div>
-      </q-collapsible>
-    </q-card>
 
-    <q-card class="q-box no-shadow col-12 q-mb-sm" v-if="hasNotTranslatables">
-    
-      <q-card-title class="no-border q-py-none bg-grey-2">
-        <div class="row justify-between">
-          <div class="q-subheading text-primary">
-            No Translatable Settings
-          </div>
-          <q-toggle
-            v-model="noTranslatableCollapse"
-            checked-icon="visibility"
-            unchecked-icon="visibility_off"
-            style="margin-left: 25px"
-          />
-        </div>
-    
-      </q-card-title>
-      <q-collapsible header-style="display: none" v-model="noTranslatableCollapse">
-        <div
-          v-for="(setting,index) in module"
-          :key="index"
-          v-if="!setting.translatable">
-          
-          <field :setting="setting" />
-          
-        </div>
-      </q-collapsible>
-    </q-card>
     
     <div class="col-12 text-right">
       <q-btn color="primary" :label="'Save: '+moduleName" size="sm" @click="submit" class="q-my-sm"/>
@@ -74,6 +29,7 @@
 
   /*Components*/
   import field from '@imagina/qsite/_components/field'
+  import locales from '@imagina/qsite/_components/locales'
 
   /*Services*/
   import siteService from '@imagina/qsite/_services/index'
@@ -90,7 +46,7 @@
       },
     },
     components: {
-      field
+      field,locales
     },
     computed: {
       hasTranslatables(){
@@ -100,7 +56,7 @@
         }
         return false
       },
-      hasNotTranslatables(){
+      hasNoTranslatables(){
         for (const setting in this.module) {
           if(!this.module[setting].translatable)
             return true
@@ -108,13 +64,19 @@
         return false
       }
     },
-    watch: {},
+    watch: {
+      module(){
+        this.transformToFrontData();
+      }
+    },
     mounted() {
       this.$nextTick(function () {
+        this.transformToFrontData();
       })
     },
     data() {
       return {
+        locale : {},
         translatableCollapse: true,
         noTranslatableCollapse: true,
         submitModule: false,
@@ -123,10 +85,10 @@
       }
     },
     methods: {
+      
       submit(){
         this.submitModule = true
-        let data = this.transformData();
-        
+        let data = this.transformToBackData();
         siteService.updateOrCreate('apiRoutes.site.settings',data).then(response => {
           this.submitModule = false
           this.$emit('getData',true)
@@ -136,27 +98,65 @@
           alert.error('Module not updated', 'bottom', false, 2500)
         })
       },
-      transformData(){
+      transformToBackData(){
         let data = {}
-        for (const settingName in this.module){
-          let setting = this.module[settingName];
-          if(setting.isTranslatable){
-            data[setting.name] = {}
-            this.selectedLocales.forEach(locale => {
-              if(setting[locale])
-                data[setting.name][locale] = setting[locale].value
-              else
-                data[setting.name][this.defaultLocale] = setting.value
-            })
+        
+        for (const field in this.locale.fields){
+          data[field] = this.locale.form[field]
+  
+          // generating form locales by setting
+          this.selectedLocales.forEach(locale => {
+            for (const fieldTrans in this.locale.form[locale]) {
+              if(!data[fieldTrans])
+                data[fieldTrans] = {}
+  
+              data[fieldTrans][locale] = this.locale.form[locale][fieldTrans]
+              
+            }
+          })
+        }
+       
+        return data
+      },
+      
+      transformToFrontData(){
+        let form = {}
+        let fields = {}
+        let fieldsTranslatable = {}
+        
+        for( const settingKey in this.module){
+ 
+          let setting = this.module[settingKey];
+          
+          // generating form locales by setting
+          this.selectedLocales.forEach(locale => {
+            if(setting[locale]){
+              if(!form[locale])
+                form[locale] = {}
+              form[locale][setting.name] = setting[locale].value;
+            }
+          })
+          
+          // generating transtalable and not translatable fields
+          if(setting.translatable){
+              fieldsTranslatable[setting.name] = setting.value
           }else{
-              data[setting.name] = setting.value
+              fields[setting.name] = setting.value
           }
         }
-        return data
-      }
+        
+        this.locale.form = form
+        this.locale.fields = fields
+        this.locale.fieldsTranslatable = fieldsTranslatable
+      },
       
+      label(setting){
+        if(setting.translatable)
+          return setting.description+' ('+this.locale.language+')';
+        else
+          return setting.description;
+      }
     }
-    
   }
 </script>
 <style lang="stylus">
