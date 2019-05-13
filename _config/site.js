@@ -10,7 +10,7 @@ export default {
   baseUrl: base_url,
   appVersion: api_url+'/app/version',
   apiUrl : api_url,
-  siteSettings : api_url + '/tmp',
+  siteSettings : api_url,
   settings: api_url + '/settings',
   permissions: api_url + '/app/permissions',
 }
