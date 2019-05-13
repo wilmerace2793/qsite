@@ -24,8 +24,30 @@ export const availableLocalesSelect = (state) => {
   return helper.array.select(state.availableLocales, 'iso');
 };
 
+export const availableLocalesTreeSelect = (state) => {
+  let items = []
+  state.availableLocales.forEach((locale,index) => {
+      items.push({
+        id: locale.iso,
+        label: locale.name
+      })
+  })
+  return items
+};
+
 export const availableThemesSelect = (state) => {
   return helper.array.select(state.availableThemes, 'name');
+};
+
+export const availableThemesTreeSelect = (state) => {
+  let items = []
+  state.availableThemes.forEach(theme => {
+    items.push({
+      id:theme.name,
+      label: theme.name
+    })
+  })
+  return items
 };
 
 export const getSettingValueByName = (state) => (filter) => {

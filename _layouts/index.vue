@@ -30,7 +30,7 @@
           
         </div>
         <div class="col-12 col-md-9">
-          <site-form :module="moduleSelected" :module-name="nameModuleSelected" @getData="getData"/>
+          <site-form v-if="moduleSelected" :module="moduleSelected" :key="moduleKey" :module-name="nameModuleSelected" @getData="getData"/>
           <pre>
   
           </pre>
@@ -46,6 +46,7 @@
 </template>
 <script>
   import {alert} from '@imagina/qhelper/_plugins/alert'
+  import { uid } from 'quasar'
   
   /*Services*/
   import siteService from '@imagina/qsite/_services/index'
@@ -66,8 +67,9 @@
     data() {
       return {
         loadingModules: false,
-        modules:{},
-        moduleSelected: {},
+        modules:null,
+        moduleSelected: null,
+        moduleKey: uid(),
         nameModuleSelected: 'Core'
       }
     },
@@ -92,6 +94,7 @@
       },
       
       getSingleModule(name){
+        this.moduleKey = uid()
         this.moduleSelected = this.modules[name];
         this.nameModuleSelected = name;
         /*

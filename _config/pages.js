@@ -15,7 +15,7 @@ export default {
     name: 'app.site.index',
     layout: require('@imagina/qsite/_layouts/index').default,
     containerLayout: master,
-    title: 'Site',
+    title: 'Settings',
     icon: 'fas fa-list-alt',
     middleware: [auth]
   },

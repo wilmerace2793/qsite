@@ -1,46 +1,73 @@
 <template>
-  <div id="siteField">
-    <q-field
+  <div id="siteField" class="q-my-xs">
 
+    <q-field
+    
     >
-      <q-input autocomplete="false"
-               v-model="setting.value"
-               :type="setting.type"
-               v-if="['select', 'select-multi','file','color','checkbox'].indexOf(setting.type) < 0 "
-               :float-label="setting.description"
-               :rows="setting.type=='textarea' ? 3 : ''"/>
+      <q-input
+        autocomplete="false"
+        @input="emitValue()"
+        v-model="vModel"
+        :type="setting.type"
+        v-if="['select', 'select-multi','text-multi','text-multi-with-options','file','color','checkbox'].indexOf(setting.type) < 0 "
+        :float-label="label"
+        :rows="setting.type=='textarea' ? 3 : ''"/>
   
-      <q-select
-        filter
-        chips
-        v-model="setting.value"
-        v-if="['select', 'select-multi'].indexOf(setting.type) >= 0"
-        :float-label="setting.description"
-        :multiple="setting.type == 'select-multi'"
+      <text-multi
+        class="q-my-sm"
+        @input="emitValue()"
+        v-model="vModel"
+        :label="label"
+        :type="setting.type"
+        :input="setting.input"
+        :options="setting.type == 'text-multi-with-options' ? setting.options : []"
+        v-if="['text-multi', 'text-multi-with-options'].indexOf(setting.type) >= 0"
+      />
+      
+      <div class="q-caption text-grey"
+      v-if="['select', 'select-multi'].indexOf(setting.type) >= 0">
+        {{label}}</div>
+      <treeselect
+        :multiple="setting.type === 'select-multi'"
+        :append-to-body="true"
         :options="options"
+        :value-consists-of="setting.valueCconsistsOf ? setting.valueCconsistsOf : 'LEAF_PRIORITY'"
+        @input="emitValue()"
+        v-model="vModel"
+        v-if="['select', 'select-multi'].indexOf(setting.type) >= 0"
+        :placeholder="label"
       />
       
       <q-color
-        v-model="setting.value"
+        @input="emitValue()"
+        v-model="vModel"
         format-model="hex"
         clearable modal
-        :float-label="setting.description"
+        :float-label="label"
         v-if="setting.type == 'color'"/>
   
       <media-form
-        v-if="['file'].indexOf(setting.type) >= 0"
-        :multiple="setting.type == 'file-multi'"
+        v-if="setting.type == 'file'"
         entity="Modules\Setting\Entities\Setting"
         :zone="setting.name"
-        v-model="setting.value.medias_single"
+        @input="emitValue()"
+        v-model="vModel.medias_single"
         :entity-id="setting.id ? setting.id : ''"
-        :label="setting.description"
+        :label="label"
       />
   
+      <q-editor
+        v-if="setting.type == 'wysiwyg'"
+        :float-label="label"
+        v-model="vModel"
+        @input="emitValue()"
+      />
+      
       <q-checkbox
         v-if="setting.type == 'checkbox'"
-        v-model="setting.value"
-        :label="setting.description" class="q-my-sm"/>
+        @input="emitValue()"
+        v-model="vModel"
+        :label="label" class="q-my-sm"/>
     </q-field>
 
   </div>
@@ -49,18 +76,17 @@
   import {alert} from '@imagina/qhelper/_plugins/alert'
   
   /*Components*/
-  /*Components*/
+  import Treeselect from '@riophae/vue-treeselect';
+  import '@riophae/vue-treeselect/dist/vue-treeselect.css';
   import mediaForm from '@imagina/qmedia/_components/form'
+  import textMulti from '@imagina/qsite/_components/customFields/textMulti'
   
   export default {
-    props: {
-      setting: {
-        type: Object,
-        default: {}
-      },
-    },
+    props: ['setting', 'label'],
     components: {
-      mediaForm
+      mediaForm,
+      Treeselect,
+      textMulti
     },
     computed: {
       options(){
@@ -68,28 +94,42 @@
         let options = []
         switch (name){
           case 'template':
-            options = this.$store.getters['site/availableThemesSelect']
+            options = this.$store.getters['site/availableThemesTreeSelect']
             break;
           case 'locales':
-            options = this.$store.getters['site/availableLocalesSelect']
+            options = this.$store.getters['site/availableLocalesTreeSelect']
             break;
           default:
             if(this.setting.options)
               options = this.setting.options;
             break;
         }
+    
         return options
       }
     },
-    watch: {},
-    mounted() {
+    watch: {
+      '$attrs.value'(){
+        this.vModel = JSON.parse(JSON.stringify(this.$attrs.value));
+      }
+    },
+    created() {
       this.$nextTick(function () {
+      
       })
     },
     data() {
-      return {}
+      return {
+        vModel: this.$attrs.value
+      }
     },
-    methods: {}
+    methods: {
+      emitValue(){
+          this.$emit('input',this.vModel)
+      },
+  
+     
+    }
     
   }
 </script>
