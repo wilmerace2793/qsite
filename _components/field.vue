@@ -9,10 +9,20 @@
         @input="emitValue()"
         v-model="vModel"
         :type="setting.type"
-        v-if="['select', 'select-multi','file','color','checkbox'].indexOf(setting.type) < 0 "
+        v-if="['select', 'select-multi','text-multi','text-multi-with-options','file','color','checkbox'].indexOf(setting.type) < 0 "
         :float-label="label"
         :rows="setting.type=='textarea' ? 3 : ''"/>
   
+      <text-multi
+        class="q-my-sm"
+        @input="emitValue()"
+        v-model="vModel"
+        :label="label"
+        :type="setting.type"
+        :input="setting.input"
+        :options="setting.type == 'text-multi-with-options' ? setting.options : []"
+        v-if="['text-multi', 'text-multi-with-options'].indexOf(setting.type) >= 0"
+      />
       
       <div class="q-caption text-grey"
       v-if="['select', 'select-multi'].indexOf(setting.type) >= 0">
@@ -69,12 +79,14 @@
   import Treeselect from '@riophae/vue-treeselect';
   import '@riophae/vue-treeselect/dist/vue-treeselect.css';
   import mediaForm from '@imagina/qmedia/_components/form'
+  import textMulti from '@imagina/qsite/_components/customFields/textMulti'
   
   export default {
     props: ['setting', 'label'],
     components: {
       mediaForm,
-      Treeselect
+      Treeselect,
+      textMulti
     },
     computed: {
       options(){
