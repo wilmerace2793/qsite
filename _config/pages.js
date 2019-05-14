@@ -9,7 +9,7 @@ import access from '@imagina/quser/_router/middlewares/access'
 export default {
   //Home Page
   index: {
-    permission: 'isite.sites.manage',
+    permission: 'isite.settings.manage',
     activated: true,
     path: '/site/index',
     name: 'app.site.index',
