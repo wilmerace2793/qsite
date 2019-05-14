@@ -4,7 +4,7 @@
     class="no-shadow"
     v-model="locale.language"
     toggle-color="primary"
-    color="grey-2"
+    color="grey-2" size="12px"
     text-color="grey-8"
     :options="this.$store.getters['site/getSelectedLocalesSelect']"
     @input="updateFormTempleate()"
@@ -37,7 +37,7 @@
         handler: function (newValue) {
           this.init()//init all locale data
         },
-      },
+      }
     },
     mounted() {
       this.$nextTick(function () {
