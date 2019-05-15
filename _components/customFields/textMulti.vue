@@ -7,12 +7,12 @@
        v-model="value.value"
        :type="input"
        :float-label="label+' '+(index+1)"
-       :after="[{icon: 'clear', handler () {deleteItem(index)}}]"
+       :after="$auth.hasAccess('isite.settings.destroy') ? [{icon: 'clear', handler () {deleteItem(index)}}] : []"
         @input="$emit('input',items)"/>
 
 
    </div>
-    <div class="col-12 text-right">
+    <div class="col-12 text-right" v-if="$auth.hasAccess('isite.settings.create')">
       <q-btn round @click="addItem()" icon="add" size="xs" color="primary">
         <q-tooltip>
         Add {{label}}
@@ -39,7 +39,7 @@
             v-model="item.value"
             :type="input"
             :float-label="label+' '+(index+1)"
-            :after="[{icon: 'clear', handler () {deleteItem(index)}}]"
+            :after="$auth.hasAccess('isite.settings.destroy') ? [{icon: 'clear', handler () {deleteItem(index)}}] : []"
             @input="$emit('input',items)"/>
   
         </div>
@@ -49,7 +49,8 @@
   
   
     </div>
-    <div class="col-12 text-right">
+   
+    <div class="col-12 text-right" v-if="$auth.hasAccess('isite.settings.create')">
       <q-btn round @click="addItem()" icon="add" size="xs" color="primary">
         <q-tooltip>
           Add {{label}}
