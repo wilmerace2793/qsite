@@ -78,28 +78,35 @@
         return _cloneDeep(this.value)
       },
       //Emmit a clone from locale data
-      interfaceEmit() {
+      async interfaceEmit() {
         //Check if there is fields in from template to change status from component
         const lengthFormTemplate = Object.keys(this.locale.formTemplate).length
         this.locale.success = lengthFormTemplate ? true : false
         //Emmit data
-        this.$emit('input', _cloneDeep(this.locale))
+        await this.$emit('input', _cloneDeep(this.locale))
       },
       //check if form template is same in value and local
       formTemplateIsSame() {
         const locale = this.interfaceGet//Get clone local data
         const value = this.interfaceGetValue//Get clone value data
-        if (JSON.stringify(locale.formTemplate) == JSON.stringify(value.formTemplate))
-          return true
-        else return false
+        let response = false//Response
+        if(!locale.formTemplate) return response
+          if (JSON.stringify(locale.formTemplate) == JSON.stringify(value.formTemplate))
+            response = true
+        return response//Response
       },
       //check if form is same in value and local
       formIsSame() {
         const locale = this.interfaceGet//Get clone local data
         const value = this.interfaceGetValue//Get clone value data
+        let response = false//Response
+        //not is same if there is not form
+        if(!locale.form) return response
+        //not is same if empty form
+        if(!Object.keys(locale.form).length) return response
         if (JSON.stringify(locale.form) == JSON.stringify(value.form))
-          return true
-        else return false
+          response = true
+        return response//Response
       }
     },
     methods: {
@@ -197,6 +204,13 @@
         this.locale.formTemplate = _cloneDeep(locale.formTemplate)
         this.interfaceEmit//Emit data
       },
+      //Return obj to validate fields
+      objValidations() {
+        if (Object.keys(this.locale.validations).length)
+          return {locale: _cloneDeep(this.locale.formValidations)}
+        else
+          return {}
+      },
       //Validate all fields
       vTouch() {
         if (Object.keys(this.locale.validations).length) {
@@ -218,12 +232,17 @@
           }
         }
       },
-      //Return obj to validate fields
-      objValidations() {
-        if (Object.keys(this.locale.validations).length)
-          return {locale: _cloneDeep(this.locale.formValidations)}
-        else
-          return {}
+      //Reset
+      async vReset(){
+        //Reset locale
+        this.locale = Object.assign({},this.interfaceGet,{
+          form: {},//Return data with format to request
+          success: false,//Status  component
+          formTemplate: {},//Form with fields to render template
+          formValidations: {},//Object with validations structure
+        })
+        await this.interfaceEmit//Emit locale
+        this.init()//Init locale
       }
     }
   }
