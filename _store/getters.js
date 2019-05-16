@@ -55,6 +55,11 @@ export const getSettingValueByName = (state) => (filter) => {
   return setting.value;
 };
 
+export const getSettingMediaByName = (state) => (filter) => {
+  let setting = state.settings.find(setting => setting.name === filter );
+  return setting.media;
+};
+
 export const getSelectedLocalesSelect = (state) => {
   //Get labels formselected locales
   let languages = state.availableLocales.filter(item => state.selectedLocales.indexOf(item.iso) >= 0)
