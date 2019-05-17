@@ -52,12 +52,12 @@ export const availableThemesTreeSelect = (state) => {
 
 export const getSettingValueByName = (state) => (filter) => {
   let setting = state.settings.find(setting => setting.name === filter );
-  return setting.value;
+    return setting ? setting.value : ''
 };
 
 export const getSettingMediaByName = (state) => (filter) => {
   let setting = state.settings.find(setting => setting.name === filter );
-  return setting.media;
+  return setting ? setting.media : '';
 };
 
 export const getSelectedLocalesSelect = (state) => {

@@ -3,7 +3,7 @@ import {helper} from '@imagina/qhelper/_plugins/helper';
 import axios from 'axios';
 import config from 'src/config/index'
 import siteSettings from '@imagina/qsite/_services/index'
-
+import { colors } from "quasar"
 
 export const GET_SITE_SETTINGS = ({commit, dispatch}) => {
   return new Promise((resolve, reject) => {
@@ -15,6 +15,26 @@ export const GET_SITE_SETTINGS = ({commit, dispatch}) => {
       commit('SET_AVAILABLE_THEMES', data.availableThemes)
       commit('SET_DEFAULT_LOCALE', data.defaultLocale)
       commit('SET_SELECTED_LOCALES')
+      
+      let settings = data.siteSettings;
+      let dataColors = {};
+      for(let i in settings){
+        let name = settings[i].name.split('::')
+        dataColors[name[1]] = settings[i].path?settings[i].path:settings[i].plainValue
+      }
+      colors.setBrand('primary', dataColors.brandPrimary);
+      colors.setBrand('secondary', dataColors.brandSecondary);
+      colors.setBrand('tertiary', dataColors.brandTertiary);
+      colors.setBrand('positive', dataColors.brandPositive);
+      colors.setBrand('info', dataColors.brandInfo);
+      colors.setBrand('warning', dataColors.brandWarning);
+      colors.setBrand('light', dataColors.brandLight);
+      colors.setBrand('dark', dataColors.brandDark);
+      colors.setBrand('faded', dataColors.brandFaded);
+      colors.setBrand('negative', dataColors.brandNegative);
+      
+      
+      
       await dispatch('SET_LOCALE')
       resolve(true)
     }).catch(error => {
