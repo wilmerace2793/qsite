@@ -22,19 +22,36 @@ export const GET_SITE_SETTINGS = ({commit, dispatch}) => {
         let name = settings[i].name.split('::')
         dataColors[name[1]] = settings[i].path?settings[i].path:settings[i].plainValue
       }
-      colors.setBrand('primary', dataColors.brandPrimary);
-      colors.setBrand('secondary', dataColors.brandSecondary);
-      colors.setBrand('tertiary', dataColors.brandTertiary);
-      colors.setBrand('positive', dataColors.brandPositive);
+      if(dataColors.brandPrimary)
+        colors.setBrand('primary', dataColors.brandPrimary);
+      if(dataColors.brandSecondary)
+        colors.setBrand('secondary', dataColors.brandSecondary);
+      
+      if(dataColors.brandWarning)
+        colors.setBrand('warning', dataColors.brandWarning);
+      
+      if (dataColors.brandLight)
+        colors.setBrand('light', dataColors.brandLight);
+      
+      if (dataColors.brandDark)
+        colors.setBrand('dark', dataColors.brandDark);
+      
+      if(dataColors.brandInfo)
       colors.setBrand('info', dataColors.brandInfo);
-      colors.setBrand('warning', dataColors.brandWarning);
-      colors.setBrand('light', dataColors.brandLight);
-      colors.setBrand('dark', dataColors.brandDark);
-      colors.setBrand('faded', dataColors.brandFaded);
-      colors.setBrand('negative', dataColors.brandNegative);
       
+      if(dataColors.brandFaded)
+        colors.setBrand('faded', dataColors.brandFaded);
       
+      if(dataColors.brandPositive)
+        colors.setBrand('positive', dataColors.brandPositive);
       
+      if(dataColors.brandNegative)
+        colors.setBrand('negative', dataColors.brandNegative);
+  
+      if(dataColors.brandTertiary)
+        colors.setBrand('tertiary', dataColors.brandTertiary);
+  
+  
       await dispatch('SET_LOCALE')
       resolve(true)
     }).catch(error => {
