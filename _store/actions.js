@@ -3,7 +3,7 @@ import {helper} from '@imagina/qhelper/_plugins/helper';
 import axios from 'axios';
 import config from 'src/config/index'
 import siteSettings from '@imagina/qsite/_services/index'
-import { colors } from "quasar"
+import { colors, AddressbarColor } from "quasar"
 
 export const GET_SITE_SETTINGS = ({commit, dispatch}) => {
   return new Promise((resolve, reject) => {
@@ -22,8 +22,10 @@ export const GET_SITE_SETTINGS = ({commit, dispatch}) => {
         let name = settings[i].name.split('::')
         dataColors[name[1]] = settings[i].path?settings[i].path:settings[i].plainValue
       }
-      if(dataColors.brandPrimary)
+      if(dataColors.brandPrimary){
+        AddressbarColor.set(dataColors.brandPrimary)
         colors.setBrand('primary', dataColors.brandPrimary);
+      }
       if(dataColors.brandSecondary)
         colors.setBrand('secondary', dataColors.brandSecondary);
       

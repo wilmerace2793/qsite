@@ -16,7 +16,7 @@ export default {
     layout: require('@imagina/qsite/_layouts/index').default,
     containerLayout: master,
     title: 'Settings',
-    icon: 'fas fa-list-alt',
-    middleware: [auth]
+    icon: 'fas fa-cog',
+    middleware: [auth,access]
   },
 }

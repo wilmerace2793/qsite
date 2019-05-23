@@ -2,24 +2,22 @@
   <div id="siteForm" class="position-relative">
     <locales v-model="locale" ref="locales" @validate="$v.$touch()" v-show="hasTranslatables"></locales>
 
-        <div
-          v-for="(setting,index) in module"
-          :key="index"
-          v-if="locale.success">
-        
-          <field :key="index" :setting="setting" v-model="locale.formTemplate[setting.name]" :label="label(setting)" />
-       
-          
-        </div>
+    <div
+      v-for="(setting,index) in module"
+      :key="index"
+      v-if="locale.success">
 
-    
-    <div class="col-12 text-right">
-      <q-btn color="primary" :label="'Save: '+moduleName" size="sm" @click="submit" class="q-my-sm"/>
+      <field :key="index" :setting="setting" v-model="locale.formTemplate[setting.name]" :label="label(setting)"/>
+
+
     </div>
-  
-    <q-inner-loading :visible="submitModule">
-      <q-spinner-gears size="50px" color="primary"></q-spinner-gears>
-    </q-inner-loading>
+
+
+    <div class="col-12 text-right">
+      <q-btn color="positive" :label="'Save: '+moduleName" icon="fas fa-save" @click="submit" class="q-my-sm"/>
+    </div>
+
+    <inner-loading :visible="submitModule" />
 
   </div>
 </template>
@@ -30,15 +28,18 @@
   /*Components*/
   import field from '@imagina/qsite/_components/field'
   import locales from '@imagina/qsite/_components/locales'
+  import innerLoading from 'src/components/master/innerLoading'
 
   /*Services*/
   import siteService from '@imagina/qsite/_services/index'
-  
+
   export default {
     props: {
       module: {
         type: Object,
-        default: () => {return {}}
+        default: () => {
+          return {}
+        }
       },
       moduleName: {
         type: String,
@@ -46,26 +47,26 @@
       },
     },
     components: {
-      field,locales
+      field, locales, innerLoading
     },
     computed: {
-      hasTranslatables(){
+      hasTranslatables() {
         for (const setting in this.module) {
-          if(this.module[setting].translatable)
+          if (this.module[setting].translatable)
             return true
         }
         return false
       },
-      hasNoTranslatables(){
+      hasNoTranslatables() {
         for (const setting in this.module) {
-          if(!this.module[setting].translatable)
+          if (!this.module[setting].translatable)
             return true
         }
         return false
       }
     },
     watch: {
-      module(){
+      module() {
         this.transformToFrontData();
       }
     },
@@ -76,7 +77,7 @@
     },
     data() {
       return {
-        locale : {},
+        locale: {},
         translatableCollapse: true,
         noTranslatableCollapse: true,
         submitModule: false,
@@ -85,74 +86,74 @@
       }
     },
     methods: {
-      
-      submit(){
+
+      submit() {
         this.submitModule = true
         let data = this.transformToBackData();
-        siteService.updateOrCreate('apiRoutes.site.settings',data).then(response => {
+        siteService.updateOrCreate('apiRoutes.site.settings', data).then(response => {
           this.submitModule = false
-          this.$emit('getData',true)
+          this.$emit('getData', true)
           alert.success('Module updated', 'top')
         }).catch(error => {
           this.submitModule = false
           alert.error('Module not updated', 'bottom', false, 2500)
         })
       },
-      transformToBackData(){
+      transformToBackData() {
         let data = {}
-        
-        for (const field in this.locale.fields){
+
+        for (const field in this.locale.fields) {
           data[field] = this.locale.form[field]
-  
+
           // generating form locales by setting
           this.selectedLocales.forEach(locale => {
             for (const fieldTrans in this.locale.form[locale]) {
-              if(!data[fieldTrans])
+              if (!data[fieldTrans])
                 data[fieldTrans] = {}
-  
+
               data[fieldTrans][locale] = this.locale.form[locale][fieldTrans]
-              
+
             }
           })
         }
-       
+
         return data
       },
-      
-      transformToFrontData(){
+
+      transformToFrontData() {
         let form = {}
         let fields = {}
         let fieldsTranslatable = {}
-        
-        for( const settingKey in this.module){
- 
+
+        for (const settingKey in this.module) {
+
           let setting = this.module[settingKey];
-          
+
           // generating form locales by setting
           this.selectedLocales.forEach(locale => {
-            if(setting[locale]){
-              if(!form[locale])
+            if (setting[locale]) {
+              if (!form[locale])
                 form[locale] = {}
               form[locale][setting.name] = setting[locale].value;
             }
           })
-          
+
           // generating transtalable and not translatable fields
-          if(setting.translatable){
-              fieldsTranslatable[setting.name] = setting.value
-          }else{
-              fields[setting.name] = setting.value
+          if (setting.translatable) {
+            fieldsTranslatable[setting.name] = setting.value
+          } else {
+            fields[setting.name] = setting.value
           }
         }
-        
+
         this.locale.form = form
         this.locale.fields = fields
         this.locale.fieldsTranslatable = fieldsTranslatable
       },
-      
-      label(setting){
-        if(setting.translatable)
-          return setting.description+' ('+this.locale.language+')';
+
+      label(setting) {
+        if (setting.translatable)
+          return setting.description + ' (' + this.locale.language + ')';
         else
           return setting.description;
       }

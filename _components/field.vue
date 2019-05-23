@@ -10,7 +10,7 @@
         v-model="vModel"
         :type="setting.type"
         v-if="['select', 'select-multi','text-multi','text-multi-with-options','file','color','checkbox'].indexOf(setting.type) < 0 "
-        :float-label="label"
+        :stack-label="label"
         :rows="setting.type=='textarea' ? 3 : ''"/>
   
       <text-multi
@@ -43,7 +43,7 @@
         v-model="vModel"
         format-model="hex"
         clearable modal
-        :float-label="label"
+        :stack-label="label"
         v-if="setting.type == 'color'"/>
   
       <media-form
@@ -58,7 +58,7 @@
   
       <q-editor
         v-if="setting.type == 'wysiwyg'"
-        :float-label="label"
+        :stack-label="label"
         v-model="vModel"
         @input="emitValue()"
       />
