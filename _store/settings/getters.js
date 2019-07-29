@@ -21,7 +21,7 @@ export const getDefaultLocale = (state) => {
 };
 
 export const availableLocalesSelect = (state) => {
-  return helper.array.select(state.availableLocales, 'iso');
+  return helper.array.select(state.availableLocales, {label : 'name', id : 'iso'});
 };
 
 export const availableLocalesTreeSelect = (state) => {
@@ -36,7 +36,7 @@ export const availableLocalesTreeSelect = (state) => {
 };
 
 export const availableThemesSelect = (state) => {
-  return helper.array.select(state.availableThemes, 'name');
+  return helper.array.select(state.availableThemes, {label : 'name', id : 'name'});
 };
 
 export const availableThemesTreeSelect = (state) => {
@@ -52,7 +52,7 @@ export const availableThemesTreeSelect = (state) => {
 
 export const getSettingValueByName = (state) => (filter) => {
   let setting = state.settings.find(setting => setting.name === filter );
-    return setting ? setting.value : ''
+    return setting ? setting.value : undefined
 };
 
 export const getSettingMediaByName = (state) => (filter) => {
@@ -63,6 +63,10 @@ export const getSettingMediaByName = (state) => (filter) => {
 export const getSelectedLocalesSelect = (state) => {
   //Get labels formselected locales
   let languages = state.availableLocales.filter(item => state.selectedLocales.indexOf(item.iso) >= 0)
+  let selectLanguages = helper.array.select(languages, {label : 'name', id : 'iso'})
+  selectLanguages.forEach((item,index) => {
+    selectLanguages[index].label += ` (${item.value})`
+  })
   //Return array select form selected languages
-  return helper.array.select(languages, 'iso');
+  return selectLanguages
 };

@@ -1,19 +1,16 @@
 <template>
-  <div v-if="type=='text-multi'" id="textMulti" class="row gutter-xs">
+  <div v-if="type=='checkbox-multi'" id="textMulti" class="row gutter-xs">
     <div class="q-caption text-grey">{{label}}</div>
-    <div class="row full-width gutter-xs"  v-for="(value,index) in items" :key="index">
+    <div class="row full-width" v-for="(value,index) in items" :key="index">
       <div class="col-10">
-        <q-input
-          autocomplete="false"
-          v-model="value.value"
-          :type="input"
-          :stack-label="label+' '+(index+1)"
+        <q-checkbox
+          v-model="item.value"
+          :label="checkboxLabel"
+          @input="$emit('input',items)"
           :after="$auth.hasAccess('isite.settings.destroy') ? [{icon: 'clear', handler () {deleteItem(index)}}] : []"
-          @input="$emit('input',items)"/>
-
-
-
+        />
       </div>
+
       <div class="col-2">
         <q-btn
           color="negative"
@@ -25,7 +22,6 @@
         />
       </div>
     </div>
-
 
     <div class="col-12 text-right" v-if="$auth.hasAccess('isite.settings.create')">
       <q-btn round @click="addItem()" icon="add" size="xs" color="primary">
@@ -40,7 +36,7 @@
     <div class="col-12" v-for="(item,index) in items" :key="index">
       <div class="row gutter-xs">
 
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-7">
 
           <q-select
             :stack-label="label+' '+(index+1)"
@@ -48,14 +44,15 @@
             v-model="item.label"
           />
         </div>
-        <div class="col-12 col-md-7">
-          <q-input
-            autocomplete="false"
+        <div class="col-12 col-md-3">
+          <q-checkbox
+            class="q-mt-lg"
             v-model="item.value"
-            :type="input"
-            :stack-label="label+' '+(index+1)"
+            :label="checkboxLabel"
+            @input="$emit('input',items)"
             :after="$auth.hasAccess('isite.settings.destroy') ? [{icon: 'clear', handler () {deleteItem(index)}}] : []"
-            @input="$emit('input',items)"/>
+          />
+
 
         </div>
 
@@ -90,7 +87,7 @@
   import alert from '@imagina/qhelper/_plugins/alert'
 
   export default {
-    props: ['value','label','type','input','options'],
+    props: ['value','label','type','input','options','checkboxLabel'],
     components: {},
     watch: {
       value(){
@@ -112,7 +109,7 @@
         if(this.type == 'text-multi')
           this.items.push({value:''})
         else
-          this.items.push({label:'',value:''})
+          this.items.push({label:'',value:false})
 
       },
       deleteItem(index){

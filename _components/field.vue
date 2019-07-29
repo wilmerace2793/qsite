@@ -1,19 +1,21 @@
 <template>
   <div id="siteField" class="q-my-xs">
 
-    <q-field
-    
-    >
+    <q-field>
       <q-input
+        v-if="['select', 'select-multi',
+        'text-multi','text-multi-with-options',
+        'file','color','checkbox',
+        'checkbox-multi-with-options','checkbox-multi'].indexOf(setting.type) < 0 && !setting.custom"
         autocomplete="false"
         @input="emitValue()"
         v-model="vModel"
         :type="setting.type"
-        v-if="['select', 'select-multi','text-multi','text-multi-with-options','file','color','checkbox'].indexOf(setting.type) < 0 "
         :stack-label="label"
         :rows="setting.type=='textarea' ? 3 : ''"/>
-  
+
       <text-multi
+        v-if="['text-multi', 'text-multi-with-options'].indexOf(setting.type) >= 0"
         class="q-my-sm"
         @input="emitValue()"
         v-model="vModel"
@@ -21,31 +23,67 @@
         :type="setting.type"
         :input="setting.input"
         :options="setting.type == 'text-multi-with-options' ? setting.options : []"
-        v-if="['text-multi', 'text-multi-with-options'].indexOf(setting.type) >= 0"
       />
-      
+
+      <checkbox-multi
+        v-if="['checkbox-multi', 'checkbox-multi-with-options'].indexOf(setting.type) >= 0"
+        class="q-my-sm"
+        @input="emitValue()"
+        v-model="vModel"
+        :label="label"
+        :type="setting.type"
+        :checkboxLabel="setting.checkboxLabel"
+        :input="setting.input"
+        :options="setting.type == 'checkbox-multi-with-options' ? setting.options : []"
+      />
+
+      <register-extra-fields
+        v-if="setting.type === 'register-extra-fields'"
+        class="q-my-sm"
+        @input="emitValue()"
+        v-model="vModel"
+        :label="label"
+        :type="setting.type"
+        :input="setting.input"
+        :setting="setting"
+      />
+
+      <address-extra-fields
+        v-if="setting.type === 'address-extra-fields'"
+        class="q-my-sm"
+        @input="emitValue()"
+        v-model="vModel"
+        :label="label"
+        :type="setting.type"
+        :input="setting.input"
+        :setting="setting"
+      />
+
       <div class="q-caption text-grey"
-      v-if="['select', 'select-multi'].indexOf(setting.type) >= 0">
-        {{label}}</div>
+           v-if="['select', 'select-multi'].indexOf(setting.type) >= 0">
+        {{label}}
+      </div>
+
       <treeselect
+        v-if="['select', 'select-multi'].indexOf(setting.type) >= 0"
         :multiple="setting.type === 'select-multi'"
         :append-to-body="true"
         :options="options"
         :value-consists-of="setting.valueCconsistsOf ? setting.valueCconsistsOf : 'LEAF_PRIORITY'"
         @input="emitValue()"
         v-model="vModel"
-        v-if="['select', 'select-multi'].indexOf(setting.type) >= 0"
         :placeholder="label"
       />
-      
+
       <q-color
+        v-if="setting.type == 'color'"
         @input="emitValue()"
         v-model="vModel"
         format-model="hex"
         clearable modal
         :stack-label="label"
-        v-if="setting.type == 'color'"/>
-  
+      />
+
       <media-form
         v-if="setting.type == 'file'"
         entity="Modules\Setting\Entities\Setting"
@@ -55,67 +93,73 @@
         :entity-id="setting.id ? setting.id : ''"
         :label="label"
       />
-  
+
       <q-editor
         v-if="setting.type == 'wysiwyg'"
         :stack-label="label"
         v-model="vModel"
         @input="emitValue()"
       />
-      
+
       <q-checkbox
         v-if="setting.type == 'checkbox'"
         @input="emitValue()"
         v-model="vModel"
         :label="label" class="q-my-sm"/>
     </q-field>
-
   </div>
 </template>
 <script>
-  import {alert} from '@imagina/qhelper/_plugins/alert'
-  
+  import alert from '@imagina/qhelper/_plugins/alert'
+
   /*Components*/
   import Treeselect from '@riophae/vue-treeselect';
   import '@riophae/vue-treeselect/dist/vue-treeselect.css';
   import mediaForm from '@imagina/qmedia/_components/form'
   import textMulti from '@imagina/qsite/_components/customFields/textMulti'
-  
+  import checkboxMulti from '@imagina/qsite/_components/customFields/checkboxMulti'
+  import registerExtraFields from '@imagina/qsite/_components/customFields/registerExtraFields'
+  import addressExtraFields from '@imagina/qsite/_components/customFields/addressExtraFields'
+
   export default {
     props: ['setting', 'label'],
     components: {
       mediaForm,
       Treeselect,
-      textMulti
+      textMulti,
+      checkboxMulti,
+      registerExtraFields,
+      addressExtraFields
+
     },
     computed: {
-      options(){
+      options() {
         let name = this.setting.name.split('::')[1];
         let options = []
-        switch (name){
+        switch (name) {
           case 'template':
-            options = this.$store.getters['site/availableThemesTreeSelect']
+            options = this.$store.getters['qsiteSettings/availableThemesTreeSelect']
             break;
           case 'locales':
-            options = this.$store.getters['site/availableLocalesTreeSelect']
+            options = this.$store.getters['qsiteSettings/availableLocalesTreeSelect']
             break;
           default:
-            if(this.setting.options)
+            if (this.setting.options)
               options = this.setting.options;
             break;
         }
-    
+
         return options
       }
     },
     watch: {
-      '$attrs.value'(){
+      '$attrs.value'() {
         this.vModel = JSON.parse(JSON.stringify(this.$attrs.value));
       }
     },
     created() {
       this.$nextTick(function () {
-      
+
       })
     },
     data() {
@@ -124,13 +168,13 @@
       }
     },
     methods: {
-      emitValue(){
-          this.$emit('input',this.vModel)
+      emitValue() {
+        this.$emit('input', this.vModel)
       },
-  
-     
+
+
     }
-    
+
   }
 </script>
 <style lang="stylus">

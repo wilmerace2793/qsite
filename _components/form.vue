@@ -1,29 +1,22 @@
 <template>
   <div id="siteForm" class="position-relative">
-    <locales v-model="locale" ref="locales" @validate="$v.$touch()" v-show="hasTranslatables"></locales>
+    <locales v-model="locale" ref="locales" class="q-my-md"
+             @validate="$v.$touch()" v-show="hasTranslatables" />
 
-    <div
-      v-for="(setting,index) in module"
-      :key="index"
-      v-if="locale.success">
-
+    <div v-for="(setting,index) in module" :key="index" v-if="locale.success">
       <field :key="index" :setting="setting" v-model="locale.formTemplate[setting.name]" :label="label(setting)"/>
-
-
     </div>
-
 
     <div class="col-12 text-right">
-      <q-btn color="positive" :label="'Save: '+moduleName" icon="fas fa-save" @click="submit" class="q-my-sm"/>
+      <q-btn color="positive" :label="$tr('ui.label.save')" icon="fas fa-save" @click="submit" class="q-mt-sm"/>
     </div>
 
-    <inner-loading :visible="submitModule" />
-
+    <inner-loading :visible="submitModule"/>
   </div>
 </template>
 <script>
   /*Plugins*/
-  import {alert} from '@imagina/qhelper/_plugins/alert'
+  import alert from '@imagina/qhelper/_plugins/alert'
 
   /*Components*/
   import field from '@imagina/qsite/_components/field'
@@ -81,8 +74,8 @@
         translatableCollapse: true,
         noTranslatableCollapse: true,
         submitModule: false,
-        selectedLocales: this.$store.getters['site/getSettingValueByName']('core::locales'),
-        defaultLocale: this.$store.getters['site/getDefaultLocale']
+        selectedLocales: this.$store.getters['qsiteSettings/getSettingValueByName']('core::locales'),
+        defaultLocale: this.$store.getters['qsiteSettings/getDefaultLocale']
       }
     },
     methods: {
@@ -90,13 +83,13 @@
       submit() {
         this.submitModule = true
         let data = this.transformToBackData();
-        siteService.updateOrCreate('apiRoutes.site.settings', data).then(response => {
+        siteService.updateOrCreate('apiRoutes.qsite.settings', data).then(response => {
+          this.$alert.success({message: this.$tr('ui.message.recordUpdated')})
           this.submitModule = false
           this.$emit('getData', true)
-          alert.success('Module updated', 'top')
         }).catch(error => {
+          this.$alert.error({message: this.$tr('ui.message.recordNoUpdated')})
           this.submitModule = false
-          alert.error('Module not updated', 'bottom', false, 2500)
         })
       },
       transformToBackData() {

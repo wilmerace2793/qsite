@@ -4,15 +4,14 @@
 
     <!--TITLE-->
     <h1 class="q-headline text-primary">
-      <q-icon name="fas fa-cog"></q-icon>
-      Site
+      <q-icon :name="$route.meta.icon"></q-icon>
+      {{$tr($route.meta.title)}}
     </h1>
 
     <div class="col-12 backend-page relative-position">
       <div class="row gutter-x-sm">
         <div class="col-12 col-md-3 q-pr-sm">
           <q-list highlight link dense class="border-top-color">
-            <q-list-header>Available Modules</q-list-header>
             <q-item
               v-for="(module,index) in modules"
               :key="index"
@@ -21,26 +20,35 @@
               <q-item-main :label="index"/>
               <q-item-side right>
                 <q-chip color="primary" small>{{Object.keys(module).length}}</q-chip>
-
               </q-item-side>
             </q-item>
-
-
           </q-list>
         </div>
         <div class="col-12 col-md-9 border-top-color border">
-          <site-form v-if="moduleSelected" :module="moduleSelected" :key="moduleKey" :module-name="nameModuleSelected"
+          <div class="q-title text-primary uppercase full-width" style="min-height: 37px">
+            <div class="float-left q-py-sm">
+              <q-icon name="fas fa-cog" />
+              {{nameModuleSelected}}
+            </div>
+            <q-btn icon="fas fa-sync" color="info"
+                   @click="getData(true)" class="float-right">
+              <q-tooltip>{{$tr('ui.label.refresh')}}</q-tooltip>
+            </q-btn>
+          </div>
+
+          <site-form v-if="moduleSelected" :module="moduleSelected"
+                     :key="moduleKey" :module-name="nameModuleSelected"
                      @getData="getData"/>
         </div>
       </div>
 
       <!--Loading-->
-      <inner-loading :visible="loadingModules" />
+      <inner-loading :visible="loadingModules"/>
     </div>
   </div>
 </template>
 <script>
-  import {alert} from '@imagina/qhelper/_plugins/alert'
+  import alert from '@imagina/qhelper/_plugins/alert'
   import {uid} from 'quasar'
 
   /*Services*/
@@ -82,12 +90,14 @@
           remember: false
         }
 
-        siteService.crud.index('apiRoutes.site.settings', params).then(response => {
+        this.$crud.index('apiRoutes.qsite.settings', params).then(response => {
           this.modules = response.data;
           this.getSingleModule(this.nameModuleSelected)
           this.loadingModules = false
+        }).catch(error => {
+          this.$alert.error({message: this.$tr('ui.message.errorRequest'), pos: 'bottom'})
+          this.loadingModules = false
         })
-
       },
 
       getSingleModule(name) {

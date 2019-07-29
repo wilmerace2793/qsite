@@ -3,15 +3,7 @@
     <!--Widget V2 Checkbox-->
     <div v-if="key && checkbox" id="g-recaptcha"></div>
     <!--Text V#-->
-    <div v-else class="text-info-v3">
-      Este sitio está protegido por reCaptcha y se aplican las
-      <a href="https://policies.google.com/privacy">
-        Politicas de Privacidad
-      </a>y los
-      <a href="https://policies.google.com/terms">
-        Terminos de servicios
-      </a> de Google .
-    </div>
+    <div v-else class="text-info-v3" v-html="$tr('ui.message.captcha')"></div>
   </div>
 </template>
 
@@ -42,7 +34,9 @@
       //Init
       init() {
         //Define KEY according to version of recaptcha
-        this.key = this.checkbox ? env('GOOGLE_KEY_CAPTCHA_CHECKBOX') : env('GOOGLE_KEY_CAPTCHA')
+        this.key = this.checkbox ?
+          this.$store.getters['qsiteSettings/getSettingValueByName']('isite::reCaptchaV2Site') :
+          this.$store.getters['qsiteSettings/getSettingValueByName']('isite::reCaptchaV3Site')
         this.addCDNCaptcha()//add cdn
       },
       //add CDN captcha

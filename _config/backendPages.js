@@ -13,9 +13,9 @@ export default {
     activated: true,
     path: '/site/index',
     name: 'app.site.index',
-    layout: require('@imagina/qsite/_layouts/index').default,
+    layout: require('@imagina/qsite/_layouts/admin/index').default,
     containerLayout: master,
-    title: 'Settings',
+    title: 'qsite.sidebar.adminIndex',
     icon: 'fas fa-cog',
     middleware: [auth,access]
   },
