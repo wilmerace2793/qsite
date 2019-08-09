@@ -1,17 +1,9 @@
 <template>
-  <div id="settingIndex"
-       class="q-layout-page row layout-padding">
-
-    <!--TITLE-->
-    <h1 class="q-headline text-primary">
-      <q-icon :name="$route.meta.icon"></q-icon>
-      {{$tr($route.meta.title)}}
-    </h1>
-
+  <div id="settingIndex">
     <div class="col-12 backend-page relative-position">
       <div class="row gutter-x-sm">
-        <div class="col-12 col-md-3 q-pr-sm">
-          <q-list highlight link dense class="border-top-color">
+        <div class="col-12 col-md-3">
+          <q-list highlight link dense class="box">
             <q-item
               v-for="(module,index) in modules"
               :key="index"
@@ -24,21 +16,23 @@
             </q-item>
           </q-list>
         </div>
-        <div class="col-12 col-md-9 border-top-color border">
-          <div class="q-title text-primary uppercase full-width" style="min-height: 37px">
-            <div class="float-left q-py-sm">
-              <q-icon name="fas fa-cog" />
-              {{nameModuleSelected}}
+        <div class="col-12 col-md-9">
+          <div class="box">
+            <div class="q-title text-primary uppercase full-width" style="min-height: 37px">
+              <div class="float-left q-py-sm">
+                <q-icon name="fas fa-cog"/>
+                {{nameModuleSelected}}
+              </div>
+              <q-btn icon="fas fa-sync" color="info"
+                     @click="getData(true)" class="float-right">
+                <q-tooltip>{{$tr('ui.label.refresh')}}</q-tooltip>
+              </q-btn>
             </div>
-            <q-btn icon="fas fa-sync" color="info"
-                   @click="getData(true)" class="float-right">
-              <q-tooltip>{{$tr('ui.label.refresh')}}</q-tooltip>
-            </q-btn>
-          </div>
 
-          <site-form v-if="moduleSelected" :module="moduleSelected"
-                     :key="moduleKey" :module-name="nameModuleSelected"
-                     @getData="getData"/>
+            <site-form v-if="moduleSelected" :module="moduleSelected"
+                       :key="moduleKey" :module-name="nameModuleSelected"
+                       @getData="getData"/>
+          </div>
         </div>
       </div>
 
