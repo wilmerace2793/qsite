@@ -39,7 +39,8 @@
         <div class="col-12 col-md-7">
 
           <q-select
-            :stack-label="label+' '+(index+1)"
+            outlined dense
+            :label="label+' '+(index+1)"
             :options="options"
             v-model="item.label"
           />
@@ -122,5 +123,4 @@
   }
 </script>
 <style lang="stylus">
-  @import "~variables";
 </style>

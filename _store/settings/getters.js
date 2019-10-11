@@ -1,8 +1,9 @@
-/*
-export const someGetter = (state) => {}
-*/
-import {helper} from '@imagina/qhelper/_plugins/helper'
+import array from '@imagina/qhelper/_plugins/array'
+import cloneDeep from 'lodash.clonedeep'
 
+export const getState = (state) => (name) => {
+  return cloneDeep(state[name] || undefined)
+}
 
 export const getSettings = (state) => {
   return state.settings;
@@ -21,7 +22,7 @@ export const getDefaultLocale = (state) => {
 };
 
 export const availableLocalesSelect = (state) => {
-  return helper.array.select(state.availableLocales, {label : 'name', id : 'iso'});
+  return array.select(state.availableLocales, {label : 'name', id : 'iso'});
 };
 
 export const availableLocalesTreeSelect = (state) => {
@@ -36,7 +37,7 @@ export const availableLocalesTreeSelect = (state) => {
 };
 
 export const availableThemesSelect = (state) => {
-  return helper.array.select(state.availableThemes, {label : 'name', id : 'name'});
+  return array.select(state.availableThemes, {label : 'name', id : 'name'});
 };
 
 export const availableThemesTreeSelect = (state) => {
@@ -63,7 +64,7 @@ export const getSettingMediaByName = (state) => (filter) => {
 export const getSelectedLocalesSelect = (state) => {
   //Get labels formselected locales
   let languages = state.availableLocales.filter(item => state.selectedLocales.indexOf(item.iso) >= 0)
-  let selectLanguages = helper.array.select(languages, {label : 'name', id : 'iso'})
+  let selectLanguages = array.select(languages, {label : 'name', id : 'iso'})
   selectLanguages.forEach((item,index) => {
     selectLanguages[index].label += ` (${item.value})`
   })
