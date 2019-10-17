@@ -50,8 +50,8 @@
         let cdnAttributes = this.checkbox ? '' : '?render=' + this.key //attributes according Version of recaptcha
         let recaptcha = document.createElement('script')//create CDN google recaptcha
         recaptcha.setAttribute('src', 'https://www.google.com/recaptcha/api.js' + cdnAttributes)
-        recaptcha.onload = this.initCaptcha()//callback when loaded cdn
         document.head.appendChild(recaptcha)//add to head
+        recaptcha.onload = this.initCaptcha()//callback when loaded cdn
       },
       //Listen token catpcha and emit token
       initCaptcha () {
