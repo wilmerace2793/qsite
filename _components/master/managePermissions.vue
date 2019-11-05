@@ -258,9 +258,10 @@
 
         Object.keys(permissions).forEach(moduleName => {
           let module = this.$clone(permissions[moduleName])//Get module permission
-          listToRender[moduleName] = {}//Create moduleName
           Object.keys(module).forEach(entityName => {
-            listToRender[moduleName][entityName.split('.')[1]] = {} //Create entityName of module
+            let permissionNames = entityName.split('.')
+            if(!listToRender[permissionNames[0]]) listToRender[permissionNames[0]] = {}//Create moduleName
+            listToRender[permissionNames[0]][permissionNames[1]] = {} //Create entityName of module
             let entity = module[entityName]//Get data entity
             Object.keys(entity).forEach(permissionName => {
               let permissionFullName = `${entityName}.${permissionName}`//Get fullname of permission
@@ -268,7 +269,7 @@
               let valuePermission = this.$clone(this.value[permissionFullName])//Find in value prop
               if (typeof(valuePermission) != 'boolean') valuePermission = (this.allowInherit ? 0 : false)
               //Add to response
-              listToRender[moduleName][entityName.split('.')[1]][permissionName] = this.$clone(valuePermission)
+              listToRender[permissionNames[0]][permissionNames[1]][permissionName] = this.$clone(valuePermission)
             })
           })
         })
