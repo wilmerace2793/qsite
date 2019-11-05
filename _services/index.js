@@ -1,6 +1,6 @@
 import crud from '@imagina/qcrud/_services/baseService'
 import http from "axios/index";
-import config from 'src/config/index'
+import config from '@imagina/qsite/_config/master/index'
 
 export default {
   crud,

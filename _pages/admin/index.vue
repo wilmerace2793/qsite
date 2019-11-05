@@ -54,12 +54,11 @@
 
   /*Components*/
   import siteForm from '@imagina/qsite/_components/form'
-  import innerLoading from 'src/components/master/innerLoading'
 
   export default {
     props: {},
     components: {
-      siteForm, innerLoading
+      siteForm
     },
     watch: {},
     mounted () {

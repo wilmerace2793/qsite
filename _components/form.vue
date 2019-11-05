@@ -20,7 +20,6 @@
 
   /*Components*/
   import field from '@imagina/qsite/_components/field'
-  import locales from '@imagina/qsite/_components/locales'
 
   /*Services*/
   import siteService from '@imagina/qsite/_services/index'
@@ -39,7 +38,7 @@
       },
     },
     components: {
-      field, locales
+      field
     },
     computed: {
       hasTranslatables() {
