@@ -18,7 +18,7 @@
     </div>
 
     <!--===== Dialog Content =====-->
-    <q-dialog id="modalFormPermissions" v-model="modal.show" no-esc-dismiss no-backdrop-dismiss>
+    <q-dialog id="modalFormPermissions" v-model="modal.show" v-if="modal.show" no-esc-dismiss no-backdrop-dismiss>
       <q-card>
         <!--== Header == -->
         <q-toolbar class="bg-primary text-white">
@@ -137,7 +137,9 @@
       },
       'modal.listPermissions': {
         handler: function () {
-          this.$emit('input', this.getPermissions())//Emit permissions
+          if(Object.keys(this.modal.listPermissions).length){
+            this.$emit('input', this.getPermissions())//Emit permissions
+          }
         },
         deep: true
       }
@@ -256,25 +258,26 @@
         this.modal.listPermissions = []
         let listToRender = {}//Default List to render
 
-        Object.keys(permissions).forEach(moduleName => {
-          let module = this.$clone(permissions[moduleName])//Get module permission
-          Object.keys(module).forEach(entityName => {
-            let permissionNames = entityName.split('.')
-            if(!listToRender[permissionNames[0]]) listToRender[permissionNames[0]] = {}//Create moduleName
-            listToRender[permissionNames[0]][permissionNames[1]] = {} //Create entityName of module
-            let entity = module[entityName]//Get data entity
-            Object.keys(entity).forEach(permissionName => {
-              let permissionFullName = `${entityName}.${permissionName}`//Get fullname of permission
-              //Get value of permission
-              let valuePermission = this.$clone(this.value[permissionFullName])//Find in value prop
-              if (typeof(valuePermission) != 'boolean') valuePermission = (this.allowInherit ? 0 : false)
-              //Add to response
-              listToRender[permissionNames[0]][permissionNames[1]][permissionName] = this.$clone(valuePermission)
+        if (Object.keys(permissions).length) {
+          Object.keys(permissions).forEach(moduleName => {
+            let module = this.$clone(permissions[moduleName])//Get module permission
+            Object.keys(module).forEach(entityName => {
+              let permissionNames = entityName.split('.')
+              if (!listToRender[permissionNames[0]]) listToRender[permissionNames[0]] = {}//Create moduleName
+              listToRender[permissionNames[0]][permissionNames[1]] = {} //Create entityName of module
+              let entity = module[entityName]//Get data entity
+              Object.keys(entity).forEach(permissionName => {
+                let permissionFullName = `${entityName}.${permissionName}`//Get fullname of permission
+                //Get value of permission
+                let valuePermission = this.$clone(this.value[permissionFullName])//Find in value prop
+                if (typeof (valuePermission) != 'boolean') valuePermission = (this.allowInherit ? 0 : false)
+                //Add to response
+                listToRender[permissionNames[0]][permissionNames[1]][permissionName] = this.$clone(valuePermission)
+              })
             })
           })
-        })
-
-        this.modal.listPermissions = this.$clone(listToRender) //Set in modal listPermissions
+          this.modal.listPermissions = this.$clone(listToRender) //Set in modal listPermissions
+        }
       },
       //validate if show entity list
       showEntity(entity) {
