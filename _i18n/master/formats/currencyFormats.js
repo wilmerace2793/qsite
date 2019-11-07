@@ -16,7 +16,7 @@ export default {
   'es': {
     currency: {
       style: 'currency',
-      currency: 'USD' //To show symbol "$". COP show as symbol "COP"
+      currency: 'COP' //To show symbol "$". COP show as symbol "COP"
     },
     percent: {
       style: 'percent',

@@ -66,11 +66,11 @@
       menuList
     },
     watch: {},
-    mounted () {
+    mounted() {
       this.$nextTick(function () {
       })
     },
-    data () {
+    data() {
       return {
         projectName: this.$store.getters['qsiteSettings/getSettingValueByName']('core::site-name'),
         drawer: {
@@ -83,13 +83,13 @@
       }
     },
     computed: {
-      quserState () {
+      quserState() {
         return this.$store.state.quserAuth
       }
     },
     methods: {
       //Show drawer specific
-      toggleDrawer (name, show) {
+      toggleDrawer(name, show) {
         //Hidden all drawers
         for (var drawer in this.drawer) {
           this.drawer[drawer] = false
@@ -103,6 +103,7 @@
   #masterHeader
     img
       max-width 100% !important
+
     .q-toolbar-title
       padding 0 5px
 
@@ -140,4 +141,29 @@
       background-position center
       background-size cover
       margin-right 5px
+
+    #listMenu
+      hr
+        background-color $grey-3
+      .q-expansion-item__container
+        .q-expansion-item__content
+          padding 0 0 0 7px
+          border-left 8px solid white
+
+      .q-item
+        &:hover
+          background-color $grey-4
+          color $primary
+
+          .q-icon
+            color $primary
+
+        &.item-is-active
+          background-color $primary
+
+          .q-item__section, .q-icon
+            color white
+
+      .expansion-selected
+        background-color $primary
 </style>

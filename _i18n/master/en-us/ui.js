@@ -175,7 +175,8 @@ export default {
     code : 'Code | Codes',
     increase : 'Increase',
     date : 'Dates | Dates',
-    dueDate : 'Due date'
+    dueDate : 'Due date',
+    tax : 'Tax | Taxes'
   },
   configList: {
     loggedAs: 'logged as',

@@ -1,5 +1,5 @@
 export default {
-  version: '2.0.5',
+  version: '2.0.6',
   isBackend : true, //Define if project is to admin
   //UI Languages
   languages : {

@@ -176,6 +176,7 @@ export default {
     increase : 'Incrementar',
     date : 'Fecha | Fechas',
     dueDate : 'Fecha de vencimiento',
+    tax : 'Impuesto | Impuestos'
   },
   configList: {
     loggedAs: 'registrado como',

@@ -49,11 +49,10 @@
     </q-btn>
     <!--Button toogle with locales-->
     <q-btn-toggle
-      class="no-shadow"
       v-model="locale.language"
       toggle-color="primary"
-      color="white" size="12px"
-      text-color="grey-8"
+      color="grey-4" size="12px"
+      text-color="grey-9"
       :options="languageOptions"
       @input="updateFormTempleate()"
     />

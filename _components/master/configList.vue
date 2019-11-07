@@ -213,7 +213,7 @@
       },
       quserState () {
         return this.$store.state.quserAuth
-      }
+      },
     },
     methods: {
       //Toggle fullscreen
@@ -261,10 +261,8 @@
 
       //update Locale
       async updateLocale () {
-        await this.$store.dispatch('qsiteSettings/SET_LOCALE', { locale: this.locale, vue: this })
-        this.$router.push({
-          name: this.$route.name,
-          query: { ...this.$route.query, lang: this.locale }
+        this.$store.dispatch('qsiteSettings/SET_LOCALE', { locale: this.locale, vue: this }).then(response => {
+          this.$store.dispatch('app/REFRESH_PAGE')
         })
       },
 

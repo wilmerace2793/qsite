@@ -1,20 +1,19 @@
 <template>
   <div id="dynamicFieldComponent" class="backend-page" v-if="success">
-    <div class="row">
+    <div class="input-title text-capitalize"
+         v-if="['html','multiSelect'].indexOf(field.type) != -1">
       <!--Label-->
-      <div class="col-6">
-        <div class="input-title text-capitalize"
-             v-if="['html','multiSelect'].indexOf(field.type) != -1">
-          {{fieldLabel}}
-        </div>
-      </div>
+      {{fieldLabel}}
       <!--Crud component-->
-      <div class="col-6">
-        <crud class="text-right q-mb-xs" :crud-data="field.create.component"
-              v-if="field.create && field.create.component"
-              :key="field.name" ref="crudComponent" just-create @created="getOptions"/>
-      </div>
+      <crud class="text-right q-mb-xs" :crud-data="field.create.component"
+            v-if="field.create && field.create.component"
+            :key="field.name" ref="crudComponent" just-create @created="getOptions"/>
     </div>
+
+    <!--Crud Select-->
+    <crud class="text-right q-mb-xs" :crud-data="field.component" v-model="responseValue"
+          v-if="field.type == 'crudSelect'" v-bind="field.props || {}"
+          :key="field.name" ref="crudComponent" crud-select/>
     <!--Text-->
     <q-input v-model="responseValue" bg-color="white" outlined dense :rules="field.rules"
              v-if="['text','email'].indexOf(field.type) != -1" :label="fieldLabel"
@@ -112,12 +111,12 @@
     components: {managePermissions, manageSettings, recursiveSelect, uploadImg},
     watch: {
       value(newValue, oldValue) {
-        if (newValue != oldValue) {
+        //Order Value
+        if (newValue != oldValue)
           this.setDefaultVModel(newValue)
-        }//Order Value
       },
-      responseValue(value) {
-        this.watchValue(value)
+      responseValue(newValue, oldValue) {
+        this.watchValue(newValue)
       }
     },
     validations() {

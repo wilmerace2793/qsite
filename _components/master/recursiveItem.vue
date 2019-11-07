@@ -1,11 +1,11 @@
 <template>
   <div>
     <div id="listMenu">
-      <q-no-ssr>
+      <q-no-ssr v-for="(item,key) in props.menu" :key="key">
+        <q-separator />
         <!--Single Item-->
         <q-item :class="getClassItem(item)" v-if="checkItemSingle(item)"
-                v-for="(item,key) in props.menu" :key="key"
-                @click.native="redirectTo(item)" clickable>
+                @click.native="redirectTo(item)" clickable :key="key">
           <q-item-section v-if="item.icon && props.showIcons" avatar>
             <q-icon :name="item.icon"/>
           </q-item-section>
@@ -16,7 +16,7 @@
         <q-expansion-item v-else-if="checkItemMultiple(item)" :icon="item.icon" :key="key"
                           :label="props.translatable ? $tr(item.title) : item.title"
                           :header-class="selectedChildren(item)"
-                          :class="selectedChildren(item) ? 'bg-primary' : ''">
+                          :class="selectedChildren(item) ? 'expansion-selected' : ''">
           <!--Recursive item-->
           <recursive-menu :translatable="props.translatable" :show-icons="props.showIcons"
                           :key="key" :menu="item.children"/>
@@ -123,8 +123,7 @@
   #listMenu
     .q-expansion-item__container
       .q-expansion-item__content
-        padding 0 0 0 7px
-        border-left 8px solid white
+        padding 0 0 0 15px
 
     .q-item
       cursor pointer
@@ -137,19 +136,6 @@
 
       .q-icon
         font-size 16px
-
-      &:hover
-        background-color $grey-4
-        color $primary
-
-        .q-icon
-          color $primary
-
-      &.item-is-active
-        background-color $primary
-
-        .q-item__section, .q-icon
-          color white
 </style>
 
 
