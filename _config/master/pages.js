@@ -8,15 +8,24 @@ if (appConfig && appConfig.modules) {
 
   // Get each config page from package
   modules.forEach(name => {
-    try {
-      //Get pages according to app config in: src/config/app.js "isBackend"
-      let page = (appConfig.isBackend) ?
-        require(`@imagina/${name}/_config/backendPages`).default :
-        require(`@imagina/${name}/_config/frontendPages`).default
+    let pageBackend = false
+    let pageFrontend = false
 
-      pages[name] = page
+    //Find pageBackend
+    try {
+      pageBackend = require(`@imagina/${name}/_config/backendPages`).default
     } catch (e) {
     }
+
+    //Find pageFrontend
+    try {
+      pageFrontend = require(`@imagina/${name}/_config/frontendPages`).default
+    } catch (e) {
+    }
+
+    if (appConfig.isBackend || appConfig.loadBackendPages) if(pageBackend) pages[name] = pageBackend
+    if (!appConfig.isBackend) if(pageFrontend) pages[`front${name}`] = pageFrontend
+
   })
 }
 

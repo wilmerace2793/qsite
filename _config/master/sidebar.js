@@ -5,7 +5,7 @@ const appConfig = config('app')
 //Not edit
 let localSidebar = []//Response
 
-if (appConfig.isBackend) {
+if (appConfig.isBackend || appConfig.loadBackendPages) {
   let modules = appConfig.modules
   modules.forEach((name) => {
     try {
