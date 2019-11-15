@@ -15,7 +15,7 @@
         <!-- Dropdwon Item -->
         <q-expansion-item v-else-if="checkItemMultiple(item)" :icon="item.icon" :key="key"
                           :label="props.translatable ? $tr(item.title) : item.title"
-                          :header-class="selectedChildren(item)"
+                          :header-class="selectedChildren(item)" :default-opened="selectedChildren(item) ? true : false"
                           :class="selectedChildren(item) ? 'expansion-selected' : ''">
           <!--Recursive item-->
           <recursive-menu :translatable="props.translatable" :show-icons="props.showIcons"

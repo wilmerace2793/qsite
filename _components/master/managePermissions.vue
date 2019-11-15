@@ -137,7 +137,7 @@
       },
       'modal.listPermissions': {
         handler: function () {
-          if(Object.keys(this.modal.listPermissions).length){
+          if (Object.keys(this.modal.listPermissions).length) {
             this.$emit('input', this.getPermissions())//Emit permissions
           }
         },
@@ -263,8 +263,9 @@
             let module = this.$clone(permissions[moduleName])//Get module permission
             Object.keys(module).forEach(entityName => {
               let permissionNames = entityName.split('.')
+              let entityPermissionName = permissionNames[1] || permissionNames[0]
               if (!listToRender[permissionNames[0]]) listToRender[permissionNames[0]] = {}//Create moduleName
-              listToRender[permissionNames[0]][permissionNames[1]] = {} //Create entityName of module
+              listToRender[permissionNames[0]][entityPermissionName] = {} //Create entityName of module
               let entity = module[entityName]//Get data entity
               Object.keys(entity).forEach(permissionName => {
                 let permissionFullName = `${entityName}.${permissionName}`//Get fullname of permission
@@ -272,7 +273,7 @@
                 let valuePermission = this.$clone(this.value[permissionFullName])//Find in value prop
                 if (typeof (valuePermission) != 'boolean') valuePermission = (this.allowInherit ? 0 : false)
                 //Add to response
-                listToRender[permissionNames[0]][permissionNames[1]][permissionName] = this.$clone(valuePermission)
+                listToRender[permissionNames[0]][entityPermissionName][permissionName] = this.$clone(valuePermission)
               })
             })
           })
@@ -321,7 +322,11 @@
         for (let moduleName in permissions) {
           for (let entityName in  permissions[moduleName]) {
             for (let permissionName in permissions[moduleName][entityName]) {
-              let fullName = (`${moduleName}.${entityName}.${permissionName}`).toLowerCase()
+              //Get fullName of permission
+              let fullName = (entityName.toLowerCase() == 'dashboard') ?
+                (`${moduleName}.${permissionName}`).toLowerCase() :
+                (`${moduleName}.${entityName}.${permissionName}`).toLowerCase()
+
               let valuePermission = permissions[moduleName][entityName][permissionName]
 
               //If allow inherit, only set item with different value 0(inherit)
