@@ -1,52 +1,23 @@
 <template>
-  <div id="dynamicFieldComponent" class="backend-page" v-if="success">
-    <div class="input-title text-capitalize"
-         v-if="['html','multiSelect'].indexOf(field.type) != -1">
-      <!--Label-->
+  <div id="dynamicFieldComponent" class="relative-position" v-if="success">
+    <!--Label-->
+    <div class="input-title text-capitalize" v-if="loadField('html') || loadField('multiSelect')">
       {{fieldLabel}}
-      <!--Crud component-->
-      <crud class="text-right q-mb-xs" :crud-data="field.create.component"
-            v-if="field.create && field.create.component"
-            :key="field.name" ref="crudComponent" just-create @created="getOptions"/>
     </div>
-
-    <!--Crud Select-->
-    <crud class="text-right q-mb-xs" :crud-data="field.component" v-model="responseValue"
-          v-if="field.type == 'crudSelect'" v-bind="field.props || {}"
-          :key="field.name" ref="crudComponent" crud-select/>
-    <!--Text-->
-    <q-input v-model="responseValue" bg-color="white" outlined dense :rules="field.rules"
-             v-if="['text','email'].indexOf(field.type) != -1" :label="fieldLabel"
-             @keyup.enter="$emit('enter')" v-bind="field.props || {}"/>
-    <!--Number-->
-    <q-input v-model="responseValue" bg-color="white" v-if="field.type == 'number'"
-             outlined dense :rules="field.rules" type="number" :label="fieldLabel"
-             @keyup.enter="$emit('enter')" v-bind="field.props || {}"/>
-    <!--Phone-->
-    <q-input v-model="responseValue" bg-color="white" v-if="field.type == 'phone'" unmasked-value
-             outlined dense :rules="field.rules" :label="fieldLabel"
-             @keyup.enter="$emit('enter')" mask="phone" v-bind="field.props || {}"/>
-    <!--Password-->
-    <q-input v-model="responseValue" bg-color="white" outlined dense :rules="field.rules"
-             v-if="['password','checkPassword'].indexOf(field.type) != -1" type="password"
-             :label="fieldLabel" @keyup.enter="$emit('enter')" v-bind="field.props || {}"/>
-    <!--Textarea-->
-    <q-input v-model="responseValue" bg-color="white" v-if="field.type == 'textarea'" outlined dense
-             type="textarea" rows="3" :label="fieldLabel" :rules="field.rules" v-bind="field.props || {}"/>
-    <!--Chips-->
-    <q-select :label="fieldLabel" bg-color="white" v-model="responseValue" use-input use-chips multiple
-              hide-dropdown-icon input-debounce="0" new-value-mode="add-unique" :rules="field.rules"
-              v-if="field.type == 'chips'" style="width: 100%" @input="matchTags()" outlined dense
-              v-bind="field.props || {}"/>
-    <!--Select-->
-    <q-select outlined dense bg-color="white" v-model="responseValue" :options="formatOptions" :label="fieldLabel"
-              style="width: 100%;" :rules="field.rules" v-if="field.type == 'select'" :loading="loading"
-              :multiple="field.multiple || false" :clearable="field.clearable || false" emit-value map-options
-              v-bind="field.props || {}"/>
-    <!--Date - time - datetime-->
-    <q-input dense mask="date" bg-color="white" v-model="responseValue" color="primary" :rules="field.rules"
-             :label="fieldLabel" outlined placeholder="YYYY/MM/DD" v-if="field.type == 'date'"
-             v-bind="field.props || {}">
+    <!--Crud-->
+    <crud v-model="responseValue" @created="getOptions" v-bind="field.props || {}" :key="field.name"
+          :type="field.props.crudType || 'select'" ref="crudComponent"
+          v-if="loadField('crud') || (field.props && field.props.crudData)"
+          :class="`q-mb-xs ${(field.props && field.props.crudType == 'button-create') ? 'absolute-right' : ''}`"/>
+    <!--Input-->
+    <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('input')" :label="fieldLabel"
+             v-bind="{bgColor:'white', outlined : true, dense : true, ...(field.props || {})}"/>
+    <!--Date-->
+    <q-input
+      v-model="responseValue" :label="fieldLabel" v-if="loadField('date')" v-bind="{
+      bgColor:'white', color:'primary', outlined : true, dense : true,
+      placeholder:'YYYY/MM/DD', mask:'date', ...(field.props || {})}"
+    >
       <template v-slot:append>
         <q-icon name="fas fa-calendar-day"/>
         <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -54,37 +25,59 @@
         </q-popup-proxy>
       </template>
     </q-input>
+    <!--Select-->
+    <q-select v-model="responseValue" :options="formatOptions" :label="fieldLabel"
+              @input="field.props.useChips ? matchTags() : false"
+              @filter="(val, update)=>update(()=>{options = $helper.filterOptions(val,rootOptions,responseValue)})"
+              v-if="loadField('select')" :loading="loading" use-input v-bind="{
+                emitValue : true, mapOptions : true, outlined:true, dense : true,
+                bgColor:'white', style:'width: 100%', ...(field.props || {})}">
+      <!--No options slot-->
+      <template v-slot:no-option>
+        <q-item>
+          <q-item-section class="text-grey">
+            {{$tr('ui.message.notFound')}}
+          </q-item-section>
+        </q-item>
+      </template>
+      <!--Option tu multiple prop-->
+      <template v-slot:option="scope" v-if="field.props && field.props.multiple">
+        <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+          <q-item-section>
+            <q-checkbox v-model="responseValue" :val="scope.opt.value" :label="scope.opt.label"/>
+          </q-item-section>
+        </q-item>
+      </template>
+    </q-select>
     <!--HTML-->
-    <q-field v-model="responseValue" borderless :rules="field.rules" v-if="field.type == 'html'">
-      <q-editor v-model="responseValue" class="full-width" :toolbar="editorText.toolbar"
-                content-class="text-grey-9" toolbar-text-color="grey-9" v-bind="field.props || {}"/>
+    <q-field v-model="responseValue" v-if="loadField('html')" label=""
+             v-bind="{borderless : true, dense : true, ...(field.props || {})}">
+      <q-editor v-model="responseValue" class="full-width" v-bind="{
+                  toolbar:editorText.toolbar, contentClass:'text-grey-9', toolbarTextColor:'grey-9',
+                  ...(field.props || {})}"/>
     </q-field>
     <!--multiSelect-->
-    <q-field dense v-model="responseValue" borderless :rules="field.rules" v-if="field.type == 'multiSelect'">
+    <q-field v-model="responseValue" v-if="loadField('multiSelect')" label=""
+             v-bind="{borderless : true, dense : true, ...(field.props || {})}">
       <recursive-select v-model="responseValue" class="bg-white full-width" :items="options"/>
     </q-field>
     <!--Checkbox-->
-    <q-field v-model="responseValue" borderless :rules="field.rules" v-if="field.type == 'checkbox'">
-      <q-checkbox v-model="responseValue" class="q-my-sm" :label="fieldLabel" v-bind="field.props || {}"/>
+    <q-field v-model="responseValue" v-if="loadField('checkbox')" label="" class="checkbox-field"
+             v-bind="{borderless : true, dense : true, ...(field.props || {})}">
+      <q-checkbox v-model="responseValue" :label="fieldLabel" v-bind="field.props || {}"/>
     </q-field>
     <!--Media-->
-    <q-field v-model="responseValue" borderless :rules="field.rules" v-if="field.type == 'media'">
-      <upload-img
-        class="bg-white"
-        :multiple="field.zone == 'gallery'"
-        :entity="field.entity"
-        :entity-id="field.enitityId || itemId"
-        v-model="responseValue"
-        :label="field.label"
-        :zone="field.zone"
-      />
+    <q-field v-model="responseValue" v-if="loadField('media')" label=""
+             v-bind="{borderless : true, dense : true, ...(field.props || {})}">
+      <upload-img v-model="responseValue" class="bg-white" v-bind="{
+        multiple : (field.props.zone == 'gallery'), entityId:itemId, ...(field.props || {})}"/>
     </q-field>
     <!--Manage Permission-->
-    <manage-permissions v-model="responseValue" class="q-mb-sm" v-if="field.type == 'permissions'"
+    <manage-permissions v-model="responseValue" class="q-mb-sm" v-if="loadField('permissions')"
                         @input="watchValue" :allow-inherit="field.allowInherit ? true : false"/>
     <!--Manage Settings-->
     <manage-settings v-model="responseValue" class="q-mb-sm" :settings="field.settings"
-                     v-if="field.type == 'settings'" @input="watchValue"/>
+                     v-if="loadField('settings')" @input="watchValue"/>
   </div>
 </template>
 <script>
@@ -117,10 +110,10 @@
       },
       responseValue(newValue, oldValue) {
         this.watchValue(newValue)
+      },
+      rootOptions(newValue) {
+        this.options = this.rootOptions
       }
-    },
-    validations() {
-      return {}
     },
     mounted() {
       this.$nextTick(function () {
@@ -133,6 +126,7 @@
         loading: false,
         responseValue: null,//value to response
         options: [],//Options
+        rootOptions: [],//Options
         editorText: {
           toolbar: [
             ['bold', 'italic', 'strike', 'underline', 'removeFormat'],
@@ -157,8 +151,8 @@
       //Return label to field
       fieldLabel() {
         let response = ''
-        if (this.field.label) {
-          response = this.field.label
+        if (this.field.props && this.field.props.label) {
+          response = this.field.props.label
           if (this.field.isTranslatable) response = `${response} (${this.language})`
         }
         return response
@@ -197,7 +191,7 @@
             if (this.field.loadOptions) {
               await this.getOptions()
             }//Get options
-            else if (this.field.options) this.options = this.field.options
+            else if (this.field.props && this.field.props.options) this.rootOptions = this.field.props.options
           }
         }
       },
@@ -205,23 +199,32 @@
       setDefaultVModel(value) {
         let propValue = this.$clone(value)
         switch (this.field.type) {
-          case 'text':
+          case 'crud':
+            //Get crudProps
+            let crudProps = (this.field.props && this.field.props.crudProps) ? this.field.props.crudProps : {}
+            //Validate if select is multiple
+            if (crudProps.multiple) {
+              this.responseValue = []
+              //Get filter options
+              let filterField = (crudProps.config && crudProps.config.options) ?
+                crudProps.config.options : {label: 'title', value: 'id'}
+              //if value is array, get id option
+              if (propValue && (typeof (propValue) == 'object'))
+                propValue.forEach(item => {
+                  if (item[filterField.value]) this.responseValue.push(item[filterField.value])
+                  else this.responseValue.push(item)
+                })
+            } else this.responseValue = (propValue && propValue.id) ? propValue.id : propValue
+            break;
+          case 'input':
             this.responseValue = propValue || null
-            break
-          case 'number':
-            this.responseValue = (propValue >= 0) ? propValue : null
-            break
-          case 'textarea':
-            this.responseValue = propValue || null
-            break
-          case 'chips':
-            this.responseValue = propValue || []
             break
           case 'html':
             this.responseValue = propValue || ''
             break
           case 'select':
-            this.responseValue = (propValue != undefined) ? propValue.toString() : null
+            this.responseValue = (propValue != undefined) ?
+              ((propValue && (typeof (propValue) == 'object')) ? propValue : propValue.toString()) : null
             break
           case 'multiSelect':
             this.responseValue = propValue || []
@@ -282,7 +285,7 @@
 
           //==== Request options
           if (loadOptions.apiRoute) {
-            this.options = []//Reset options
+            this.rootOptions = []//Reset options
             let fieldSelect = {label: 'title', id: 'id'}
 
             let params = {//Params to request
@@ -298,10 +301,11 @@
             this.$crud.index(loadOptions.apiRoute, params).then(response => {
               let formatedOptions = []
               //Format response as tree
-              formatedOptions = this.$array.tree(response.data, loadOptions.select || fieldSelect)
+              formatedOptions = this.$array.select(response.data, loadOptions.select || fieldSelect)
 
               //Assign options
-              this.options = this.$clone((this.field.options || []).concat(formatedOptions))//set option
+              this.rootOptions = (this.field.props && this.field.props.options) ?
+                this.$clone((this.field.props.options || []).concat(formatedOptions)) : formatedOptions
               this.loading = false
               resolve(true)
             }).catch(error => {
@@ -312,7 +316,7 @@
             //==== Delayed loading options
           } else if (loadOptions.delayed) {
             loadOptions.delayed.then(response => {
-              this.options = this.$clone(response)
+              this.rootOptions = this.$clone(response)
               this.loading = false
               resolve(true)
             }).catch(error => {
@@ -344,9 +348,26 @@
         if (JSON.stringify(value) !== JSON.stringify(response)) {
           this.$emit('input', response)
         }
-      }
+      },
+      //Validate if show  field
+      loadField(name) {
+        let response = false
+        let field = this.field
+
+        if (field.type == name) {
+          response = true
+          if (field.props && (field.props.vIf != undefined)) response = field.props.vIf
+        }
+        //Response
+        return response
+      },
     }
   }
 </script>
+
 <style lang="stylus">
+  #dynamicFieldComponent
+    .checkbox-field
+      .q-field__control-container
+        padding-top 0px !important
 </style>

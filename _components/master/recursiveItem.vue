@@ -1,8 +1,8 @@
 <template>
   <div>
     <div id="listMenu">
-      <q-no-ssr v-for="(item,key) in props.menu" :key="key">
-        <q-separator />
+      <q-no-ssr v-for="(item,key) in props.menu" :key="key" :class="`content-item ${inLine ? 'inline-block' : ''}`">
+        <q-separator v-if="!inLine"/>
         <!--Single Item-->
         <q-item :class="getClassItem(item)" v-if="checkItemSingle(item)"
                 @click.native="redirectTo(item)" clickable :key="key">
@@ -32,7 +32,8 @@
     props: {
       menu: {default: false},
       showIcons: {type: Boolean, default: true},
-      translatable: {type: Boolean, default: true}
+      translatable: {type: Boolean, default: true},
+      inLine: {type: Boolean, default: false}
     },
     watch: {
       menu() {

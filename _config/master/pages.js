@@ -34,7 +34,7 @@ pages.app = {
   home: {//Page home
     permission: null,
     activated: true,
-    path: '/home',
+    path: '/',
     name: 'app.home',
     layout: () => appConfig.isBackend ?
       import('@imagina/qsite/_layouts/master.vue') : import('src/layouts/master.vue'),

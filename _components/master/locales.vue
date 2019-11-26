@@ -1,14 +1,9 @@
 <template>
   <div id="componentLocales">
-    <!--Label title-->
-    <span class="capitalize text-blue-grey" v-if="languageOptions.length <= 1">
-      <q-icon name="fas fa-language"/>
-      {{$tr('ui.label.language')}}
-    </span>
     <!--Button Config language-->
     <q-btn icon="fas fa-cog" class="config-buttom q-mr-xs capitalize"
            :label="`${$tr('ui.label.language')}`" color="blue-grey"
-           @click="options.typeOption = null" no-caps v-else>
+           @click="options.typeOption = null" no-caps v-if="languageOptions.length >= 2">
       <!--Popover-->
       <q-popup-proxy class="popover-config-locale" ref="modalConfig" persistent>
         <div class="content q-pa-sm backend-page">
@@ -53,6 +48,7 @@
       toggle-color="primary"
       color="grey-4" size="12px"
       text-color="grey-9"
+      v-if="languageOptions.length >= 2"
       :options="languageOptions"
       @input="updateFormTempleate()"
     />

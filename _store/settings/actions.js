@@ -2,12 +2,12 @@ import cache from '@imagina/qhelper/_plugins/cache'
 import axios from 'axios'
 import config from '@imagina/qsite/_config/master/index'
 import crud from '@imagina/qcrud/_services/baseService'
-import { colors, AddressbarColor } from 'quasar'
+import {colors, AddressbarColor} from 'quasar'
 import Quasar from 'quasar'
 
-export const GET_SITE_SETTINGS = ({ commit, dispatch, state }) => {
+export const GET_SITE_SETTINGS = ({commit, dispatch, state}) => {
   return new Promise((resolve, reject) => {
-    let params = { refresh: true }
+    let params = {refresh: true}
     let configName = 'apiRoutes.qsite.siteSettings'
     crud.index(configName, params).then(async response => {
       let data = response.data
@@ -25,7 +25,7 @@ export const GET_SITE_SETTINGS = ({ commit, dispatch, state }) => {
   })
 }
 
-export const SET_SITE_COLORS = ({ state, commit, dispatch }) => {
+export const SET_SITE_COLORS = ({state, commit, dispatch}) => {
   let settings = state.settings
   let dataColors = {}
 
@@ -96,9 +96,10 @@ export const SET_SITE_COLORS = ({ state, commit, dispatch }) => {
   }
 }
 
-export const SET_LOCALE = ({ commit, dispatch, state }, params = { locale: false, vue: false }) => {
+export const SET_LOCALE = ({commit, dispatch, state}, params = {locale: false, vue: false}) => {
   return new Promise(async resolve => {
     let locale = params.locale
+    let currentLocale = locale
     let Vue = params.vue
 
     //find locale in sotrage, store or first from selected locales
@@ -106,6 +107,7 @@ export const SET_LOCALE = ({ commit, dispatch, state }, params = { locale: false
       locale = await cache.get.item('site.default.locale')
       if (!locale) locale = state.defaultLocale
       if (!locale && state.selectedLocales.length) locale = state.selectedLocales[0]
+      currentLocale = locale
     }
 
     //Set in storage
@@ -124,7 +126,7 @@ export const SET_LOCALE = ({ commit, dispatch, state }, params = { locale: false
     })
 
     //Set default language to i18n
-    import(`@imagina/qsite/_i18n/master/index`).then(({ default: messages }) => {
+    import(`@imagina/qsite/_i18n/master/index`).then(({default: messages}) => {
       try {
         Vue.i18n.locale = locale
         Vue.i18n.setLocaleMessage(locale, messages[locale])
@@ -140,7 +142,13 @@ export const SET_LOCALE = ({ commit, dispatch, state }, params = { locale: false
       }
     })
 
-    await dispatch('app/REFRESH_PAGE', null, { root: true })
+    await dispatch('app/REFRESH_PAGE', null, {root: true})
+    //Change language in URL
+    if (Vue.$route)
+      Vue.$router.push({
+        name: Vue.$route.name,
+        query: {...Vue.$route.query, lang: currentLocale}
+      })
     resolve(true)
   })
 }

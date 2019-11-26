@@ -12,9 +12,6 @@ export default ({router, store, Vue}) => {
 
       //Validate route to redirect
       if (isAuthenticated) {
-        //Update data of user
-        store.dispatch('quserAuth/AUTH_UPDATE')
-
         //Validate permission of route
         if (to.meta && to.meta.permission) {
           if (!store.getters['quserAuth/hasAccess'](to.meta.permission)) redirectTo = {name: 'app.home'}
@@ -31,12 +28,13 @@ export default ({router, store, Vue}) => {
 
     //====== Define redirec route, and set language
     let defaultLangue = store.state.qsiteSettings.defaultLocale
-    
+
     if (redirectTo && (redirectTo.name != to.name)) {
       redirectTo.query = {lang: defaultLangue}
-      return router.push(redirectTo)
+      if(from.name != redirectTo.name) return router.push(redirectTo)
     } else if (!to.query.lang) {
-      return router.push({path: to.path, query: {...to.query, lang: defaultLangue}})
+      redirectTo = {path: to.path, query: {...to.query, lang: defaultLangue}}
+      if(from.path != redirectTo.path) return router.push(redirectTo)
     } else {
       return next()
     }

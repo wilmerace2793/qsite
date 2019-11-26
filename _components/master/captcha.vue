@@ -75,7 +75,7 @@
       vEmitTokenV3 () {
         grecaptcha.execute(this.key, { action: this.action }).then(token => {
           this.$emit('input', { version: 3, token: token })
-        }).catch(error => {})
+        })
       },
       //Reset captcha
       reset () {

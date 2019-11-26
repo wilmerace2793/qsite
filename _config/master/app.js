@@ -1,10 +1,10 @@
 export default {
-  version: '2.0.6',
+  version: '2.0.10',
   isBackend : true, //Define if project is to admin
   //UI Languages
   languages : {
     default : 'es',
-    availables : ['en-us', 'es']
+    availables : ['en-us','es']
   },
   //Modules
   modules : [
@@ -18,7 +18,8 @@ export default {
     'qmenu',
     'qmedia',
     'qslider',
-    'qsite'
+    'qbanner',
+    'qsite',
   ],
   //Cache
   saveCache : {

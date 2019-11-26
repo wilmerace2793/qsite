@@ -3,7 +3,7 @@ import Route from 'vue-routisan'
 const pages = config('pages')//Get pages from config
 
 //Redirect
-Route.redirect('/', pages.app.home.path);
+//Route.redirect('/', pages.app.home.path);
 
 for (var nameGroupPage in pages) {
   let groupPages = pages[nameGroupPage]//Get group pages
