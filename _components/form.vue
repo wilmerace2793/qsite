@@ -20,8 +20,6 @@
 
   /*Components*/
   import field from '@imagina/qsite/_components/field'
-  import locales from '@imagina/qsite/_components/locales'
-  import innerLoading from 'src/components/master/innerLoading'
 
   /*Services*/
   import siteService from '@imagina/qsite/_services/index'
@@ -40,7 +38,7 @@
       },
     },
     components: {
-      field, locales, innerLoading
+      field
     },
     computed: {
       hasTranslatables() {
@@ -154,5 +152,4 @@
   }
 </script>
 <style lang="stylus">
-  @import "~variables";
 </style>

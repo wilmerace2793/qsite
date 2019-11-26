@@ -4,20 +4,18 @@
     <div class="row full-width gutter-xs"  v-for="(value,index) in items" :key="index">
       <div class="col-10">
         <q-input
+          outlined dense
           autocomplete="false"
           v-model="value.value"
           :type="input"
-          :stack-label="label+' '+(index+1)"
+          :label="label+' '+(index+1)"
           :after="$auth.hasAccess('isite.settings.destroy') ? [{icon: 'clear', handler () {deleteItem(index)}}] : []"
           @input="$emit('input',items)"/>
-
-
-
       </div>
       <div class="col-2">
         <q-btn
           color="negative"
-          class="q-mt-lg"
+          class="q-mt-sm"
           rounded
           size="xs"
           icon="fas fa-trash"
@@ -39,42 +37,36 @@
     <div class="q-caption text-grey">{{label}}</div>
     <div class="col-12" v-for="(item,index) in items" :key="index">
       <div class="row gutter-xs">
-
         <div class="col-12 col-md-3">
-
           <q-select
-            :stack-label="label+' '+(index+1)"
+            outlined dense
+            :label="label+' '+(index+1)"
             :options="options"
             v-model="item.label"
           />
         </div>
         <div class="col-12 col-md-7">
           <q-input
+            outlined dense
             autocomplete="false"
             v-model="item.value"
             :type="input"
-            :stack-label="label+' '+(index+1)"
+            :label="label+' '+(index+1)"
             :after="$auth.hasAccess('isite.settings.destroy') ? [{icon: 'clear', handler () {deleteItem(index)}}] : []"
             @input="$emit('input',items)"/>
 
         </div>
-
         <div class="col-12 col-md-2">
           <q-btn
             color="negative"
-            class="q-mt-lg"
+            class="q-mt-sm"
             rounded
             size="xs"
             icon="fas fa-trash"
             @click="deleteItem(index)"
           />
-
-
         </div>
       </div>
-
-
-
     </div>
 
     <div class="col-12 text-right" v-if="$auth.hasAccess('isite.settings.create')">
@@ -125,5 +117,4 @@
   }
 </script>
 <style lang="stylus">
-  @import "~variables";
 </style>

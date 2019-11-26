@@ -1,35 +1,37 @@
 <template>
   <div id="componentLocales">
-    <!--Label title-->
-    <span class="capitalize text-blue-grey" v-if="languageOptions.length <= 1">
-      <q-icon name="fas fa-language"/>
-      {{$tr('ui.label.language')}}
-    </span>
     <!--Button Config language-->
     <q-btn icon="fas fa-cog" class="config-buttom q-mr-xs capitalize"
            :label="`${$tr('ui.label.language')}`" color="blue-grey"
-           @click="options.typeOption = null" no-caps v-else>
+           @click="options.typeOption = null" no-caps v-if="languageOptions.length >= 2">
       <!--Popover-->
-      <q-popover class="popover-config-locale backend-page" ref="modalConfig" persistent>
-        <div class="content q-pa-sm">
+      <q-popup-proxy class="popover-config-locale" ref="modalConfig" persistent>
+        <div class="content q-pa-sm backend-page">
           <!--Title-->
-          <div class="title text-primary q-mb-md relative-positive">
-            <q-icon name="fas fa-language" class="q-mr-xs"/>
-            <span class="capitalize" v-html="$trp('ui.label.option')"/>
-            <q-btn color="blue-grey" flat icon="fas fa-times"
+          <q-toolbar class="q-pa-none title text-primary relative-positive">
+            <q-toolbar-title>
+              <q-icon name="fas fa-language" class="q-mr-xs"/>
+              <label class="text-subtitle1 text-capitalize" v-html="$trp('ui.label.option')"></label>
+            </q-toolbar-title>
+            <q-btn color="blue-grey" class="q-pa-none" flat icon="fas fa-times"
                    @click="$refs.modalConfig.hide()"/>
-          </div>
+          </q-toolbar>
           <!--Option replace-->
-          <q-radio v-model="options.typeOption" val="duplicate" :label="messageOpt.replace"/>
+          <q-radio dense v-model="options.typeOption" val="duplicate">
+            <label v-html="messageOpt.replace"/>
+          </q-radio>
           <br>
           <!--Option duplicate-->
-          <q-radio v-model="options.typeOption" val="replace" :label="messageOpt.duplicate"/>
+          <q-radio dense v-model="options.typeOption" val="replace">
+            <label v-html="messageOpt.duplicate"/>
+          </q-radio>
           <!--Languages to clone-->
           <q-select
             v-if="options.typeOption == 'replace'"
             class="capitalize q-mt-xs"
+            outlined dense
             v-model="options.languageToClone"
-            :stack-label="$trp('ui.label.language')"
+            :label="$trp('ui.label.language')"
             :options="optionsLanguagesToClone"
           />
           <!--Button clone language-->
@@ -38,15 +40,15 @@
                    :label="$tr('ui.label.save')" :disable="!options.typeOption"/>
           </div>
         </div>
-      </q-popover>
+      </q-popup-proxy>
     </q-btn>
     <!--Button toogle with locales-->
     <q-btn-toggle
-      class="no-shadow"
       v-model="locale.language"
       toggle-color="primary"
-      color="grey-2" size="12px"
-      text-color="grey-8"
+      color="grey-4" size="12px"
+      text-color="grey-9"
+      v-if="languageOptions.length >= 2"
       :options="languageOptions"
       @input="updateFormTempleate()"
     />
@@ -54,16 +56,14 @@
 </template>
 
 <script>
-  //plugins
-  import _cloneDeep from 'lodash.clonedeep'
-
   export default {
     props: {
       value: {
         default: () => {
           return {}
         }
-      }
+      },
+      form: { default: false }
     },
     components: {},
     watch: {
@@ -82,15 +82,12 @@
         },
       }
     },
-    mounted() {
+    mounted () {
       this.$nextTick(function () {
         this.init()
       })
     },
-    validations() {
-      return this.objValidations()
-    },
-    data() {
+    data () {
       return {
         languageOptions: this.$store.getters['qsiteSettings/getSelectedLocalesSelect'],
         options: {
@@ -112,59 +109,61 @@
     },
     computed: {
       //Return message to complete language config
-      messageOpt() {
+      messageOpt () {
         let language = this.locale.language
         let label = this.languageOptions.find(item => item.value == language).label
         return {
-          replace: this.$t('qsite.layout.messages.replaceLang', {lang: label}),
-          duplicate: this.$t('qsite.layout.messages.duplicateLang', {lang: label})
+          replace: this.$t('qsite.layout.messages.replaceLang', { lang: label }),
+          duplicate: this.$t('qsite.layout.messages.duplicateLang', { lang: label })
         }
       },
       //Option languages to clone data
-      optionsLanguagesToClone() {
+      optionsLanguagesToClone () {
         let response = []
         this.languageOptions.forEach(lang => {
-          if (lang.value != this.locale.language)
+          if (lang.value != this.locale.language) {
             response.push(this.$clone(lang))
+          }
         })
         //Select first language
         this.options.languageToClone = response[0].value
         return response//Response
       },
       //Merge value and locale data
-      interfaceSet() {
-        const data = _cloneDeep(this.value)
-        const locale = _cloneDeep(this.locale)
-        this.locale = _cloneDeep(Object.assign(locale, data))
+      interfaceSet () {
+        const data = this.$clone(this.value)
+        const locale = this.$clone(this.locale)
+        this.locale = this.$clone(Object.assign(locale, data))
       },
       //Return clone from locale data
-      interfaceGet() {
-        return _cloneDeep(this.locale)
+      interfaceGet () {
+        return this.$clone(this.locale)
       },
       //Return clone from value data
-      interfaceGetValue() {
-        return _cloneDeep(this.value)
+      interfaceGetValue () {
+        return this.$clone(this.value)
       },
       //Emmit a clone from locale data
-      async interfaceEmit() {
+      async interfaceEmit () {
         //Check if there is fields in from template to change status from component
         const lengthFormTemplate = Object.keys(this.locale.formTemplate).length
         this.locale.success = lengthFormTemplate ? true : false
         //Emmit data
-        await this.$emit('input', _cloneDeep(this.locale))
+        await this.$emit('input', this.$clone(this.locale))
       },
       //check if form template is same in value and local
-      formTemplateIsSame() {
+      formTemplateIsSame () {
         const locale = this.interfaceGet//Get clone local data
         const value = this.interfaceGetValue//Get clone value data
         let response = false//Response
         if (!locale.formTemplate) return response
-        if (JSON.stringify(locale.formTemplate) == JSON.stringify(value.formTemplate))
+        if (JSON.stringify(locale.formTemplate) == JSON.stringify(value.formTemplate)) {
           response = true
+        }
         return response//Response
       },
       //check if form is same in value and local
-      formIsSame() {
+      formIsSame () {
         const locale = this.interfaceGet//Get clone local data
         const value = this.interfaceGetValue//Get clone value data
         let response = false//Response
@@ -172,14 +171,15 @@
         if (!locale.form) return response
         //not is same if empty form
         if (!Object.keys(locale.form).length) return response
-        if (JSON.stringify(locale.form) == JSON.stringify(value.form))
+        if (JSON.stringify(locale.form) == JSON.stringify(value.form)) {
           response = true
+        }
         return response//Response
       }
     },
     methods: {
       //Init component
-      init() {
+      init () {
         if (!this.formIsSame) {
           this.interfaceSet//Set data form value
           this.orderFields()//Order fields
@@ -189,8 +189,8 @@
         }
       },
       //Load fields on form and form template
-      orderFields() {
-        const locale = _cloneDeep(this.locale)//Clone locale
+      orderFields () {
+        const locale = this.$clone(this.locale)//Clone locale
         const locales = this.$store.state.qsiteSettings.selectedLocales//Get selected locales from store
         this.setFormTemplate(Object.assign({}, locale.fields, locale.fieldsTranslatable))//Set fromTemplate
 
@@ -198,12 +198,15 @@
         let fieldsTranslatable = {}
         locales.forEach(language => {
           if (locale.form[language])//Sync fields translatable from form
+          {
             Object.keys(locale.form[language]).forEach(fieldName => {
               if (!fieldsTranslatable[language]) fieldsTranslatable[language] = {}
               fieldsTranslatable[language][fieldName] = locale.form[language][fieldName]
             })
-          else//Set default fields translatable
-            fieldsTranslatable[language] = _cloneDeep(locale.fieldsTranslatable)
+          } else//Set default fields translatable
+          {
+            fieldsTranslatable[language] = this.$clone(locale.fieldsTranslatable)
+          }
         })
 
         //Create or sync fields with fields from form
@@ -213,19 +216,19 @@
         })
 
         //Merge all fields with fields by locale
-        this.locale.form = _cloneDeep(Object.assign({}, fields, fieldsTranslatable))
+        this.locale.form = this.$clone(Object.assign({}, fields, fieldsTranslatable))
       },
       //Order fields validations
-      orderValidations() {
+      orderValidations () {
         //Order validations by locale
         if (Object.keys(this.locale.validations).length) {
-          this.locale.formValidations = _cloneDeep({
+          this.locale.formValidations = this.$clone({
             formTemplate: this.locale.validations
           })
         }
       },
       //Set data from formTemplate in form by locale
-      setDataByLocale() {
+      setDataByLocale () {
         if (!this.formTemplateIsSame) {
           this.syncFormTemplate()//Sync data formTemplate
           const locale = this.interfaceGet//Get clone local data
@@ -241,18 +244,18 @@
             locale.form[locale.language][item] = locale.formTemplate[item]
           }
 
-          this.locale.form = _cloneDeep(locale.form)
+          this.locale.form = this.$clone(locale.form)
           this.interfaceEmit//Emit data
         }
       },
       //Sync form template
-      syncFormTemplate() {
+      syncFormTemplate () {
         const locale = this.interfaceGet//Get clone local data
         const value = this.interfaceGetValue//Get clone value data
         this.setFormTemplate(Object.assign({}, locale.formTemplate, value.formTemplate))//Set form Template
       },
       //Change data of form template about locale
-      updateFormTempleate() {
+      updateFormTempleate () {
         const locale = this.interfaceGet
         //Change fields by locale of form template
         Object.keys(locale.fieldsTranslatable).forEach(fieldName => {
@@ -261,53 +264,52 @@
 
         //Change fields of form template
         Object.keys(locale.fields).forEach(fieldName => {
-          locale.formTemplate[fieldName] = _cloneDeep(locale.form[fieldName])
+          locale.formTemplate[fieldName] = this.$clone(locale.form[fieldName])
         })
 
         this.setFormTemplate(locale.formTemplate)//Set form template
         this.interfaceEmit//Emit data
       },
       //Set formTemplate
-      setFormTemplate(val = []) {
+      setFormTemplate (val = []) {
         let values = this.$clone(val)//Clone param
 
         //Check if exist options and decode it
-        if (values.options && (typeof values.options == 'string'))
+        if (values.options && (typeof values.options == 'string')) {
           values.options = JSON.parse(values.options)
+        }
 
         //Set formTemplate
-        this.locale.formTemplate = this.$clone(values);
-      },
-      //Return obj to validate fields
-      objValidations() {
-        if (Object.keys(this.locale.validations).length)
-          return {locale: _cloneDeep(this.locale.formValidations)}
-        else
-          return {}
+        this.locale.formTemplate = this.$clone(values)
       },
       //Validate all fields
-      vTouch() {
-        if (Object.keys(this.locale.validations).length) {
-          const locale = _cloneDeep(this.locale)
-          const currentLanguage = locale.language
+      validateForm () {
+        return new Promise(async resolve => {
+          if (this.form) {
+            const locale = this.$clone(this.locale)
+            const currentLanguage = locale.language
 
-          for (var locale of this.locale.languages) {
-            this.locale.language = locale//Change language
-            this.updateFormTempleate()//Update form about language
-            this.$v.$touch() //Touch validations
-            //Check if fields is invalid
-            if (this.$v.$error) {
-              this.$emit('validate')
-              return false
-            } else {
-              this.$v.$reset//Reset Validations
-              this.locale.language = currentLanguage//Set current language
+            //==== validate each language
+            for (var lang of this.locale.languages) {
+              this.locale.language = lang//Change language
+              await this.updateFormTempleate()//Update form
+
+              //Validate form
+              let isValid = await this.form.validate()
+              if (!isValid) return resolve(false)
             }
+
+            //==== Return tu current langueage
+            this.locale.language = currentLanguage//Change language
+            await this.updateFormTempleate()//Update form
+            resolve(true)//Default Response
+          } else {
+            resolve(false)
           }
-        }
+        })
       },
       //Reset
-      async vReset() {
+      async vReset () {
         //Reset locale
         this.locale = Object.assign({}, this.interfaceGet, {
           form: {},//Return data with format to request
@@ -319,7 +321,7 @@
         this.init()//Init locale
       },
       //Replace o duplicate locale
-      makeOptionLocale() {
+      makeOptionLocale () {
         const locale = this.interfaceGet//Get clone local data
         let typeOption = this.options.typeOption//Get type option
 
@@ -330,18 +332,18 @@
             for (var item in locale.fieldsTranslatable) {
               locale.form[locale.language][item] = locale.form[languageToClone][item]
             }
-            break;
+            break
           case 'duplicate'://Duplicate data of current locale to all locales
             locale.languages.forEach(lang => {
               for (var item in locale.fieldsTranslatable) {
                 locale.form[lang][item] = locale.form[locale.language][item]
               }
             })
-            break;
+            break
         }
 
         this.$refs.modalConfig.hide()//close popover options
-        this.locale.form = _cloneDeep(locale.form)//sync locale
+        this.locale.form = this.$clone(locale.form)//sync locale
         this.updateFormTempleate()//Update for template
       }
     }
@@ -349,7 +351,6 @@
 </script>
 
 <style lang="stylus">
-  @import "~variables";
   #componentLocales
     .config-buttom
       min-height 30px
