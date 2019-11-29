@@ -52,13 +52,25 @@ export const availableThemesTreeSelect = (state) => {
 };
 
 export const getSettingValueByName = (state) => (filter) => {
-  let setting = state.settings.find(setting => setting.name === filter );
-    return setting ? setting.value : undefined
+  let settings = state.settings
+  let response = undefined
+
+  settings.forEach(item => {
+    if (item.name == filter) response = item.value
+  })
+
+  return response
 };
 
 export const getSettingMediaByName = (state) => (filter) => {
-  let setting = state.settings.find(setting => setting.name === filter );
-  return setting ? setting.media : '';
+  let settings = state.settings
+  let response = ''
+
+  settings.forEach(item => {
+    if (item.name == filter) response = item.media
+  })
+
+  return response
 };
 
 export const getSelectedLocalesSelect = (state) => {

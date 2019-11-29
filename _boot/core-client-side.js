@@ -1,6 +1,14 @@
 import { Notify } from 'quasar'
 
 export default async ({app, router, store, Vue}) => {
+  //====== Reset Service Worker
+  if (navigator && navigator.serviceWorker && navigator.serviceWorker.controller
+    && navigator.serviceWorker.controller.postMessage) {//Reset Service Worker
+    navigator.serviceWorker.controller.postMessage({
+      msg: "clearCache"
+    });
+  }
+
   //====== Load colors
   store.dispatch('qsiteSettings/SET_SITE_COLORS')
 
