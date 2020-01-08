@@ -12,6 +12,9 @@ export default ({router, store, Vue}) => {
 
       //Validate route to redirect
       if (isAuthenticated) {
+        //Update data of user
+        store.dispatch('quserAuth/AUTH_UPDATE')
+
         //Validate permission of route
         if (to.meta && to.meta.permission) {
           if (!store.getters['quserAuth/hasAccess'](to.meta.permission)) redirectTo = {name: 'app.home'}

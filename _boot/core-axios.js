@@ -1,15 +1,19 @@
 import axios from 'axios'
 
-export default function ({ app, router, store, Vue, ssrContext }) {
+export default function ({app, router, store, Vue, ssrContext}) {
   //=========== Set base url to axios
-  //if not exist url in .env, set host as base url
+  let tagsToParceHost = ['http://', 'https://', ':8080', ':3000', 'www.']
+  //Get base url
   let host = env('BASE_URL') || (ssrContext ? ssrContext.req.get('host') : window.location.host)
-  host = host.replace('http://', '').replace('https://', '')//Parse host
-  axios.defaults.baseURL = `https://${host}/api`// Set base url in axios
+  //Parse host
+  tagsToParceHost.forEach(tagToReplace => host = host.replace(tagToReplace, ''))
+  if(env('SET_PREFIX_HOST')) host = `${env('SET_PREFIX_HOST')}.${host}`//Add prefix to baseURl
   store.commit('app/SET_BASE_URL', `https://${host}`) //Set base Url in store
+  axios.defaults.baseURL = `https://${host}/api`// Set base url in axios
+  console.log(`[AXIOS] Registered Host: ${host}`)
 
   //========== Set default params: setting
-  axios.defaults.params = { setting: {} }
+  axios.defaults.params = {setting: {}}
 
   //========== Response interceptor
   axios.interceptors.response.use((response) => {
@@ -28,6 +32,10 @@ export default function ({ app, router, store, Vue, ssrContext }) {
     }
     return Promise.reject(error);//Return response error
   })
+
+  //============ Set ignore SSL
+  //process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+  //axios.defaults.httpsAgent = new https.Agent({rejectUnauthorized: false})
 
   //============= Set as global
   Vue.prototype.$axios = axios

@@ -72,7 +72,11 @@ export default {
     module: 'Module',
     entity : 'Entity',
     change : 'Change',
-    socialNetwork : 'Social Network | Social Networks'
+    socialNetwork : 'Social Network | Social Networks',
+    logo : 'Logo | Logos',
+    pending: 'Pending | Pendings',
+    notification : 'Notification | Notifications',
+    leave : 'Leave'
   },
   message: {
     notFound: 'Sorry, nothing here',

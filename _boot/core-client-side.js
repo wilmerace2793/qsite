@@ -1,4 +1,4 @@
-import { Notify } from 'quasar'
+import {Notify} from 'quasar'
 
 export default async ({app, router, store, Vue}) => {
   //====== Reset Service Worker
@@ -10,12 +10,13 @@ export default async ({app, router, store, Vue}) => {
   }
 
   //====== Load colors
+  await store.dispatch('qsiteSettings/GET_SITE_SETTINGS')
   store.dispatch('qsiteSettings/SET_SITE_COLORS')
 
-  if(!config('app.isBackend')){
+  if (!config('app.isBackend')) {
     //====== Load Tawk
     let scriptString = store.getters['qsiteSettings/getSettingValueByName']('core::analytics-script')
-    if (scriptString && (typeof(scriptString) == 'string')) eval(scriptString.replace(/<\/?script>/g, ""))
+    if (scriptString && (typeof (scriptString) == 'string')) eval(scriptString.replace(/<\/?script>/g, ""))
   }
 
   //======= Load message Install as native APP(PWA)

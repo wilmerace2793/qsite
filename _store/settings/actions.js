@@ -26,73 +26,75 @@ export const GET_SITE_SETTINGS = ({commit, dispatch, state}) => {
 }
 
 export const SET_SITE_COLORS = ({state, commit, dispatch}) => {
-  let settings = state.settings
-  let dataColors = {}
+  if (process.env.CLIENT) {
+    let settings = state.settings
+    let dataColors = {}
 
-  for (let i in settings) {
-    let name = settings[i].name.split('::')
-    dataColors[name[1]] = settings[i].path ? settings[i].path : settings[i].plainValue
-  }
+    for (let i in settings) {
+      let name = settings[i].name.split('::')
+      dataColors[name[1]] = settings[i].path ? settings[i].path : settings[i].plainValue
+    }
 
-  if (dataColors.brandPrimary) {
-    AddressbarColor.set(dataColors.brandPrimary)
-    colors.setBrand('primary', dataColors.brandPrimary)
-  } else {
-    colors.setBrand('primary', '#027be3')
-  }
+    if (dataColors.brandPrimary) {
+      AddressbarColor.set(dataColors.brandPrimary)
+      colors.setBrand('primary', dataColors.brandPrimary)
+    } else {
+      colors.setBrand('primary', '#027be3')
+    }
 
-  if (dataColors.brandSecondary) {
-    colors.setBrand('secondary', dataColors.brandSecondary)
-  } else {
-    colors.setBrand('secondary', '#26a69a')
-  }
+    if (dataColors.brandSecondary) {
+      colors.setBrand('secondary', dataColors.brandSecondary)
+    } else {
+      colors.setBrand('secondary', '#26a69a')
+    }
 
-  if (dataColors.brandWarning) {
-    colors.setBrand('warning', dataColors.brandWarning)
-  } else {
-    colors.setBrand('warning', '#f2c037')
-  }
+    if (dataColors.brandWarning) {
+      colors.setBrand('warning', dataColors.brandWarning)
+    } else {
+      colors.setBrand('warning', '#f2c037')
+    }
 
-  if (dataColors.brandLight) {
-    colors.setBrand('light', dataColors.brandLight)
-  } else {
-    colors.setBrand('light', '#bdbdbd')
-  }
+    if (dataColors.brandLight) {
+      colors.setBrand('light', dataColors.brandLight)
+    } else {
+      colors.setBrand('light', '#bdbdbd')
+    }
 
-  if (dataColors.brandDark) {
-    colors.setBrand('dark', dataColors.brandDark)
-  } else {
-    colors.setBrand('dark', '#424242')
-  }
+    if (dataColors.brandDark) {
+      colors.setBrand('dark', dataColors.brandDark)
+    } else {
+      colors.setBrand('dark', '#424242')
+    }
 
-  if (dataColors.brandInfo) {
-    colors.setBrand('info', dataColors.brandInfo)
-  } else {
-    colors.setBrand('info', '#31ccec')
-  }
+    if (dataColors.brandInfo) {
+      colors.setBrand('info', dataColors.brandInfo)
+    } else {
+      colors.setBrand('info', '#31ccec')
+    }
 
-  if (dataColors.brandFaded) {
-    colors.setBrand('faded', dataColors.brandFaded)
-  } else {
-    colors.setBrand('faded', '#777')
-  }
+    if (dataColors.brandFaded) {
+      colors.setBrand('faded', dataColors.brandFaded)
+    } else {
+      colors.setBrand('faded', '#777')
+    }
 
-  if (dataColors.brandPositive) {
-    colors.setBrand('positive', dataColors.brandPositive)
-  } else {
-    colors.setBrand('positive', '#21ba45')
-  }
+    if (dataColors.brandPositive) {
+      colors.setBrand('positive', dataColors.brandPositive)
+    } else {
+      colors.setBrand('positive', '#21ba45')
+    }
 
-  if (dataColors.brandNegative) {
-    colors.setBrand('negative', dataColors.brandNegative)
-  } else {
-    colors.setBrand('negative', '#db2828')
-  }
+    if (dataColors.brandNegative) {
+      colors.setBrand('negative', dataColors.brandNegative)
+    } else {
+      colors.setBrand('negative', '#db2828')
+    }
 
-  if (dataColors.brandTertiary) {
-    colors.setBrand('tertiary', dataColors.brandTertiary)
-  } else {
-    colors.setBrand('tertiary', '#555')
+    if (dataColors.brandTertiary) {
+      colors.setBrand('tertiary', dataColors.brandTertiary)
+    } else {
+      colors.setBrand('tertiary', '#555')
+    }
   }
 }
 

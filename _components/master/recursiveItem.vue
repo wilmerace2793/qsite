@@ -4,12 +4,12 @@
       <q-no-ssr v-for="(item,key) in props.menu" :key="key" :class="`content-item ${inLine ? 'inline-block' : ''}`">
         <q-separator v-if="!inLine"/>
         <!--Single Item-->
-        <q-item :class="getClassItem(item)" v-if="checkItemSingle(item)"
+        <q-item :class="getClassItem(item)" v-if="checkItemSingle(item)" tag="a"
                 @click.native="redirectTo(item)" clickable :key="key">
           <q-item-section v-if="item.icon && props.showIcons" avatar>
             <q-icon :name="item.icon"/>
           </q-item-section>
-          <q-item-section> {{props.translatable ? $tr(item.title) : item.title}}</q-item-section>
+          <q-item-section class="text-capitalize"> {{props.translatable ? $tr(item.title) : item.title}}</q-item-section>
         </q-item>
 
         <!-- Dropdwon Item -->

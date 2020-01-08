@@ -21,7 +21,22 @@
       <template v-slot:append>
         <q-icon name="fas fa-calendar-day"/>
         <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-          <q-date v-model="responseValue" @input="() => $refs.qDateProxy.hide()"/>
+          <q-date v-model="responseValue" @input="() => $refs.qDateProxy.hide()"
+                  v-bind="{...(field.props || {})}"/>
+        </q-popup-proxy>
+      </template>
+    </q-input>
+    <!--Hour-->
+    <q-input
+      v-model="responseValue" :label="fieldLabel" v-if="loadField('hour')" v-bind="{
+      bgColor:'white', color:'primary', outlined : true, dense : true,
+      placeholder:'HH:MM', mask:'time', ...(field.props || {})}"
+    >
+      <template v-slot:append>
+        <q-icon name="fas fa-clock"/>
+        <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+          <q-time v-model="responseValue" :format24h="false" @input="() => $refs.qDateProxy.hide()"
+                  v-bind="{...(field.props || {})}"/>
         </q-popup-proxy>
       </template>
     </q-input>
@@ -66,10 +81,15 @@
              v-bind="{borderless : true, dense : true, ...(field.props || {})}">
       <q-checkbox v-model="responseValue" :label="fieldLabel" v-bind="field.props || {}"/>
     </q-field>
+    <!--Image-->
+    <q-field v-model="responseValue" v-if="loadField('image')" label=""
+             v-bind="{borderless : true, dense : true, ...(field.props || {})}">
+      <upload-image v-model="responseValue" v-bind="{...(field.props || {})}"/>
+    </q-field>
     <!--Media-->
     <q-field v-model="responseValue" v-if="loadField('media')" label=""
              v-bind="{borderless : true, dense : true, ...(field.props || {})}">
-      <upload-img v-model="responseValue" class="bg-white" v-bind="{
+      <media v-model="responseValue" class="bg-white" v-bind="{
         multiple : (field.props.zone == 'gallery'), entityId:itemId, ...(field.props || {})}"/>
     </q-field>
     <!--Manage Permission-->
@@ -85,7 +105,8 @@
   import recursiveSelect from '@imagina/qsite/_components/master/recursiveListSelect'
   import managePermissions from '@imagina/qsite/_components/master/managePermissions'
   import manageSettings from '@imagina/qsite/_components/master/manageSettings'
-  import uploadImg from '@imagina/qmedia/_components/form'
+  import media from '@imagina/qmedia/_components/form'
+  import uploadImage from '@imagina/qsite/_components/master/uploadImage'
 
   export default {
     name: 'dynamicField',
@@ -101,7 +122,7 @@
       language: {default: false},
       itemId: {default: ''}
     },
-    components: {managePermissions, manageSettings, recursiveSelect, uploadImg},
+    components: {managePermissions, manageSettings, recursiveSelect, media, uploadImage},
     watch: {
       value(newValue, oldValue) {
         //Order Value
@@ -364,7 +385,6 @@
     }
   }
 </script>
-
 <style lang="stylus">
   #dynamicFieldComponent
     .checkbox-field

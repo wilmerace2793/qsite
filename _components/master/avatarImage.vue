@@ -1,5 +1,5 @@
 <template>
-  <div id="acatarImageComponent" class="inline-block">
+  <div id="avatarImageComponent" class="inline-block">
     <!--Avatar-->
     <q-avatar v-if="src" @click="dialog.show = true">
       <img :src="src">

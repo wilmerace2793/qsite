@@ -72,7 +72,11 @@ export default {
     module: 'Modulo',
     entity : 'Entidad',
     change : 'Cambiar',
-    socialNetwork : 'Red social | Redes sociales'
+    socialNetwork : 'Red social | Redes sociales',
+    logo : 'Logo | Logos',
+    pending: 'Pendiente | Pendientes',
+    notification : 'Notificación | Notificaciones',
+    leave : 'Abandonar'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
@@ -177,6 +181,7 @@ export default {
     code : 'Codigo | Codigos',
     increase : 'Incrementar',
     date : 'Fecha | Fechas',
+    hour : 'Hora | Horas',
     dueDate : 'Fecha de vencimiento',
     tax : 'Impuesto | Impuestos'
   },

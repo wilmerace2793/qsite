@@ -10,9 +10,8 @@ export const REFRESH_PAGE = ({state, commit, dispatch, getters}) => {
     commit('LOAD_PAGE', false)
     await cache.restore(config('app.saveCache.refresh'))//Reset cache
     await dispatch('quserAuth/AUTH_UPDATE', null, {root: true}).catch(error => {})//Update user data
-    /*//==== validate permissions of route
-    if(currentRoute &&  currentRoute.meta && currentRoute.meta.permission)
-      if(!getters['quserAuth/hasAccess'](currentRoute.meta.permission))*/
+    await dispatch('qsiteSettings/GET_SITE_SETTINGS', null, {root: true}).catch(error => {})//update settings sites
+    dispatch('qsiteSettings/SET_SITE_COLORS', null, {root: true})//Load colors
     commit('LOAD_PAGE', true)
     Loading.hide()
     resolve(true)
