@@ -50,6 +50,7 @@ export default {
     allow : 'Allow',
     deny : 'Deny',
     inherit : 'Inherit',
+    day : 'Day | Days',
     monday : 'Monday',
     tuesday : 'Tuesday',
     wednesday : 'Wednesday',
@@ -76,7 +77,14 @@ export default {
     logo : 'Logo | Logos',
     pending: 'Pending | Pendings',
     notification : 'Notification | Notifications',
-    leave : 'Leave'
+    leave : 'Leave',
+    action : 'Action | Actions',
+    view : 'View | Views',
+    grid : 'Grid | Grids',
+    table : 'Table',
+    expired : 'Expired',
+    empty : 'Empty',
+    completed : 'Completed | Completed'
   },
   message: {
     notFound: 'Sorry, nothing here',
@@ -182,7 +190,11 @@ export default {
     increase : 'Increase',
     date : 'Dates | Dates',
     dueDate : 'Due date',
-    tax : 'Tax | Taxes'
+    tax : 'Tax | Taxes',
+    orderBy : 'Order by',
+    orderWay : 'Order way',
+    assignedTo : 'Assigned to',
+    comment : 'Comentario | Comentarios'
   },
   configList: {
     loggedAs: 'logged as',

@@ -50,6 +50,7 @@ export default {
     allow : 'Permitir',
     deny : 'Negar',
     inherit : 'Heredar',
+    day : 'Día | Dias',
     monday : 'Lunes',
     tuesday : 'Martes',
     wednesday : 'Miercoles',
@@ -76,7 +77,14 @@ export default {
     logo : 'Logo | Logos',
     pending: 'Pendiente | Pendientes',
     notification : 'Notificación | Notificaciones',
-    leave : 'Abandonar'
+    leave : 'Abandonar',
+    action : 'Acción | Acciones',
+    view : 'Vista | Vistas',
+    grid : 'Cuadricula | Cuadriculas',
+    table : 'Tabla',
+    expired : 'Caducado',
+    empty : 'Vacío',
+    completed : 'Completado | Completados'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
@@ -183,7 +191,11 @@ export default {
     date : 'Fecha | Fechas',
     hour : 'Hora | Horas',
     dueDate : 'Fecha de vencimiento',
-    tax : 'Impuesto | Impuestos'
+    tax : 'Impuesto | Impuestos',
+    orderBy : 'Ordenar por',
+    orderWay : 'Ordenar de forma',
+    assignedTo : 'Asignado a',
+    comment : 'Comentario | Comentarios'
   },
   configList: {
     loggedAs: 'Registrado como',
