@@ -8,8 +8,8 @@ export default function ({app, router, store, Vue, ssrContext}) {
   //Parse host
   tagsToParceHost.forEach(tagToReplace => host = host.replace(tagToReplace, ''))
   if(env('SET_PREFIX_HOST')) host = `${env('SET_PREFIX_HOST')}.${host}`//Add prefix to baseURl
-  store.commit('app/SET_BASE_URL', `https://${host}`) //Set base Url in store
-  axios.defaults.baseURL = `https://${host}/api`// Set base url in axios
+  store.commit('app/SET_BASE_URL', env('NO_HTTPS') ? `http://${host}` :`https://${host}`) //Set base Url in store
+  axios.defaults.baseURL = env('NO_HTTPS') ? `http://${host}/api` : `https://${host}/api`// Set base url in axios
   console.log(`[AXIOS] Registered Host: ${host}`)
 
   //========== Set default params: setting
