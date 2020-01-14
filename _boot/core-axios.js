@@ -4,12 +4,18 @@ export default function ({app, router, store, Vue, ssrContext}) {
   //=========== Set base url to axios
   let tagsToParceHost = ['http://', 'https://', ':8080', ':3000', 'www.']
   //Get base url
-  let host = env('BASE_URL') || (ssrContext ? ssrContext.req.get('host') : window.location.host)
-  //Parse host
-  tagsToParceHost.forEach(tagToReplace => host = host.replace(tagToReplace, ''))
-  if(env('SET_PREFIX_HOST')) host = `${env('SET_PREFIX_HOST')}.${host}`//Add prefix to baseURl
-  store.commit('app/SET_BASE_URL', env('NO_HTTPS') ? `http://${host}` :`https://${host}`) //Set base Url in store
-  axios.defaults.baseURL = env('NO_HTTPS') ? `http://${host}/api` : `https://${host}/api`// Set base url in axios
+  let rootHost = env('BASE_URL') || (ssrContext ? ssrContext.req.get('host') : window.location.host)
+  let host = rootHost
+  //Parse host if not exist in .env
+  if (!env('BASE_URL')) {
+    tagsToParceHost.forEach(tagToReplace => host = host.replace(tagToReplace, ''))
+    if (env('SET_PREFIX_HOST')) host = `${env('SET_PREFIX_HOST')}.${host}`//Add prefix to baseURl
+    if (rootHost.indexOf('www') != -1) host = `www.${host}`//Set again WWW
+    host = env('NO_HTTPS') ? `http://${host}` : `https://${host}` //Define protocol
+  }
+
+  store.commit('app/SET_BASE_URL', host) //Set base Url in store
+  axios.defaults.baseURL = `${host}/api`// Set base url in axios
   console.log(`[AXIOS] Registered Host: ${host}`)
 
   //========== Set default params: setting
