@@ -17,7 +17,7 @@ export default async ({router, app, Vue, store, ssrContext}) => {
   //From URL
   let fullUrl = ssrContext ?
     (ssrContext.req.protocol + "://" + ssrContext.req.headers.host + ssrContext.url) : window.location.href
-  fullUrl = fullUrl.replace('#/','')
+  fullUrl = fullUrl.replace('#/', '')
   let urlContext = new URL(fullUrl)
   let langFromUrl = urlContext.searchParams.get('lang')
   let defaultLanguage = langFromUrl || false
@@ -46,12 +46,12 @@ export default async ({router, app, Vue, store, ssrContext}) => {
   //===== Customs short-keys to locales
 
   //Currency translate
-  Vue.prototype.$trc = (num) => {
-    return app.i18n.n(num, 'currency')
+  Vue.prototype.$trc = (num, lang) => {
+    return app.i18n.n(num, 'currency', lang)
   }
   //number translate
   Vue.prototype.$trn = (num, type) => {
-    if(type == 'percent') num /= 100 //Divide Percent
+    if (type == 'percent') num /= 100 //Divide Percent
     return type ? app.i18n.n(num, type) : app.i18n.n(num)
   }
   //Singular translate
