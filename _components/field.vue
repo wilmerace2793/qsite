@@ -110,7 +110,7 @@
   </div>
 </template>
 <script>
-  import alert from '@imagina/qhelper/_plugins/alert'
+  import alert from '@imagina/qsite/_plugins/alert'
 
   /*Components*/
   import mediaForm from '@imagina/qmedia/_components/form'
@@ -135,10 +135,10 @@
         let options = []
         switch (name) {
           case 'template':
-            options = this.$store.getters['qsiteSettings/availableThemesTreeSelect']
+            options = this.$store.getters['qsiteApp/availableThemesTreeSelect']
             break
           case 'locales':
-            options = this.$store.getters['qsiteSettings/availableLocalesTreeSelect']
+            options = this.$store.getters['qsiteApp/availableLocalesTreeSelect']
             break
           default:
             if (this.setting.options) {

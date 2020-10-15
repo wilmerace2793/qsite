@@ -1,63 +1,73 @@
 import appConfig from 'src/config/app'
 
-//=== Auto load api routes from modules available in: src/config/app.js "modules"
-let pages = {}
+class AutoLoadPages {
+  constructor() {
+    this.pages = {}
+    this.modules = appConfig.modules
+    this.updatePages = []
+    //Load backend pages
+    if (appConfig.isBackend || appConfig.loadBackendPages) this.loadPages({name: 'backendPages'})
+    //Load frontend pages
+    if (!appConfig.isBackend) this.loadPages({prefix: 'front', name: 'frontendPages'})
+    //Add default pages
+    this.addDefaultPages()
+    //Update pages
+    this.loadUpdatePages()
+  }
 
-if (appConfig && appConfig.modules) {
-  const modules = appConfig.modules
-
-  // Get each config page from package
-  modules.forEach(name => {
-    let pageBackend = false
-    let pageFrontend = false
-
-    //Find pageBackend
-    try {
-      pageBackend = require(`@imagina/${name}/_config/backendPages`).default
-    } catch (e) {
+  //Add default pages
+  addDefaultPages() {
+    //Add page home when it's backend
+    if (appConfig.isBackend) {
+      this.pages.app = {
+        home: {//Page home
+          permission: null,
+          activated: true,
+          path: '/',
+          name: 'app.home',
+          layout: () => import('@imagina/qsite/_layouts/master.vue'),
+          page: () => import('@imagina/qsite/_pages/master/index.vue'),
+          title: 'sidebar.pageHome',
+          icon: 'fas fa-home',
+          authenticated: appConfig.isBackend
+        }
+      }
     }
+  }
 
-    //Find pageFrontend
-    try {
-      pageFrontend = require(`@imagina/${name}/_config/frontendPages`).default
-    } catch (e) {
-    }
+  //Load modules backend page
+  loadPages(params = {}) {
+    this.modules.forEach(moduleName => {
+      let configPage = false
+      let namePage = `${params.prefix || ''}${moduleName}`
 
-    if (appConfig.isBackend || appConfig.loadBackendPages) if(pageBackend) pages[name] = pageBackend
-    if (!appConfig.isBackend) if(pageFrontend) pages[`front${name}`] = pageFrontend
+      //Search module in node_modules
+      try {
+        configPage = require(`@imagina/${moduleName}/_config/${params.name}`)
+      } catch (e) {
+      }
 
-  })
-}
+      //Search module in project (src)
+      try {
+        configPage = require(`src/modules/${moduleName}/_config/${params.name}`)
+      } catch (e) {
+      }
 
-//=== Set default pages of APP
-pages.app = {
-  home: {//Page home
-    permission: null,
-    activated: true,
-    path: '/',
-    name: 'app.home',
-    layout: () => appConfig.isBackend ?
-      import('@imagina/qsite/_layouts/master.vue') : import('src/layouts/master.vue'),
-    page: () => appConfig.isBackend ?
-      import('@imagina/qsite/_pages/master/index.vue') : import('src/pages/index.vue'),
-    title: 'sidebar.pageHome',
-    icon: 'fas fa-home',
-    authenticated: appConfig.isBackend
+      if (configPage) this.pages[namePage] = configPage.default//Add pages
+      if (configPage.updatePages) this.updatePages.push(configPage.updatePages)//Add method to updated pages
+    })
+  }
+
+  //Load changes in pages
+  loadUpdatePages() {
+    this.updatePages.forEach(updatedPages => {
+      this.pages = updatedPages(this.pages)
+    })
   }
 }
 
-//Add pages "not found" only when it isn't SSR mode. Always leave this as last one
-if (process.env.MODE !== 'ssr') {
-  pages.app.notFound = {
-    permission: null,
-    activated: true,
-    path: '*',
-    name: 'app.not.found',
-    layout: () => import('@imagina/qsite/_layouts/blank.vue'),
-    page: () => import('@imagina/qsite/_pages/master/404'),
-    title: 'sidebar.pageNotFound',
-    icon: 'fas fa-chart-bar'
-  }
-}
+//Create new class
+const autoLoadPages = new AutoLoadPages()
 
-export default pages
+//Response
+export default autoLoadPages.pages

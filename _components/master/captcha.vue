@@ -37,8 +37,8 @@
         if (process.env.CLIENT) {
           //Define KEY according to version of recaptcha
           this.key = this.checkbox ?
-            this.$store.getters['qsiteSettings/getSettingValueByName']('isite::reCaptchaV2Site') :
-            this.$store.getters['qsiteSettings/getSettingValueByName']('isite::reCaptchaV3Site')
+            this.$store.getters['qsiteApp/getSettingValueByName']('isite::reCaptchaV2Site') :
+            this.$store.getters['qsiteApp/getSettingValueByName']('isite::reCaptchaV3Site')
           if (this.key) {
             this.addCDNCaptcha()
           }//add cdn
@@ -83,7 +83,7 @@
       },
       //Emit token of version 3
       vEmitTokenV3() {
-        grecaptcha.execute(this.key, {action: this.action}).then(token => {
+        grecaptcha.execute(this.key, {action: 'homepage'}).then(token => {
           this.$emit('input', {version: 3, token: token})
         })
       },

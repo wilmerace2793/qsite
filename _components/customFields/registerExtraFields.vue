@@ -2,7 +2,6 @@
 
   <div id="textMultiWidthOptions" class="row gutter-xs">
     <div class="q-caption text-grey">{{label}}</div>
-
     <q-list class="full-width" no-border highlight>
       <q-item v-for="(item,index) in items" :key="index">
         <q-item-section>
@@ -13,7 +12,7 @@
             <q-checkbox
               v-model="item.active"
               label="Active"
-              @input="emitActivedItems"
+              @input="emitActivedItems(item.required, index)"
             />
             <q-checkbox
               class="q-ml-xs"
@@ -31,7 +30,7 @@
   </div>
 </template>
 <script>
-  import alert from '@imagina/qhelper/_plugins/alert'
+  import alert from '@imagina/qsite/_plugins/alert'
 
   export default {
     props: ['value', 'label', 'type', 'input', 'setting'],
@@ -52,7 +51,6 @@
             required: required
           })
         })
-
       })
     },
     data () {
@@ -61,7 +59,6 @@
       }
     },
     methods: {
-
       emitActivedItems (required = false, index = 0) {
         if (required) {
           this.items[index].active = true

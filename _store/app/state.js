@@ -1,5 +1,12 @@
 export default {
   loadPage : true,
   baseUrl : false,
-  currentRoute : {}
+  originURL : false,
+  currentRoute : {},
+  extra : {},
+  settings: [],
+  availableLocales: [],
+  availableThemes: [],
+  selectedLocales : [],
+  defaultLocale: '',
 }

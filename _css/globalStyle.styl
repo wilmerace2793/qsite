@@ -1,3 +1,5 @@
+import('@riophae/vue-treeselect/dist/vue-treeselect.css')
+
 // app global css
 *
   a
@@ -66,16 +68,6 @@
     @media screen and (min-width: $breakpoint-xl)
       display block !important
 
-  //=================== List & list items
-
-  .q-item
-    padding 0 10px
-    min-height 35px
-
-  .q-item__section--avatar
-    min-width auto !important
-    padding-right 8px !important
-
 
   //=================== Round bordes modified
 
@@ -88,6 +80,7 @@
   .q-container
     width 100%
     margin 0 auto
+    padding 0 15px
     @media screen and (min-width: $breakpoint-xs)
       max-width 540px
     @media screen and (min-width: $breakpoint-sm)
@@ -98,17 +91,19 @@
       max-width 1140px
 
   //================= Box styles
+
   .box
     border-top 3px solid $primary
     border-radius 5px
-    box-shadow $shadow-1
+    box-shadow $shadow-2
     background-color white
     padding 15px
+    min-height 150px
 
   .box-table
     border-top 3px solid $primary
     border-radius 5px
-    box-shadow $shadow-1
+    box-shadow $shadow-2
     background-color white
 
   .border-top-color //border top color
@@ -128,8 +123,12 @@
       margin-right 5px
 
   //===================== VUE TREE SELECT
+
   .vue-treeselect__portal-target
     z-index 99999999 !important
+
+  .vue-treeselect__option
+    padding 8px 6px
 
   .cont-vue-tree
     border 1px solid $grey-4
@@ -149,6 +148,7 @@
       float right
       border 0px
 
+    .vue-treeselect__menu-container
       .vue-treeselect__control
         border 0px !important
         width auto
@@ -169,11 +169,13 @@
   .q-form
     .q-field
       padding-bottom 19px !important
+
     .q-field__bottom
       padding-top 3px
 
   .input-title
     width 100%
+
     #crudContentPage
       display inline-block !important
       margin-bottom 5px

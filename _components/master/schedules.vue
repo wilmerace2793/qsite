@@ -77,7 +77,7 @@
                   <!--List schedules-->
                   <div v-if="['1','0'].indexOf(modal.status[item.name]) == -1">
                     <div v-for="(schedule,index) in modal.schedules[item.name]" :key="index">
-                      <q-separator />
+                      <q-separator/>
 
                       <!--Button remove hours-->
                       <q-btn icon="fas fa-times" color="negative" flat size="sm"
@@ -130,27 +130,26 @@
   </div>
 </template>
 <script>
-
   export default {
     props: {
-      value: { default: false },
-      readonly: { default: false }
+      value: {default: false},
+      readonly: {type: Boolean, default: false}
     },
     components: {},
     watch: {
       value: {
-        handler (value) {
+        handler(value) {
           this.setPropValue()
         },
         deep: true
       }
     },
-    mounted () {
+    mounted() {
       this.$nextTick(function () {
         this.init()
       })
     },
-    data () {
+    data() {
       return {
         modal: {
           show: false,
@@ -163,25 +162,25 @@
     },
     computed: {
       //Init data
-      initData () {
+      initData() {
         return [
-          { name: 'monday', iso: 1, schedules: '1' },
-          { name: 'tuesday', iso: 2, schedules: '1' },
-          { name: 'wednesday', iso: 3, schedules: '1' },
-          { name: 'thursday', iso: 4, schedules: '1' },
-          { name: 'friday', iso: 5, schedules: '1' },
-          { name: 'saturday', iso: 6, schedules: '1' },
-          { name: 'sunday', iso: 7, schedules: '1' },
+          {name: 'monday', iso: 1, schedules: '1'},
+          {name: 'tuesday', iso: 2, schedules: '1'},
+          {name: 'wednesday', iso: 3, schedules: '1'},
+          {name: 'thursday', iso: 4, schedules: '1'},
+          {name: 'friday', iso: 5, schedules: '1'},
+          {name: 'saturday', iso: 6, schedules: '1'},
+          {name: 'sunday', iso: 7, schedules: '1'},
         ]
       },
       //Return translatable options
-      options () {
+      options() {
         //Options
         let response = {
           status: [
-            { label: this.$tr('ui.label.open'), value: '2' },
-            { label: `24 ${this.$trp('ui.label.hour')}`, value: '1' },
-            { label: this.$tr('ui.label.closed'), value: '0' },
+            {label: this.$tr('ui.label.open'), value: '2'},
+            {label: `24 ${this.$trp('ui.label.hour')}`, value: '1'},
+            {label: this.$tr('ui.label.closed'), value: '0'},
           ]
         }
 
@@ -190,13 +189,13 @@
     },
     methods: {
       //Init
-      init () {
+      init() {
         this.response = this.initData//Set default data in response
         this.modal.schedules = this.initData//Set default data in modal
         this.setPropValue()//Merge prop value
       },
       //Check prop Value
-      setPropValue () {
+      setPropValue() {
         if (this.value) {
           if (JSON.stringify(this.value) != JSON.stringify(this.response)) {
             if (this.value) this.response = this.$clone(this.value)
@@ -206,7 +205,7 @@
         this.setDynamicFieldsModal()//Set dynamic fields in modal
       },
       //Set dynamic values to modal
-      setDynamicFieldsModal () {
+      setDynamicFieldsModal() {
         //Set status
         let status = {}
         this.response.forEach(item => {
@@ -232,7 +231,7 @@
         this.$emit('input', this.response)//Emit response
       },
       //check if Last Schedule is completed
-      successLastSchedule (key) {
+      successLastSchedule(key) {
         let schedule = this.modal.schedules[key]
         let item = schedule[schedule.length - 1]
         let response = true
@@ -242,7 +241,7 @@
         return response
       },
       //Update schedule
-      updateSchedules () {
+      updateSchedules() {
         let response = {}
         //Order schedules according status
         Object.keys(this.modal.status).forEach(day => {

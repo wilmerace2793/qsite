@@ -16,26 +16,33 @@
     watch: {},
     mounted() {
       this.$nextTick(function () {
-        if(this.label) this.labelMessage = this.$clone(this.label)
-        else this.labelMessage = this.message
+        this.init()
       })
     },
     data() {
       return {
-        labelMessage : ''
+        uid: this.$uid(),
+        labelMessage: '',
       }
     },
-    computed : {
-      message(){
+    computed: {
+      message() {
         return this.$tr('ui.label.loading')
-      }
+      },
     },
-    methods: {}
+    methods: {
+      init() {
+        if (this.label) this.labelMessage = this.$clone(this.label)
+        else this.labelMessage = this.message
+      },
+    }
 
   }
 </script>
 <style lang="stylus">
   #innerLoadingMaster
+    z-index 10
+
     &.q-inner-loading
       .q-box-inner-loading
         text-align center

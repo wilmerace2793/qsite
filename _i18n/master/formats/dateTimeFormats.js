@@ -5,12 +5,18 @@ export default {
     day: {weekday: 'long',},
     month: {month: 'long'},
     year: {year: 'numeric'},
+    small: {
+      month: 'long', day: '2-digit'
+    },
     short: {
       year: 'numeric', month: 'long', day: '2-digit'
     },
     long: {
       year: 'numeric', month: 'long', day: '2-digit',
       hour: 'numeric', minute: 'numeric', hour12: true
+    },
+    explicit: {
+      weekday: 'long', year: 'numeric', month: 'long', day: '2-digit'
     },
     time: {
       hour: '2-digit', minute: 'numeric', hour12: true
@@ -20,12 +26,18 @@ export default {
     day: {weekday: 'long',},
     month: {month: 'long'},
     year: {year: 'numeric'},
+    small: {
+      month: 'long', day: '2-digit'
+    },
     short: {
       year: 'numeric', month: 'long', day: '2-digit'
     },
     long: {
       year: 'numeric', month: 'long', day: '2-digit',
       hour: 'numeric', minute: 'numeric', hour12: true
+    },
+    explicit: {
+      weekday: 'long', year: 'numeric', month: 'long', day: '2-digit'
     },
     time: {
       hour: '2-digit', minute: 'numeric', hour12: true

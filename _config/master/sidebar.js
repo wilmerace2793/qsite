@@ -1,26 +1,53 @@
-const pages = config('pages') // Get Pages from config
 const appConfig = config('app')
 
-//Autoload sidebars of modules
-//Not edit
-let localSidebar = []//Response
+class AutoLoadSidebar {
+  constructor() {
+    this.sidebar = {}
+    this.modules = config('app.modules')
+    this.pages = config('pages')
+    this.addDefaultItems()
+    this.loadModulesSidebar()
+  }
 
-if (appConfig.isBackend || appConfig.loadBackendPages) {
-  let modules = appConfig.modules
-  modules.forEach((name) => {
-    try {
-      let moduleSidebar = require(`@imagina/${name}/_config/sidebar`).default
-      if (moduleSidebar && moduleSidebar[0]) {
-        localSidebar = localSidebar.concat(moduleSidebar)
+  //Add extra fields to sidebar
+  addDefaultItems() {
+    if (this.pages.app)
+      this.sidebar['app'] = this.pages.app.home || {}
+  }
+
+
+  //Load node_modules sidebar
+  loadModulesSidebar() {
+    this.modules.forEach((name) => {
+      let sidebarNode = false
+      //Search module in node_modules
+      try {
+        sidebarNode = require(`@imagina/${name}/_config/sidebar`).default
+      } catch (e) {
       }
-    } catch (e) {}
-  })
+
+      //Search module in project
+      try {
+        sidebarNode = require(`src/modules/${name}/_config/sidebar`).default
+      } catch (e) {
+      }
+
+      if (sidebarNode && sidebarNode.length) {
+        sidebarNode.forEach((node, index) => {
+          this.sidebar[`${name}${index ? (index + 1) : ''}`] = node
+        })
+      }
+    })
+  }
 }
 
-//Add items tu sidebar
-let sidebar = [
-  pages.app.home,//Home
-]
 
-//Return merge between local sidebar and sidebar of qMenu
-export default sidebar.concat(localSidebar)
+//Create Class
+const autoLoadSidebar = new AutoLoadSidebar()
+const customSidebar = autoLoadSidebar.sidebar
+
+//Custom export
+export {customSidebar}
+
+//Default export
+export default Object.values(autoLoadSidebar.sidebar)

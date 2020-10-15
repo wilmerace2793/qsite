@@ -1,116 +1,75 @@
 <template>
-  <div id="configList">
+  <div id="configList" class="q-pa-md">
     <!-- ===== Header ===== -->
-    <div class="q-pt-sm">
-      <q-item class="text-primary">
-        <q-item-section avatar>
-          <q-icon name="fas fa-cog"></q-icon>
-        </q-item-section>
-        <q-item-section class="text-h6">
-          {{$tr('ui.label.configuration', {capitalize : true})}}
-        </q-item-section>
-      </q-item>
+    <div class="text-subtitle1 row items-center">
+      <q-icon name="fas fa-cog q-mr-sm" color="primary" size="20px"/>
+      <label>{{$tr('ui.label.configuration', {capitalize : true})}}</label>
     </div>
 
-    <!-- ===== User logged as ===== -->
-    <q-no-ssr>
-      <div class="q-px-sm" v-if="quserState.authenticated">
-        <!--Separator-->
-        <q-separator class="q-my-sm"/>
+    <!--Separator-->
+    <q-separator class="q-my-md"/>
 
-        <!--Title Loges as-->
-        <div class="title-block">
-          {{$tr('ui.configList.loggedAs', {capitalize : true})}}
+    <!--Impersonate-->
+    <q-no-ssr>
+      <div v-if="$auth.hasAccess('profile.user.impersonate') || quserState.impersonating">
+        <!--Title-->
+        <div class="title-block q-mb-sm">
+          <q-icon name="fas fa-user-friends" class="q-mr-sm"/>
+          {{$tr('ui.label.impersonate')}}
         </div>
 
-        <!--Settings-->
-        <div class="q-py-sm">
-          <!--Select Role-->
-          <q-item class="q-py-none">
-            <div class="full-width text-primary">
-              <q-icon name="fas fa-user-tag" class="q-mr-xs"/>
-              {{$tr('ui.label.role' , {capitalize : true})}}
-              <label v-if="!show.roles" class="block ellipsis text-grey-8">
-                {{options.roles[0].label}}
-              </label>
-              <q-select :options="options.roles" dense filter v-else outlined outlined emit-value map-options
-                        v-model="roleId" class="full-width q-mt-xs" @input="updateDepRolUser"/>
+        <!--Select User to impersonate-->
+        <div class="q-py-none" v-if="!quserState.impersonating">
+          <div class="full-width text-primary">
+            <!--Select-->
+            <div class="q-mt-xs" v-if="!loadingImpersonate">
+              <q-select outlined dense v-model="userToImpersonate" use-input hide-selected
+                        emit-value map-options
+                        input-debounce="800" :options="userList" @filter="getUsers"
+                        :placeholder="`${$tr('ui.label.find')} ${$tr('ui.label.user')}...`"
+                        @input="impersonate()" style="width: 100%">
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">
+                      {{$tr('ui.message.searchNotFound')}}
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
             </div>
-          </q-item>
-
-          <!--Select Department-->
-          <q-item class="q-py-none relative-position">
-            <div class="full-width q-mt-sm text-primary">
-              <q-icon name="fas fa-user-shield" class="q-mr-xs"/>
-              {{$tr('ui.label.department', {capitalize : true})}}
-              <label v-if="!show.departments" class="block ellipsis text-grey-8">
-                {{options.departments[0].label}}
-              </label>
-              <q-select :options="options.departments" dense filter v-else outlined emit-value map-options
-                        v-model="departmentId" class="full-width q-mt-xs" @input="updateDepRolUser"/>
+            <!--Loading-->
+            <div v-if="loadingImpersonate" class="q-py-sm">
+              <q-spinner class="q-mr-sm"/>
+              {{`${$tr('ui.label.loading')}...`}}
             </div>
-          </q-item>
-
-          <!--Impersonate-->
-          <div v-if="$auth.hasAccess('profile.user.impersonate') || quserState.impersonating">
-            <q-separator class="q-my-sm"/>
-
-            <!--Select User to impersonate-->
-            <q-item class="q-py-none" v-if="!quserState.impersonating">
-              <div class="full-width text-primary">
-                <q-icon name="fas fa-user-secret" class="q-mr-sm"></q-icon>
-                {{$tr('ui.label.impersonate')}}
-                <!--Select-->
-                <div class="q-mt-xs" v-if="!loadingImpersonate">
-                  <q-select outlined dense v-model="userToImpersonate" use-input hide-selected
-                            emit-value map-options
-                            input-debounce="800" :options="userList" @filter="getUsers"
-                            :placeholder="`${$tr('ui.label.find')} ${$tr('ui.label.user')}...`"
-                            @input="impersonate()" style="width: 100%">
-                    <template v-slot:no-option>
-                      <q-item>
-                        <q-item-section class="text-grey">
-                          {{$tr('ui.message.searchNotFound')}}
-                        </q-item-section>
-                      </q-item>
-                    </template>
-                  </q-select>
-                </div>
-                <!--Loading-->
-                <div v-if="loadingImpersonate" class="q-py-sm">
-                  <q-spinner class="q-mr-sm"/>
-                  {{`${$tr('ui.label.loading')}...`}}
-                </div>
-              </div>
-            </q-item>
-
-            <!--Leave impersonating-->
-            <q-item tag="label" link v-else @click.native="impersonate">
-              <q-item-section avatar>
-                <!--Icon-->
-                <q-icon v-if="!loadingImpersonate" color="negative" name="fas fa-sign-out-alt" size="20px"/>
-                <!--Loading-->
-                <div v-if="loadingImpersonate" class="q-py-sm">
-                  <q-spinner class="q-mr-sm"/>
-                  {{`${$tr('ui.label.loading')}...`}}
-                </div>
-              </q-item-section>
-              <q-item-section>
-                <q-item-label v-if="!loadingImpersonate" color="grey-10" style="text-decoration: none">
-                  {{$t('ui.configList.leaveImpersonating', {capitalize : true})}}
-                </q-item-label>
-              </q-item-section>
-            </q-item>
           </div>
         </div>
+
+        <!--Leave impersonating-->
+        <q-item tag="label" link v-else @click.native="impersonate">
+          <q-item-section avatar>
+            <!--Icon-->
+            <q-icon v-if="!loadingImpersonate" color="negative" name="fas fa-sign-out-alt" size="20px"/>
+            <!--Loading-->
+            <div v-if="loadingImpersonate" class="q-py-sm">
+              <q-spinner class="q-mr-sm"/>
+              {{`${$tr('ui.label.loading')}...`}}
+            </div>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label v-if="!loadingImpersonate" color="grey-10" style="text-decoration: none">
+              {{$t('ui.configList.leaveImpersonating', {capitalize : true})}}
+            </q-item-label>
+          </q-item-section>
+        </q-item>
       </div>
     </q-no-ssr>
 
-    <!-- ===== Language ===== -->
-    <div class="q-px-sm">
-      <!--Separator-->
-      <q-separator class="q-my-sm"/>
+    <!--Separator-->
+    <q-separator class="q-my-md"/>
 
+    <!-- Language -->
+    <div>
       <!--Title-->
       <div class="title-block">
         {{$tr('ui.label.language', {capitalize : true})}}
@@ -125,7 +84,7 @@
         </div>
 
         <!--Select Language-->
-        <q-select :options="options.locales" outlined dense outlined emit-value map-options
+        <q-select :options="options.locales" dense outlined emit-value map-options
                   filter hide-underline v-if="show.locales" @input="updateLocale"
                   v-model="locale" class="full-width q-if-focused q-if-focusable"/>
 
@@ -136,11 +95,11 @@
       </div>
     </div>
 
-    <!-- ===== Settings ===== -->
-    <div class="q-px-sm">
-      <!--Separator-->
-      <q-separator class="q-my-sm"/>
+    <!--Separator-->
+    <q-separator class="q-my-md"/>
 
+    <!-- ===== Settings ===== -->
+    <div>
       <!--Title-->
       <div class="title-block">
         {{$trp('ui.label.setting', {capitalize : true})}}
@@ -180,21 +139,21 @@
     props: {},
     components: {},
     watch: {},
-    mounted () {
+    mounted() {
       this.$nextTick(async function () {
         this.setOptions()
       })
     },
-    data () {
+    data() {
       return {
         valueConsistsOf: 'BRANCH_PRIORITY',
         roleId: false,
         departmentId: false,
-        locale: this.$store.state.qsiteSettings.defaultLocale,
+        locale: this.$store.state.qsiteApp.defaultLocale,
         options: {
           roles: this.$store.getters['quserAuth/userRolesSelect'],
           departments: this.$store.getters['quserAuth/userDepartmentsSelect'],
-          locales: this.$store.getters['qsiteSettings/getSelectedLocalesSelect']
+          locales: this.$store.getters['qsiteApp/getSelectedLocalesSelect']
         },
         show: {
           roles: false,
@@ -208,21 +167,24 @@
       }
     },
     computed: {
-      versionText () {
+      versionText() {
         return 'version ' + config('app.version')
       },
-      quserState () {
+      quserState() {
         return this.$store.state.quserAuth
       },
+      forceRoleAndDepartment() {
+        return config('app.forceRoleAndDepartment')
+      }
     },
     methods: {
       //Toggle fullscreen
-      toggleFullscreen () {
+      toggleFullscreen() {
         this.$q.fullscreen.toggle()
       },
 
       //Set departments and roles to options
-      async setOptions () {
+      async setOptions() {
         let roleUser = await this.$cache.get.item('auth.role.id')//Get role form storage
         let departmentUser = await this.$cache.get.item('auth.department.id')//Get department form storage
 
@@ -247,38 +209,40 @@
       },
 
       //Update department and role id
-      async updateDepRolUser (reset = false) {
-        const departmentId = await this.$cache.get.item('auth.department.id')//Get department selected
-        const roleId = await this.$cache.get.item('auth.role.id')//Get role selected
+      async updateDepRolUser(reset = false) {
+        if (this.forceRoleAndDepartment) {
+          const departmentId = await this.$cache.get.item('auth.department.id')//Get department selected
+          const roleId = await this.$cache.get.item('auth.role.id')//Get role selected
 
-        //Check that role or department selected are distinct to atorage
-        if ((departmentId != this.departmentId) || (roleId != this.roleId)) {
-          await this.$cache.set('auth.department.id', this.departmentId)
-          await this.$cache.set('auth.role.id', this.roleId)
-          this.$store.dispatch('app/REFRESH_PAGE')
+          //Check that role or department selected are distinct to atorage
+          if ((departmentId != this.departmentId) || (roleId != this.roleId)) {
+            await this.$cache.set('auth.department.id', this.departmentId)
+            await this.$cache.set('auth.role.id', this.roleId)
+            this.$store.dispatch('qsiteApp/REFRESH_PAGE')
+          }
         }
       },
 
       //update Locale
-      async updateLocale () {
-        this.$store.dispatch('qsiteSettings/SET_LOCALE', { locale: this.locale, vue: this }).then(response => {
-          this.$store.dispatch('app/REFRESH_PAGE')
-        })
+      async updateLocale() {
+        this.$store.dispatch('qsiteApp/SET_LOCALE', {locale: this.locale, vue: this}).then(response => {
+          this.$store.dispatch('qsiteApp/REFRESH_PAGE')
+        }).catch(error => console.error(error))
       },
 
       //Get users to impersonate
-      getUsers (val, update, abort) {
+      getUsers(val, update, abort) {
         //Validate length of val
         if (val.length < 2) return abort()
 
-        let params = { params: { take: 100, filter: { search: val } } }
+        let params = {params: {take: 100, filter: {search: val}}}
         //Request
         this.$crud.index('apiRoutes.quser.users', params).then(response => {
           update(() => {
             let userId = this.$store.state.quserAuth.userId
             let options = []
             response.data.forEach(item => {
-              if (item.id != userId) options.push({ label: item.fullName, value: item.id })
+              if (item.id != userId) options.push({label: item.fullName, value: item.id})
             })
             this.userList = this.$clone(options)
           })
@@ -290,7 +254,7 @@
       },
 
       //toggle impersonate
-      async impersonate () {
+      async impersonate() {
         this.loadingImpersonate = true
 
         if (this.quserState.impersonating) {

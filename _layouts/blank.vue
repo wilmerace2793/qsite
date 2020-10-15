@@ -3,7 +3,6 @@
     <!-- === ROUTER VIEW === -->
     <q-page-container>
       <router-view/>
-      <q-ajax-bar />
     </q-page-container>
   </q-layout>
 </template>
@@ -12,9 +11,9 @@
   export default {
     meta () {
       let routetitle = ((this.$route.meta && this.$route.meta.title) ? this.$route.meta.title : '')
-      let siteName = this.$store.getters['qsiteSettings/getSettingValueByName']('core::site-name')
-      let siteDescription = this.$store.getters['qsiteSettings/getSettingValueByName']('core::site-description')
-      let iconHref = this.$store.getters['qsiteSettings/getSettingMediaByName']('isite::favicon').path
+      let siteName = this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name')
+      let siteDescription = this.$store.getters['qsiteApp/getSettingValueByName']('core::site-description')
+      let iconHref = this.$store.getters['qsiteApp/getSettingMediaByName']('isite::favicon').path
 
       return {
         title: `${this.$tr(routetitle)} | ${siteName}`,

@@ -1,17 +1,17 @@
 <template>
   <q-layout view="lHh LpR lff" class="bg-grey-1">
     <!-- HEADER -->
-    <header-component v-if="appState.loadPage" />
+    <header-component v-if="appState.loadPage"/>
 
     <!-- ROUTER VIEW -->
     <q-page-container>
-      <q-pull-to-refresh @refresh="refreshPage">
+      <q-scroll-area style="height: calc(100vh - 98px)">
         <router-view v-if="appState.loadPage" class="layout-padding"/>
-      </q-pull-to-refresh>
+      </q-scroll-area>
     </q-page-container>
 
     <!-- FOOTER -->
-    <footer-componen v-if="appState.loadPage" />
+    <footer-componen v-if="appState.loadPage"/>
   </q-layout>
 </template>
 
@@ -21,37 +21,37 @@
   import footerComponen from '@imagina/qsite/_components/master/footer'
 
   export default {
-    meta () {
+    meta() {
       let routetitle = ((this.$route.meta && this.$route.meta.title) ? this.$route.meta.title : '')
-      let siteName = this.$store.getters['qsiteSettings/getSettingValueByName']('core::site-name')
-      let siteDescription = this.$store.getters['qsiteSettings/getSettingValueByName']('core::site-description')
-      let iconHref = this.$store.getters['qsiteSettings/getSettingMediaByName']('isite::favicon').path
+      if (this.$route.meta && this.$route.meta.headerTitle) routetitle = this.$route.meta.headerTitle
+      let siteName = this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name')
+      let siteDescription = this.$store.getters['qsiteApp/getSettingValueByName']('core::site-description')
+      let iconHref = this.$store.getters['qsiteApp/getSettingMediaByName']('isite::favicon').path
 
       return {
         title: `${this.$tr(routetitle)} | ${siteName}`,
         meta: {
-          description: { name: 'description', content: siteDescription || siteName },
+          description: {name: 'description', content: siteDescription || siteName},
         },
-        link: [{ rel: 'icon', href: iconHref, id: 'icon' }],
+        link: [{rel: 'icon', href: iconHref, id: 'icon'}],
       }
     },
     components: {headerComponent, footerComponen},
-    mounted () {
+    mounted() {
       this.$nextTick(async function () {
       })
     },
-    data () {
-      return {
-      }
+    data() {
+      return {}
     },
     computed: {
-      appState () {
-        return this.$store.state.app
+      appState() {
+        return this.$store.state.qsiteApp
       }
     },
     methods: {
-      async refreshPage(done){
-        await this.$store.dispatch('app/REFRESH_PAGE')
+      async refreshPage(done) {
+        await this.$store.dispatch('qsiteApp/REFRESH_PAGE')
         done()
       }
     }

@@ -29,7 +29,7 @@
           <q-item-section> {{setting.description || key}}</q-item-section>
         </template>
         <!--Field-->
-        <div class="q-px-sm">
+        <div class="q-px-sm q-mt-sm">
           <dynamic-field :key="key" v-model="response[key].value" :field="setting" @input="emitResponse()"/>
         </div>
       </q-expansion-item>

@@ -16,7 +16,7 @@
 </template>
 <script>
   /*Plugins*/
-  import alert from '@imagina/qhelper/_plugins/alert'
+  import alert from '@imagina/qsite/_plugins/alert'
 
   /*Components*/
   import field from '@imagina/qsite/_components/field'
@@ -72,8 +72,8 @@
         translatableCollapse: true,
         noTranslatableCollapse: true,
         submitModule: false,
-        selectedLocales: this.$store.getters['qsiteSettings/getSettingValueByName']('core::locales'),
-        defaultLocale: this.$store.getters['qsiteSettings/getDefaultLocale']
+        selectedLocales: this.$store.getters['qsiteApp/getSettingValueByName']('core::locales'),
+        defaultLocale: this.$store.getters['qsiteApp/getDefaultLocale']
       }
     },
     methods: {

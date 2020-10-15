@@ -14,7 +14,8 @@ export default function ({app, router, store, Vue, ssrContext}) {
     host = env('NO_HTTPS') ? `http://${host}` : `https://${host}` //Define protocol
   }
 
-  store.commit('app/SET_BASE_URL', host) //Set base Url in store
+  store.commit('qsiteApp/SET_BASE_URL', host) //Set base Url in store
+  store.commit('qsiteApp/SET_ORIGIN_URL', (ssrContext ? ssrContext.req.get('origin') : window.location.origin)) //Set origin Url in store
   axios.defaults.baseURL = `${host}/api`// Set base url in axios
   console.log(`[AXIOS] Registered Host: ${host}`)
 

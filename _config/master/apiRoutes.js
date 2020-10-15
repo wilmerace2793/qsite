@@ -1,16 +1,39 @@
 import appConfig from 'src/config/app'
 
-//Auto load api routes from modules available in: src/config/app.js "modules"
-let apiRoutes = {}
-if(appConfig && appConfig.modules){
-  const modules = appConfig.modules
+class AutoLoadApiRoutes {
+  constructor() {
+    this.routes = {}
+    this.modules = appConfig.modules
+    this.loadModuleApiRoutes()
+  }
 
-  modules.forEach(name => {
-    try {
-      let routes = require(`@imagina/${name}/_config/apiRoutes`).default
-      apiRoutes[name] = routes
-    }catch (e) {}
-  })
+  //Load Module apiRoutes
+  loadModuleApiRoutes() {
+    if (appConfig && appConfig.modules) {
+      this.modules.forEach(name => {
+        let moduleApiRoutes = false
+
+        //Search module in project
+        try {
+          moduleApiRoutes = require(`src/modules/${name}/_config/apiRoutes`).default
+        } catch (e) {
+        }
+
+        //Search module in node_modules
+        try {
+          if (!moduleApiRoutes) moduleApiRoutes = require(`@imagina/${name}/_config/apiRoutes`).default
+        } catch (e) {
+        }
+
+        //Add api Routes
+        this.routes[name] = moduleApiRoutes || {}
+      })
+    }
+  }
 }
 
-export default apiRoutes
+//Define new class
+const apiRoutes = new AutoLoadApiRoutes()
+
+//response
+export default apiRoutes.routes

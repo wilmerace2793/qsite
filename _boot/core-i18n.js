@@ -2,7 +2,8 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import Quasar from 'quasar'
 import * as moment from 'moment'
-import cache from '@imagina/qhelper/_plugins/cache'
+import cache from '@imagina/qsite/_plugins/cache'
+import helper from '@imagina/qsite/_plugins/helper'
 
 // i18n data
 import customFormats from '@imagina/qsite/_i18n/master/formats/customFormats'
@@ -15,17 +16,11 @@ Vue.use(VueI18n)
 export default async ({router, app, Vue, store, ssrContext}) => {
   //===== Get default language
   //From URL
-  let fullUrl = ssrContext ?
-    (ssrContext.req.protocol + "://" + ssrContext.req.headers.host + ssrContext.url) : window.location.href
-  fullUrl = fullUrl.replace('#/', '')
-  let urlContext = new URL(fullUrl)
-  let langFromUrl = urlContext.searchParams.get('lang')
-  let defaultLanguage = langFromUrl || false
+  let defaultLanguage = helper.getLocaleRoutePath(ssrContext ? ssrContext.url : window.location.hash)
   //From Cache
   if (!defaultLanguage) defaultLanguage = await cache.get.item('site.default.locale')
   //From VUEX Store or Config APP
-  if (!defaultLanguage) defaultLanguage = store.state.qsiteSettings.defaultLocale || config('app.languages.default')
-
+  if (!defaultLanguage) defaultLanguage = store.state.qsiteApp.defaultLocale || config('app.languages.default')
 
   //====== Config i18n and set instance i18n
   app.i18n = new VueI18n({
@@ -38,8 +33,9 @@ export default async ({router, app, Vue, store, ssrContext}) => {
   })
 
   //===== Change language to quasar components
-  await store.dispatch('qsiteSettings/SET_LOCALE', {
+  await store.dispatch('qsiteApp/SET_LOCALE', {
     locale: defaultLanguage,
+    ssrContext : ssrContext,
     vue: app
   })
 

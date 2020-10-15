@@ -1,6 +1,7 @@
 export default {
-  version: '2.0.10',
+  version: '2.2.3',
   isBackend : true, //Define if project is to admin
+  forceRoleAndDepartment : false,//Force to select role and department
   //UI Languages
   languages : {
     default : 'es',
@@ -8,13 +9,14 @@ export default {
   },
   //Modules
   modules : [
-    'qhelper',
     'qcrud',
     'quser',
     'qblog',
     'qcommerce',
     'qplace',
     'qform',
+    'qpage',
+    'qredirect',
     'qmenu',
     'qmedia',
     'qslider',
@@ -28,7 +30,9 @@ export default {
       'auth.department.id',
       'auth.role.id',
       'site.default.locale',
-      'impersonatorData'
+      'impersonatorData',
+      'app.state.extra',
+      'app.data.filters'
     ],
     logout : [
       'offlineRequests',

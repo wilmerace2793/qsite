@@ -2,24 +2,25 @@
   <div>
     <div id="listMenu">
       <q-no-ssr v-for="(item,key) in props.menu" :key="key" :class="`content-item ${inLine ? 'inline-block' : ''}`">
-        <q-separator v-if="!inLine"/>
         <!--Single Item-->
         <q-item :class="getClassItem(item)" v-if="checkItemSingle(item)" tag="a"
-                @click.native="redirectTo(item)" clickable :key="key">
+                :to="{name: item.name, params: item.params || {}}" clickable :key="key">
           <q-item-section v-if="item.icon && props.showIcons" avatar>
             <q-icon :name="item.icon"/>
           </q-item-section>
-          <q-item-section class="text-capitalize"> {{props.translatable ? $tr(item.title) : item.title}}</q-item-section>
+          <q-item-section class="text-capitalize"> {{props.translatable ? $tr(item.title) : item.title}}
+          </q-item-section>
         </q-item>
 
         <!-- Dropdwon Item -->
         <q-expansion-item v-else-if="checkItemMultiple(item)" :icon="item.icon" :key="key"
                           :label="props.translatable ? $tr(item.title) : item.title"
+                          v-bind="group ? {group : listUid} : {}"
                           :header-class="selectedChildren(item)" :default-opened="selectedChildren(item) ? true : false"
                           :class="selectedChildren(item) ? 'expansion-selected' : ''">
           <!--Recursive item-->
           <recursive-menu :translatable="props.translatable" :show-icons="props.showIcons"
-                          :key="key" :menu="item.children"/>
+                          :key="key" :menu="item.children" :group="group"/>
         </q-expansion-item>
       </q-no-ssr>
     </div>
@@ -33,7 +34,8 @@
       menu: {default: false},
       showIcons: {type: Boolean, default: true},
       translatable: {type: Boolean, default: true},
-      inLine: {type: Boolean, default: false}
+      inLine: {type: Boolean, default: false},
+      group: {type: Boolean, defualt: false}
     },
     watch: {
       menu() {
@@ -47,6 +49,7 @@
     },
     data() {
       return {
+        listUid: this.$uid().toString(),
         props: {}
       }
     },
@@ -88,7 +91,7 @@
       redirectTo(item) {
         if (item.linkType && (item.linkType == 'external')) {
           window.open(`https://${item.url}`, item.target)
-        } else {
+        } else if(item.name) {
           this.$router.push({name: item.name, params: item.params || {}})
         }
       },
@@ -96,12 +99,20 @@
       selectedChildren(item) {
         let response = ''//Defualt response
 
-        //If has children's
-        if (item.children) {
-          let routeName = this.$route.name
-          let isSelectedChildren = item.children.find(item => item.name == routeName)
-          if (isSelectedChildren) response = ' item-is-active'
+        //Validate if current route name is like children
+        let validateRouteName = (children) => {
+          let routeName = this.$route.name//Route name
+          let response = false// Default response
+          if (children)
+            children.forEach(element => {
+              if (element.name == routeName) response = true
+              if (element.children && validateRouteName(element.children)) response = true
+            })
+          return response
         }
+
+        //If has children's
+        if (item.children && validateRouteName(item.children)) response = ' item-is-active'
 
         return response //Response
       },

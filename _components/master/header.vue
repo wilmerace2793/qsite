@@ -1,24 +1,18 @@
 <template>
   <div id="masterHeader">
     <!-- HEADER -->
-    <q-header class="no-shadow">
+    <q-header>
       <q-toolbar color="primary">
-        <!--= BUTTON MENU =-->
-        <q-btn flat dense round
-               @click="drawer.menu = !drawer.menu"
-               aria-label="Menu">
-          <q-icon name="menu"/>
-        </q-btn>
-
         <!--= TITLE =-->
-        <q-toolbar-title class="items-center">
+        <q-toolbar-title class="items-center q-pl-none">
           <!--Toogle Menu-->
-          <q-btn :label="$tr($route.meta.title)" flat
-                 @click="drawer.menu = !drawer.menu"
-                 class="btn-page-title"
-                 :icon="$route.meta.icon"/>
+          <div>
+            <q-icon :name="$route.meta.icon"/>
+            {{$tr($route.meta.headerTitle || $route.meta.title)}}
+          </div>
         </q-toolbar-title>
-
+        <!--Search-->
+        <dynamic-field v-if="false" :field="fields.search"/>
         <!--== Button User ==-->
         <q-no-ssr>
           <q-btn :to="{name: 'user.profile.me'}" flat no-caps v-if="quserState.authenticated">
@@ -31,40 +25,63 @@
 
         <!--== Button Config ==-->
         <q-btn round dense flat icon="fas fa-cog"
-               @click="drawer.config = !drawer.config">
-        </q-btn>
+               @click="()=> {drawer.config = !drawer.config; $refs.subHeader.drawer.filter = false}"/>
+      </q-toolbar>
+
+      <!--Sub header--->
+      <q-toolbar class="q-pa-none" style="min-height: auto">
+        <sub-header ref="subHeader" @openFilter="drawer.config = false"/>
       </q-toolbar>
     </q-header>
 
     <!-- MENU -->
-    <q-drawer bordered id="menu_master" class="no-shadow" v-model="drawer.menu">
-      <!-- === LOGO === -->
-      <div class="text-center q-py-md q-px-sm full-width">
-        <router-link :to="{ name: 'app.home'}" tag="a">
-          <img :src="logo">
-        </router-link>
+    <q-drawer id="menuMaster" class="no-shadow" v-model="drawer.menu" bordered
+              :mini="miniState" @click.capture="miniState = false" behavior="desktop">
+      <!--Actions-->
+      <div class="text-white">
+        <!--Menu buttom-->
+        <q-item clickable class="bg-primary q-pa-none text-weight-bold" v-if="miniState"
+                style="min-height: 50px">
+          <!--Menu buttom-->
+          <q-item-section avatar>
+            <q-icon size="18px" color="white" name="fas fa-bars"/>
+          </q-item-section>
+        </q-item>
+        <!--Opened menu header-->
+        <div v-else style="min-height: 50px">
+          <!--Information-->
+          <div class="bg-primary q-pl-sm q-pr-sm row items-center justify-between full-width" style="min-height: 50px">
+            <!--Title-->
+            <div class="ellipsis" style="max-width: calc(100% - 50px)">{{projectName}}</div>
+            <!--Button close-->
+            <q-btn dense round flat unelevated color="white" icon="fas fa-bars" size="12px"
+                   @click="miniState = true"/>
+          </div>
+          <!--Logo-->
+          <div class="q-pa-md">
+            <q-img contain :src="logo" style="height: 120px; min-height: 120px"/>
+          </div>
+          <q-separator/>
+        </div>
       </div>
-
       <!--= MENU =-->
-      <menu-list :menu="menu"/>
+      <menu-list ref="menuList" group :menu="menu"/>
     </q-drawer>
 
     <!-- Config -->
-    <q-drawer bordered id="menu_master" :overlay="true" v-model="drawer.config" side="right">
+    <q-drawer bordered id="configMaster" :overlay="true" v-model="drawer.config" side="right">
       <config-list/>
     </q-drawer>
   </div>
 </template>
 <script>
-  import configList from './configList'
-  import menuList from './recursiveItem'
+  //Components
+  import configList from '@imagina/qsite/_components/master/configList'
+  import menuList from '@imagina/qsite/_components/master/recursiveItem'
 
   export default {
     props: {},
-    components: {
-      configList,
-      menuList
-    },
+    components: {configList, menuList},
     watch: {},
     mounted() {
       this.$nextTick(function () {
@@ -72,19 +89,34 @@
     },
     data() {
       return {
-        projectName: this.$store.getters['qsiteSettings/getSettingValueByName']('core::site-name'),
+        projectName: this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name'),
+        miniState: true,
         drawer: {
-          menu: false,
+          menu: true,
           config: false,
-          notification: false
         },
         menu: config('sidebar'),
-        logo: this.$store.getters['qsiteSettings/getSettingMediaByName']('isite::logo1').path
+        logo: this.$store.getters['qsiteApp/getSettingMediaByName']('isite::logo1').path
       }
     },
     computed: {
       quserState() {
         return this.$store.state.quserAuth
+      },
+      fields() {
+        return {
+          search: {
+            value: null,
+            type: 'search',
+            props: {
+              label: this.$tr('ui.form.globalSearch'),
+              dark: true,
+              standout: true,
+              outlined: false,
+              bgColor: '',
+            }
+          }
+        }
       }
     },
     methods: {
@@ -142,15 +174,31 @@
       background-size cover
       margin-right 5px
 
-    #listMenu
+    .q-drawer--mini
+      width 57px !important
+
+      .q-item__section
+        padding 0px 20px !important
+
+    #menuMaster
       hr
         background-color $grey-3
+
+      .q-expansion-item
+        background-color $grey-3
+
       .q-expansion-item__container
         .q-expansion-item__content
-          padding 0 0 0 7px
-          border-left 8px solid white
+          padding 0 0 0 1px
+          border-left 15px solid white
 
       .q-item
+        padding-left 0px
+        min-height 40px
+
+        .q-item__section--avatar
+          padding 0 8px 0 20px
+
         &:hover
           background-color $grey-4
           color $primary
@@ -159,10 +207,10 @@
             color $primary
 
         &.item-is-active
-          background-color $primary
+          background-color white
 
           .q-item__section, .q-icon
-            color white
+            color $primary
 
       .expansion-selected
         background-color $primary

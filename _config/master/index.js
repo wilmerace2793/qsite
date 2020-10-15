@@ -25,7 +25,7 @@ export default function (value = '', fallback = null) {
 //Order pages
 function orderPages(pages) {
   //=== Set app pages in last position
-  let appPages = pages.app
+  let appPages = pages.app || {}
   delete pages.app
   pages.app = appPages
 

@@ -14,7 +14,7 @@
             <q-checkbox
               v-model="item.active"
               label="Active"
-              @input="emitActivedItems"
+              @input="emitActivedItems(item.required,index)"
             />
             <q-checkbox
               class="q-ml-xs"
@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-  import alert from '@imagina/qhelper/_plugins/alert'
+  import alert from '@imagina/qsite/_plugins/alert'
 
   export default {
     props: ['value', 'label', 'type', 'input', 'setting'],

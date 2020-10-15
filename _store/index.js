@@ -1,5 +1,3 @@
-import settings from '@imagina/qsite/_store/settings/index'
+import app from '@imagina/qsite/_store/app'
 
-export default {
-  settings : settings
-}
+export default {app}

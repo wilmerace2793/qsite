@@ -10,5 +10,8 @@ export default {
     title: 'qsite.sidebar.adminIndex',
     icon: 'fas fa-cog',
     authenticated: true,
+    subHeader: {
+      refresh: true,
+    }
   },
 }

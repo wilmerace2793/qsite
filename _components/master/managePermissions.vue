@@ -12,7 +12,7 @@
         <!--Loading-->
         <q-spinner v-if="loading" color="blue-grey" :size="30"/>
         <!--Toogle list-->
-        <q-btn icon="fas fa-edit" size="sm" @click="modal.show = true"
+        <q-btn icon="fas fa-edit" size="sm" @click="modal.show = true" rounded unelevated
                color="positive" class="q-ml-sm" v-else-if="Object.keys(modal.listPermissions).length"/>
       </div>
     </div>
@@ -241,7 +241,7 @@
           let configName = 'apiRoutes.qsite.permissions'
 
           //Request
-          this.$crud.index(configName, {refresh: false}).then(response => {
+          this.$crud.index(configName, {refresh: true}).then(response => {
             this.loading = false
             this.dataPermission = response.data
             resolve(response.data)
@@ -320,10 +320,10 @@
 
         //Format permissions with format to backend
         for (let moduleName in permissions) {
-          for (let entityName in  permissions[moduleName]) {
+          for (let entityName in permissions[moduleName]) {
             for (let permissionName in permissions[moduleName][entityName]) {
               //Get fullName of permission
-              let fullName = (entityName.toLowerCase() == 'dashboard') ?
+              let fullName = (moduleName.toLowerCase() == 'dashboard') ?
                 (`${moduleName}.${permissionName}`).toLowerCase() :
                 (`${moduleName}.${entityName}.${permissionName}`).toLowerCase()
 

@@ -1,27 +1,44 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+class AutoLoadStore {
+  constructor() {
+    this.stores = {}
+    this.appConfig = require('src/config/app').default
+    this.loadDefaultStore()
+    this.loadModulesStore()
+  }
 
-const appConfig = require('src/config/app').default//Get config APP
+  //Load default stores
+  loadDefaultStore() {
+    //this.stores.app = require('@imagina/qsite/_store/app').default
+  }
 
-//Auto load stores from modules available in: src/config/application.js "modules"
-//Not edit
-let stores = {}
-if (appConfig && appConfig.modules) {
-  const modules = appConfig.modules
-  modules.forEach(moduleName => {
-    try {
-      let storeModule = require(`@imagina/${moduleName}/_store/index`).default
-      for (var storeName in storeModule) {
-        let keyName = moduleName + (storeName.charAt(0).toUpperCase() + storeName.slice(1))
-        stores[keyName] = storeModule[storeName]
+  //Load modules store
+  loadModulesStore() {
+    this.appConfig.modules.forEach(moduleName => {
+      let storeModule = false
+
+      //Search module in project
+      try {
+        storeModule = require(`@imagina/${moduleName}/_store/index`).default
+      } catch (e) {
       }
-    } catch (e) {
-    }
-  })
+
+      //Search module in node modules
+      try {
+        storeModule = require(`src/modules/${moduleName}/_store/index`).default
+      } catch (e) {
+      }
+
+      //Load stores
+      if (storeModule)
+        for (var storeName in storeModule) {
+          let keyName = moduleName + (storeName.charAt(0).toUpperCase() + storeName.slice(1))
+          this.stores[keyName] = storeModule[storeName]
+        }
+    })
+  }
 }
 
-//Add extra stores
-//#example: stores.<name> = require('path-store-index').default
-stores.app = require('@imagina/qsite/_store/app').default
+//create class
+const autoLoadStore = new AutoLoadStore()
 
-export default stores
+export default autoLoadStore.stores
