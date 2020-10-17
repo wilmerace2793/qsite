@@ -153,9 +153,12 @@
         return new Promise((resolve, reject) => {
           this.dataSettings = false//Reset data settings
           //Request Params
-          let requestParams = {refresh: true, params: {filter: {allTranslations: true}}}
+          let requestParams = {
+            refresh: true,
+            params: {filter: {allTranslations: true, configFieldName: 'settings-fields'}}
+          }
           //Request
-          this.$crud.index('apiRoutes.qsite.settingsFields', requestParams).then(response => {
+          this.$crud.index('apiRoutes.qsite.configFields', requestParams).then(response => {
             if (response.data && Object.keys(response.data).length) this.dataSettings = response.data//Set data
             resolve(response.data)
           }).catch(e => {
