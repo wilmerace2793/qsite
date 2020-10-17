@@ -1,5 +1,5 @@
 export default {
-  version: '2.2.3',
+  version: '2.2.4',
   isBackend : true, //Define if project is to admin
   forceRoleAndDepartment : false,//Force to select role and department
   //UI Languages
