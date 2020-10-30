@@ -15,6 +15,7 @@ export default {
     'qcommerce',
     'qplace',
     'qform',
+    'qdocument',
     'qpage',
     'qredirect',
     'qmenu',
