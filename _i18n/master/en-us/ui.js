@@ -129,7 +129,8 @@ export default {
     phone: 'Phone | Phones',
     birthday: 'Birthday',
     text: 'Text | Texts',
-    file: 'File | Files'
+    file: 'File | Files',
+    location: 'Location | Locations'
   },
   message: {
     notFound: 'Sorry, nothing here',

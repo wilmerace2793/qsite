@@ -157,6 +157,11 @@
       </q-input>
       <!--Toogle-->
       <q-toggle v-model="responseValue" :label="fieldLabel" v-if="loadField('toggle')" v-bind="fieldProps.field"/>
+      <!--position Marker (MAP)-->
+      <q-field v-model="responseValue" v-if="loadField('positionMarkerMap')" label="" class="field-no-padding no-border"
+               v-bind="fieldProps.fieldComponent">
+        <map-leaflet v-model="responseValue" type="positionMarkerMap" v-bind="fieldProps.field"/>
+      </q-field>
     </div>
   </div>
 </template>
@@ -169,6 +174,7 @@
   import uploadImage from '@imagina/qsite/_components/master/uploadImage'
   import schedulesForm from '@imagina/qsite/_components/master/schedules'
   import ckEditor from '@imagina/qsite/_components/master/ckEditor'
+  import mapLeaflet from '@imagina/qsite/_components/master/mapLeaflet'
 
   export default {
     name: 'dynamicField',
@@ -192,7 +198,8 @@
       media,
       uploadImage,
       schedulesForm,
-      ckEditor
+      ckEditor,
+      mapLeaflet
     },
     watch: {
       value: {
@@ -460,6 +467,18 @@
               },
             }
             break;
+          case'positionMarkerMap':
+            props = {
+              field: {
+                ...props
+              },
+              fieldComponent: {
+                borderless: true,
+                dense: true,
+                ...props
+              }
+            }
+            break;
         }
 
         //Response
@@ -633,6 +652,9 @@
             break
           case 'toggle':
             this.responseValue = (propValue || 0).toString()
+            break
+          case 'positionMarkerMap':
+            this.responseValue = propValue || false
             break
           default :
             this.responseValue = propValue || null
@@ -814,11 +836,13 @@
         .vue-treeselect__single-value
           line-height 1.9
           padding 0
+
     .q-field--error
       .q-field__append
         position absolute
         right -8px
         top -15px
+
   #ckEditorComponent
     width 100%
 </style>

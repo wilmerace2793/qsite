@@ -133,7 +133,8 @@ export default {
     reject: 'Rechazar',
     rejected: 'Rechazado',
     text: 'Texto | Textos',
-    file: 'Archivo | Archivos'
+    file: 'Archivo | Archivos',
+    location: 'Ubicación | Ubicaciones'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
