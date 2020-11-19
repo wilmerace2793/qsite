@@ -22,6 +22,7 @@ export default {
     'qmenu',
     'qmedia',
     'qslider',
+    'qbanner',
     'qsite',
   ],
   //Cache
