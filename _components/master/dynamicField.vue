@@ -1,5 +1,6 @@
 <template>
-  <div id="dynamicFieldComponent" class="relative-position" v-if="success">
+  <div class="relative-position" v-if="success">
+    <div id="dynamicFieldComponent">
     <!--Read Only-->
     <div v-if="readOnly">
       <div v-if="infoReadOnly">
@@ -162,6 +163,12 @@
                v-bind="fieldProps.fieldComponent">
         <map-leaflet v-model="responseValue" type="positionMarkerMap" v-bind="fieldProps.field"/>
       </q-field>
+      <!--Signature-->
+      <q-field v-model="responseValue" v-if="loadField('signature')"
+               v-bind="fieldProps.fieldComponent" stack-label>
+        <signature v-model="responseValue" v-bind="fieldProps.field"/>
+      </q-field>
+      </div>
     </div>
   </div>
 </template>
@@ -175,6 +182,7 @@
   import schedulesForm from '@imagina/qsite/_components/master/schedules'
   import ckEditor from '@imagina/qsite/_components/master/ckEditor'
   import mapLeaflet from '@imagina/qsite/_components/master/mapLeaflet'
+  import signature from '@imagina/qsite/_components/master/signature'
 
   export default {
     name: 'dynamicField',
@@ -199,7 +207,8 @@
       uploadImage,
       schedulesForm,
       ckEditor,
-      mapLeaflet
+      mapLeaflet,
+      signature
     },
     watch: {
       value: {
@@ -324,12 +333,14 @@
                 outlined: true,
                 dense: true,
                 readonly: true,
-                //...props
+                ...props
               },
               slot: {
                 ...props
               }
             }
+            //Remove mask from prop field
+            delete props.field.mask
             break;
           case'hour':
             props = {
@@ -479,6 +490,18 @@
               }
             }
             break;
+          case'signature':
+            props = {
+              field: {
+                ...props,
+              },
+              fieldComponent: {
+                borderless: true,
+                dense: true,
+                ...props
+              }
+            }
+            break;
         }
 
         //Response
@@ -613,11 +636,12 @@
               let filterField = (crudProps.config && crudProps.config.options) ?
                 crudProps.config.options : {label: 'title', value: 'id'}
               //if value is array, get id option
-              if (propValue && (typeof (propValue) == 'object'))
+              if (propValue && Array.isArray(propValue)) {
                 propValue.forEach(item => {
                   if (item[filterField.value]) this.responseValue.push(item[filterField.value])
                   else this.responseValue.push(item)
                 })
+              }
             } else this.responseValue = (propValue && propValue.id) ? propValue.id : propValue
             break;
           case 'input':
@@ -828,7 +852,7 @@
 
     .vue-treeselect
       .vue-treeselect__control
-        background transparent
+        background transparent !important
         border 0
         max-height 26px
         padding 0

@@ -4,13 +4,16 @@
     <div id="contentSubHeader" ref="contentSubHeader" class="row items-center">
       <!--Left content-->
       <div id="leftContent" class="row items-center">
+        <!--== Menu Button ==-->
+        <q-btn id="buttonToogleMenu" icon="fas fa-bars" unelevated flat color="primary" class="q-mr-md"
+               @click="$emit('toggleMenu')"/>
         <!--== Back Button ==-->
-        <q-btn icon="fas fa-arrow-left" unelevated round color="primary" class="btn-action q-mr-md"
+        <q-btn icon="fas fa-arrow-left" unelevated round color="primary" class="btn-action q-mx-md"
                @click="backAction()">
           <q-tooltip>{{$tr('ui.label.back')}}</q-tooltip>
         </q-btn>
         <!--Breadcrum-->
-        <div id="breadCrumbContent">
+        <div id="breadCrumbContent" class="q-hide q-sm-show">
           <q-breadcrumbs>
             <q-breadcrumbs-el v-for="(item, key) in breadcrumbs" :key="key" :label="item.label" :icon="item.icon"
                               :to="item.to ? {name : item.to} : false"/>
@@ -22,19 +25,19 @@
       <q-space/>
 
       <!--Right content-->
-      <div id="rightContent" class="row items-center">
+      <div id="rightContent" class="row items-center q-gutter-x-sm">
         <!--Department-->
         <dynamic-field v-model="form.departmentId" :field="fields.department" style="max-width: 250px"
                        @input="emitValue" v-if="params.selectDepartment" class="inline-block q-mr-md"/>
+        <!--== Button filter ==-->
+        <q-btn icon="fas fa-filter" unelevated round v-if="filter.load" color="primary" class="btn-action"
+               @click="()=> {drawer.filter = !drawer.filter; drawer.config = false}">
+          <q-tooltip>{{$tr('ui.label.filter')}}</q-tooltip>
+        </q-btn>
         <!--== Button refresh ==-->
         <q-btn icon="fas fa-redo" unelevated round v-if="params.refresh" color="primary" class="btn-action"
                @click="$root.$emit('page.data.refresh')">
           <q-tooltip>{{$tr('ui.label.refresh')}}</q-tooltip>
-        </q-btn>
-        <!--== Button filter ==-->
-        <q-btn icon="fas fa-filter" unelevated round v-if="filter.load" color="primary" class="btn-action q-ml-sm"
-               @click="()=> {drawer.filter = !drawer.filter; drawer.config = false}">
-          <q-tooltip>{{$tr('ui.label.filter')}}</q-tooltip>
         </q-btn>
       </div>
 
@@ -47,7 +50,7 @@
     </div>
 
     <!--Master filter-->
-    <q-drawer bordered id="menu_master" v-model="drawer.filter" side="right" v-if="filter.load">
+    <q-drawer bordered id="menu_master" v-model="drawer.filter" side="right" v-if="filter.load" overlay>
       <master-filter/>
     </q-drawer>
   </div>
@@ -184,10 +187,21 @@
 
     #contentSubHeader
       background-color white
-      padding 5px 10px
+      padding 5px 10px 5px 56px
       border-bottom 1px solid $grey-4
       width 100%
       min-height 48px
+      position relative
+
+      #buttonToogleMenu
+        position absolute
+        left 0
+        top 0
+        height 48px
+        width 57px
+        border-radius 0
+        background-color white
+        border-right 1px solid $grey-4
 
       #dynamicFieldComponent
         .q-field__control
