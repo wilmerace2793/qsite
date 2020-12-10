@@ -1,14 +1,14 @@
 export default {
   version: '2.2.4',
-  isBackend : true, //Define if project is to admin
-  forceRoleAndDepartment : false,//Force to select role and department
+  isBackend: true, //Define if project is to admin
+  forceRoleAndDepartment: false,//Force to select role and department
   //UI Languages
-  languages : {
-    default : 'es',
-    availables : ['en-us','es']
+  languages: {
+    default: 'es',
+    availables: ['en-us', 'es']
   },
   //Modules
-  modules : [
+  modules: [
     'qcrud',
     'quser',
     'qblog',
@@ -26,8 +26,8 @@ export default {
     'qsite',
   ],
   //Cache
-  saveCache : {
-    refresh : [
+  saveCache: {
+    refresh: [
       'sessionData',
       'auth.department.id',
       'auth.role.id',
@@ -36,13 +36,19 @@ export default {
       'app.state.extra',
       'app.data.filters'
     ],
-    logout : [
+    logout: [
       'offlineRequests',
       'site.default.locale',
     ]
   },
   //Reset Store
-  resetStores : [
+  resetStores: [
     'quserAuth/RESET'
-  ]
+  ],
+  //Footer movile main action
+  mobilMainAction: {
+    icon: 'fas fa-home',
+    color: 'primary',
+    route: 'app.home'
+  }
 }
