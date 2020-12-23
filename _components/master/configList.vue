@@ -153,7 +153,8 @@
 
       <!--Clear Cache-->
       <div class="q-px-sm cursor-pointer q-pt-md" @click="clearCache()">
-        <q-icon color="primary" size="18px" name="fas fa-broom" class="q-mr-sm"/>
+        <q-spinner color="primary" size="20px" v-if="loadingCacheClear" class="q-mr-sm"/>
+        <q-icon v-else color="primary" size="18px" name="fas fa-broom" class="q-mr-sm"/>
         {{ $t('ui.configList.clearCache', {capitalize: true}) }}
       </div>
 
@@ -208,7 +209,8 @@ export default {
       fullScreen: this.$q.fullscreen.isActive,
       userToImpersonate: null,
       loadingImpersonate: false,
-      userList: []
+      userList: [],
+      loadingCacheClear: false,
     }
   },
   computed: {
@@ -312,11 +314,12 @@ export default {
     },
 
     //Clear cache
-    clearCache(){
+    clearCache() {
+      this.loadingCacheClear = true
       //Request
       this.$crud.post('apiRoutes.qsite.cacheClear').then(response => {
-
-      })
+        this.loadingCacheClear = false
+      }).catch(error => this.loadingCacheClear = false)
     }
   }
 }
