@@ -282,6 +282,7 @@ export default {
     loggedAs: 'logged as',
     fullScreen: 'show in full screen',
     signOut: 'sign out',
-    leaveImpersonating: 'Leave impersonating'
+    leaveImpersonating: 'Leave impersonating',
+    clearCache : 'Clear cache'
   },
 }

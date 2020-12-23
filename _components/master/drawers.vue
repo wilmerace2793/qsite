@@ -63,8 +63,13 @@ export default {
     //Show drawer specific
     toggleDrawer(drawerName) {
       //Hidden all drawers
-      for (var drawer in this.drawer)
-        if (drawer != drawerName) this.drawer[drawer] = false
+      for (var drawer in this.drawer) {
+        if (drawer != drawerName) {
+          if ((drawer == 'menu') && !this.$q.platform.is.mobile) {
+            this.miniState = true
+          } else this.drawer[drawer] = false
+        }
+      }
       //Toogle drawer
       if (drawerName == 'menu') {
         if (this.$q.platform.is.mobile) {

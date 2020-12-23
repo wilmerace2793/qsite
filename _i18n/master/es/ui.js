@@ -282,6 +282,7 @@ export default {
     loggedAs: 'Registrado como',
     fullScreen: 'Pantalla completa',
     signOut: 'Cerrar sesión',
-    leaveImpersonating: 'Dejar de suplantar'
+    leaveImpersonating: 'Dejar de suplantar',
+    clearCache : 'Limpiar cache'
   },
 }
