@@ -18,8 +18,13 @@
       <config-list/>
     </q-drawer>
 
+    <!-- Chat -->
+    <q-drawer bordered id="chatMaster" overlay v-model="drawer.chat" side="right">
+      <chat-list/>
+    </q-drawer>
+
     <!--Master filter-->
-    <q-drawer bordered id="menu_master" v-model="drawer.filter" side="right" v-if="filter.load" overlay>
+    <q-drawer bordered id="menuMaster" v-model="drawer.filter" side="right" v-if="filter.load" overlay>
       <master-filter/>
     </q-drawer>
   </div>
@@ -27,6 +32,7 @@
 <script>
 //Components
 import configList from '@imagina/qsite/_components/master/configList'
+import chatList from '@imagina/qchat/_components/drawerChatList'
 import menuList from '@imagina/qsite/_components/master/recursiveItem'
 import masterFilter from '@imagina/qsite/_components/master/masterFilter'
 
@@ -35,7 +41,7 @@ export default {
     this.$eventBus.$off('toggleMasterDrawer')
   },
   props: {},
-  components: {menuList, configList, masterFilter},
+  components: {menuList, configList, chatList, masterFilter},
   watch: {},
   mounted() {
     this.$nextTick(function () {
@@ -52,6 +58,7 @@ export default {
       drawer: {
         menu: this.windowSize == 'mobile' ? false : true,
         config: false,
+        chat: false,
         filter: false
       },
       menu: config('sidebar'),

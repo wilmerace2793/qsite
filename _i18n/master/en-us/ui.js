@@ -143,7 +143,9 @@ export default {
     public: 'Public',
     private: 'Private',
     list: 'List | List',
-    category: 'Category | Categories'
+    category: 'Category | Categories',
+    setup: 'Setup',
+    other: 'Other | Others'
   },
   message: {
     notFound: 'Sorry, nothing here',
@@ -292,6 +294,6 @@ export default {
     signOut: 'sign out',
     leaveImpersonating: 'Leave impersonating',
     clearCache: 'Clear cache',
-    goToSite : 'Go to site'
+    goToSite: 'Go to site'
   },
 }
