@@ -149,7 +149,9 @@ export default {
     list: 'Lista | Listas',
     category: 'Categoría | Categorías',
     setup: 'Configurar',
-    other: 'Otro | Otros'
+    other: 'Otro | Otros',
+    internal : 'Interno | Internos',
+    external : 'Externo | Externos'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

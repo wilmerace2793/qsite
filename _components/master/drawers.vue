@@ -8,7 +8,8 @@
         <q-img contain :src="logo" style="height: 120px; min-height: 120px"/>
       </div>
       <!--List-->
-      <q-scroll-area :style="`height: calc(100vh - ${this.windowSize == 'mobile' ? '152' : '250'}px`">
+      <q-scroll-area
+        :style="`height: calc(100vh - ${this.windowSize == 'mobile' ? '152' : (miniState ? '100' : '250')}px`">
         <menu-list ref="menuList" group :menu="menu"/>
       </q-scroll-area>
     </q-drawer>
@@ -19,7 +20,8 @@
     </q-drawer>
 
     <!-- Chat -->
-    <q-drawer bordered id="chatMaster" overlay v-model="drawer.chat" side="right">
+    <q-drawer bordered id="chatMaster" overlay v-model="drawer.chat" side="right"
+              v-if="$auth.hasAccess('ichat.conversations.index')">
       <chat-list/>
     </q-drawer>
 

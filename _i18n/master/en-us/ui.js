@@ -145,7 +145,9 @@ export default {
     list: 'List | List',
     category: 'Category | Categories',
     setup: 'Setup',
-    other: 'Other | Others'
+    other: 'Other | Others',
+    internal : 'Internal',
+    external : 'External'
   },
   message: {
     notFound: 'Sorry, nothing here',
