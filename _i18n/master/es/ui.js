@@ -151,7 +151,8 @@ export default {
     setup: 'Configurar',
     other: 'Otro | Otros',
     internal : 'Interno | Internos',
-    external : 'Externo | Externos'
+    external : 'Externo | Externos',
+    quantity: 'Cantidad | Cantidades'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

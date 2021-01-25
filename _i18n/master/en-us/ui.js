@@ -147,7 +147,8 @@ export default {
     setup: 'Setup',
     other: 'Other | Others',
     internal : 'Internal',
-    external : 'External'
+    external : 'External',
+    quantity: 'Quantity | Quanitities',
   },
   message: {
     notFound: 'Sorry, nothing here',
