@@ -150,9 +150,12 @@ export default {
     category: 'Categoría | Categorías',
     setup: 'Configurar',
     other: 'Otro | Otros',
-    internal : 'Interno | Internos',
-    external : 'Externo | Externos',
-    quantity: 'Cantidad | Cantidades'
+    internal: 'Interno | Internos',
+    external: 'Externo | Externos',
+    quantity: 'Cantidad | Cantidades',
+    folder: 'Carpeta | Carpetas',
+    file: 'Archivo | Archivos',
+    order : 'Ordenar'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

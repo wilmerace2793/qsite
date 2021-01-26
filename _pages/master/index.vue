@@ -38,10 +38,15 @@ export default {
       let quickCards = []
       let mainConfigs = Object.values(config('main')).map(item => item.quickCards || [])
       mainConfigs.forEach(item => quickCards = quickCards.concat(item))
+      //Validate Permissions
+      let quickCardsToShow = []
+      quickCards.forEach((card, index) => {
+        if (card.permission && this.$auth.hasAccess(card.permission)) quickCardsToShow.push(card)
+      })
       //Divide quick cards
       let response = {
-        list1: (quickCards.length >= 2) ? quickCards.slice(0, (quickCards.length / 2)) : quickCards,
-        list2: (quickCards.length >= 2) ? quickCards.slice((quickCards.length / 2), quickCards.length) : []
+        list1: (quickCardsToShow.length >= 2) ? quickCardsToShow.slice(0, (quickCardsToShow.length / 2)) : quickCardsToShow,
+        list2: (quickCardsToShow.length >= 2) ? quickCardsToShow.slice((quickCardsToShow.length / 2), quickCardsToShow.length) : []
       }
       //Response
       return response
