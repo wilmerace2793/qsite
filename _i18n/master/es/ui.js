@@ -155,7 +155,8 @@ export default {
     quantity: 'Cantidad | Cantidades',
     folder: 'Carpeta | Carpetas',
     file: 'Archivo | Archivos',
-    order : 'Ordenar'
+    order : 'Ordenar',
+    recent : 'Reciente | Recientes'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
