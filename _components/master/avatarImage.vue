@@ -62,6 +62,7 @@ export default {
 </script>
 <style lang="stylus">
 #avatarImageComponent
+  padding 0
   height max-content
   width max-content
 
