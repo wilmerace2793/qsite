@@ -200,7 +200,9 @@ export default {
     showMore: 'Ver más',
     changeTo: 'Cambiar a {text}',
     listView: 'Vista de lista',
-    gribView: 'Vista de cuadricula'
+    gribView: 'Vista de cuadricula',
+    uploadFile : 'Cargar Archivo | Cargar Archivos',
+    editFile : 'Editar Archivo | Editar Archivos'
   },
   form: {
     id: 'ID',
