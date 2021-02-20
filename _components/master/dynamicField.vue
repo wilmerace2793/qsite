@@ -680,7 +680,7 @@ export default {
           this.responseValue = propValue || []
           break
         case 'checkbox':
-          this.responseValue = propValue || false
+          this.responseValue = (propValue !== undefined) ? propValue : null
           break
         case 'media':
           this.responseValue = propValue || {}

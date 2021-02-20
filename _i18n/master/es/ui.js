@@ -40,7 +40,7 @@ export default {
     available: 'Disponible',
     soldOut: 'Agotado',
     all: 'Todo | Todos',
-    data: 'Dato',
+    data: 'Dato | Datos',
     link: 'Enlazar',
     image: 'Imagen | Imagenes',
     add: 'Agregar',
