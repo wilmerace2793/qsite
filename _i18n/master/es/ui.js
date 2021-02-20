@@ -157,7 +157,8 @@ export default {
     file: 'Archivo | Archivos',
     order: 'Ordenar',
     recent: 'Reciente | Recientes',
-    size : 'Tamaño | Tamaños'
+    size : 'Tamaño | Tamaños',
+    shareWith : 'Compartir con'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

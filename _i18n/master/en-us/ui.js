@@ -153,7 +153,8 @@ export default {
     file: 'File | Files',
     order : 'Order',
     recent : 'Recent',
-    size : 'Size | Sizes'
+    size : 'Size | Sizes',
+    shareWith : 'Share with'
   },
   message: {
     notFound: 'Sorry, nothing here',
