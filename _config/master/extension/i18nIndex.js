@@ -6,8 +6,6 @@ Vue.use(Vuex)
 //Get all stores
 let coreStores = config('stores')
 
-console.warn(coreStores)
-
 //Add here more stores...
 coreStores = {...coreStores}
 
