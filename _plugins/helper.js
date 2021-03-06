@@ -281,7 +281,7 @@ class Helper {
   openExternalURL(url, newWindow = true) {
     if (url.indexOf('http') == -1) url = `https://${url}`
     if (newWindow) window.open(url, '_blank')
-    else window.open(url)
+    else window.location.href = url
   }
 
   //Get locale from route name
