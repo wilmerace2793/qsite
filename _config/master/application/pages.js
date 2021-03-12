@@ -6,9 +6,9 @@ class AutoLoadPages {
     this.modules = appConfig.modules
     this.updatePages = []
     //Load backend pages
-    if (appConfig.isBackend || appConfig.loadBackendPages) this.loadPages({name: 'backendPages'})
-    //Load frontend pages
-    if (!appConfig.isBackend) this.loadPages({prefix: 'front', name: 'frontendPages'})
+    if ((appConfig.mode == 'iadmin') || appConfig.loadBackendPages) this.loadPages({name: 'backendPages'})
+    //Load ipanel pages
+    if (appConfig.mode == 'ipanel') this.loadPages({prefix: 'front', name: 'panelPages'})
     //Add default pages
     this.addDefaultPages()
     //Update pages
@@ -18,24 +18,24 @@ class AutoLoadPages {
   //Add default pages
   addDefaultPages() {
     //Add page home when it's backend
-    if (appConfig.isBackend) {
+    if (appConfig.mode == 'iadmin') {
       if (!this.pages.app) this.pages.app = {}
       this.pages.app.home = {//Page home
-          permission: null,
-          activated: true,
-          path: '/',
-          name: 'app.home',
-          layout: () => import('@imagina/qsite/_layouts/master.vue'),
-          page: () => import('@imagina/qsite/_pages/master/index.vue'),
-          title: 'sidebar.pageHome',
-          icon: 'fas fa-home',
-          authenticated: appConfig.isBackend,
-          subHeader: {
-            refresh: true
-          }
+        permission: null,
+        activated: true,
+        path: '/',
+        name: 'app.home',
+        layout: () => import('@imagina/qsite/_layouts/master.vue'),
+        page: () => import('@imagina/qsite/_pages/master/index.vue'),
+        title: 'sidebar.pageHome',
+        icon: 'fas fa-home',
+        authenticated: (appConfig.mode == 'iadmin') ? true : false,
+        subHeader: {
+          refresh: true
         }
       }
     }
+  }
 
   //Load modules backend page
   loadPages(params = {}) {

@@ -2,7 +2,7 @@ import {Notify, Loading} from 'quasar'
 
 export default async ({app, router, store, Vue}) => {
   //Loading
-  if(!process.env.isExtension) Loading.show()
+  if (!process.env.isExtension) Loading.show()
   //====== Reset Service Worker
   if (navigator && navigator.serviceWorker && navigator.serviceWorker.controller
     && navigator.serviceWorker.controller.postMessage) {//Reset Service Worker
@@ -16,7 +16,7 @@ export default async ({app, router, store, Vue}) => {
   //====== Load extra state in store
   store.dispatch('qsiteApp/SET_EXTRA')
 
-  if (!config('app.isBackend')) {
+  if (config('app.mode') != 'iadmin') {
     //====== Load Tawk
     let scriptString = store.getters['qsiteApp/getSettingValueByName']('core::analytics-script')
     if (scriptString && (typeof (scriptString) == 'string')) eval(scriptString.replace(/<\/?script>/g, ""))
