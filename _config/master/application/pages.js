@@ -6,7 +6,7 @@ class AutoLoadPages {
     this.modules = appConfig.modules
     this.updatePages = []
     //Load main pages
-    this.loadPages({prefix: 'front', name: 'mainPages'})
+    this.loadPages({prefix: 'main', name: 'mainPages'})
     //Load iadmin pages
     if (appConfig.mode == 'iadmin') this.loadPages({name: 'adminPages'})
     //Load ipanel pages
@@ -27,8 +27,7 @@ class AutoLoadPages {
         activated: true,
         path: '/',
         name: 'app.home',
-        layout: (appConfig.mode == 'iadmin') ? () => import('@imagina/qsite/_layouts/master.vue') :
-          () => import('@imagina/qsite/_layouts/panel'),
+        layout: () => import('@imagina/qsite/_layouts/master.vue'),
         page: (appConfig.mode == 'iadmin') ? () => import('@imagina/qsite/_pages/admin/index.vue') :
           () => import('@imagina/qsite/_pages/panel/index.vue'),
         title: 'sidebar.pageHome',

@@ -16,12 +16,6 @@ export default async ({app, router, store, Vue}) => {
   //====== Load extra state in store
   store.dispatch('qsiteApp/SET_EXTRA')
 
-  if (config('app.mode') != 'iadmin') {
-    //====== Load Tawk
-    let scriptString = store.getters['qsiteApp/getSettingValueByName']('core::analytics-script')
-    if (scriptString && (typeof (scriptString) == 'string')) eval(scriptString.replace(/<\/?script>/g, ""))
-  }
-
   //======= Load message Install as native APP(PWA)
   /*window.addEventListener('beforeinstallprompt', (e) => {
     // Prevent Chrome 67 and earlier from automatically showing the prompt
