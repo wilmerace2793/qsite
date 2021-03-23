@@ -1,7 +1,7 @@
 let loadFrom = (window.location.hash || '').split('/')[0]
 
 export default {
-  version: '2.2.4',
+  version: '2.3.31',
   mode: (loadFrom && (['iadmin', 'ipanel'].indexOf(loadFrom) != -1)) ? loadFrom : 'iadmin',//Define load mode
   forceRoleAndDepartment: false,//Force to select role and department
   //UI Languages
