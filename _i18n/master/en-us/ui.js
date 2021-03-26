@@ -165,7 +165,8 @@ export default {
     amount: 'Amount | Amounts',
     photo: 'Photo | Photos',
     company: 'Comany | Companies',
-    customer : 'Customer | Customers'
+    customer: 'Customer | Customers',
+    source: 'Source | Sources'
   },
   message: {
     notFound: 'Sorry, nothing here',

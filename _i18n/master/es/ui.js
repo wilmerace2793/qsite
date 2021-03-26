@@ -170,7 +170,8 @@ export default {
     amount : 'Monto | Cantidades',
     photo : 'Foto | Fotos',
     company : 'Comañia | Compañias',
-    customer : 'Cliente | Clientes'
+    customer : 'Cliente | Clientes',
+    source : 'Fuente | Fuentes'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
