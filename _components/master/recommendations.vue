@@ -1,7 +1,7 @@
 <template>
   <div id="recommendationsComponent">
     <!--Setting Crud-->
-    <crud v-bind="crudSettingsParams" v-if="settingName"/>
+    <crud v-bind="crudSettingsParams" v-if="false && settingName"/>
     <!--Recommendations content-->
     <div class="box relative-position" v-if="settingName">
       <!--Top Content-->
@@ -12,7 +12,8 @@
           {{ $trp('ui.label.recommendation') }}
         </div>
         <!--Btn to create-->
-        <q-btn icon="fas fa-plus" round unelevated size="10px" color="positive" @click="$refs.settingsCrud.create()">
+        <q-btn icon="fas fa-plus" round unelevated size="10px" color="positive" @click="$refs.settingsCrud.create()"
+               v-if="false">
           <q-tooltip>{{ $tr('ui.label.add') }}</q-tooltip>
         </q-btn>
       </div>
