@@ -161,7 +161,7 @@ export default {
         //Request Params
         let requestParams = {
           refresh: true,
-          params: {filter: {allTranslations: true}}
+          params: {filter: {allTranslations: true, configNameByModule: 'settings-fields'}}
         }
         //Request
         this.$crud.index('apiRoutes.qsite.configs', requestParams).then(response => {
@@ -171,7 +171,7 @@ export default {
           //Get only settings fields from configs
           if (response.data) {
             for (var moduleName in response.data) {
-              let fields = response.data[moduleName]['settings-fields']
+              let fields = response.data[moduleName]
               if (fields && Object.keys(fields).length) settingsFields[moduleName] = fields
             }
           }
