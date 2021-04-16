@@ -1,6 +1,6 @@
 <template>
   <div id="ckEditorComponent">
-    <ck-editor v-if="true" v-model="responseValue" :config="configEditor"/>
+    <ck-editor v-if="true" v-model="responseValue" :config="configEditor" @namespaceloaded="onNamespaceLoaded"/>
   </div>
 </template>
 <script>
@@ -43,6 +43,11 @@ export default {
   methods: {
     init() {
       this.responseValue = this.$clone(this.value)
+    },
+    //On name space loaded
+    onNamespaceLoaded(CKEDITOR) {
+      //Load custom plugins
+      pluginCollapsibleItem.load(CKEDITOR)
     }
   }
 }
