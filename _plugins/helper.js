@@ -39,7 +39,7 @@ class Helper {
     }
   }
 
-  /*get only numbers from a string*/
+  //get only numbers from a string
   getInt(value) {
     let regex = /(\d+)/g
     let response = value.match(regex)
@@ -48,7 +48,7 @@ class Helper {
     return response
   }
 
-  //Return alpanumeric and symbol (-)
+  //Return alphanumeric and symbol (-)
   getSlug(str) {
     str = str.replace(/^\s+|\s+$/g, ''); // trim
     str = str.toLowerCase();
@@ -117,7 +117,7 @@ class Helper {
     ]
   }
 
-  //load latitude and logitude
+  //load latitude and longitude
   async loadPosition() {
     try {
       const position = await this.getCurrentPosition()
@@ -393,7 +393,7 @@ class Helper {
   }
 
   //Convert data url to file
-  urltoFile(url, filename, mimeType) {
+  urlToFile(url, filename, mimeType) {
     return (
       fetch(url).then(function (res) {
         return res.arrayBuffer();

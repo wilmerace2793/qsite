@@ -117,7 +117,7 @@ class Middleware {
           //If is authenticated, redirect page from login to home
           if (!this.redirectTo && (to.name == 'auth.login')) this.redirectTo = {name: 'app.home'}
         } else {//If user not is authenticate
-          if (to.name != 'auth.login') this.redirectTo = {name: 'auth.login'}
+          if (to.name != 'auth.login') this.redirectTo = {name: 'auth.login', query: {fromVueRoute: to.name}}
         }
       }
       //Response
