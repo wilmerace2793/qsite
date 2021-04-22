@@ -430,6 +430,16 @@ class Helper {
       i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
+
+  //Convert to capitalize
+  toCapitalize(string, eachWord = false) {
+    let response = []
+    let words = eachWord ? string.split(" ") : [string]
+    //Convert to capitalize
+    words.forEach(word => response.push(word.charAt(0).toUpperCase() + word.slice(1)))
+    //response
+    return response.join(" ")
+  }
 }
 
 const helper = new Helper();

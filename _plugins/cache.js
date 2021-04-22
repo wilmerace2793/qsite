@@ -125,7 +125,7 @@ class localCache {
     }
   }
 
-  //Return all keys fron storage
+  //Return all storage keys
   keys() {
     return new Promise((resolve, reject) => {
       if (!process.env.CLIENT) return resolve(undefined) //Validate if is side Server
