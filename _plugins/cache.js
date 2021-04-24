@@ -117,6 +117,8 @@ class localCache {
           })
         }
 
+        if(!keysToRemove.length) return resolve(true)
+
         //Remove keys
         keysToRemove.forEach(key => {
           LocalForage.removeItem(key).then(value => resolve(true)).catch(error => resolve(false))
