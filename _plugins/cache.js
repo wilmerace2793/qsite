@@ -116,14 +116,15 @@ class localCache {
         })
       }
 
+      if (!keysToRemove.length) return resolve(true)
+
       //Remove keys
       keysToRemove.forEach(key => LocalForage.removeItem(key))
       resolve(true)
     })
   }
 
-
-//Return all storage keys
+  //Return all storage keys
   keys() {
     return new Promise((resolve, reject) => {
       if (!process.env.CLIENT) return resolve(undefined) //Validate if is side Server
@@ -136,7 +137,7 @@ class localCache {
 
   }
 
-//Remove all items from storage
+  //Remove all items from storage
   clear() {
     return new Promise((resolve, reject) => {
       if (!process.env.CLIENT) return resolve(undefined) //Validate if is side Server
@@ -148,7 +149,7 @@ class localCache {
     })
   }
 
-//Restore cache, save any data
+  //Restore cache, save any data
   restore(keys = []) {
     return new Promise((resolve, reject) => {
       if (!process.env.CLIENT) return resolve(undefined) //Validate if is side Server
@@ -180,7 +181,7 @@ class localCache {
     })
   }
 
-//Return name to DB according to domain
+  //Return name to DB according to domain
   nameDB() {
     let hostname = window.location.host.split('.')
     let response = hostname
