@@ -228,7 +228,8 @@ export default {
     addFile: 'Add File | Add Files',
     swUpdateAvailable: 'We have new features for you, please update',
     backToSite : 'Back to site',
-    notAuthorized: "Sorry, You are not authorized to be here"
+    notAuthorized: "Sorry, You are not authorized to be here",
+    noValue : 'No Value'
   },
   form: {
     id: 'ID',

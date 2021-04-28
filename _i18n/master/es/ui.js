@@ -228,7 +228,8 @@ export default {
     addFile: 'Agregar Archivo | Agregar Archivos',
     swUpdateAvailable: 'Tenemos nuevas caracteristicas para ti, por favor actualiza',
     backToSite : 'Volver al sitio',
-    notAuthorized: "Lo sentimos, No estas autorizad@ para estar aquí"
+    notAuthorized: "Lo sentimos, No estas autorizad@ para estar aquí",
+    noValue : 'Sin Valor'
   },
   form: {
     id: 'ID',

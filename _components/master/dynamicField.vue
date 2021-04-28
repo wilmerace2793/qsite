@@ -181,7 +181,7 @@
             </q-popup-proxy>
           </template>
         </q-input>
-        <!--Toogle-->
+        <!--Toggle-->
         <q-toggle v-model="responseValue" :label="fieldLabel" v-if="loadField('toggle')" v-bind="fieldProps.field"/>
         <!--position Marker (MAP)-->
         <q-field v-model="responseValue" v-if="loadField('positionMarkerMap')" label=""
