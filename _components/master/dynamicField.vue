@@ -76,6 +76,25 @@
                    v-if="fieldProps.field.clearable && responseValue" @click="responseValue = null"/>
           </template>
         </q-input>
+        <!--Full date-->
+        <q-input v-model="customValue" :label="fieldLabel" v-if="loadField('fullDate')" v-bind="fieldProps.field">
+          <template v-slot:prepend>
+            <q-icon name="fas fa-calendar-day" class="cursor-pointer">
+              <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                <q-date v-model="responseValue" @input="() => $refs.qDateProxy.hide()"
+                        v-bind="fieldProps.slot"/>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+          <template v-slot:append>
+            <q-icon name="fas fa-clock" class="cursor-pointer">
+              <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
+                <q-time v-model="responseValue" :format24h="false" @input="() => $refs.qTimeProxy.hide()"
+                        v-bind="fieldProps.slot"/>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
         <!--Select-->
         <q-select v-model="responseValue" :options="formatOptions" :label="fieldLabel" use-input v-bind="fieldProps"
                   @input="matchTags(field)" v-if="loadField('select')" style="padding-bottom: 20px"
@@ -374,6 +393,24 @@ export default {
             }
           }
           break;
+        case'fullDate':
+          props = {
+            field: {
+              bgColor: 'white',
+              color: 'primary',
+              outlined: true,
+              dense: true,
+              readonly: true,
+              ...props
+            },
+            slot: {
+              mask: "YYYY-MM-DD HH:mm:ss",
+              ...props
+            }
+          }
+          //Remove mask from prop field
+          delete props.field.mask
+          break;
         case'select':
           props = {
             emitValue: true,
@@ -634,6 +671,9 @@ export default {
           case 'hour':
             let date = this.$moment().format('Y-MM-DD')
             response = currentValue ? this.$trd(`${date} ${currentValue}`, {type: 'time'}) : ''
+            break;
+          case 'fullDate':
+            response = currentValue ? this.$trd(currentValue, {type: 'long'}) : ''
             break;
         }
 
