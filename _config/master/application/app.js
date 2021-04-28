@@ -26,6 +26,7 @@ export default {
     'qad',
     'qdocument',
     'qplace',
+    'qcheckin',
     'qlocations',
     'qevent',
     'qpage',
