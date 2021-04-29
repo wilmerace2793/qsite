@@ -84,7 +84,7 @@ export default {
     },
     //Callback
     callBack(action) {
-      if (action.toUrl) return $helper.openExternalURL(actionProps.toUrl, false)
+      if (action.toUrl) return this.$helper.openExternalURL(action.toUrl, false)
       if (action.handler) return action.handler()
     }
   }
