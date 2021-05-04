@@ -28,6 +28,7 @@ export default {
     'qplace',
     'qcheckin',
     'qlocations',
+    'qappointment',
     'qevent',
     'qpage',
     'qredirect',
