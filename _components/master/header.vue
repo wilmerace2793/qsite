@@ -133,6 +133,12 @@
           <div id="rightContent" class="row items-center q-gutter-x-sm">
             <!--== Button export ==-->
             <master-export/>
+            <!--== Button Recomendation ==-->
+            <q-btn icon="fas fa-hat-wizard" unelevated round color="primary" text-color="white" class="btn-action"
+                   @click="$eventBus.$emit('toggleMasterDrawer','recomendation')"
+                   v-if="params.recomendations ? true : false">
+              <q-tooltip>{{ $trp('ui.label.recommendation') }}</q-tooltip>
+            </q-btn>
             <!--== Button filter ==-->
             <q-btn icon="fas fa-filter" unelevated round v-if="filter.load" color="primary" class="btn-action"
                    @click="$eventBus.$emit('toggleMasterDrawer','filter')">

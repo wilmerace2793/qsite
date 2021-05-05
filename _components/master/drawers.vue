@@ -2,7 +2,7 @@
   <div id="masterDrawers">
     <!-- MENU -->
     <q-drawer id="menuMaster" class="no-shadow" v-model="drawer.menu" bordered ref="menuMaster"
-              :mini="miniState" @click.capture="miniState = false">
+              :mini="miniState" @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
       <!--Logo-->
       <div class="q-pa-md" v-if="!miniState && drawer.menu">
         <q-img contain :src="logo" style="height: 120px; min-height: 120px"/>
@@ -28,7 +28,7 @@
     </q-drawer>
 
     <!--Master filter-->
-    <q-drawer bordered id="drawerFilterMaster" v-model="drawer.filter" side="right" v-if="filter.load" overlay>
+    <q-drawer bordered id="drawerFilterMaster" v-model="drawer.filter" side="right" v-if="filter.load" :overlay="false">
       <master-filter/>
     </q-drawer>
 
@@ -37,7 +37,11 @@
               v-if="$auth.hasAccess('icheckin.shifts.create')">
       <checkin/>
     </q-drawer>
-
+    <!--Recomendation-->
+    <q-drawer id="drawerRecomendationMaster" v-model="drawer.recomendation" show-if-above side="right" :overlay="false"
+              v-if="routeSubHeader.recomendations ? true : false">
+      <master-recomendation recomendation-name="addForm"/>
+    </q-drawer>
   </div>
 </template>
 <script>
@@ -47,13 +51,14 @@ import chatList from '@imagina/qchat/_components/drawerChatList'
 import menuList from '@imagina/qsite/_components/master/recursiveItem'
 import masterFilter from '@imagina/qsite/_components/master/masterFilter'
 import checkin from '@imagina/qcheckin/_components/checkin'
+import masterRecomendation from '@imagina/qsite/_components/master/masterRecommendations'
 
 export default {
   beforeDestroy() {
     this.$eventBus.$off('toggleMasterDrawer')
   },
   props: {},
-  components: {menuList, configList, chatList, masterFilter, checkin},
+  components: {menuList, configList, chatList, masterFilter, checkin, masterRecomendation},
   watch: {},
   mounted() {
     this.$nextTick(function () {
@@ -72,7 +77,8 @@ export default {
         config: false,
         chat: false,
         filter: false,
-        checkin : false
+        checkin: false,
+        recomendation: false
       },
       menu: config('sidebar'),
       appConfig: config('app'),
@@ -82,7 +88,10 @@ export default {
   computed: {
     windowSize() {
       return this.windowWith >= '992' ? 'desktop' : 'mobile'
-    }
+    },
+    routeSubHeader() {
+      return this.$route.meta.subHeader || {}
+    },
   },
   methods: {
     //init
@@ -170,4 +179,13 @@ export default {
 
   .expansion-selected
     background-color $primary
+
+#masterDrawers
+  #drawerRecomendationMaster
+    .q-drawer
+      margin-bottom 30px
+
+    .q-drawer__content
+      background #ebf1fa
+
 </style>

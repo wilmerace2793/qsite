@@ -82,6 +82,13 @@
               </q-item-section>
               <q-item-section class="ellipsis">{{ $tr('qcheckin.sidebar.checkin') }}</q-item-section>
             </q-item>
+            <!--Recomendation action-->
+            <q-item clickable v-ripple @click.native="$eventBus.$emit('toggleMasterDrawer','recomendation')">
+              <q-item-section avatar>
+                <q-icon color="primary" name="fas fa-hat-wizard"/>
+              </q-item-section>
+              <q-item-section class="ellipsis">{{ $trp('ui.label.recommendation') }}</q-item-section>
+            </q-item>
             <!---->
           </q-list>
         </q-card-section>
@@ -123,6 +130,9 @@ export default {
     quserState() {
       return this.$store.state.quserAuth
     },
+    routeSubHeader() {
+      return this.$route.meta.subHeader || {}
+    }
   },
   methods: {
     init() {
