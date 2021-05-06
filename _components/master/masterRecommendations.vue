@@ -1,4 +1,4 @@
-<template class="holaaa">
+<template>
   <div id="recommendationsComponent">
     <!--Setting Crud-->
     <crud v-bind="crudRecomendationParams" @created="getData()" @updated="getData()"
@@ -20,43 +20,46 @@
       </div>
       <q-separator class="q-my-sm"/>
       <!--Items-->
-      <div class="box item q-px-none q-py-md" v-for="item in items" :key="item.id">
-        <!--Content-->
-        <div class="ellipsis relative-position">
-          <div class="text-subtitle2 q-pr-lg">
-            <!--Icon-->
-            <q-icon size="20px" class="q-mr-sm" color="primary" name="fas fa-magic"/>
-            <!--Title-->
-            <div class="ellipsis">
-              {{ item.title }}
+      <q-scroll-area
+        :style="`height: calc(100vh - ${this.windowSize == 'mobile' ? '120' : '230'}px`">
+        <div class="box item q-px-none q-py-md" v-for="item in items" :key="item.id">
+          <!--Content-->
+          <div class="ellipsis relative-position">
+            <div class="text-subtitle2 q-pr-lg">
+              <!--Icon-->
+              <q-icon size="20px" class="q-mr-sm" color="primary" name="fas fa-magic"/>
+              <!--Title-->
+              <div class="ellipsis">
+                {{ item.title }}
+              </div>
+              <q-tooltip>{{ item.title }}</q-tooltip>
             </div>
-            <q-tooltip>{{ item.title }}</q-tooltip>
+            <!--Button action-->
+            <q-btn class="file-card__bottom_actions absolute-right" icon="fas fa-ellipsis-v" unelevated round size="sm"
+                   color="blue-grey" flat padding="sm">
+              <!---Menu actions-->
+              <q-menu anchor="bottom left" self="bottom end">
+                <q-list style="min-width: 100px">
+                  <q-item clickable v-close-popup v-for="(action, itemKey) in fileActions" :key="itemKey"
+                          @click.native="action.action(item)">
+                    <q-item-section>
+                      <div class="row items-center">
+                        <q-icon :name="action.icon" class="q-mr-sm" color="blue-grey" size="18px"/>
+                        {{ action.label }}
+                      </div>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
           </div>
-          <!--Button action-->
-          <q-btn class="file-card__bottom_actions absolute-right" icon="fas fa-ellipsis-v" unelevated round size="sm"
-                 color="blue-grey" flat padding="sm">
-            <!---Menu actions-->
-            <q-menu anchor="bottom left" self="bottom end">
-              <q-list style="min-width: 100px">
-                <q-item clickable v-close-popup v-for="(action, itemKey) in fileActions" :key="itemKey"
-                        @click.native="action.action(item)">
-                  <q-item-section>
-                    <div class="row items-center">
-                      <q-icon :name="action.icon" class="q-mr-sm" color="blue-grey" size="18px"/>
-                      {{ action.label }}
-                    </div>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
+          <!--Line separator-->
+          <q-separator class="q-my-xs"/>
+          <div class="text-caption text-justify">
+            {{ item.description }}
+          </div>
         </div>
-        <!--Line separator-->
-        <q-separator class="q-my-xs"/>
-        <div class="text-caption text-justify">
-          {{ item.description }}
-        </div>
-      </div>
+      </q-scroll-area>
       <!--Loading-->
       <inner-loading :visible="loading"/>
     </div>
@@ -83,7 +86,8 @@ export default {
     return {
       loading: false,
       recomendationName: false,
-      items: false
+      items: false,
+      windowWith: window.innerWidth,
     }
   },
   computed: {
@@ -118,12 +122,20 @@ export default {
         }
       ]
     },
-
+    //size window
+    windowSize() {
+      return this.windowWith >= '992' ? 'desktop' : 'mobile'
+    },
   },
   methods: {
     init() {
       this.resetData()
       this.getData()
+      setTimeout(() => this.$eventBus.$emit('toggleMasterDrawer', 'recomendation'), 1000)
+      //Watch window size
+      window.addEventListener('resize', () => {
+        this.windowWith = window.innerWidth
+      })
     },
     //reset data
     resetData() {
@@ -167,7 +179,7 @@ export default {
   height 100%
 
   .item
-    margin-bottom 8px
+    margin 0 12px 8px 0
 
     .text-subtitle2
       height 31px
@@ -182,5 +194,7 @@ export default {
   .box
     min-height auto
 
-
+@media (max-width: $breakpoint-lg-max)
+  #recommendationsComponent
+    padding 30px 8px 30px 8px
 </style>

@@ -37,10 +37,11 @@
               v-if="$auth.hasAccess('icheckin.shifts.create')">
       <checkin/>
     </q-drawer>
+
     <!--Recomendation-->
-    <q-drawer id="drawerRecomendationMaster" v-model="drawer.recomendation" show-if-above side="right" :overlay="false"
+    <q-drawer id="drawerRecomendationMaster" v-model="drawer.recomendation" side="right" :overlay="false"
               v-if="routeSubHeader.recomendations ? true : false">
-      <master-recomendation recomendation-name="addForm"/>
+      <master-recomendation/>
     </q-drawer>
   </div>
 </template>
@@ -110,6 +111,8 @@ export default {
         if (drawer != drawerName) {
           if ((drawer == 'menu') && (this.windowSize != 'mobile')) {
             this.miniState = true
+          } else if (drawer == 'recomendation') {
+            this.drawer[drawer] = (this.windowSize == 'mobile') ? false : true
           } else this.drawer[drawer] = false
         }
       }
@@ -183,7 +186,7 @@ export default {
 #masterDrawers
   #drawerRecomendationMaster
     .q-drawer
-      margin-bottom 30px
+      max-height max-content
 
     .q-drawer__content
       background #ebf1fa

@@ -83,7 +83,8 @@
               <q-item-section class="ellipsis">{{ $tr('qcheckin.sidebar.checkin') }}</q-item-section>
             </q-item>
             <!--Recomendation action-->
-            <q-item clickable v-ripple @click.native="$eventBus.$emit('toggleMasterDrawer','recomendation')">
+            <q-item clickable v-ripple @click.native="$eventBus.$emit('toggleMasterDrawer','recomendation')"
+                    v-if="params.recomendations ? true : false">
               <q-item-section avatar>
                 <q-icon color="primary" name="fas fa-hat-wizard"/>
               </q-item-section>
@@ -132,7 +133,14 @@ export default {
     },
     routeSubHeader() {
       return this.$route.meta.subHeader || {}
-    }
+    },
+    currentRoute() {
+      return this.$route
+    },
+    //Return params of subHeader
+    params() {
+      return this.currentRoute.meta.subHeader || {}
+    },
   },
   methods: {
     init() {
