@@ -13,7 +13,7 @@ export default {
         crudId: this.crudId,
         entityName: config("main.qsite.entityNames.recommendation"),
         apiRoute: 'apiRoutes.qsite.recommendations',
-        // permission: 'isite.recommendations.manage',
+        permission: 'isite.recommendations',
         create: {
           title: this.$tr('qsite.layout.newRecommendation'),
         },
