@@ -1,10 +1,9 @@
 <template>
   <div id="recommendationsComponent">
     <!--Setting Crud-->
-    <crud v-bind="crudRecomendationParams" @created="getData()" @updated="getData()"
-          @deleted="getData()"/>
+    <crud v-bind="crudRecommendationParams" @created="getData()" @updated="getData()" @deleted="getData()"/>
     <!--Recommendations content-->
-    <div class="relative-position" v-if="recomendationName">
+    <div class="relative-position" v-if="recommendationName">
       <!--Top Content-->
       <div class="box row justify-between items-center">
         <!--Title-->
@@ -14,14 +13,14 @@
         </div>
         <!--Btn to create-->
         <q-btn icon="fas fa-plus" round unelevated size="10px" color="green"
-               @click="$refs.recomendations.create()">
+               @click="$refs.recommendations.create()" v-if="$auth.hasAccess('isite.recommendations.create')">
           <q-tooltip>{{ $tr('ui.label.add') }}</q-tooltip>
         </q-btn>
       </div>
       <q-separator class="q-my-sm"/>
       <!--Items-->
-      <q-scroll-area
-        :style="`height: calc(100vh - ${this.windowSize == 'mobile' ? '120' : '230'}px`">
+      <q-scroll-area :thumb-style="thumbStyle" v-if="items.length"
+                     :style="`height: calc(100vh - ${this.windowSize == 'mobile' ? '120' : '230'}px`">
         <div class="box item q-px-none q-py-md" v-for="item in items" :key="item.id">
           <!--Content-->
           <div class="ellipsis relative-position">
@@ -36,7 +35,7 @@
             </div>
             <!--Button action-->
             <q-btn class="file-card__bottom_actions absolute-right" icon="fas fa-ellipsis-v" unelevated round size="sm"
-                   color="blue-grey" flat padding="sm">
+                   color="blue-grey" flat padding="sm" v-if="$auth.hasAccess('isite.recommendations.manage')">
               <!---Menu actions-->
               <q-menu anchor="bottom left" self="bottom end">
                 <q-list style="min-width: 100px">
@@ -60,6 +59,9 @@
           </div>
         </div>
       </q-scroll-area>
+      <div class="box item q-px-none q-py-md" v-else>
+        {{ $trp('ui.message.notFound') }}
+      </div>
       <!--Loading-->
       <inner-loading :visible="loading"/>
     </div>
@@ -85,19 +87,26 @@ export default {
   data() {
     return {
       loading: false,
-      recomendationName: false,
+      recommendationName: false,
       items: false,
       windowWith: window.innerWidth,
+      thumbStyle: {
+        right: '4px',
+        borderRadius: '5px',
+        backgroundColor: '$custom-accent-color',
+        width: '5px',
+        opacity: 0.1
+      },
     }
   },
   computed: {
-    crudRecomendationParams() {
+    crudRecommendationParams() {
       return {
-        crudData: import('@imagina/qsite/_crud/recomendations'),
+        crudData: import('@imagina/qsite/_crud/recommendations'),
         type: "only-create",
-        ref: "recomendations",
+        ref: "recommendations",
         customData: {
-          formLeft: {name: {value: this.recomendationName}}
+          formLeft: {name: {value: this.recommendationName}}
         }
       }
     },
@@ -109,7 +118,7 @@ export default {
           icon: 'fas fa-pen',
           color: 'green',
           action: (item) => {
-            this.$refs.recomendations.update(item)
+            this.$refs.recommendations.update(item)
           }
         },
         {
@@ -117,7 +126,7 @@ export default {
           icon: 'fas fa-trash',
           color: 'red',
           action: (item) => {
-            this.$refs.recomendations.delete(item)
+            this.$refs.recommendations.delete(item)
           }
         }
       ]
@@ -131,7 +140,7 @@ export default {
     init() {
       this.resetData()
       this.getData()
-      setTimeout(() => this.$eventBus.$emit('toggleMasterDrawer', 'recomendation'), 1000)
+      setTimeout(() => this.$eventBus.$emit('openMasterDrawer', 'recommendation'), 1000)
       //Watch window size
       window.addEventListener('resize', () => {
         this.windowWith = window.innerWidth
@@ -139,10 +148,10 @@ export default {
     },
     //reset data
     resetData() {
-      // Validate recomendation name from route
-      if (this.$route.meta.subHeader && this.$route.meta.subHeader.recomendations)
-        this.recomendationName = this.$route.meta.subHeader.recomendations.name
-      else this.recomendationName = false
+      // Validate recommendation name from route
+      if (this.$route.meta.subHeader && this.$route.meta.subHeader.recommendations)
+        this.recommendationName = this.$route.meta.subHeader.recommendations.name
+      else this.recommendationName = false
       //Reset items
       this.items = false
     },
@@ -150,18 +159,18 @@ export default {
     getData() {
       return new Promise((resolve, reject) => {
         //validate recomedation name
-        if (!this.recomendationName) return reject(false)
+        if (!this.recommendationName) return reject(false)
 
         this.loading = true
         //Request Params
         let requestParams = {
           refresh: true,
           params: {
-            filter: {name: this.recomendationName}
+            filter: {name: this.recommendationName}
           }
         }
 
-        //Get recomendation
+        //Get recommendation
         this.$crud.index('apiRoutes.qsite.recommendations', requestParams).then(response => {
           this.loading = false
           this.items = response.data
@@ -179,7 +188,7 @@ export default {
   height 100%
 
   .item
-    margin 0 12px 8px 0
+    margin 0 0 8px 0
 
     .text-subtitle2
       height 31px

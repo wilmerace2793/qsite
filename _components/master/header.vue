@@ -52,7 +52,8 @@
           <div id="logoImage" :style="`background-image: url('${logo}')`" class="img-as-bg cursor-pointer"
                @click="$helper.openExternalURL($store.state.qsiteApp.baseUrl, false)"></div>
           <!--Project name-->
-          <q-toolbar-title class="cursor-pointer" @click="$helper.openExternalURL($store.state.qsiteApp.baseUrl, false)">
+          <q-toolbar-title class="cursor-pointer"
+                           @click="$helper.openExternalURL($store.state.qsiteApp.baseUrl, false)">
             {{ projectName }}
           </q-toolbar-title>
           <!--Actions-->
@@ -133,10 +134,10 @@
           <div id="rightContent" class="row items-center q-gutter-x-sm">
             <!--== Button export ==-->
             <master-export/>
-            <!--== Button Recomendation ==-->
+            <!--== Button Recommendation ==-->
             <q-btn icon="fas fa-hat-wizard" unelevated round color="primary" text-color="white" class="btn-action"
-                   @click="$eventBus.$emit('toggleMasterDrawer','recomendation')"
-                   v-if="params.recomendations ? true : false">
+                   @click="$eventBus.$emit('toggleMasterDrawer','recommendation')"
+                   v-if="params.recommendations ? true : false">
               <q-tooltip>{{ $trp('ui.label.recommendation') }}</q-tooltip>
             </q-btn>
             <!--== Button filter ==-->

@@ -82,9 +82,9 @@
               </q-item-section>
               <q-item-section class="ellipsis">{{ $tr('qcheckin.sidebar.checkin') }}</q-item-section>
             </q-item>
-            <!--Recomendation action-->
-            <q-item clickable v-ripple @click.native="$eventBus.$emit('toggleMasterDrawer','recomendation')"
-                    v-if="params.recomendations ? true : false">
+            <!--Recommendation action-->
+            <q-item clickable v-ripple @click.native="$eventBus.$emit('toggleMasterDrawer','recommendation')"
+                    v-if="params.recommendations ? true : false">
               <q-item-section avatar>
                 <q-icon color="primary" name="fas fa-hat-wizard"/>
               </q-item-section>
