@@ -12,8 +12,8 @@
           {{ $trp('ui.label.recommendation') }}
         </div>
         <!--Btn to create-->
-        <q-btn icon="fas fa-plus" round unelevated size="10px" color="green"
-               @click="$refs.recommendations.create()" v-if="$auth.hasAccess('isite.recommendations.create')">
+        <q-btn icon="fas fa-plus" round unelevated size="10px" color="green" @click="$refs.recommendations.create()"
+               v-if="($auth.hasAccess('isite.recommendations.create') && (appConfig.mode != 'ipanel'))">
           <q-tooltip>{{ $tr('ui.label.add') }}</q-tooltip>
         </q-btn>
       </div>
@@ -35,7 +35,8 @@
             </div>
             <!--Button action-->
             <q-btn class="file-card__bottom_actions absolute-right" icon="fas fa-ellipsis-v" unelevated round size="sm"
-                   color="blue-grey" flat padding="sm" v-if="$auth.hasAccess('isite.recommendations.manage')">
+                   color="blue-grey" flat padding="sm"
+                   v-if="($auth.hasAccess('isite.recommendations.manage') && (appConfig.mode != 'ipanel'))">
               <!---Menu actions-->
               <q-menu anchor="bottom left" self="bottom end">
                 <q-list style="min-width: 100px">
@@ -90,6 +91,7 @@ export default {
       recommendationName: false,
       items: false,
       windowWith: window.innerWidth,
+      appConfig: config('app'),
       thumbStyle: {
         right: '4px',
         borderRadius: '5px',
