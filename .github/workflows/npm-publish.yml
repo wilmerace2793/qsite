@@ -12,7 +12,6 @@ jobs:
         with:
           node-version: 10
       - run: npm install
-      - run: echo ${{ secrets.NPM_TOKEN }}
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
