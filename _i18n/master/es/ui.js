@@ -178,7 +178,10 @@ export default {
     since: 'Desde',
     until: 'Hasta',
     recommendation : 'Recomendación | Recomendaciones',
-    form: 'Formulario | Formularios'
+    form: 'Formulario | Formularios',
+    next: 'Siguiente',
+    steps: 'Pasos',
+    collapsible: 'Plegable',
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
@@ -327,7 +330,13 @@ export default {
     onOffer: 'En oferta',
     createdBy: 'Creado por',
     systemName: 'Nombre de sistema',
-    externalId: 'ID Externo'
+    externalId: 'ID Externo',
+    maritalStatus: 'Estatus Civil',
+    language: 'Lenguaje',
+    homePhone: 'Teléfono de Casa',
+    appointmentDate: 'Día de la cita',
+    appointmentTime: 'Hora de la cita',
+    product: 'Producto'
   },
   configList: {
     loggedAs: 'Registrado como',

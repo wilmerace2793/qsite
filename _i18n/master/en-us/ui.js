@@ -173,7 +173,10 @@ export default {
     since : 'Since',
     until : 'Until',
     recommendation : 'Recommendation | Recommendations',
-    form: 'Form | Forms'
+    form: 'Form | Forms',
+    next: 'Next',
+    steps: 'Steps',
+    collapsible: 'Collapsible',
   },
   message: {
     notFound: 'Sorry, nothing here',
@@ -328,7 +331,13 @@ export default {
     createdBy: 'Created by',
     systemName: 'System name',
     externalId: 'External ID',
-    company: 'Company | Companies'
+    company: 'Company | Companies',
+    maritalStatus: 'Civil Status',
+    language: 'Language',
+    homePhone: 'Phone Home',
+    appointmentDate: 'Appointment Date',
+    appointmentTime: 'Appointment Time',
+    product: 'Product'
   },
   configList: {
     loggedAs: 'logged as',
