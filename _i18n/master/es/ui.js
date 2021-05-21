@@ -179,6 +179,8 @@ export default {
     until: 'Hasta',
     recommendation : 'Recomendación | Recomendaciones',
     form: 'Formulario | Formularios',
+    block: 'Bloque',
+    field: 'Campo | Campos',
     next: 'Siguiente',
     steps: 'Pasos',
     collapsible: 'Plegable',
@@ -330,13 +332,7 @@ export default {
     onOffer: 'En oferta',
     createdBy: 'Creado por',
     systemName: 'Nombre de sistema',
-    externalId: 'ID Externo',
-    maritalStatus: 'Estatus Civil',
-    language: 'Lenguaje',
-    homePhone: 'Teléfono de Casa',
-    appointmentDate: 'Día de la cita',
-    appointmentTime: 'Hora de la cita',
-    product: 'Producto'
+    externalId: 'ID Externo'
   },
   configList: {
     loggedAs: 'Registrado como',
