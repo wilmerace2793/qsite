@@ -181,7 +181,8 @@ export default {
     form: 'Formulario | Formularios',
     block: 'Bloque',
     field: 'Campo | Campos',
-    next: 'Siguiente',
+    next: 'Siguiente | Siguientes',
+    previous: 'Anterior | Anteriores',
     steps: 'Pasos',
     collapsible: 'Plegable',
     room: 'Sala | Salas'
@@ -336,7 +337,13 @@ export default {
     systemName: 'Nombre de sistema',
     externalId: 'ID Externo',
     company: 'Compañia | Compañias',
-    customUrl: 'Url Personalizada'
+    customUrl: 'Url Personalizada',
+    maritalStatus: 'Estatus Civil',
+    language: 'Lenguaje',
+    homePhone: 'Teléfono de Casa',
+    appointmentDate: 'Día de la cita',
+    appointmentTime: 'Hora de la cita',
+    product: 'Producto'
   },
   configList: {
     loggedAs: 'Registrado como',

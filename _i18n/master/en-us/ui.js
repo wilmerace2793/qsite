@@ -177,6 +177,7 @@ export default {
     block: 'Block',
     field: 'Field | Fields',
     next: 'Next',
+    previous: 'Previous',
     steps: 'Steps',
     collapsible: 'Collapsible',
     room: 'Room | Rooms'
@@ -336,7 +337,13 @@ export default {
     systemName: 'System name',
     externalId: 'External ID',
     company: 'Company | Companies',
-    customUrl: 'Custom Url'
+    customUrl: 'Custom Url',
+    maritalStatus: 'Civil Status',
+    language: 'Language',
+    homePhone: 'Phone Home',
+    appointmentDate: 'Appointment Date',
+    appointmentTime: 'Appointment Time',
+    product: 'Product'
   },
   configList: {
     loggedAs: 'logged as',

@@ -1,55 +1,51 @@
 <template>
   <!---Form content-->
-  <div id="formContent">
-    <div id="formComponentContent" class="relative-position">
-      <!--Progress form-->
-      <div id="progressContent" class="q-mb-md">
-        <div class="text-primary text-center q-ma-none">
-          <h4>{{metaTitle}}</h4>
-        </div>
-        <div class="col-12 text-caption text-grey-7 text-center" style="line-height: 1">
-          <br>
-          {{metaDescription}}
-          <br>
-        </div>
-        <q-linear-progress :value="progress" color="blue-9" class="q-mt-lg"/>
+  <div id="dynamicFormComponent">
+    <div id="dynamicFormComponentContent" class="relative-position">
+      <!--Top Content-->
+      <div id="topContent">
+        <!--Title-->
+        <div class="box-title text-center q-mb-md" v-if="title">{{ title }}</div>
+        <!--Description-->
+        <div class="text-body2 q-mb-md text-grey-8" v-if="description"> {{ description }}</div>
       </div>
 
-      <!--Form-->
+      <!--Progress bar-->
+      <div id="progressContent" class="q-mb-md">
+        <q-linear-progress :value="progress" color="primary"/>
+      </div>
+
+      <!--Form Content-->
       <q-form autocorrect="off" autocomplete="off" ref="formContent" class="full-width"
-              @submit="toogleStep" @validation-error="$alert.error($tr('ui.message.formInvalid'))">
-        <q-stepper v-model="step" color="primary" animated ref="block"
-                   @before-transition="handlerBeforeStepTransition"
-                   :vertical="formType == 'stepVertical' ? true : false" header-nav animated>
-          <q-step :name="`${keyBlock}`" title="" v-for="(block, keyBlock) in blocks"
-                  :key="keyBlock" :title="block.title">
-            <!--Title + Description-->
-            <div id="header_content" class="q-mb-sm" v-if="formType == 'stepVertical' ? false : true ">
-              <div class="step-text" v-if="block.title">{{block.title}}{{`${keyBlock}`}}</div>
-              <div class="col-12 text-caption text-grey-7 text-center" style="line-height: 1" v-if="block.description">
-                <br>{{block.description}}<br>
+              @validation-error="$alert.error($tr('ui.message.formInvalid'))">
+        <!--Stepper content-->
+        <q-stepper id="stepperContent" v-model="step" color="primary" animated ref="stepper" flat
+                   :vertical="formType == 'stepVertical' ? true : false"
+                   :header-class="formType == 'stepVertical' ? '' : 'q-hide'">
+          <!--Steps-->
+          <q-step v-for="(block, keyBlock) in blocks" :key="keyBlock" :name="keyBlock"
+                  :title="block.title || `#${keyBlock+1}`" :class="allowNavigation ? 'cursor-pointer' : ''">
+            <!--Top step Info-->
+            <div class="step-top-content" v-if="block.title || block.description">
+              <!--Title-->
+              <div class="box-title text-center q-mb-md" v-if="block.title && (formType != 'stepVertical')">
+                {{ block.title }}
               </div>
-              <br>
-              <q-separator/>
-              <br>
+              <!--Description-->
+              <div class="text-body2 q-mb-md text-grey-8" v-if="block.description">{{ block.description }}</div>
             </div>
 
             <!--Fields-->
             <div class="row q-col-gutter-x-md">
               <dynamic-field v-for="(field, keyField) in block.fields" :key="keyField" :field="field"
-                             v-model="form[field.name || keyField]" :class="field.colClass || 'col-12 col-md-6'"/>
+                             v-model="formData[field.name || keyField]" :class="field.colClass || 'col-12 col-md-6'"/>
             </div>
 
-            <!--Buttons Actions-->
-            <div v-if="step != totalStep">
-              <!--Previous action-->
-              <q-btn v-if="step != 0" color="blue-9" unelevated label="Previous" rounded icon="fas fa-arrow-left"
-                     v-bind="formActions.previous"
-                     @click="wayStepper = 'before'; $refs.formContent.submit()" class="no-shadow" no-caps/>
-              <!--Next action-->
-              <q-btn color="blue-9" unelevated rounded no-caps :loading="loading"
-                     v-bind="formActions.next" class="float-right"
-                     @click="wayStepper = 'next'; $refs.formContent.submit()"/>
+            <!--Actions-->
+            <div :class="`row justify-${step == 0 ? 'end' : 'between'}`">
+              <q-btn v-for="(action, keyAction) in formActions" :key="keyAction" v-bind="action"
+                     unelevated rounded no-caps @click="action.action(keyBlock)" type="button"
+                     v-if="action.vIf != undefined ? action.vIf : true"/>
             </div>
           </q-step>
         </q-stepper>
@@ -58,141 +54,157 @@
       <!--Innerloading-->
       <inner-loading :visible="loading"/>
     </div>
-    <!-- Start Accordion Mode -->
-    <!-- <div class="q-pa-md">
-       <q-form autocorrect="off" autocomplete="off" ref="formAd" class="col-12 col-lg-8 offset-lg-2"
-               @validation-error="$alert.error($tr('ui.message.formInvalid'))">
-         <q-expansion-item :name="`${keyBlock}`" icon="fas fa-map-marker-alt" v-for="(block, keyBlock) in blocks"
-                           :key="keyBlock"
-                           :label="`${block.title}${keyBlock}`"
-                           class="box-collapse q-mb-md"
-                           header-class="header-container" group="fromAdExpansion">
-           <div class="q-pa-md">
-             <dynamic-field v-for="(field, keyField) in block.fields" :key="keyField" :field="field"
-                            v-model="form[field.name || keyField]" :class="field.colClass || 'col-12 col-md-6'"/>
-           </div>
-         </q-expansion-item>
-       </q-form>
-     </div>-->
-    <!-- End Accordion Mode -->
   </div>
 </template>
 
 <script>
-    export default {
-        props: {
-            formType: {type: String, default: 'stepVertical'},
-            metaInfoT: {
-                type: String,
-                required: true,
-                default: 'Default Title'
-            },
-            metaInfoD: {
-                type: String,
-                required: true,
-                default: 'Default Description'
-            },
-            blocks: {type: Array, default: false}
-        },
-        mounted() {
-            this.totalStep = this.blocks.length;
-        },
-        data() {
-            return {
-                loading: false,
-                step: `0`,
-                form: {},
-                userData: {},
-                wayStepper: 'next',
-                totalStep: 0,
-            }
-        },
-        computed: {
-            //Wizard Info
-            metaTitle() {
-                return this.metaInfoT;
-            },
-            metaDescription() {
-                return this.metaInfoD;
-            },
-            //Form progress
-            progress() {
-                if (this.step == 0) return 0.2
-                if (this.step != `${this.totalStep - 1}` && this.step != 0) return parseFloat(0.5 + this.step)
-                if (this.step == `${this.totalStep - 1}`) return 1
-            },
-            //Form actions
-            formActions() {
-                return {
-                    previous: {
-                        vIf: this.step == 0 ? false : true
-                    },
-                    next: {
-                        label: this.step == `${this.blocks.length - 1}` ? this.$tr('ui.label.save')
-                            : this.$tr('ui.label.next'),
-                        icon: this.step == `${this.blocks.length - 1}` ? 'fas fa-save' : 'fas fa-arrow-right',
-                    }
-                }
-            },
-        },
-        methods: {
-            //Toogle form step
-            toogleStep() {
-                console.warn(this.form)
-                // this.$emit('submit', this.$clone(this.form))
-                //If to toggle steps
-                if (this.wayStepper == 'next')
-                    if (this.step == `${this.totalStep - 1}`)
-                        this.createItem(),
-                            this.$emit('submit', this.$clone(this.form))
-                    else
-                        this.$refs.block.next()
-                else
-                    this.$refs.block.previous()
-            },
-            //Create lead on sale force
-            createItem() {
-                this.$emit('submit', this.$clone(this.form))
-                alert("");
-            },
-            //Handler to before step transition
-            async handlerBeforeStepTransition(newStep, oldStep) {
-                let formValidated = await this.$refs.formContent.validate()
-                if (!formValidated) {
-                    this.$refs.block.goTo(oldStep)
-                }
-                console.warn('New: ', newStep, 'Old', oldStep, '----', formValidated)
-            },
-            //Reset form
-            resetInput() {
-                this.form = {};
-                this.$refs.formContent.reset()
-            },
-        }
+export default {
+  props: {
+    value: {
+      default: () => {
+        return {}
+      }
+    },
+    loading: {type: Boolean, default: false},
+    formType: {type: String, default: 'stepHorizontal'},
+    title: {default: false},
+    description: {default: false},
+    blocks: {type: Array, default: false},
+    allowNavigation: {type: Boolean, default: false}
+  },
+  watch: {
+    value: {
+      deep: true,
+      handler: function (newValue, oldValue) {
+        this.setValueToFormData()
+      }
+    },
+    formData: {
+      deep: true,
+      handler: function (newValue, oldValue) {
+        this.$emit('input', this.$clone(this.formData))
+      }
     }
+  },
+  mounted() {
+    this.$nextTick(function () {
+      this.init()
+    })
+  },
+  data() {
+    return {
+      step: 0,
+      formData: {},
+    }
+  },
+  computed: {
+    //Form progress
+    progress() {
+      let totalStep = this.blocks.length//Get total steps
+      let valuePerStep = parseFloat(1 / totalStep).toFixed(1) // Get value per step
+
+      //Return progress value
+      if (this.step == 0) return parseFloat(valuePerStep)//To first step
+      else if (this.step == (totalStep - 1)) return 1//To last step
+      else return parseFloat(parseFloat(valuePerStep * (this.step + 1)).toFixed(1))//To middle step
+    },
+    //Step actions
+    formActions() {
+      //Validate if is last step
+      let isLastStep = this.step == (this.blocks.length - 1)
+
+      return {
+        previous: {
+          vIf: (this.step == 0) ? false : true,
+          color: "grey-7",
+          icon: "fas fa-arrow-left",
+          label: this.$tr('ui.label.previous'),
+          action: () => {
+            this.changeStep('previous')
+          }
+        },
+        next: {
+          label: isLastStep ? this.$tr('ui.label.save') : this.$tr('ui.label.next'),
+          icon: isLastStep ? 'fas fa-save' : 'fas fa-arrow-right',
+          color: "green",
+          action: () => {
+            isLastStep ? this.$emit('submit', this.$clone(this.formData)) : this.changeStep('next')
+          }
+        }
+      }
+    },
+  },
+  methods: {
+    //Init method
+    init() {
+      this.setFormFields()
+      this.setValueToFormData()
+      this.listenerStepTabClick()
+    },
+    //Set form Fields from blocks
+    setFormFields() {
+      this.blocks.forEach(block => {
+        for (var fieldName in block.fields) {
+          let field = block.fields[fieldName]
+          this.$set(this.formData, (field.name || fieldName), field.value)
+        }
+      })
+    },
+    //Set value to formData
+    setValueToFormData() {
+      if (JSON.stringify(this.value) != JSON.stringify(this.formData)) {
+        this.formData = this.$clone({...this.formData, ...this.value})
+      }
+    },
+    //Listener to step head click
+    listenerStepTabClick() {
+      var stepTabs = document.getElementsByClassName('q-stepper__tab');
+      let _this = this
+      //Listen click on step tab
+      for (var i = 0; i < stepTabs.length; i++) {
+        (function (index) {
+          stepTabs[index].addEventListener("click", function () {
+            if (parseInt(index) != _this.step) _this.changeStep(index)
+          })
+        })(i);
+      }
+    },
+    //Handler step transition
+    changeStep(toStep) {
+      //Validate if new Step it's not same to current step
+      this.$refs.formContent.validate().then(isValid => {
+        if (isValid) {
+          //Change step
+          if (toStep == 'previous') this.$refs.stepper.previous()//To previous step
+          else if (toStep == 'next') this.$refs.stepper.next()//To next step
+          else if (this.allowNavigation) this.$refs.stepper.goTo(toStep)//To specific step
+        }
+      })
+    },
+    //Reset form
+    reset() {
+      this.setFormFields()
+      this.$refs.formContent.reset()
+      this.step = 0
+    },
+  }
+}
 </script>
 
 <style lang="stylus">
-  #progressContent
-    padding: 0px 30px
+#dynamicFormComponentContent
+  #stepperContent
+    padding 0
 
-    .q-ma-none
-      margin -20px 0px
+    &.q-stepper--vertical
+      .q-stepper__tab
+        padding 12px 5px !important
 
+      .q-stepper__step-inner
+        padding 0 10px 10px 40px
 
-  .q-stepper__header
-    display none !important
+    &.q-stepper--horizontal
 
-  #header_content
-    .step-text
-      color $grey-8
-      text-align center
-      font-size 28px
-      font-weight bold
-
-    .q-stepper__step-inner
-      padding 0px 0
-
-  .q-stepper
-    box-shadow none
+      .q-stepper__step-inner
+        padding 0
 </style>

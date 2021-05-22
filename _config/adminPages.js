@@ -13,19 +13,5 @@ export default {
     subHeader: {
       refresh: true,
     }
-  },
-  dynamicForm: {
-    permission: null,
-    activated: true,
-    authenticated: true,
-    path: '/site/dynamic/index',
-    name: 'qsite.admin.dynamic/index',
-    page: () => import('@imagina/qsite/_pages/admin/dynamic/index'),
-    layout: () => import('@imagina/qsite/_layouts/master.vue'),
-    title: 'qsite.sidebar.adminDynamicForm',
-    icon: 'far fa-newspaper',
-    subHeader: {
-      refresh: true,
-    }
-  },
+  }
 }
