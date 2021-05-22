@@ -172,18 +172,19 @@ export default {
     company: 'Comañia | Compañias',
     customer: 'Cliente | Clientes',
     source: 'Fuente | Fuentes',
-    export : 'Exportar',
-    download : 'Descargar',
-    boost : 'Impulsar',
+    export: 'Exportar',
+    download: 'Descargar',
+    boost: 'Impulsar',
     since: 'Desde',
     until: 'Hasta',
-    recommendation : 'Recomendación | Recomendaciones',
+    recommendation: 'Recomendación | Recomendaciones',
     form: 'Formulario | Formularios',
     block: 'Bloque',
     field: 'Campo | Campos',
     next: 'Siguiente',
     steps: 'Pasos',
     collapsible: 'Plegable',
+    room: 'Sala | Salas'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
@@ -233,9 +234,9 @@ export default {
     editFile: 'Editar Archivo | Editar Archivos',
     addFile: 'Agregar Archivo | Agregar Archivos',
     swUpdateAvailable: 'Tenemos nuevas caracteristicas para ti, por favor actualiza',
-    backToSite : 'Volver al sitio',
+    backToSite: 'Volver al sitio',
     notAuthorized: "Lo sentimos, No estas autorizad@ para estar aquí",
-    noValue : 'Sin Valor'
+    noValue: 'Sin Valor'
   },
   form: {
     id: 'ID',
@@ -283,6 +284,7 @@ export default {
     actions: 'Acciones',
     sort: 'Ordenar',
     prefix: 'Prefijo',
+    suffix: 'Sufijo',
     currentNumber: 'Numero actual',
     firstNumber: 'Numero inicial',
     lastNumber: 'Numero final',
@@ -332,7 +334,9 @@ export default {
     onOffer: 'En oferta',
     createdBy: 'Creado por',
     systemName: 'Nombre de sistema',
-    externalId: 'ID Externo'
+    externalId: 'ID Externo',
+    company: 'Compañia | Compañias',
+    customUrl: 'Url Personalizada'
   },
   configList: {
     loggedAs: 'Registrado como',
