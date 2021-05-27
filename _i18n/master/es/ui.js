@@ -103,6 +103,7 @@ export default {
     day: 'Día | Dias',
     today: 'Hoy',
     tomorrow: 'Mañana',
+    yesterday : 'Ayer',
     LastNumDays: 'Ultimos {numDays} dias',
     currentWeek: 'Semana actual',
     lastWeek: 'Ultima semana',

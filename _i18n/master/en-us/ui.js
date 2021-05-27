@@ -103,6 +103,7 @@ export default {
     today: 'Today',
     yesterday: 'Yesterday',
     tomorrow: 'Tomorrow',
+    yesterday: 'Yesterday',
     LastNumDays: 'Last {numDays} days',
     currentWeek: 'Current week',
     lastWeek: 'Last week',
