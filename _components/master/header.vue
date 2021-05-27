@@ -39,6 +39,13 @@
                    @click="$eventBus.$emit('toggleMasterDrawer','chat')" text-color="primary">
               <q-tooltip>Chat</q-tooltip>
             </q-btn>
+            <!--== Button Notifications ==-->
+            <q-btn round dense icon="fas fa-bell" color="white" text-color="primary"
+                   :class="`btn-action ${badge.notification ? 'active-badge' : ''}`"
+                   @click="$eventBus.$emit('toggleMasterDrawer','notification')"
+                   v-if="$auth.hasAccess('notification.notifications.manage')">
+              <q-tooltip>{{ $trp('ui.label.notification') }}</q-tooltip>
+            </q-btn>
             <!--== Button Config ==-->
             <q-btn round dense icon="fas fa-cog" color="white" unelevated class="btn-action" text-color="primary"
                    @click="$eventBus.$emit('toggleMasterDrawer','config')" size="14px">
@@ -185,7 +192,8 @@ export default {
       filter: this.$filter,
       appConfig: config('app'),
       badge: {
-        chat: false
+        chat: false,
+        notification: false
       },
       loadHeaderIpanel: false
     }
