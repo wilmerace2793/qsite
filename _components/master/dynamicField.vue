@@ -197,6 +197,10 @@
         <q-field v-model="responseValue" v-if="loadField('uploader')" v-bind="fieldProps.fieldComponent" stack-label>
           <uploader v-model="responseValue" v-bind="fieldProps.field"/>
         </q-field>
+        <!--rating-->
+        <q-field v-model="responseValue" v-if="loadField('rating')" v-bind="fieldProps.fieldComponent">
+          <q-rating v-model="responseValue" v-bind="fieldProps.field"/>
+        </q-field>
       </div>
     </div>
   </div>
@@ -569,6 +573,21 @@ export default {
             }
           }
           break;
+        case'rating':
+          props = {
+            field: {
+              max: 5,
+              color: 'amber',
+              size: "3em",
+              ...props
+            },
+            fieldComponent: {
+              borderless: true,
+              dense: true,
+              ...props
+            }
+          }
+          break;
       }
 
       //Add ruler to required field
@@ -715,7 +734,7 @@ export default {
             this.responseValue = []
             //Get filter options
             let filterField = (crudProps.config && crudProps.config.options) ?
-              crudProps.config.options : {label: 'title', value: 'id'}
+                crudProps.config.options : {label: 'title', value: 'id'}
             //if value is array, get id option
             if (propValue && Array.isArray(propValue)) {
               propValue.forEach(item => {
@@ -763,6 +782,9 @@ export default {
           break
         case 'uploader':
           this.responseValue = (propValue !== undefined) ? propValue : null
+          break
+        case 'rating':
+          this.responseValue = (propValue !== undefined) ? propValue : 1
           break
         default :
           this.responseValue = propValue || null
@@ -833,12 +855,12 @@ export default {
             let formatedOptions = []
             //Format response
             formatedOptions = this.field.type == 'select' ?
-              this.$array.select(response.data, loadOptions.select || fieldSelect) :
-              this.$array.tree(response.data, loadOptions.select || fieldSelect)
+                this.$array.select(response.data, loadOptions.select || fieldSelect) :
+                this.$array.tree(response.data, loadOptions.select || fieldSelect)
 
             //Assign options
             this.rootOptions = (this.field.props && this.field.props.options) ?
-              this.$clone((this.field.props.options || []).concat(formatedOptions)) : formatedOptions
+                this.$clone((this.field.props.options || []).concat(formatedOptions)) : formatedOptions
             this.loading = false
             resolve(true)
           }).catch(error => {
