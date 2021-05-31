@@ -1,13 +1,13 @@
 <template>
   <!---Form content-->
   <div id="dynamicFormComponent">
-    <div id="dynamicFormComponentContent" class="relative-position">
+    <div id="dynamicFormComponentContent" class="relative-position" :key="componentId">
       <!--Top Content-->
       <div id="topContent">
         <!--Title-->
-        <div class="box-title text-center q-mb-md" v-if="title">{{ title }}</div>
+        <div class="box-title text-center q-mb-md" v-if="formProps.title" v-html="formProps.title"></div>
         <!--Description-->
-        <div class="text-body2 q-mb-md text-grey-8" v-if="description"> {{ description }}</div>
+        <div class="text-body2 q-mb-md text-grey-8" v-if="formProps.description" v-html="formProps.description"></div>
       </div>
 
       <!--Progress bar-->
@@ -23,7 +23,7 @@
                    :vertical="formType == 'stepVertical' ? true : false"
                    :header-class="formType == 'stepVertical' ? '' : 'q-hide'">
           <!--Steps-->
-          <q-step v-for="(block, keyBlock) in blocks" :key="keyBlock" :name="keyBlock"
+          <q-step v-for="(block, keyBlock) in blocksData" :key="keyBlock" :name="keyBlock"
                   :title="block.title || `#${keyBlock+1}`" :class="allowNavigation ? 'cursor-pointer' : ''">
             <!--Top step Info-->
             <div class="step-top-content" v-if="block.title || block.description">
@@ -52,7 +52,7 @@
       </q-form>
 
       <!--Innerloading-->
-      <inner-loading :visible="loading"/>
+      <inner-loading :visible="(loading || innerLoading) ? true : false"/>
     </div>
   </div>
 </template>
@@ -69,8 +69,9 @@ export default {
     formType: {type: String, default: 'stepHorizontal'},
     title: {default: false},
     description: {default: false},
-    blocks: {type: Array, default: false},
-    allowNavigation: {type: Boolean, default: false}
+    blocks: {default: false},
+    allowNavigation: {type: Boolean, default: false},
+    formId: {default: false}
   },
   watch: {
     value: {
@@ -84,6 +85,9 @@ export default {
       handler: function (newValue, oldValue) {
         this.$emit('input', this.$clone(this.formData))
       }
+    },
+    formId() {
+      this.init()
     }
   },
   mounted() {
@@ -93,14 +97,55 @@ export default {
   },
   data() {
     return {
+      componentId: this.$uid(),
       step: 0,
+      innerLoading: false,
+      formBlocks: false,
       formData: {},
     }
   },
   computed: {
+    //From Props
+    formProps() {
+      //Get form data
+      let form = this.$clone(this.formBlocks)
+
+      //Default response
+      let response = {
+        title: this.$clone(this.title),
+        description: this.$clone(this.description),
+      }
+
+      //Set info from form
+      if (form) response.title = form.title
+
+      //Add count steps
+      if ((this.blocksData.length >= 2) && (this.formType == 'stepHorizontal'))
+        response.title = `${form.title} (${this.step + 1}/${this.blocksData.length})`
+
+      //Response
+      return response
+    },
+    //BlocksData
+    blocksData() {
+      let blocks = this.$clone(this.blocks || [])
+      let form = this.$clone(this.formBlocks)
+
+      if (form && form.blocks) {
+        //Get dynamic field by blocks from form
+        form.blocks.forEach((block, index) => {
+          form.blocks[index].fields = form.blocks[index].fields.map(field => field.dynamicField)
+        })
+        //Merge blocks
+        blocks = [...blocks, ...form.blocks]
+      }
+
+      //Response
+      return blocks
+    },
     //Form progress
     progress() {
-      let totalStep = this.blocks.length//Get total steps
+      let totalStep = this.blocksData.length//Get total steps
       let valuePerStep = parseFloat(1 / totalStep).toFixed(1) // Get value per step
 
       //Return progress value
@@ -111,7 +156,7 @@ export default {
     //Step actions
     formActions() {
       //Validate if is last step
-      let isLastStep = this.step == (this.blocks.length - 1)
+      let isLastStep = this.step == (this.blocksData.length - 1)
 
       return {
         previous: {
@@ -128,7 +173,7 @@ export default {
           icon: isLastStep ? 'fas fa-save' : 'fas fa-arrow-right',
           color: "green",
           action: () => {
-            isLastStep ? this.$emit('submit', this.$clone(this.formData)) : this.changeStep('next')
+            this.changeStep('next', isLastStep)
           }
         }
       }
@@ -136,14 +181,35 @@ export default {
   },
   methods: {
     //Init method
-    init() {
+    async init() {
+      this.innerLoading = true
+      await this.getFormFields()
       this.setFormFields()
       this.setValueToFormData()
       this.listenerStepTabClick()
+      this.innerLoading = false
+    },
+    //Get form fields
+    getFormFields() {
+      return new Promise((resolve, reject) => {
+        //Validate form data
+        if (!this.formId) return resolve(false)
+        //Request Params
+        let requestParams = {
+          refresh: true,
+          params: {include: 'blocks.fields'}
+        }
+
+        //Request
+        this.$crud.show('apiRoutes.qform.forms', this.formId, requestParams).then(response => {
+          this.formBlocks = response.data
+          resolve(response.data)
+        }).catch(error => reject(error))
+      })
     },
     //Set form Fields from blocks
     setFormFields() {
-      this.blocks.forEach(block => {
+      this.blocksData.forEach(block => {
         for (var fieldName in block.fields) {
           let field = block.fields[fieldName]
           this.$set(this.formData, (field.name || fieldName), field.value)
@@ -170,21 +236,26 @@ export default {
       }
     },
     //Handler step transition
-    changeStep(toStep) {
+    changeStep(toStep, isSubmit = false) {
       //Validate if new Step it's not same to current step
       this.$refs.formContent.validate().then(isValid => {
         if (isValid) {
-          //Change step
-          if (toStep == 'previous') this.$refs.stepper.previous()//To previous step
-          else if (toStep == 'next') this.$refs.stepper.next()//To next step
-          else if (this.allowNavigation) this.$refs.stepper.goTo(toStep)//To specific step
+          //Emit submit form
+          if (isSubmit) {
+            this.$emit('submit', this.$clone(this.formData))
+          } else {//Change step
+            if (toStep == 'previous') this.$refs.stepper.previous()//To previous step
+            else if (toStep == 'next') this.$refs.stepper.next()//To next step
+            else if (this.allowNavigation) this.$refs.stepper.goTo(toStep)//To specific step
+          }
         }
       })
     },
     //Reset form
     reset() {
       this.setFormFields()
-      this.$refs.formContent.reset()
+      this.componentId = this.$uid()
+      this.$refs.formContent.resetValidation()
       this.step = 0
     },
   }
