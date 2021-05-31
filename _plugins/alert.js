@@ -13,16 +13,7 @@ class Alert {
       pos: 'bottom-right',
       action: false,
       timeOut: 4000,
-      actions: [
-        {
-          label: 'Ok',
-          icon: '',
-          color: 'green',
-          handler: () => {
-            false
-          }
-        }
-      ],
+      actions: [],
       color: 'primary',
       textColor: 'white',
       ...config('app.alert')
@@ -114,7 +105,7 @@ class Alert {
       color: params.color,
       textColor: params.textColor,
       position: params.pos,
-      actions: params.actions,
+      actions: params.actions.length ? params.actions : [{label: 'Ok', color: 'white'}],
       html: true
     })
   }

@@ -181,7 +181,9 @@ export default {
     previous: 'Previous',
     steps: 'Steps',
     collapsible: 'Collapsible',
-    room: 'Room | Rooms'
+    room: 'Room | Rooms',
+    rating: 'Rating | Ratings',
+    appointment: 'Appointment | Appointments'
   },
   message: {
     notFound: 'Sorry, nothing here',
@@ -224,6 +226,7 @@ export default {
     copiedToClipboard: 'Copied to clipboard',
     preview: 'Preview',
     showMore: 'Show more',
+    showLess: 'Show less',
     request: 'Request | Request',
     accept: 'Accept',
     reject: 'Reject',
@@ -238,7 +241,8 @@ export default {
     swUpdateAvailable: 'We have new features for you, please update',
     backToSite: 'Back to site',
     notAuthorized: "Sorry, You are not authorized to be here",
-    noValue: 'No Value'
+    noValue: 'No Value',
+    rateYour: 'Rate your <b>{name}</b>'
   },
   form: {
     id: 'ID',

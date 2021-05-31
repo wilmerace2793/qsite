@@ -103,7 +103,7 @@ export default {
     day: 'Día | Dias',
     today: 'Hoy',
     tomorrow: 'Mañana',
-    yesterday : 'Ayer',
+    yesterday: 'Ayer',
     LastNumDays: 'Ultimos {numDays} dias',
     currentWeek: 'Semana actual',
     lastWeek: 'Ultima semana',
@@ -186,7 +186,9 @@ export default {
     previous: 'Anterior | Anteriores',
     steps: 'Pasos',
     collapsible: 'Plegable',
-    room: 'Sala | Salas'
+    room: 'Sala | Salas',
+    rating: 'Calificación | Calificaciones',
+    appointment: 'Cita | Citas'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
@@ -229,6 +231,7 @@ export default {
     copiedToClipboard: 'Copiado en el portapapeles',
     preview: 'Vista previa',
     showMore: 'Ver más',
+    showLess: 'Ver menos',
     changeTo: 'Cambiar a {text}',
     listView: 'Vista de lista',
     gribView: 'Vista de cuadricula',
@@ -238,7 +241,8 @@ export default {
     swUpdateAvailable: 'Tenemos nuevas caracteristicas para ti, por favor actualiza',
     backToSite: 'Volver al sitio',
     notAuthorized: "Lo sentimos, No estas autorizad@ para estar aquí",
-    noValue: 'Sin Valor'
+    noValue: 'Sin Valor',
+    rateYour: 'Califica tu <b>{name}</b>'
   },
   form: {
     id: 'ID',
