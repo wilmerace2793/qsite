@@ -18,7 +18,7 @@
       <q-separator class="q-mt-sm"/>
 
       <!--Content-->
-      <q-card-section class="relative-position col-12 q-px-none">
+      <q-card-section class="relative-position col-12 q-px-none q-pb-none">
         <!--Message-->
         <div v-html="paramsModal.message" class="q-mb-lg"></div>
         <!--button Actions-->
@@ -55,7 +55,7 @@ export default {
         color: 'cyan',
         title: this.$tr('ui.label.notification'),
         message: 'Message...',
-        actions: [{label: this.$tr('ui.label.accept')}],
+        actions: [{label: this.$tr('ui.label.ok')}],
         ...this.params
       }
     },
