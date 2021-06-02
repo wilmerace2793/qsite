@@ -66,7 +66,7 @@ export default {
   computed: {
     //Return token to map
     token() {
-      return this.$store.getters['qsiteApp/getSettingValueByName']('isite::api-maps')
+      return this.$store.getters['qsiteApp/getSettingValueByName']('isite::api-open-street-maps')
     },
     //Emit response value
     emitResponseValue() {
@@ -90,7 +90,7 @@ export default {
 
       //Validate map types
       switch (this.type) {
-        //Set default value and response value
+          //Set default value and response value
         case 'positionMarkerMap':
           if (this.value) {
             this.address = this.$clone(this.value)//Set default value
@@ -150,7 +150,7 @@ export default {
     //Handler to click over map
     mapClickEvent(event) {
       switch (this.type) {
-        //Set lat-lng to response value
+          //Set lat-lng to response value
         case 'positionMarkerMap':
           this.markPoint = true
           this.address = {title: '', lat: event.latlng.lat, lng: event.latlng.lng}
