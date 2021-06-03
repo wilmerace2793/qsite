@@ -24,8 +24,8 @@
             <!--Title-->
             <div class="col-12 text-blue-grey text-weight-bold text-center">
               <div class="box" style="min-height: auto">
-                <q-icon :name="params.icon" class="q-mr-sm" size="16px"/>
-                {{ $tr(params.title) }}
+                <q-icon v-if="$route.meta.icon" :name="$route.meta.icon" class="q-mr-sm" size="16px"/>
+                {{ $tr($route.meta.title) }}
               </div>
             </div>
             <!--Generate new report-->
@@ -45,8 +45,8 @@
                           class="row full-width"
                           @submit="newReport()" @validation-error="$alert.error($tr('ui.message.formInvalid'))">
                     <!--Fields-->
-                    <dynamic-field v-for="(field, keyField) in exportFields" :key="keyField" :field="field"
-                                   class="col-12" v-model="filters[keyField]"/>
+                    <dynamic-field v-for="(field, keyField) in (params.exportFields || [])" :key="keyField"
+                                   :field="field" class="col-12" v-model="filters[keyField]"/>
                     <!--Submit-->
                     <div class="text-right col-12">
                       <q-btn :label="$tr('ui.label.create')" color="green" rounded unelevated size="11px"
@@ -106,12 +106,12 @@ export default {
   },
   mounted() {
     this.$nextTick(function () {
-      //this.init()
     })
   },
   data() {
     return {
       loading: false,
+      params: false,
       customExportData: false,
       showModal: false,
       fileExport: false,
@@ -120,16 +120,21 @@ export default {
   },
   computed: {
     //Return params of subHeader
-    params() {
-      let subHeader = this.$route.meta.subHeader
-      let response = this.customExportData ? this.customExportData :
-        ((subHeader && subHeader.export) ? subHeader.export : false)
-      return response
-    },
-    //Fields
-    exportFields() {
-      let subHeader = this.$route.meta.subHeader
-      let response = (subHeader && subHeader.exportFields) ? subHeader.exportFields : {}
+    routeParams() {
+      let response = false
+      //GEt route permission
+      let permission = this.$route.meta.permission
+
+      //Parse Route Permission
+      if (permission) {
+        let splitPermission = this.$route.meta.permission.split('.')
+        response = {
+          moduleName: (splitPermission[0] == 'profile') ? 'iprofile' : splitPermission[0],
+          entityName: splitPermission[1]
+        }
+      }
+
+      //Response
       return response
     }
   },
@@ -158,7 +163,37 @@ export default {
       this.$root.$on('export.data.refresh', () => this.getData(true))
     },
     //Get data
-    getData(refresh = false) {
+    async getData() {
+      this.loading = true
+      await this.getExportConfig()//get export config
+      await this.getExportData()//Get export data
+      this.loading = false
+    },
+    //Get export config
+    getExportConfig() {
+      return new Promise((resolve, reject) => {
+        this.params = false//Reset params
+        if (!this.routeParams) return resolve(false)
+
+        //Request Params
+        let requestParams = {
+          refresh: true,
+          params: {
+            filter: {configName: `${this.routeParams.moduleName}.config.exportable.${this.routeParams.entityName}`}
+          }
+        }
+
+        //Request
+        this.$crud.index('apiRoutes.qsite.configs', requestParams).then(response => {
+          this.params = response.data
+          resolve(response.data)
+        }).catch(error => {
+          resolve(false)
+        })
+      })
+    },
+    //Get data
+    getExportData() {
       return new Promise((resolve, reject) => {
         if (!this.params) return resolve(false)
         this.loading = true
@@ -175,9 +210,9 @@ export default {
         //Request
         this.$crud.index('apiRoutes.qsite.export', requestParams).then(response => {
           this.fileExport = response.data
-          this.loading = false
+          resolve(response.data)
         }).catch(error => {
-          this.loading = false
+          resolve(error)
         })
       })
     },
@@ -221,6 +256,7 @@ export default {
   .q-btn-dropdown
     .q-btn-dropdown__arrow
       display none
+
 #contentMasterExportComponent
   #cardContent
     background-color $custom-accent-color
