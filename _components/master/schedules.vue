@@ -49,62 +49,61 @@
         <div class="relative-position q-pa-none">
           <!--Schedules-->
           <q-list separator>
-            <q-item v-for="(item, key) in response" :key="key" style="min-width: 450px">
-              <!--Day-->
-              <q-item-section class="text-capitalize">
-                <q-item-label>{{ $tr(`ui.label.${item.name}`) }}</q-item-label>
-              </q-item-section>
-
-              <!--Hours-->
-              <q-item-section side>
-                <div class="text-right">
-                  <!--Button add hours-->
-                  <q-btn icon="fas fa-plus" v-if="['1','0'].indexOf(modal.status[item.name]) == -1"
-                         color="positive" flat size="sm" :disabled="!successLastSchedule(item.name)"
-                         @click="modal.schedules[item.name].push({from : new Date(), to : new Date()})">
-                    <q-tooltip>{{ $tr('ui.label.add') }}</q-tooltip>
-                  </q-btn>
-
+            <q-item v-for="(item, key) in response" :key="key" style="min-width: 315px">
+              <q-item-section>
+                <!--Top Content-->
+                <div class="row justify-between items-center">
+                  <!--Title-->
+                  <div class="text-center text-blue-grey">
+                    <b>{{ $tr(`ui.label.${item.name}`) }}</b>
+                  </div>
                   <!--Select status-->
-                  <q-select outlined dense style="max-width: 100px; min-width: 120px" v-model="modal.status[item.name]"
+                  <q-select outlined dense style="max-width: 100px; min-width: 120px"
+                            v-model="modal.status[item.name]"
                             :options="options.status" emit-value map-options/>
-
-                  <!--List schedules-->
-                  <div v-if="['1','0'].indexOf(modal.status[item.name]) == -1">
-                    <div v-for="(schedule,index) in modal.schedules[item.name]" :key="index">
-                      <q-separator/>
-
-                      <!--Button remove hours-->
-                      <q-btn icon="fas fa-times" color="negative" flat size="sm"
+                </div>
+                <!--List schedules-->
+                <div v-if="['1','0'].indexOf(modal.status[item.name]) == -1" class="q-my-md">
+                  <div v-for="(schedule,index) in modal.schedules[item.name]" :key="index"
+                       class="row justify-between items-center">
+                    <!--Range date-->
+                    <div class="inline-block q-py-xs">
+                      <!--Date time from-->
+                      <label>{{ $trd(modal.schedules[item.name][index].from, {type: 'time'}) }}</label>
+                      <q-btn size="sm" round color="primary" icon="fas fa-clock" class="q-ml-sm" unelevated>
+                        <q-popup-proxy :ref="`popupFrom${index}`" transition-show="scale" transition-hide="scale">
+                          <q-time :format24h="false" v-model="modal.schedules[item.name][index].from"
+                                  mask="YYYY-MM-DD HH:mm"
+                                  @input="$refs[`popupFrom${index}`][0].hide()"/>
+                        </q-popup-proxy>
+                      </q-btn>
+                      <label class="q-px-sm">/</label>
+                      <!--Date time To-->
+                      <label>{{ $trd(modal.schedules[item.name][index].to, {type: 'time'}) }}</label>
+                      <q-btn size="sm" round color="primary" icon="fas fa-clock" class="q-ml-sm">
+                        <q-popup-proxy :ref="`popupTom${index}`" transition-show="scale" transition-hide="scale">
+                          <q-time :format24h="false" v-model="modal.schedules[item.name][index].to"
+                                  mask="YYYY-MM-DD HH:mm"
+                                  @input="$refs[`popupTom${index}`][0].hide()"/>
+                        </q-popup-proxy>
+                      </q-btn>
+                    </div>
+                    <!--Button remove hours-->
+                    <div>
+                      <q-btn icon="fas fa-trash" color="negative" size="sm" round unelevated
                              @click="modal.schedules[item.name].splice(index,1)"
                              :disabled="index == 0 ? true : false">
                         <q-tooltip>{{ $tr('ui.label.remove') }}</q-tooltip>
                       </q-btn>
-
-                      <!--Range date-->
-                      <div class="inline-block q-py-xs">
-                        <!--Date time from-->
-                        <label>{{ $trd(modal.schedules[item.name][index].from, {type: 'time'}) }}</label>
-                        <q-btn size="sm" round color="primary" icon="fas fa-clock" class="q-ml-sm">
-                          <q-popup-proxy :ref="`popupFrom${index}`" transition-show="scale" transition-hide="scale">
-                            <q-time :format24h="false" v-model="modal.schedules[item.name][index].from"
-                                    mask="YYYY-MM-DD HH:mm"
-                                    @input="$refs[`popupFrom${index}`][0].hide()"/>
-                          </q-popup-proxy>
-                        </q-btn>
-                        <label class="q-px-sm">/</label>
-                        <!--Date time To-->
-                        <label>{{ $trd(modal.schedules[item.name][index].to, {type: 'time'}) }}</label>
-                        <q-btn size="sm" round color="primary" icon="fas fa-clock" class="q-ml-sm">
-                          <q-popup-proxy :ref="`popupTom${index}`" transition-show="scale" transition-hide="scale">
-                            <q-time :format24h="false" v-model="modal.schedules[item.name][index].to"
-                                    mask="YYYY-MM-DD HH:mm"
-                                    @input="$refs[`popupTom${index}`][0].hide()"/>
-                          </q-popup-proxy>
-                        </q-btn>
-                      </div>
                     </div>
                   </div>
+                </div>
+                <!--Button add hours-->
+                <div class="text-center">
+                  <q-btn v-if="['1','0'].indexOf(modal.status[item.name]) == -1" rounded
+                         color="positive" size="sm" :disabled="!successLastSchedule(item.name)" unelevated
+                         @click="modal.schedules[item.name].push({from : new Date(), to : new Date()})"
+                         :label="$tr('ui.label.add')+' '+$tr('ui.form.schedule')"/>
                 </div>
               </q-item-section>
             </q-item>
@@ -241,7 +240,7 @@ export default {
       //Order schedules according status
       Object.keys(this.modal.status).forEach(day => {
         response[day] = (['1', '0'].indexOf(this.modal.status[day]) != -1) ?
-          this.modal.status[day] : this.modal.schedules[day]
+            this.modal.status[day] : this.modal.schedules[day]
       })
 
       //Merge with Response
