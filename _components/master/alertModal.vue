@@ -91,8 +91,9 @@ export default {
     },
     //Callback
     callBack(action) {
-      if (action.toUrl) return this.$helper.openExternalURL(action.toUrl, false)
-      if (action.handler) return action.handler()
+      if (action.toUrl) this.$helper.openExternalURL(action.toUrl, false)
+      else if (action.toVueRoute) this.$router.push(action.toVueRoute)
+      else if (action.handler) action.handler()
     }
   }
 }

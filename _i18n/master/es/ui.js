@@ -188,7 +188,8 @@ export default {
     collapsible: 'Plegable',
     room: 'Sala | Salas',
     rating: 'Calificación | Calificaciones',
-    appointment: 'Cita | Citas'
+    appointment: 'Cita | Citas',
+    show : 'Mostrar'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

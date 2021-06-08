@@ -72,7 +72,7 @@ class Alert {
   warning(params = {}) {
     params = this.getGlobalParams(params)
     params.icon = params.icon || 'warning'
-    params.color = 'warning'
+    params.color = 'orange'
     //Show
     if (params.mode && (params.mode == 'modal')) this.showModal(params)
     else this.showNotify(params)

@@ -59,7 +59,7 @@ import menuList from '@imagina/qsite/_components/master/recursiveItem'
 import masterFilter from '@imagina/qsite/_components/master/masterFilter'
 import checkin from '@imagina/qcheckin/_components/checkin'
 import masterRecommendation from '@imagina/qsite/_components/master/masterRecommendations'
-import masterNotifications from  '@imagina/qnotification/_components/notifications'
+import masterNotifications from  '@imagina/qnotification/_components/drawerNotifications'
 
 export default {
   beforeDestroy() {

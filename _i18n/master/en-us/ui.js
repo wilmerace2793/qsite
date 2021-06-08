@@ -183,7 +183,8 @@ export default {
     collapsible: 'Collapsible',
     room: 'Room | Rooms',
     rating: 'Rating | Ratings',
-    appointment: 'Appointment | Appointments'
+    appointment: 'Appointment | Appointments',
+    show: 'Show'
   },
   message: {
     notFound: 'Sorry, nothing here',

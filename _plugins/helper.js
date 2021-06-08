@@ -440,6 +440,13 @@ class Helper {
     //response
     return response.join(" ")
   }
+
+  //Play sound notify
+  playSound(params) {
+    var audio = new Audio(params.url);
+    audio.volume = params.volume || 1
+    audio.play();
+  }
 }
 
 const helper = new Helper();

@@ -38,6 +38,7 @@
                    :class="`btn-action ${badge.notification ? 'active-badge' : ''}`"
                    @click="$eventBus.$emit('toggleMasterDrawer','notification')"
                    v-if="$auth.hasAccess('notification.notifications.manage')">
+              <!--Tootltip-->
               <q-tooltip>{{ $trp('ui.label.notification') }}</q-tooltip>
             </q-btn>
             <!--== Button Config ==-->
@@ -113,11 +114,6 @@
             </q-btn>
           </div>
         </q-toolbar>
-        <!--<div v-else id="headerIpanel">
-          <div id="webComponent">
-            <embedded-header-ipanel v-if="loadHeaderIpanel"></embedded-header-ipanel>
-          </div>
-        </div>-->
       </div>
 
       <!--Toolbar Sub header--->
