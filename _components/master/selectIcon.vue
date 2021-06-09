@@ -1,72 +1,97 @@
 <template>
-  <div class="q-pa-md q-gutter-sm">
-    <q-btn label="Click me" color="primary" @click="layout = true"/>
+  <div id="iconSelectComponent">
+    <!--Input selected-->
+    <q-input v-model="selectedIcon" bg-color="white" outlined dense clearable :label="label || $tr('ui.form.icon')"
+             readonly @click="modal.show = true" class="cursor-pointer" :rules="rules">
+      <template v-slot:append v-if="selectedIcon">
+        <q-icon :name="selectedIcon" color="blue-grey"/>
+      </template>
+    </q-input>
 
-    <q-dialog v-model="layout" class="q-mb-lg">
-      <q-layout view="Lhh lpR fff" container class="bg-white" style="width: 700px">
-        <q-header class="bg-primary">
-          <q-toolbar>
-            <q-btn flat @click="drawer = !drawer" round dense icon="menu"/>
-            <q-toolbar-title>{{ $trp('ui.form.icon') }}</q-toolbar-title>
-            <q-btn flat v-close-popup round dense icon="close"/>
-          </q-toolbar>
-        </q-header>
+    <!--Dielog with list icons-->
+    <q-dialog id="modalIconListContent" v-model="modal.show" class="q-mb-lg">
+      <q-card class="bg-grey-1 backend-page row">
+        <!--Header-->
+        <q-toolbar class="bg-primary text-white">
+          <q-toolbar-title>{{ `${$tr('ui.label.select')} ${$tr('ui.form.icon')}` }}</q-toolbar-title>
+          <q-btn flat v-close-popup round dense icon="close"/>
+        </q-toolbar>
 
-        <q-drawer show-if-above v-model="drawer" :width="200" :breakpoint="700"
-                  content-class="bg-grey-3 q-pa-sm">
-          <q-toolbar>
-            <div class="bg-primary">
-              {{ $tr('ui.label.category') }}
-
+        <!--Content-->
+        <q-card-section class="relative-position col-12">
+          <!--Search-->
+          <q-input v-model="searchIcon" bg-color="white" outlined dense clearable :label="$tr('ui.label.search')"
+                   class="q-mb-md">
+            <template v-slot:append>
+              <q-icon name="search"/>
+            </template>
+          </q-input>
+          <!--Icon categories-->
+          <q-select v-model="selectedCategory" :options="categoryOptions" emit-value map-options outlined dense
+                    :label="$tr('ui.label.category')" use-input @filter="filterCategoryOptions" v-if="!searchIcon"
+                    bg-color="white" style="width: 100%" behavior="menu" class="q-mb-md"/>
+          <!--Icon list-->
+          <div class="icon-list-content row q-col-gutter-xs">
+            <!--Remove icon-->
+            <div class="remove-icon col-4 col-md-3">
+              <div class="icon-content" @click="selectedIcon = null; modal.show = false">
+                <div class="empty-icon q-mb-xs"></div>
+                <div class="ellipsis text-caption text-grey-7">{{ $tr('ui.message.withoutIcon') }}</div>
+              </div>
             </div>
-          </q-toolbar>
-          <div v-for="(category, categoryKey) in icons" :key="categoryKey">
-
-            <q-btn flat class="full-width">
-              {{ categoryKey }}
-            </q-btn>
+            <!--Icons-->
+            <div v-for="(icon, keyIcon) in showIconsData" :key="keyIcon" class="col-4 col-md-3">
+              <div class="icon-content" @click="selectedIcon = icon; modal.show = false">
+                <q-icon :name="icon" color="blue-grey" size="35px"/>
+                <div class="ellipsis text-caption text-grey-7">{{ icon.substr(7, icon.length) }}</div>
+              </div>
+            </div>
           </div>
-        </q-drawer>
-        <div class="q-mt-xl"></div>
-        <div v-for="(category, categoryKey) in icons" :key="categoryKey">
-          <div class="row q-pa-md">
-            <div :id="categoryKey" class="col-12 text-uppercase">
-              {{ categoryKey }}
-            </div>
-            <div v-for="(icon, iconKey) in category" :key="iconKey"
-                 class="col-6 col-md-3 row justify-center">
-              <q-radio v-model="valueIcon" :val="icon" hidden size="0px">
-                <q-btn color="primary" :icon="icon" size="md" class="q-mb-sm row" flat
-                       style="height: 90px; width: 100%">
-                  <q-item-label class="text-center text-grey-10 text-lowercase col-12 q-mt-sm">
-                    {{ icon.slice(7) }}
-                  </q-item-label>
-                </q-btn>
-              </q-radio>
-            </div>
-          </div>
-        </div>
-      </q-layout>
+        </q-card-section>
+      </q-card>
     </q-dialog>
   </div>
 </template>
 
-
 <script>
 export default {
+  props: {
+    value: {default: null},
+    label: {default: false},
+    rules: {
+      default: () => {
+        return []
+      }
+    }
+  },
+  watch: {
+    value(newValue, oldValue) {
+      if (newValue != oldValue) this.selectedIcon = newValue
+    },
+    selectedIcon(newValue) {
+      this.$emit('input', newValue)
+    }
+  },
   mounted() {
     this.init()
   },
   data() {
     return {
-      layout: true,
-      moreContent: true,
-      drawer: false,
-      valueCategory: accessibility,
-      valueIcon: false,
-
-      icons: {
-        Accessibility: [
+      modal: {
+        show: false
+      },
+      rootCategoryOptions: [],
+      categoryOptions: [],
+      searchIcon: null,
+      selectedCategory: 'accessibility',
+      selectedIcon: null
+    }
+  },
+  computed: {
+    //Icons data
+    iconsData() {
+      return {
+        accessibility: [
           "fas fa-american-sign-language-interpreting",
           "fas fa-assistive-listening-systems",
           "fas fa-audio-description",
@@ -326,7 +351,7 @@ export default {
           "fas fa-wind",
           "fas fa-wine-bottle"
         ],
-        Drink: [
+        drink: [
           "fas fa-beer",
           "fas fa-blender",
           "fas fa-cocktail",
@@ -517,7 +542,7 @@ export default {
           "far fa-handshake",
           "far fa-heart"
         ],
-        Chat: [
+        chat: [
           "fas fa-comment",
           "fas fa-comment-alt",
           "fas fa-comment-dots",
@@ -1167,7 +1192,7 @@ export default {
           "fas fa-seedling",
           "far fa-lemon"
         ],
-        games: [
+        game: [
           "fas fa-chess",
           "fas fa-chess-bishop",
           "fas fa-chess-board",
@@ -1226,7 +1251,7 @@ export default {
           "fas fa-spider",
           "fas fa-toilet-paper"
         ],
-        hands: [
+        hand: [
           "fas fa-allergies",
           "fas fa-fist-raised",
           "fas fa-hand-holding",
@@ -1596,7 +1621,7 @@ export default {
           "fas fa-truck",
           "fas fa-warehouse"
         ],
-        maps: [
+        map: [
           "fas fa-ambulance",
           "fas fa-anchor",
           "fas fa-balance-scale",
@@ -1790,7 +1815,7 @@ export default {
           "fas fa-times",
           "fas fa-wave-square"
         ],
-        hospitals: [
+        hospital: [
           "fas fa-allergies",
           "fas fa-ambulance",
           "fas fa-bacteria",
@@ -1868,7 +1893,7 @@ export default {
           "far fa-heart",
           "far fa-hospital"
         ],
-        transfers: [
+        transfer: [
           "fas fa-archive",
           "fas fa-box-open",
           "fas fa-caravan",
@@ -2362,7 +2387,7 @@ export default {
           "far fa-hand-spock",
           "far fa-moon"
         ],
-        Security: [
+        security: [
           "fas fa-ban",
           "fas fa-bug",
           "fas fa-door-closed",
@@ -2392,7 +2417,7 @@ export default {
           "far fa-id-badge",
           "far fa-id-card"
         ],
-        shapes: [
+        shape: [
           "fas fa-bookmark",
           "fas fa-calendar",
           "fas fa-certificate",
@@ -2483,7 +2508,7 @@ export default {
           "far fa-user",
           "far fa-user-circle"
         ],
-        spinners: [
+        spinner: [
           "fas fa-asterisk",
           "fas fa-atom",
           "fas fa-bahai",
@@ -2511,7 +2536,7 @@ export default {
           "far fa-snowflake",
           "far fa-sun"
         ],
-        sports: [
+        sport: [
           "fas fa-baseball-ball",
           "fas fa-basketball-ball",
           "fas fa-biking",
@@ -2662,7 +2687,7 @@ export default {
           "far fa-thumbs-up",
           "far fa-user"
         ],
-        Summer: [
+        summer: [
           "fas fa-anchor",
           "fas fa-biking",
           "fas fa-fish",
@@ -2830,7 +2855,7 @@ export default {
           "far fa-user",
           "far fa-user-circle"
         ],
-        vehicles: [
+        vehicle: [
           "fas fa-ambulance",
           "fas fa-baby-carriage",
           "fas fa-bicycle",
@@ -2943,20 +2968,77 @@ export default {
           "far fa-sticky-note"
         ]
       }
-    }
-  },
+    },
+    //show icons result
+    showIconsData() {
+      let response = []
 
-  computed: {
-    contentSize() {
-      return this.moreContent ? 150 : 5
+      //by search
+      if (this.searchIcon && (this.searchIcon.length >= 2)) {
+        let allIcons = []
+        //Get all icons
+        Object.values(this.iconsData).forEach(categoryIcons => allIcons = [...allIcons, ...categoryIcons])
+        //Filter by search
+        let filtered = allIcons.filter(icon => icon.includes(this.searchIcon))
+        //Get unic icons
+        filtered.forEach(icon => {
+          if (!response.includes(icon)) response.push(icon)
+        })
+      } else {//by category
+        response = this.iconsData[this.selectedCategory]
+      }
+
+      //response
+      return response
     }
   },
   methods: {
     init() {
+      this.selectedIcon = this.$clone(this.value)
+      this.setRootCategoryOptions()
     },
+    //Set root options
+    setRootCategoryOptions() {
+      //Map options
+      let response = Object.keys(this.iconsData).map((key) => {
+        return {label: `${this.$tr(`ui.label.${key}`)} (${this.iconsData[key].length})`, value: key}
+      })
+
+      //Sort by label
+      response.sort((a, b) => (a.label > b.label) ? 1 : -1)
+
+      //Repsonse
+      this.rootCategoryOptions = this.$clone(response)
+    },
+    //Filter category Options
+    filterCategoryOptions(val, update) {
+      update(async () => {
+        this.categoryOptions = this.$helper.filterOptions(val, this.rootCategoryOptions, this.selectedCategory)
+      })
+    }
   }
 }
 </script>
 <style lang="stylus">
+#modalIconListContent
+  .icon-list-content
+    max-height 500px
+    overflow-y scroll
 
+    .remove-icon
+      text-align center
+
+      .empty-icon
+        width 35px
+        height 35px
+        border dashed $blue-grey 1px
+        margin auto
+
+    .icon-content
+      text-align center
+      cursor pointer
+      padding 10px
+
+      &:hover
+        background-color $grey-3
 </style>

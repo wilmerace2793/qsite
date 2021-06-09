@@ -201,6 +201,8 @@
         <q-field v-model="responseValue" v-if="loadField('rating')" v-bind="fieldProps.fieldComponent">
           <q-rating v-model="responseValue" v-bind="fieldProps.field"/>
         </q-field>
+        <!--icon select-->
+        <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps"/>
       </div>
     </div>
   </div>
@@ -217,6 +219,7 @@ import ckEditor from '@imagina/qsite/_components/master/ckEditor'
 import mapLeaflet from '@imagina/qsite/_components/master/mapLeaflet'
 import signature from '@imagina/qsite/_components/master/signature'
 import uploader from '@imagina/qsite/_components/master/uploader'
+import selectIcon from '@imagina/qsite/_components/master/selectIcon'
 
 export default {
   name: 'dynamicField',
@@ -243,7 +246,8 @@ export default {
     ckEditor,
     mapLeaflet,
     signature,
-    uploader
+    uploader,
+    selectIcon
   },
   watch: {
     value: {
@@ -588,6 +592,11 @@ export default {
             }
           }
           break;
+        case'selectIcon':
+          props = {
+            ...props
+          }
+          break;
       }
 
       //Add ruler to required field
@@ -785,6 +794,9 @@ export default {
           break
         case 'rating':
           this.responseValue = (propValue !== undefined) ? propValue : 1
+          break
+        case 'selectIcon':
+          this.responseValue = (propValue !== undefined) ? propValue : null
           break
         default :
           this.responseValue = propValue || null
