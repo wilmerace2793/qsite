@@ -99,6 +99,11 @@
                 </q-list>
               </q-btn-dropdown>
             </q-no-ssr>
+            <!--== Button Go to site ==-->
+            <q-btn round dense icon="far fa-eye" color="white" unelevated class="btn-action"
+                   type="a" :href="$store.state.qsiteApp.baseUrl" target="_blank" text-color="primary">
+              <q-tooltip>{{ $tr('ui.configList.goToSite') }}</q-tooltip>
+            </q-btn>
             <!--== Button checking ==-->
             <q-btn icon="fas fa-stopwatch" unelevated round color="white" text-color="primary" class="btn-action"
                    @click="$eventBus.$emit('toggleMasterDrawer','checkin')"
@@ -146,6 +151,11 @@
           <div id="rightContent" class="row items-center q-gutter-x-sm">
             <!--== Button export ==-->
             <master-export/>
+            <!--== Button Go to site ==-->
+            <q-btn round dense icon="far fa-eye" color="primary" unelevated class="q-md-hide btn-action"
+                   type="a" :href="$store.state.qsiteApp.baseUrl" target="_blank" text-color="white">
+              <q-tooltip>{{ $tr('ui.configList.goToSite') }}</q-tooltip>
+            </q-btn>
             <!--== Button Recommendation ==-->
             <q-btn icon="fas fa-hat-wizard" unelevated round color="primary" text-color="white" class="btn-action"
                    @click="$eventBus.$emit('toggleMasterDrawer','recommendation')"
