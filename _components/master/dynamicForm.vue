@@ -71,7 +71,8 @@ export default {
     description: {default: false},
     blocks: {default: false},
     allowNavigation: {type: Boolean, default: false},
-    formId: {default: false}
+    formId: {default: false},
+    sendTo: {default: false}
   },
   watch: {
     value: {
@@ -242,7 +243,21 @@ export default {
         if (isValid) {
           //Emit submit form
           if (isSubmit) {
-            this.$emit('submit', this.$clone(this.formData))
+            if (this.sendTo && this.sendTo.apiRoute) {
+              this.innerLoading = true
+              //Request Data
+              let requestData = {...this.formData, ...(this.sendTo.extraData || {})}
+              //Request
+              this.$crud.create(this.sendTo.apiRoute, requestData).then(response => {
+                this.innerLoading = false
+                this.reset()
+                this.$emit('sent', this.$clone(this.formData))
+              }).catch(error => {
+                this.innerLoading = false
+              })
+            } else {
+              this.$emit('submit', this.$clone(this.formData))
+            }
           } else {//Change step
             if (toStep == 'previous') this.$refs.stepper.previous()//To previous step
             else if (toStep == 'next') this.$refs.stepper.next()//To next step

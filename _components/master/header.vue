@@ -156,11 +156,24 @@
                    type="a" :href="$store.state.qsiteApp.baseUrl" target="_blank" text-color="white">
               <q-tooltip>{{ $tr('ui.configList.goToSite') }}</q-tooltip>
             </q-btn>
+            <!--== Button checking ==-->
+            <q-btn icon="fas fa-stopwatch" unelevated round color="primary" text-color="white"
+                   class="btn-action q-md-hide" @click="$eventBus.$emit('toggleMasterDrawer','checkin')"
+                   v-if="$auth.hasAccess('icheckin.shifts.create') && (appConfig.mode == 'ipanel')">
+              <q-tooltip>{{ $tr('qcheckin.sidebar.checkin') }}</q-tooltip>
+            </q-btn>
             <!--== Button Recommendation ==-->
             <q-btn icon="fas fa-hat-wizard" unelevated round color="primary" text-color="white" class="btn-action"
                    @click="$eventBus.$emit('toggleMasterDrawer','recommendation')"
                    v-if="params.recommendations ? true : false">
               <q-tooltip>{{ $trp('ui.label.recommendation') }}</q-tooltip>
+            </q-btn>
+            <!--== Button Notifications ==-->
+            <q-btn round dense icon="fas fa-bell" color="primary" text-color="white" unelevated
+                   :class="`q-md-hide btn-action ${badge.notification ? 'active-badge' : ''}`"
+                   @click="$eventBus.$emit('toggleMasterDrawer','notification')"
+                   v-if="$auth.hasAccess('notification.notifications.manage') && (appConfig.mode == 'ipanel')">
+              <q-tooltip>{{ $trp('ui.label.notification') }}</q-tooltip>
             </q-btn>
             <!--== Button filter ==-->
             <q-btn icon="fas fa-filter" unelevated round v-if="filter.load" color="primary" class="btn-action"
