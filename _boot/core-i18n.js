@@ -35,7 +35,7 @@ export default async ({router, app, Vue, store, ssrContext}) => {
   //===== Change language to quasar components
   await store.dispatch('qsiteApp/SET_LOCALE', {
     locale: defaultLanguage,
-    ssrContext : ssrContext,
+    ssrContext: ssrContext,
     vue: app
   })
 
@@ -59,7 +59,10 @@ export default async ({router, app, Vue, store, ssrContext}) => {
     return app.i18n.tc(key, 2, params)
   }
   //Date translate
-  Vue.prototype.$trd = (date, params = {type: 'short'}) => {
-    return app.i18n.d(moment(date, 'YYYY-MM-DD HH:mm').toDate(), params.type)
+  Vue.prototype.$trd = (date, params = {type: 'short', fromUTC: false}) => {
+    //Transform date from UTC
+    if (params.fromUTC) date = moment(date).local().format('YYYY-MM-DD HH:mm:ss')
+    //Repsonse
+    return app.i18n.d(moment(date, 'YYYY-MM-DD HH:mm:ss').toDate(), params.type)
   }
 }
