@@ -167,7 +167,10 @@ export default {
             vIf: (filterDate && (filterDate.type == 'customRange')) ? true : false,
             label: this.$tr('ui.form.startDate'),
             clearable: true,
-            options: (date) => filterDate.to ? (date < this.$moment(filterDate.to).format('YYYY-MM-DD')) : true,
+            options: (date) => {
+              let toDate = filterDate.to ? this.$moment(filterDate.to).format('YYYY/MM/DD') : false
+              return toDate ? (date < this.$moment(toDate).format('YYYY/MM/DD')) : true
+            },
           }
         },
         to: {
@@ -177,7 +180,10 @@ export default {
             vIf: (filterDate && (filterDate.type == 'customRange')) ? true : false,
             label: this.$tr('ui.form.endDate'),
             clearable: true,
-            options: (date) => filterDate.from ? (date > this.$moment(filterDate.from).format('YYYY-MM-DD')) : true,
+            options: (date) => {
+              let fromDate = filterDate.from ? this.$moment(filterDate.from).format('YYYY/MM/DD') : false
+              return fromDate ? (date > this.$moment(fromDate).format('YYYY/MM/DD')) : true
+            },
           }
         }
       }
