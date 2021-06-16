@@ -34,7 +34,7 @@
               <q-tooltip>Chat</q-tooltip>
             </q-btn>
             <!--== Button Notifications ==-->
-            <q-btn round dense icon="fas fa-bell" color="white" text-color="primary"
+            <q-btn round dense icon="fas fa-bell" color="white" text-color="primary" unelevated
                    :class="`btn-action ${badge.notification ? 'active-badge' : ''}`"
                    @click="$eventBus.$emit('toggleMasterDrawer','notification')"
                    v-if="$auth.hasAccess('notification.notifications.manage')">
