@@ -13,6 +13,7 @@ import locales from '@imagina/qsite/_components/master/locales'
 import avatarImage from '@imagina/qsite/_components/master/avatarImage'
 import headerToApp from '@imagina/qsite/_components/master/headerToApp'
 import shareLink from '@imagina/qsite/_components/master/shareLink'
+import btnMenu from '@imagina/qsite/_components/master/btnMenu'
 
 export default ({app, router, store, Vue}) => {
   //Components
@@ -31,6 +32,7 @@ export default ({app, router, store, Vue}) => {
     {name: 'avatar-image', component: avatarImage},
     {name: 'header-app', component: headerToApp},
     {name: 'share-link', component: shareLink},
+    {name: 'btn-menu', component: btnMenu}
   ]
 
   //Register components
