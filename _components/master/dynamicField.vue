@@ -316,8 +316,12 @@ export default {
       if (this.field.props && this.field.props.label) {
         response = this.field.props.label
         if (this.field.isTranslatable) response = `${response} (${this.language})`
-      } else if (this.field.type == 'search')
+      } else if (this.field.type == 'search') {
         return `${this.$tr('ui.label.search', {capitalize: true})}...`
+      } else if (['date', 'fullDate'].includes(this.field.type)) {
+        return `${this.$tr('ui.label.date')}`
+      } else if (this.field.type == 'hour')
+        return `${this.$tr('ui.label.hour')}`
 
       //Set tree data
       if (this.field.type == 'treeSelect' && this.responseValue && !Array.isArray(this.responseValue)) {
@@ -376,7 +380,9 @@ export default {
               outlined: true,
               dense: true,
               readonly: true,
-              ...props
+              icon: 'fas fa-calendar-alt',
+              ...props,
+              mask: ''
             },
             slot: {
               ...props
@@ -393,7 +399,9 @@ export default {
               outlined: true,
               dense: true,
               readonly: true,
-              ...props
+              icon: 'fas fa-clock',
+              ...props,
+              mask: ''
             },
             slot: {
               ...props
@@ -696,7 +704,7 @@ export default {
             response = currentValue ? this.$trd(currentValue) : ''
             break;
           case 'hour':
-            let date = this.$moment().format('Y-MM-DD')
+            let date = this.field.withFullDate ? '' : this.$moment().format('Y-MM-DD')
             response = currentValue ? this.$trd(`${date} ${currentValue}`, {type: 'time'}) : ''
             break;
           case 'fullDate':
