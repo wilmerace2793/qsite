@@ -74,7 +74,7 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
   //=================== Round bordes modified
 
   .round-borders
-    border-radius 6px !important
+    border-radius $custom-radius !important
     border 1px solid $grey-4
 
   //================== Container like bootstrap
@@ -95,7 +95,7 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
   //================= Box styles
 
   .box
-    border-radius 15px
+    border-radius $custom-radius !important
     box-shadow 0 5px 20px rgba(0, 0, 0, 0.05)
     background-color white
     padding 15px
@@ -116,7 +116,7 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
 
 
   .box-collapse
-    border-radius 15px
+    border-radius $custom-radius
     box-shadow 0 5px 20px rgba(0, 0, 0, 0.05)
     background-color white
     overflow hidden
@@ -135,7 +135,7 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
         font-weight bold
 
   .box-table
-    border-radius 15px
+    border-radius $custom-radius
     box-shadow 0 5px 20px rgba(0, 0, 0, 0.05)
     background-color white
 
@@ -218,3 +218,7 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
     background-size cover
     background-repeat no-repeat
     background-position center
+
+  .q-btn
+    &.q-btn--rounded
+      border-radius $custom-radius !important

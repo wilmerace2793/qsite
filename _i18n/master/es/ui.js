@@ -256,7 +256,8 @@ export default {
     winter: 'Invierno',
     writing: 'Escritura',
     drink: 'Bebida | Bebidas',
-    video: 'Vídeo | Vídeos'
+    video: 'Vídeo | Vídeos',
+    custom: 'Personalizado | Personalizados'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

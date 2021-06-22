@@ -48,7 +48,7 @@ export default {
 </script>
 <style lang="stylus">
 .btn-menu-component__menu
-  padding 0 8px
+  padding 8px
   min-width auto
   border-radius 5px
 

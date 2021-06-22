@@ -250,7 +250,8 @@ export default {
     vehicle: 'Vehicle | Vehicles',
     winter: 'Winter',
     writing: 'Writing',
-    video: 'Video | Videos'
+    video: 'Video | Videos',
+    custom: 'Custom'
   },
   message: {
     notFound: 'Sorry, nothing here',
