@@ -1,126 +1,58 @@
 <template>
-  <div id="pageId">
-    <!--Schedules-->
+  <div id="scheduleComponent">
+    <!--Read Content-->
     <q-list separator>
-      <!--Schedules-->
-      <q-item v-for="(item, key) in response" :key="key">
-        <!--Day-->
-        <q-item-section class="text-capitalize">
-          {{ $tr(`ui.label.${item.name}`) }}
-        </q-item-section>
-        <!--Hours-->
-        <q-item-section side>
-          <!--Message Close-->
-          <div class="text-negative capitalize text-right q-body-2" v-if="item.schedules == '0'">
-            {{ $tr('ui.label.closed') }}
-          </div>
-          <!--Message 24 Hours-->
-          <div class="text-positive capitalize text-right q-body-2"
-               v-else-if="item.schedules == '1'">
-            {{ `24 ${$trp('ui.label.hour')}` }}
-          </div>
-          <!--List schedules-->
-          <div v-else>
-            <div v-for="(schedule,index) in item.schedules" :key="index">
-              {{ `${$trd(schedule.from, {type: 'time'})} - ${$trd(schedule.to, {type: 'time'})}` }}
+      <q-item v-for="(day, keyDay) in schedule" :key="keyDay" clickable style="padding: 8px">
+        <div class="row full-width items-center">
+          <!--Day Name-->
+          <div class="col-3 text-blue-grey"><b>{{ $tr(`ui.label.${day.name}`) }}</b></div>
+          <!--Schedules-->
+          <div class="col-6 text-left q-body-2">
+            <!--Message Close-->
+            <div class="text-red capitalize" v-if="day.schedules == '0'">
+              <b>{{ $tr('ui.label.closed') }}</b>
+            </div>
+            <!--Message 24 Hours-->
+            <div class="text-green capitalize" v-else-if="day.schedules == '1'">
+              <b>{{ `24 ${$trp('ui.label.hour')}` }}</b>
+            </div>
+            <!--List Custom-->
+            <div v-else>
+              <div v-for="(daySchedule,index) in day.schedules" :key="index">
+                {{
+                  `${$trd(currentDate + daySchedule.from, {type: 'time'})} - ${$trd(currentDate + daySchedule.to, {type: 'time'})}`
+                }}
+              </div>
             </div>
           </div>
-        </q-item-section>
+          <!---Actions-->
+          <div class="col-3 text-right">
+            <btn-menu :actions="dayActions" :action-data="day"/>
+          </div>
+        </div>
       </q-item>
     </q-list>
-
-    <!--Edit button--->
-    <div class="text-right q-pa-sm">
-      <q-btn @click="modal.show = true" color="positive" size="10px" padding="sm"
-             rounded unelevated :label="$tr('ui.label.edit')"/>
-    </div>
-
-    <!--Form - Modal-->
-    <q-dialog v-model="modal.show" no-esc-dismiss v-if="modal.show"
-              no-backdrop-dismiss class="backend-page" id="modalSchedules">
-      <q-card class="bg-grey-1">
-        <!--Header-->
-        <q-toolbar class="bg-primary text-white">
-          <q-toolbar-title>{{ $trp('ui.form.schedule') }}</q-toolbar-title>
-          <q-btn flat v-close-popup icon="fas fa-times"/>
-        </q-toolbar>
-
-        <!--Content-->
-        <div class="relative-position q-pa-none">
-          <!--Schedules-->
-          <q-list separator>
-            <q-item v-for="(item, key) in response" :key="key" style="min-width: 315px">
-              <q-item-section>
-                <!--Top Content-->
-                <div class="row justify-between items-center">
-                  <!--Title-->
-                  <div class="text-center text-blue-grey">
-                    <b>{{ $tr(`ui.label.${item.name}`) }}</b>
-                  </div>
-                  <!--Select status-->
-                  <q-select outlined dense style="max-width: 100px; min-width: 120px"
-                            v-model="modal.status[item.name]"
-                            :options="options.status" emit-value map-options/>
-                </div>
-                <!--List schedules-->
-                <div v-if="['1','0'].indexOf(modal.status[item.name]) == -1" class="q-my-md">
-                  <div v-for="(schedule,index) in modal.schedules[item.name]" :key="index"
-                       class="row justify-between items-center">
-                    <!--Range date-->
-                    <div class="inline-block q-py-xs">
-                      <!--Date time from-->
-                      <label>{{ $trd(modal.schedules[item.name][index].from, {type: 'time'}) }}</label>
-                      <q-btn size="sm" round color="primary" icon="fas fa-clock" class="q-ml-sm" unelevated>
-                        <q-popup-proxy :ref="`popupFrom${index}`" transition-show="scale" transition-hide="scale">
-                          <q-time :format24h="false" v-model="modal.schedules[item.name][index].from"
-                                  mask="YYYY-MM-DD HH:mm"
-                                  @input="$refs[`popupFrom${index}`][0].hide()"/>
-                        </q-popup-proxy>
-                      </q-btn>
-                      <label class="q-px-sm">/</label>
-                      <!--Date time To-->
-                      <label>{{ $trd(modal.schedules[item.name][index].to, {type: 'time'}) }}</label>
-                      <q-btn size="sm" round color="primary" icon="fas fa-clock" class="q-ml-sm">
-                        <q-popup-proxy :ref="`popupTom${index}`" transition-show="scale" transition-hide="scale">
-                          <q-time :format24h="false" v-model="modal.schedules[item.name][index].to"
-                                  mask="YYYY-MM-DD HH:mm"
-                                  @input="$refs[`popupTom${index}`][0].hide()"/>
-                        </q-popup-proxy>
-                      </q-btn>
-                    </div>
-                    <!--Button remove hours-->
-                    <div>
-                      <q-btn icon="fas fa-trash" color="negative" size="sm" round unelevated
-                             @click="modal.schedules[item.name].splice(index,1)"
-                             :disabled="index == 0 ? true : false">
-                        <q-tooltip>{{ $tr('ui.label.remove') }}</q-tooltip>
-                      </q-btn>
-                    </div>
-                  </div>
-                </div>
-                <!--Button add hours-->
-                <div class="text-center">
-                  <q-btn v-if="['1','0'].indexOf(modal.status[item.name]) == -1" rounded
-                         color="positive" size="sm" :disabled="!successLastSchedule(item.name)" unelevated
-                         @click="modal.schedules[item.name].push({from : new Date(), to : new Date()})"
-                         :label="$tr('ui.label.add')+' '+$tr('ui.form.schedule')"/>
-                </div>
-              </q-item-section>
-            </q-item>
-          </q-list>
-          <!--Loading-->
-          <inner-loading :visible="modal.loading"/>
+    <!--Modal Form day schedule-->
+    <master-modal v-model="modal.show" @hide="dayEdit = false" v-bind="propsModal">
+      <div id="modalScheduleContent">
+        <!--Schedules-->
+        <div v-for="(schedule, indexSchedule) in dayEdit.schedules" :key="indexSchedule"
+             class="row q-mb-md items-center q-col-gutter-sm relative-position modal-content">
+          <!--From hour-->
+          <dynamic-field v-model="dayEdit.schedules[indexSchedule].from" class="col-6"
+                         :field="formFields.fromHour"/>
+          <!--To hour-->
+          <dynamic-field v-model="dayEdit.schedules[indexSchedule].to" class="col-6"
+                         :field="formFields.toHour"/>
+          <!--Remove Range-->
+          <div class="remove-action">
+            <q-btn icon="fas fa-trash-alt" text-color="red" outline unelevated color="red" round size="10px"
+                   padding="8px" @click="dayEdit.schedules.splice(indexSchedule, 1)"
+                   :disable="dayEdit.schedules.length >= 2 ? false : true"/>
+          </div>
         </div>
-
-        <!--Footer-->
-        <q-toolbar color="white">
-          <q-toolbar-title></q-toolbar-title>
-          <!--Button Save-->
-          <q-btn icon="fas fa-save" color="positive" @click="updateSchedules" rounded unelevated
-                 :label="$tr('ui.label.save')" :loading="modal.loading"/>
-        </q-toolbar>
-      </q-card>
-    </q-dialog>
+      </div>
+    </master-modal>
   </div>
 </template>
 <script>
@@ -132,10 +64,20 @@ export default {
   components: {},
   watch: {
     value: {
-      handler(value) {
-        this.setPropValue()
+      handler(newValue, oldValue) {
+        if (newValue) {
+          if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
+            this.schedule = this.$clone(newValue)
+          }
+        }
       },
       deep: true
+    },
+    schedule: {
+      deep: true,
+      handler(newValue, oldValue) {
+        this.emitResponse()
+      }
     }
   },
   mounted() {
@@ -145,19 +87,7 @@ export default {
   },
   data() {
     return {
-      modal: {
-        show: false,
-        loading: false,
-        status: {},
-        schedules: {}
-      },
-      response: []
-    }
-  },
-  computed: {
-    //Init data
-    initData() {
-      return [
+      schedule: [
         {name: 'monday', iso: 1, schedules: '1'},
         {name: 'tuesday', iso: 2, schedules: '1'},
         {name: 'wednesday', iso: 3, schedules: '1'},
@@ -165,100 +95,120 @@ export default {
         {name: 'friday', iso: 5, schedules: '1'},
         {name: 'saturday', iso: 6, schedules: '1'},
         {name: 'sunday', iso: 7, schedules: '1'},
+      ],
+      currentDate: this.$moment().format('YYYY-MM-DD'),
+      dayEdit: false,
+      modal: {
+        show: false
+      },
+      dayTest: false
+    }
+  },
+  computed: {
+    //Day actions
+    dayActions() {
+      //Response
+      return [
+        {
+          label: this.$tr('ui.label.custom'),
+          icon: 'fas fa-pen',
+          action: (item) => {
+            //Get day schedule
+            this.dayEdit = this.$clone(this.schedule.find(day => day.iso == item.iso))
+            //Change schedule to array
+            if (!Array.isArray(this.dayEdit.schedules)) this.dayEdit.schedules = [
+              {from: this.currentDate + ' 08:00', to: this.currentDate + ' 10:00'}
+            ]
+            //Open dialog
+            this.modal.show = true
+          }
+        },
+        {
+          label: `24 ${this.$trp('ui.label.hour')}`,
+          icon: 'fas fa-store-alt',
+          action: (item) => {
+            this.schedule.forEach((day, index) => {
+              if (day.iso == item.iso) this.schedule[index].schedules = '1'
+            })
+          }
+        },
+        {
+          label: this.$tr('ui.label.closed'),
+          icon: 'fas fa-store-alt-slash',
+          action: (item) => {
+            this.schedule.forEach((day, index) => {
+              if (day.iso == item.iso) this.schedule[index].schedules = '0'
+            })
+          }
+        }
       ]
     },
-    //Return translatable options
-    options() {
-      //Options
-      let response = {
-        status: [
-          {label: this.$tr('ui.label.open'), value: '2'},
-          {label: `24 ${this.$trp('ui.label.hour')}`, value: '1'},
-          {label: this.$tr('ui.label.closed'), value: '0'},
+    //Modal props
+    propsModal() {
+      //Default props
+      if (!this.modal.show) return {}
+      //Response props
+      return {
+        title: `${this.$tr('ui.form.schedule')} ${this.$tr(`ui.label.${this.dayEdit.name}`)}`,
+        actions: [
+          {
+            label: this.$tr('ui.label.add') + ' ' + this.$tr('ui.form.hour'),
+            icon: 'fas fa-plus',
+            color: 'blue',
+            action: () => {
+              this.dayEdit.schedules.push({from: this.currentDate + ' 08:00', to: this.currentDate + ' 10:00'})
+            }
+          },
+          {
+            label: this.$tr('ui.label.save'),
+            icon: 'fas fa-save',
+            color: 'green',
+            action: () => {
+              let dayIndex = this.schedule.findIndex(day => day.iso == this.dayEdit.iso)
+              this.$set(this.schedule, dayIndex, this.$clone(this.dayEdit))
+              this.modal.show = false
+            }
+          }
         ]
       }
-
-      return response//Response
+    },
+    //Form Fields
+    formFields() {
+      return {
+        fromHour: {
+          type: 'hour',
+          withFullDate: true,
+          props: {
+            label: this.$tr('ui.label.since'),
+            mask: "YYYY-MM-DD HH:mm"
+          }
+        },
+        toHour: {
+          type: 'hour',
+          withFullDate: true,
+          props: {
+            label: this.$tr('ui.label.until'),
+            mask: "YYYY-MM-DD HH:mm"
+          }
+        }
+      }
     }
   },
   methods: {
     //Init
     init() {
-      this.response = this.initData//Set default data in response
-      this.modal.schedules = this.initData//Set default data in modal
-      this.setPropValue()//Merge prop value
-    },
-    //Check prop Value
-    setPropValue() {
-      if (this.value) {
-        if (JSON.stringify(this.value) != JSON.stringify(this.response)) {
-          if (this.value) this.response = this.$clone(this.value)
-        }
-      }
-
-      this.setDynamicFieldsModal()//Set dynamic fields in modal
-    },
-    //Set dynamic values to modal
-    setDynamicFieldsModal() {
-      //Set status
-      let status = {}
-      this.response.forEach(item => {
-        status[item.name] = '1'
-      })
-      this.modal.status = this.$clone(status)
-      //Set default schedule
-      let schedules = {}
-      this.response.forEach(item => {
-        this.modal.status[item.name] = item.schedules//Set schedules
-        //Set default hours
-        schedules[item.name] = [{
-          from: '2019-07-16T08:00:00.000-05:00',
-          to: '2019-07-16T20:00:00.000-05:00'
-        }]
-        //If is open, merge schedules
-        if ((['1', '0'].indexOf(item.schedules) == -1)) {
-          schedules[item.name] = item.schedules//Set status to modal
-          this.modal.status[item.name] = '2'//Set status open
-        }
-      })
-      this.modal.schedules = this.$clone(schedules)
       this.emitResponse()
-    },
-    //check if Last Schedule is completed
-    successLastSchedule(key) {
-      let schedule = this.modal.schedules[key]
-      let item = schedule[schedule.length - 1]
-      let response = true
-      if (!item.from) response = false
-      if (!item.to) response = false
-
-      return response
-    },
-    //Update schedule
-    updateSchedules() {
-      let response = {}
-      //Order schedules according status
-      Object.keys(this.modal.status).forEach(day => {
-        response[day] = (['1', '0'].indexOf(this.modal.status[day]) != -1) ?
-            this.modal.status[day] : this.modal.schedules[day]
-      })
-
-      //Merge with Response
-      this.response.forEach((item, index) => {
-        this.response[index].schedules = this.$clone(response[item.name])
-      })
-
-      this.emitResponse()
-      this.modal.show = false//hide modal
     },
     //Emit Value
     emitResponse() {
       let transformedSchedule = []
+      let schedule = this.$clone(this.schedule)
 
-      //Transfor data to schedules
-      Object.values(this.response).forEach(day => {
+      //Transform data to schedules
+      Object.values(this.schedule).forEach((day, dayKey) => {
         if (Array.isArray(day.schedules)) {
-          day.schedules.forEach(item => {
+          day.schedules.forEach((item, keyItem) => {
+            //Transformed
             transformedSchedule.push({
               iso: day.iso,
               name: day.name,
@@ -278,15 +228,19 @@ export default {
         }
       })
 
-      this.$emit('converted', transformedSchedule)//Emit response
-      this.$emit('input', this.response)//Emit response
+      this.$emit('converted', this.$clone(transformedSchedule))//Emit response
+      this.$emit('input', this.$clone(schedule))//Emit response
     }
   }
 }
 </script>
 <style lang="stylus">
-#modalSchedules
-  .q-field
-    padding 3px
-    display: inline-block !important
+#modalScheduleContent
+  .modal-content
+    padding-right 45px
+
+    .remove-action
+      position absolute
+      top 3px
+      right 0
 </style>
