@@ -8,7 +8,7 @@
       <q-popup-proxy class="popover-config-locale" ref="modalConfig" persistent>
         <div class="content q-pa-sm backend-page">
           <!--Title-->
-          <q-toolbar class="q-pa-none title text-primary relative-positive">
+          <q-toolbar class="q-pa-none title text-primary relative-green">
             <q-toolbar-title>
               <q-icon name="fas fa-language" class="q-mr-xs"/>
               <label class="text-subtitle1 text-capitalize" v-html="$trp('ui.label.option')"></label>
@@ -34,9 +34,9 @@
           />
           <!--Button clone language-->
           <div class="text-right q-mt-sm q-gutter-x-sm">
-            <q-btn color="negative" class="q-pa-none" :label="$tr('ui.label.cancel')"
+            <q-btn color="red" class="q-pa-none" :label="$tr('ui.label.cancel')"
                    @click="$refs.modalConfig.hide()" rounded unelevated size="sm"/>
-            <q-btn icon="fas fa-save" color="positive" size="sm" @click="makeOptionLocale()"
+            <q-btn icon="fas fa-save" color="green" size="sm" @click="makeOptionLocale()"
                    :label="$tr('ui.label.save')" :disable="!options.typeOption" rounded unelevated/>
           </div>
         </div>

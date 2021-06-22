@@ -13,7 +13,7 @@
         <q-spinner v-if="loading" color="blue-grey" :size="30"/>
         <!--Toogle list-->
         <q-btn icon="fas fa-edit" size="sm" @click="modal.show = true" rounded unelevated
-               color="positive" class="q-ml-sm" v-else-if="Object.keys(modal.listPermissions).length"/>
+               color="green" class="q-ml-sm" v-else-if="Object.keys(modal.listPermissions).length"/>
       </div>
     </div>
 
@@ -81,7 +81,7 @@
                         <q-btn-toggle
                           rounded unelevated
                           v-model="entity[permissionName]"
-                          toggle-color="positive"
+                          toggle-color="green"
                           color="grey-2" size="8px"
                           text-color="grey-8"
                           :key="`${entityName}.${permissionName}`"
@@ -109,7 +109,7 @@
             <!--btn to apply changes-->
             <div class="text-center q-mt-sm">
               <q-btn :label="$tr('ui.label.change')" rounded unelevated icon="fas fa-share-square"
-                     color="positive" @click="changePermissions()"/>
+                     color="green" @click="changePermissions()"/>
             </div>
           </q-tab-panel>
         </q-tab-panels>
@@ -363,7 +363,7 @@
             border 2px solid $primary
 
         .q-btn-group
-          border 2px solid $positive
+          border 2px solid $green
 
           .q-btn
             padding 4px 10px

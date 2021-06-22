@@ -8,7 +8,7 @@
     </div>
 
     <div class="col-12 text-right">
-      <q-btn color="positive" :label="$tr('ui.label.save')" icon="fas fa-save" @click="submit" class="q-mt-sm"/>
+      <q-btn color="green" :label="$tr('ui.label.save')" icon="fas fa-save" @click="submit" class="q-mt-sm"/>
     </div>
 
     <inner-loading :visible="submitModule"/>

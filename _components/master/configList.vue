@@ -97,7 +97,7 @@
             <div class="row items-center">
               <!--Icon-->
               <div v-if="!loadingImpersonate">
-                <q-icon color="negative" class="q-mr-sm" name="fas fa-sign-out-alt"
+                <q-icon color="red" class="q-mr-sm" name="fas fa-sign-out-alt"
                         size="20px"/>
               </div>
               <!--Loading-->
@@ -171,7 +171,7 @@
       <q-no-ssr>
         <div class="q-px-sm cursor-pointer q-pt-md" @click="$router.push({name:'auth.logout'})"
              v-if="quserState.authenticated">
-          <q-icon color="negative" size="18px" name="fas fa-sign-out-alt" class="q-mr-sm"/>
+          <q-icon color="red" size="18px" name="fas fa-sign-out-alt" class="q-mr-sm"/>
           {{ $t('ui.configList.signOut', {capitalize: true}) }}
         </div>
       </q-no-ssr>

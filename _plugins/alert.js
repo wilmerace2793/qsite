@@ -42,7 +42,7 @@ class Alert {
   success(params = {}) {
     params = this.getGlobalParams(params)
     params.icon = params.icon || 'notifications'
-    params.color = 'positive'
+    params.color = 'green'
     //Show
     if (params.mode && (params.mode == 'modal')) this.showModal(params)
     else this.showNotify(params)
@@ -52,7 +52,7 @@ class Alert {
   error(params = {}) {
     params = this.getGlobalParams(params)
     params.icon = params.icon || 'error'
-    params.color = 'negative'
+    params.color = 'red'
     //Show
     if (params.mode && (params.mode == 'modal')) this.showModal(params)
     else this.showNotify(params)

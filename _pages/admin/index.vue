@@ -29,7 +29,9 @@ export default {
     })
   },
   data() {
-    return {}
+    return {
+      testSchedule: false
+    }
   },
   computed: {
     //Return quick Cards of all modules

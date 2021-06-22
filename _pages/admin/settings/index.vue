@@ -77,7 +77,7 @@
           <!--Actions-->
           <div class="full-width text-right">
             <!--Save button-->
-            <q-btn :label="$tr('ui.label.save')" icon="fas fa-save" unelevated rounded color="positive"
+            <q-btn :label="$tr('ui.label.save')" icon="fas fa-save" unelevated rounded color="green"
                    @click="saveSettings()"/>
           </div>
         </div>

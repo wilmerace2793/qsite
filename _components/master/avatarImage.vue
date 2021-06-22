@@ -11,7 +11,7 @@
         <!--Image-->
         <q-card class="q-pa-sm q-mb-sm"><img :src="srcComponent"></q-card>
         <!--Button close-->
-        <q-btn icon="fas fa-times" unelevated round color="negative" @click="dialog.show = false"/>
+        <q-btn icon="fas fa-times" unelevated round color="red" @click="dialog.show = false"/>
       </div>
     </q-dialog>
   </div>

@@ -262,7 +262,7 @@ export default {
       position absolute
       top 5px
       right -5px
-      background $negative
+      background $red
       color white
       height 35px
       width 35px
