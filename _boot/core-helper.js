@@ -14,6 +14,7 @@ import {openURL} from 'quasar'
 import eventBus from '@imagina/qsite/_plugins/eventBus'
 import filter from '@imagina/qsite/_plugins/filter'
 import VueSignaturePad from 'vue-signature-pad';
+import notificationPlugin from '@imagina/qnotification/_plugins/notification'
 
 export default function ({app, router, store, Vue, ssrContext}) {
   Vue.prototype.$alert = alert
@@ -23,9 +24,8 @@ export default function ({app, router, store, Vue, ssrContext}) {
   Vue.prototype.$cache = cache
   Vue.prototype.$lodash = lodash
   Vue.prototype.$remember = remember
-  //Create hook
-
   Vue.prototype.$hook = new hook(store)
+  Vue.prototype.$notification = new notificationPlugin(store)
   Vue.prototype.$clone = (dataToClone) => {
     return lodash.cloneDeepWith(dataToClone, value => {
       //Not clone File or Blob  type

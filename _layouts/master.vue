@@ -1,10 +1,13 @@
 <template>
   <q-layout id="layoutMaster" :view="(appConfig.mode == 'iadmin') ? 'hHh LpR lFf' : 'hHh LpR lFf'">
     <!-- HEADER -->
-    <header-component v-if="appState.loadPage"/>
+    <header-admin v-if="appState.loadPage && (appConfig.mode == 'iadmin')"/>
+    <header-panel v-if="appState.loadPage && (appConfig.mode == 'ipanel')"/>
 
     <!-- Drawers -->
-    <drawers-component v-if="appState.loadPage"/>
+    <drawers-admin v-if="appState.loadPage && (appConfig.mode == 'iadmin')"/>
+    <drawers-panel v-if="appState.loadPage && (appConfig.mode == 'ipanel')"/>
+
 
     <!-- ROUTER VIEW -->
     <q-page-container>
@@ -15,17 +18,22 @@
     <cropper-component ref="cropperComponent"/>
 
     <!-- FOOTER -->
-    <footer-component v-if="appState.loadPage"/>
+    <footer-admin v-if="appState.loadPage && (appConfig.mode == 'iadmin')"/>
+    <footer-panel v-if="appState.loadPage && (appConfig.mode == 'ipanel')"/>
   </q-layout>
 </template>
 
 <script>
-/*Components*/
-import headerComponent from '@imagina/qsite/_components/master/header'
-import drawersComponent from '@imagina/qsite/_components/master/drawers'
-import footerComponent from '@imagina/qsite/_components/master/footer'
-import Vue from 'vue'
-import notificationPlugin from '@imagina/qnotification/_plugins/notification'
+import chat from '@imagina/qchat/_components/advancedChat'
+//Components Admin
+import headerAdmin from '@imagina/qsite/_components/admin/header'
+import drawersAdmin from '@imagina/qsite/_components/admin/drawers'
+import footerAdmin from '@imagina/qsite/_components/admin/footer'
+//Components Panel
+import headerPanel from '@imagina/qsite/_components/panel/header'
+import drawersPanel from '@imagina/qsite/_components/panel/drawers'
+import footerPanel from '@imagina/qsite/_components/panel/footer'
+//Components
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
 
 export default {
@@ -44,7 +52,18 @@ export default {
       link: [{rel: 'icon', href: iconHref, id: 'icon'}],
     }
   },
-  components: {headerComponent, drawersComponent, footerComponent, cropperComponent},
+  components: {
+    chat,
+    cropperComponent,
+    //Admin
+    headerAdmin,
+    drawersAdmin,
+    footerAdmin,
+    //Panel
+    headerPanel,
+    drawersPanel,
+    footerPanel
+  },
   mounted() {
     this.$nextTick(async function () {
       this.init()
@@ -62,12 +81,6 @@ export default {
   },
   methods: {
     init() {
-      Vue.prototype.$notification = new notificationPlugin(this.$store)//Echo plugin
-    },
-    //Refresh page
-    async refreshPage(done) {
-      await this.$store.dispatch('qsiteApp/REFRESH_PAGE')
-      done()
     }
   }
 }
