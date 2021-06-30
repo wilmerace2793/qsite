@@ -20,10 +20,7 @@
               </q-btn>
             </q-no-ssr>
             <!--Site Actions-->
-            <q-btn v-for="(btn, keyAction) in siteActions" :key="keyAction" v-bind="btn.props"
-                   v-if="btn.vIf != undefined ? btn.vIf : true" @click="btn.action != undefined ? btn.action() : null">
-              <q-tooltip>{{ btn.label }}</q-tooltip>
-            </q-btn>
+            <site-actions/>
           </div>
         </q-toolbar>
       </div>
@@ -38,7 +35,7 @@
                    class="q-mr-md q-hide q-md-show"
                    @click="$eventBus.$emit('toggleMasterDrawer','menu')"/>
             <!--== Back Button ==-->
-            <q-btn icon="fas fa-arrow-left" unelevated round color="primary" class="btn-action q-mr-md"
+            <q-btn icon="fas fa-arrow-left" unelevated round color="primary" class="btn-small q-mr-md"
                    @click="$helper.backHistory()">
               <q-tooltip>{{ $tr('ui.label.back') }}</q-tooltip>
             </q-btn>
@@ -50,22 +47,6 @@
               </q-breadcrumbs>
             </div>
           </div>
-          <!--Right content-->
-          <div id="rightContent" class="row items-center q-gutter-x-sm">
-            <!--== Button export ==-->
-            <master-export/>
-            <!--Page Actions-->
-            <q-btn v-for="(btn, keyAction) in pageActions" :key="keyAction" v-bind="btn.props"
-                   v-if="btn.vIf != undefined ? btn.vIf : true" @click="btn.action != undefined ? btn.action() : null">
-              <q-tooltip>{{ btn.label }}</q-tooltip>
-            </q-btn>
-          </div>
-          <!--Message if page has filter-->
-          <div id="messageFilter" class="cursor-pointer text-caption" v-if="filter.hasValues"
-               @click="$eventBus.$emit('toggleMasterDrawer','filter')">
-            <q-icon name="fas fa-exclamation" size="12px" color="warning"/>
-            {{ $tr('ui.message.pageDataWithFilter') }}
-          </div>
         </q-toolbar>
       </div>
     </q-header>
@@ -73,14 +54,11 @@
 </template>
 <script>
 //Components
-import masterExport from "@imagina/qsite/_components/master/masterExport"
+import siteActions from '@imagina/qsite/_components/master/siteActions'
 
 export default {
-  beforeDestroy() {
-    this.$eventBus.$off('header.badge.manage')
-  },
   props: {},
-  components: {masterExport},
+  components: {siteActions},
   watch: {},
   mounted() {
     this.$nextTick(function () {
@@ -91,122 +69,11 @@ export default {
     return {
       projectName: this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name'),
       logo: this.$store.getters['qsiteApp/getSettingMediaByName']('isite::logo1').path,
-      filter: this.$filter,
       appConfig: config('app'),
-      badge: {
-        chat: false,
-        notification: false
-      },
       loadHeaderIpanel: false
     }
   },
   computed: {
-    //Site Actions
-    siteActions() {
-      //Default buttons props
-      let defaultButtonProps = {
-        round: true,
-        dense: true,
-        color: "white",
-        unelevated: true,
-        class: "btn-action",
-        textColor: "primary"
-      }
-
-      return {
-        //Go To Site
-        goToSite: {
-          label: this.$tr('ui.configList.goToSite'),
-          props: {
-            ...defaultButtonProps,
-            icon: 'fas fa-eye',
-            type: 'a',
-            href: this.$store.state.qsiteApp.baseUrl,
-            target: '_blank'
-          }
-        },
-        //Chat
-        chat: {
-          label: 'Chat',
-          vIf: this.$auth.hasAccess('ichat.conversations.index'),
-          props: {
-            ...defaultButtonProps,
-            icon: 'fas fa-comment-alt',
-            class: `btn-action ${this.badge.chat ? 'active-badge' : ''}`
-          },
-          action: () => this.$eventBus.$emit('toggleMasterDrawer', 'chat')
-        },
-        //Notifications
-        notifications: {
-          label: this.$trp('ui.label.notification'),
-          vIf: this.$auth.hasAccess('notification.notifications.manage'),
-          props: {
-            ...defaultButtonProps,
-            icon: 'fas fa-bell',
-            class: `btn-action ${this.badge.notification ? 'active-badge' : ''}`
-          },
-          action: () => this.$eventBus.$emit('toggleMasterDrawer', 'notification')
-        },
-        //Settings
-        settings: {
-          label: this.$trp('ui.label.setting'),
-          props: {
-            ...defaultButtonProps,
-            icon: 'fas fa-cog'
-          },
-          action: () => this.$eventBus.$emit('toggleMasterDrawer', 'config')
-        }
-      }
-    },
-    //Page Actions
-    pageActions() {
-      //Default buttons props
-      let defaultButtonProps = {
-        round: true,
-        dense: true,
-        unelevated: true,
-        color: "primary",
-        class: "btn-action",
-        textColor: "white"
-      }
-
-      return {
-        //recommendations
-        recommendations: {
-          label: this.$trp('ui.label.recommendation'),
-          vIf: this.params.recommendations ? true : false,
-          props: {
-            ...defaultButtonProps,
-            icon: 'fas fa-hat-wizard'
-          },
-          action: () => this.$eventBus.$emit('toggleMasterDrawer', 'recommendation')
-        },
-        //Filter
-        filter: {
-          label: this.$tr('ui.label.filter'),
-          vIf: this.filter.load,
-          props: {
-            ...defaultButtonProps,
-            icon: 'fas fa-filter'
-          },
-          action: () => this.$eventBus.$emit('toggleMasterDrawer', 'filter')
-        },
-        //Refresh
-        refresh: {
-          label: this.$trp('ui.label.refresh'),
-          vIf: this.params.refresh,
-          props: {
-            ...defaultButtonProps,
-            icon: 'fas fa-redo'
-          },
-          action: () => {
-            this.$root.$emit('page.data.refresh')
-            this.$root.$emit('crud.data.refresh')
-            this.$root.$emit('export.data.refresh')
-          }
-        },
-      }
-    },
     //Quser state
     quserState() {
       return this.$store.state.quserAuth
@@ -253,10 +120,6 @@ export default {
   },
   methods: {
     init() {
-      //Manage badges to button actions
-      this.$eventBus.$on('header.badge.manage', (response) => {
-        Object.keys(response).forEach(name => this.badge[name] = response[name])
-      })
       //Get header ipanel
       //this.getHeaderIpanel()
     },
@@ -373,24 +236,4 @@ export default {
       right 0
       bottom -23px
       width max-content
-
-  .btn-action
-    .q-btn__wrapper
-      min-height 30px !important
-      min-width 30px !important
-      padding 5px
-
-      .q-icon
-        font-size 16px !important
-
-    &.active-badge
-      &:after
-        position absolute
-        content ''
-        height 12px
-        width 12px
-        background red
-        border-radius 50%
-        right -2px
-        top -2px
 </style>

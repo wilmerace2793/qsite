@@ -1,8 +1,10 @@
 import('@riophae/vue-treeselect/dist/vue-treeselect.css')
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 // app global css
 *
-  font-family: 'Open Sans', sans-serif;
+  //font-family: 'Open Sans', sans-serif;
+  font-family: 'Sarabun', sans-serif;
 
   a
     text-decoration none
@@ -16,10 +18,10 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
       padding 15px 15px 60px 15px
       margin auto
     @media (min-width: 992px) and (max-width: 1199px)
-      padding 30px 20px 60px 20px
+      padding 20px 20px 60px 20px
       margin auto
     @media (min-width: 1200px)
-      padding 30px 20px 60px 20px
+      padding 20px 20px 60px 20px
       margin auto
 
   //=================== responsive visibilities
@@ -70,12 +72,23 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
     @media screen and (min-width: $breakpoint-xl)
       display block !important
 
+  //=================== Custom class colors
 
-  //=================== Round bordes modified
+  .text-custom-accent-color
+    color $custom-accent-color
 
-  .round-borders
+  .bg-custom-accent-color
+    background-color $custom-accent-color
+
+
+  //=================== Round borders
+
+  .round
     border-radius $custom-radius !important
-    border 1px solid $grey-4
+
+  .round-border
+    border-radius $custom-radius !important
+    border 1px solid $grey-5
 
   //================== Container like bootstrap
 
@@ -96,7 +109,7 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
 
   .box
     border-radius $custom-radius !important
-    box-shadow 0 5px 20px rgba(0, 0, 0, 0.05)
+    box-shadow $custom-box-shadow
     background-color white
     padding 15px
     min-height 150px
@@ -117,7 +130,7 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
 
   .box-collapse
     border-radius $custom-radius
-    box-shadow 0 5px 20px rgba(0, 0, 0, 0.05)
+    box-shadow $custom-box-shadow
     background-color white
     overflow hidden
 
@@ -136,7 +149,7 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
 
   .box-table
     border-radius $custom-radius
-    box-shadow 0 5px 20px rgba(0, 0, 0, 0.05)
+    box-shadow $custom-box-shadow
     background-color white
 
   .border-top-color //border top color
@@ -147,13 +160,32 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
       padding 0
 
   .btn-small
-    min-height 22px
-    font-size 12px !important
-    padding 0 10px
+    .q-btn__wrapper
+      min-height 34px !important
+      min-width 34px !important
 
-    .q-icon
-      font-size 13px
-      margin-right 5px
+      .q-icon
+        font-size 16px !important
+
+  .btn-middle
+    .q-btn__wrapper
+      min-height 40px !important
+      min-width 40px !important
+
+      .q-icon
+        font-size 16px
+
+  .btn-small, .btn-middle
+    &.active-badge
+      &:after
+        position absolute
+        content ''
+        height 12px
+        width 12px
+        background red
+        border-radius 50%
+        right -2px
+        top -2px
 
   //===================== VUE TREE SELECT
 
@@ -221,4 +253,8 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
 
   .q-btn
     &.q-btn--rounded
-      border-radius $custom-radius !important
+      border-radius $custom-radius-items !important
+
+  .q-field--outlined
+    .q-field__control:before, .q-field__control:after
+      border-radius $custom-radius-items !important
