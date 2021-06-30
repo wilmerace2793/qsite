@@ -1,31 +1,31 @@
 <template>
   <q-dialog v-model="show" class="master-dialog" no-esc-dismiss no-backdrop-dismiss v-on="$listeners">
     <!--Content-->
-    <div :id="id || 'masterModalContent'" class="master-dialog__content box box-auto-height"
+    <div :id="id || 'masterModalContent'" class="master-dialog__content round relative-position"
          :style="`min-width: ${width}`" v-if="show">
       <!--Header-->
-      <div :class="`master-dialog__header text-${color} row justify-between items-end`">
+      <div :class="`master-dialog__header text-${color} row justify-between items-center box box-auto-height`">
         <!--Title-->
-        <div class="master-dialog__header-title text-subtitle1"><b>{{ title }}</b></div>
+        <div class="master-dialog__header-title row items-center">
+          <q-icon v-if="icon" :name="icon" class="q-mr-sm" size="20px"/>
+          <b>{{ title }}</b>
+        </div>
         <!--Close Button-->
-        <q-btn v-close-popup icon="fas fa-times" round color="red" text-color="white" unelevated size="10px"/>
+        <q-btn v-close-popup icon="fas fa-times" round color="blue-grey" unelevated class="btn-small" outline/>
       </div>
-      <!--Separator-->
-      <q-separator class="q-my-md"/>
       <!--Slot content-->
-      <div class="master-dialog__body q-mb-md">
+      <div class="master-dialog__body">
         <slot/>
       </div>
       <!--Actions Content-->
-      <div class="master-dialog__actions" v-if="actions && actions.length">
-        <!--Separator-->
-        <q-separator class="q-mb-md"/>
-        <!--Button Actions-->
+      <div class="master-dialog__actions box box-auto-height" v-if="actions && actions.length">
         <div class="row justify-end q-gutter-sm">
-          <q-btn v-for="(btn, keyBtn) in actions" :key="keyBtn" :label="btn.label" :icon="btn.icon"
-                 :color="btn.color" @click="btn.action ? btn.action() : null" rounded unelevated no-caps/>
+          <q-btn v-for="(btn, keyBtn) in actions" :key="keyBtn" v-bind="{...actionBtnProps, ...(btn.props || {})}"
+                 @click="btn.action ? btn.action() : null"/>
         </div>
       </div>
+      <!--Loading-->
+      <inner-loading :visible="loading"/>
     </div>
   </q-dialog>
 </template>
@@ -33,9 +33,11 @@
 export default {
   props: {
     value: {type: Boolean, default: false},
+    loading: {type: Boolean, default: false},
     color: {type: String, default: 'blue-grey'},
     width: {type: String, default: '400px'},
     title: {type: String},
+    icon: {type: String},
     actions: {type: Array},
     id: {type: String}
   },
@@ -61,13 +63,37 @@ export default {
       show: false
     }
   },
-  computed: {},
+  computed: {
+    actionBtnProps() {
+      return {
+        rounded: true,
+        unelevated: true,
+        noCaps: true,
+        class: 'btn-small'
+      }
+    }
+  },
   methods: {}
 }
 </script>
 <style lang="stylus">
 .master-dialog__content
+  background-color $custom-accent-color
+
+  .master-dialog__header
+    margin 16px 16px 0 16px
+
+  .master-dialog__body
+    margin 16px
+    max-height calc(100vh - 240px)
+    overflow-y scroll
+
+    @media screen and (min-width: $breakpoint-md)
+      margin 16px 0 16px 16px
+
   .master-dialog__actions
+    margin 0 16px 16px 16px
+
     .q-btn
       .q-icon
         font-size 20px

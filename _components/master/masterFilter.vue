@@ -80,7 +80,7 @@
     <!--footer -->
     <div class="absolute-bottom text-center bg-white" ref="footerContent">
       <q-separator/>
-      <q-btn :label="$tr('ui.label.search')" unelevated color="primary" class="q-my-sm"
+      <q-btn :label="$tr('ui.label.search')" unelevated color="primary" class="q-my-sm" rounded
              @click="emitFilter(), $eventBus.$emit('toggleMasterDrawer','filter')"/>
     </div>
   </div>

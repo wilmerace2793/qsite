@@ -1,92 +1,64 @@
 <template>
-  <div id="masterExportComponent">
-    <!--== Button export ==-->
-    <q-btn icon="fas fa-file-download" unelevated rounded color="primary" class="btn-action"
-           v-if="params" @click="showModal = true">
-      <q-tooltip>{{ $tr('ui.label.export') }}</q-tooltip>
-    </q-btn>
-
-    <!--Content-->
-    <q-dialog id="contentMasterExportComponent" @hide="reset()" @show="init()"
-              v-model="showModal" persistent transition-show="slide-up" transition-hide="slide-down">
-      <q-card id="cardContent">
-        <!--Header-->
-        <q-toolbar class="bg-primary text-white">
-          <q-toolbar-title>
-            <q-icon name="fas fa-file-download" color="white"/>
-            {{ $tr('ui.label.export') }}
-          </q-toolbar-title>
-          <q-btn flat v-close-popup icon="fas fa-times"/>
-        </q-toolbar>
-        <!--Content-->
-        <q-card-section class="relative-position">
-          <div class="row q-col-gutter-md">
+  <master-modal v-model="showModal" icon="fas fa-file-download" width="380px" :loading="loading"
+                :title="`${$tr('ui.label.export')} | ${$tr($route.meta.title)}`"
+                @hide="reset()" @show="init()">
+    <div class="relative-position" style="max-width: 350px">
+      <div class="row q-col-gutter-md">
+        <!--Generate new report-->
+        <div id="newReportContent" class="col-12" v-if="!customExportData">
+          <div class="box box-auto-height">
             <!--Title-->
-            <div class="col-12 text-blue-grey text-weight-bold text-center">
-              <div class="box" style="min-height: auto">
-                <q-icon v-if="$route.meta.icon" :name="$route.meta.icon" class="q-mr-sm" size="16px"/>
-                {{ $tr($route.meta.title) }}
-              </div>
+            <div class="text-blue-grey q-mb-sm">
+              <b>{{ $tr('qsite.layout.messages.newReport') }}</b>
             </div>
-            <!--Generate new report-->
-            <div id="newReportContent" class="col-12" v-if="!customExportData">
-              <div class="box">
-                <!--Title-->
-                <div class="text-blue-grey q-mb-sm">
-                  <b>{{ $tr('qsite.layout.messages.newReport') }}</b>
+            <!--Text help-->
+            <div class="text-caption q-mb-xs"
+                 v-html="$tr('qsite.layout.messages.newExportHelpText', {pageTitle: $tr($route.meta.title)})"></div>
+            <!--Actions-->
+            <div class="text-right q-mt-md">
+              <!--Extra filter fields-->
+              <q-form autocorrect="off" autocomplete="off" ref="formContent"
+                      class="row full-width"
+                      @submit="newReport()" @validation-error="$alert.error($tr('ui.message.formInvalid'))">
+                <!--Fields-->
+                <dynamic-field v-for="(field, keyField) in (params.exportFields || [])" :key="keyField"
+                               :field="field" class="col-12" v-model="filters[keyField]"/>
+                <!--Submit-->
+                <div class="text-right col-12">
+                  <q-btn :label="$tr('ui.label.create')" color="green" rounded unelevated size="11px"
+                         padding="xs sm" type="submit"/>
                 </div>
-                <!--Text help-->
-                <div class="text-caption q-mb-xs"
-                     v-html="$tr('qsite.layout.messages.newExportHelpText', {pageTitle: $tr($route.meta.title)})"></div>
-                <!--Actions-->
-                <div class="text-right q-mt-md">
-                  <!--Extra filter fields-->
-                  <q-form autocorrect="off" autocomplete="off" ref="formContent"
-                          class="row full-width"
-                          @submit="newReport()" @validation-error="$alert.error($tr('ui.message.formInvalid'))">
-                    <!--Fields-->
-                    <dynamic-field v-for="(field, keyField) in (params.exportFields || [])" :key="keyField"
-                                   :field="field" class="col-12" v-model="filters[keyField]"/>
-                    <!--Submit-->
-                    <div class="text-right col-12">
-                      <q-btn :label="$tr('ui.label.create')" color="green" rounded unelevated size="11px"
-                             padding="xs sm" type="submit"/>
-                    </div>
-                  </q-form>
-                </div>
-              </div>
-            </div>
-            <!--Last Report information-->
-            <div id="lastReportContent" v-if="fileExport && fileExport.path" class="q-mb-md col-12">
-              <div class="box">
-                <!--Title-->
-                <div class="text-blue-grey q-mb-sm">
-                  <b>{{ $tr('qsite.layout.messages.lastReport') }}</b>
-                </div>
-                <!--Date-->
-                <div class="text-caption">
-                  <label class="text-blue-grey">{{ $tr('ui.label.date') }}:</label>
-                  {{ $trd(fileExport.lastModified, {type: 'long'}) }}
-                </div>
-                <!--Size-->
-                <div class="text-caption">
-                  <label class="text-blue-grey">{{ $tr('ui.label.size') }}:</label>
-                  {{ $helper.formatBytes(fileExport.size) }}
-                </div>
-                <!--Action-->
-                <div class="text-right q-mt-md">
-                  <q-btn :label="$tr('ui.label.download')" color="green" rounded unelevated size="11px" padding="xs sm"
-                         @click="$helper.downloadFromURL(fileExport.path)"/>
-                </div>
-              </div>
+              </q-form>
             </div>
           </div>
-          <!--Inner laoding-->
-          <inner-loading :visible="loading"/>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-  </div>
+        </div>
+        <!--Last Report information-->
+        <div id="lastReportContent" v-if="fileExport && fileExport.path" class="q-mb-md col-12">
+          <div class="box box-auto-height">
+            <!--Title-->
+            <div class="text-blue-grey q-mb-sm">
+              <b>{{ $tr('qsite.layout.messages.lastReport') }}</b>
+            </div>
+            <!--Date-->
+            <div class="text-caption">
+              <label class="text-blue-grey">{{ $tr('ui.label.date') }}:</label>
+              {{ $trd(fileExport.lastModified, {type: 'long'}) }}
+            </div>
+            <!--Size-->
+            <div class="text-caption">
+              <label class="text-blue-grey">{{ $tr('ui.label.size') }}:</label>
+              {{ $helper.formatBytes(fileExport.size) }}
+            </div>
+            <!--Action-->
+            <div class="text-right q-mt-md">
+              <q-btn :label="$tr('ui.label.download')" color="green" rounded unelevated size="11px" padding="xs sm"
+                     @click="$helper.downloadFromURL(fileExport.path)"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </master-modal>
 </template>
 <script>
 export default {
@@ -186,7 +158,8 @@ export default {
 
         //Request
         this.$crud.index('apiRoutes.qsite.configs', requestParams).then(response => {
-          this.params = response.data
+          this.params = this.$clone(response.data)
+          this.$emit('input', this.$clone(response.data))
           resolve(response.data)
         }).catch(error => {
           resolve(false)
@@ -253,13 +226,4 @@ export default {
 }
 </script>
 <style lang="stylus">
-#masterExportComponent
-  .q-btn-dropdown
-    .q-btn-dropdown__arrow
-      display none
-
-#contentMasterExportComponent
-  #cardContent
-    background-color $custom-accent-color
-    max-width: 350px
 </style>

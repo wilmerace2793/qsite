@@ -42,6 +42,7 @@
 <style lang="stylus">
   #innerLoadingMaster
     z-index 10
+    border-radius $custom-radius
 
     &.q-inner-loading
       .q-box-inner-loading

@@ -148,7 +148,12 @@
           <recursive-select v-model="responseValue" class="bg-white full-width" :items="options"/>
         </q-field>
         <!--Checkbox-->
-        <q-checkbox v-model="responseValue" :label="fieldLabel" v-bind="fieldProps.field" v-if="loadField('checkbox')"/>
+        <q-field v-model="responseValue" v-if="loadField('checkbox')" label="" class="field-no-padding"
+                 v-bind="fieldProps.fieldComponent">
+          <q-checkbox v-model="responseValue" label="" v-bind="fieldProps.field">
+            <div class="text-blue-grey" v-if="fieldProps.field.label" v-html="fieldProps.field.label"></div>
+          </q-checkbox>
+        </q-field>
         <!--Image-->
         <q-field v-model="responseValue" v-if="loadField('image')" class="field-image" label=""
                  v-bind="fieldProps.fieldComponent">
@@ -166,8 +171,10 @@
         <manage-settings v-model="responseValue" class="q-mb-sm" :settings="field.settings"
                          v-if="loadField('settings')" @input="watchValue"/>
         <!--Schedules form-->
-        <schedules-form v-model="responseValue" @input="watchValue" class="q-mb-sm" v-if="loadField('schedule')"
-                        @converted="value => $emit('converted', value)"/>
+        <div class="round bg-white" v-if="loadField('schedule')">
+          <schedules-form v-model="responseValue" @input="watchValue" class="q-mb-sm"
+                          @converted="value => $emit('converted', value)"/>
+        </div>
         <!--input color-->
         <q-input v-model="responseValue" :label="fieldLabel" v-if="loadField('inputColor')" v-bind="fieldProps.field"
                  @click="$refs.qColorProxi.show()">
@@ -483,6 +490,11 @@ export default {
         case'checkbox':
           props = {
             field: {
+              ...props
+            },
+            fieldComponent: {
+              dense: true,
+              borderless: true,
               ...props
             }
           }

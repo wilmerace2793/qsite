@@ -5,9 +5,9 @@
       <q-item v-for="(day, keyDay) in schedule" :key="keyDay" clickable style="padding: 8px">
         <div class="row full-width items-center">
           <!--Day Name-->
-          <div class="col-3 text-blue-grey"><b>{{ $tr(`ui.label.${day.name}`) }}</b></div>
+          <div class="col-xs-4 text-blue-grey"><b>{{ $tr(`ui.label.${day.name}`) }}</b></div>
           <!--Schedules-->
-          <div class="col-6 text-left q-body-2">
+          <div class="col-xs-6 text-left q-body-2">
             <!--Message Close-->
             <div class="text-red capitalize" v-if="day.schedules == '0'">
               <b>{{ $tr('ui.label.closed') }}</b>
@@ -26,7 +26,7 @@
             </div>
           </div>
           <!---Actions-->
-          <div class="col-3 text-right">
+          <div class="col-xs-2 text-right">
             <btn-menu :actions="dayActions" :action-data="day"/>
           </div>
         </div>
@@ -34,21 +34,24 @@
     </q-list>
     <!--Modal Form day schedule-->
     <master-modal v-model="modal.show" @hide="dayEdit = false" v-bind="propsModal">
-      <div id="modalScheduleContent">
-        <!--Schedules-->
-        <div v-for="(schedule, indexSchedule) in dayEdit.schedules" :key="indexSchedule"
-             class="row q-mb-md items-center q-col-gutter-sm relative-position modal-content">
-          <!--From hour-->
-          <dynamic-field v-model="dayEdit.schedules[indexSchedule].from" class="col-6"
-                         :field="formFields.fromHour"/>
-          <!--To hour-->
-          <dynamic-field v-model="dayEdit.schedules[indexSchedule].to" class="col-6"
-                         :field="formFields.toHour"/>
-          <!--Remove Range-->
-          <div class="remove-action">
-            <q-btn icon="fas fa-trash-alt" text-color="red" outline unelevated color="red" round size="10px"
-                   padding="8px" @click="dayEdit.schedules.splice(indexSchedule, 1)"
-                   :disable="dayEdit.schedules.length >= 2 ? false : true"/>
+      <div id="modalScheduleContent" class="box box-auto-height">
+        <div class="row q-col-gutter-y-sm">
+          <!--Schedules-->
+          <div v-for="(schedule, indexSchedule) in dayEdit.schedules" :key="indexSchedule" class="col-xs-12">
+            <div class="row items-center q-col-gutter-sm relative-position modal-content">
+              <!--From hour-->
+              <dynamic-field v-model="dayEdit.schedules[indexSchedule].from" class="col-6"
+                             :field="formFields.fromHour"/>
+              <!--To hour-->
+              <dynamic-field v-model="dayEdit.schedules[indexSchedule].to" class="col-6"
+                             :field="formFields.toHour"/>
+              <!--Remove Range-->
+              <div class="remove-action">
+                <q-btn icon="fas fa-trash-alt" text-color="red" outline unelevated color="red" round size="10px"
+                       padding="8px" @click="dayEdit.schedules.splice(indexSchedule, 1)"
+                       :disable="dayEdit.schedules.length >= 2 ? false : true" class="btn-small"/>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -152,17 +155,21 @@ export default {
         title: `${this.$tr('ui.form.schedule')} ${this.$tr(`ui.label.${this.dayEdit.name}`)}`,
         actions: [
           {
-            label: this.$tr('ui.label.add') + ' ' + this.$tr('ui.form.hour'),
-            icon: 'fas fa-plus',
-            color: 'blue',
+            props: {
+              label: this.$tr('ui.label.add') + ' ' + this.$tr('ui.form.hour'),
+              icon: 'fas fa-plus-circle',
+              color: 'blue',
+              outline : true
+            },
             action: () => {
               this.dayEdit.schedules.push({from: this.currentDate + ' 08:00', to: this.currentDate + ' 10:00'})
             }
           },
           {
-            label: this.$tr('ui.label.save'),
-            icon: 'fas fa-save',
-            color: 'green',
+            props: {
+              label: this.$tr('ui.label.save'),
+              color: 'green'
+            },
             action: () => {
               let dayIndex = this.schedule.findIndex(day => day.iso == this.dayEdit.iso)
               this.$set(this.schedule, dayIndex, this.$clone(this.dayEdit))
@@ -241,6 +248,6 @@ export default {
 
     .remove-action
       position absolute
-      top 3px
+      top 6px
       right 0
 </style>
