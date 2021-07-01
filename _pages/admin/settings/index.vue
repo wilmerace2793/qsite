@@ -4,6 +4,12 @@
     <not-result class="q-my-md" v-if="!loading && !dataSettings"/>
     <!--Content-->
     <div class="row q-col-gutter-md" v-else>
+      <!--Page Actions-->
+      <div class="col-xs-12">
+        <div class="box box-auto-height">
+          <page-actions :title="$tr($route.meta.title)"/>
+        </div>
+      </div>
       <!--Menu settings-->
       <div id="menuContent" class="col-12 col-md-3">
         <div class="box" style="padding: 15px 0 !important;">
@@ -66,9 +72,9 @@
                                    v-model="locale.formTemplate[field.name || key][chieldField.name || childKey]"/>
                     <!--Dynamic fake field-->
                     <dynamic-field
-                      v-else-if="chieldField.fakeFieldName"
-                      :language="locale.language" :field="chieldField" :item-id="getSettingId(field,key)"
-                      v-model="locale.formTemplate[field.name || key][chieldField.fakeFieldName][chieldField.name || childKey]"/>
+                        v-else-if="chieldField.fakeFieldName"
+                        :language="locale.language" :field="chieldField" :item-id="getSettingId(field,key)"
+                        v-model="locale.formTemplate[field.name || key][chieldField.fakeFieldName][chieldField.name || childKey]"/>
                   </div>
                 </div>
               </div>
@@ -231,20 +237,20 @@ export default {
                     fieldLocale.fields[fakeFieldName][childFakeField][childField.name] = childField.value
                     //Set child field value to form data
                     formData[fakeFieldName][childFakeField][childField.name] = (!childField.type || !childSettingValue) ? childField.value :
-                      ((childSettingValue && childSettingValue[childFakeField]) ?
-                        childSettingValue[childFakeField][childField.name] : childField.value)
+                        ((childSettingValue && childSettingValue[childFakeField]) ?
+                            childSettingValue[childFakeField][childField.name] : childField.value)
                   } else {//Add field
                     fieldLocale.fields[fakeFieldName][childField.name] = childField.value//Set child fake field
                     //Set child fake field value to formData
                     formData[fakeFieldName][childField.name] = (!childField.type || !childSettingValue) ? childField.value :
-                      (childSettingValue[childField.name] || childField.value)
+                        (childSettingValue[childField.name] || childField.value)
                   }
                 })
               } else {
                 fieldLocale.fields[fakeFieldName][field.name] = field.value//Set fake field
                 //Set fake field value to formData
                 formData[fakeFieldName][field.name] = !field.type ? field.value :
-                  (settingValue ? (settingValue.value[field.name] || field.value) : field.value)
+                    (settingValue ? (settingValue.value[field.name] || field.value) : field.value)
               }
             } else {//Set plain field
               fieldLocale.fields[field.name] = field.value//Set plain field

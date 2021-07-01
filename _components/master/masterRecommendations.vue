@@ -185,7 +185,7 @@ export default {
 </script>
 <style lang="stylus">
 #recommendationsComponent
-  padding 30px 20px 30px 8px
+  padding 20px 20px 30px 8px
   background $custom-accent-color
   height 100%
 
