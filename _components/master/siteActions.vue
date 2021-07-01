@@ -1,5 +1,5 @@
 <template>
-  <div id="adminSiteActionscomponent">
+  <div id="siteActionscomponent">
     <div :class="`row q-gutter-${gutter}`">
       <!--Actions-->
       <q-btn v-for="(btn, keyAction) in actions" :key="keyAction" v-bind="btn.props"
@@ -50,9 +50,9 @@ export default {
         textColor: "primary"
       }
 
-      return {
+      return [
         //Go To Site
-        goToSite: {
+        {
           label: this.$tr('ui.configList.goToSite'),
           props: {
             ...defaultButtonProps,
@@ -62,10 +62,20 @@ export default {
             target: '_blank'
           }
         },
+        //checking
+        {
+          label: this.$tr('qcheckin.sidebar.checkin'),
+          vIf: this.$auth.hasAccess('icheckin.shifts.create'),
+          props: {
+            ...defaultButtonProps,
+            icon: 'fas fa-stopwatch'
+          },
+          action: () => this.$eventBus.$emit('toggleMasterDrawer', 'checkin')
+        },
         //Chat
-        chat: {
+        {
           label: 'Chat',
-          vIf: this.$auth.hasAccess('ichat.conversations.index'),
+          vIf: (config('app.mode') == 'iadmin') && this.$auth.hasAccess('ichat.conversations.index'),
           props: {
             ...defaultButtonProps,
             icon: 'fas fa-comment-alt',
@@ -74,7 +84,7 @@ export default {
           action: () => this.$eventBus.$emit('toggleMasterDrawer', 'chat')
         },
         //Notifications
-        notifications: {
+        {
           label: this.$trp('ui.label.notification'),
           vIf: this.$auth.hasAccess('notification.notifications.manage'),
           props: {
@@ -85,15 +95,16 @@ export default {
           action: () => this.$eventBus.$emit('toggleMasterDrawer', 'notification')
         },
         //Settings
-        settings: {
+        {
           label: this.$trp('ui.label.setting'),
+          vIf: (config('app.mode') == 'iadmin'),
           props: {
             ...defaultButtonProps,
             icon: 'fas fa-cog'
           },
           action: () => this.$eventBus.$emit('toggleMasterDrawer', 'config')
         }
-      }
+      ]
     },
   },
   methods: {

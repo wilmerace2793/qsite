@@ -1,7 +1,7 @@
 <template>
   <div id="masterDrawers">
     <!-- MENU -->
-    <q-drawer id="menuMaster" class="no-shadow" v-model="drawer.menu" bordered ref="menuMaster"
+    <q-drawer id="menuMaster" class="no-shadow" v-model="drawer.menu" ref="menuMaster"
               :mini="miniState" @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
       <!--Logo-->
       <div class="q-pa-md" v-if="!miniState && drawer.menu">
@@ -15,25 +15,13 @@
       </q-scroll-area>
     </q-drawer>
 
-    <!-- Config -->
-    <q-drawer bordered id="configMaster" overlay v-model="drawer.config" side="right"
-              v-if="appConfig.mode == 'iadmin' ? true : false">
-      <config-list/>
-    </q-drawer>
-
-    <!-- Chat -->
-    <q-drawer bordered id="chatMaster" overlay v-model="drawer.chat" side="right"
-              v-if="$auth.hasAccess('ichat.conversations.index')">
-      <chat-list/>
-    </q-drawer>
-
     <!--Master filter-->
-    <q-drawer bordered id="drawerFilterMaster" v-model="drawer.filter" side="right" v-if="filter.load" :overlay="false">
+    <q-drawer id="drawerFilterMaster" v-model="drawer.filter" side="right" v-if="filter.load" :overlay="false">
       <master-filter/>
     </q-drawer>
 
     <!--checking-->
-    <q-drawer bordered id="drawerCheckinMaster" v-model="drawer.checkin" side="right" overlay
+    <q-drawer id="drawerCheckinMaster" v-model="drawer.checkin" side="right" overlay
               v-if="(appConfig.mode == 'ipanel') && $auth.hasAccess('icheckin.shifts.create')">
       <checkin/>
     </q-drawer>
@@ -45,7 +33,7 @@
     </q-drawer>
 
     <!--Notification-->
-    <q-drawer bordered id="dawerNotificatiosMaster" v-model="drawer.notification" side="right" overlay
+    <q-drawer id="dawerNotificatiosMaster" v-model="drawer.notification" side="right" overlay
               v-if="$auth.hasAccess('notification.notifications.manage')">
       <master-notifications/>
     </q-drawer>
@@ -160,6 +148,8 @@ export default {
     padding 0px 20px !important
 
 #menuMaster
+  .q-scrollarea
+    padding-top 5px
   hr
     background-color $grey-3
 
