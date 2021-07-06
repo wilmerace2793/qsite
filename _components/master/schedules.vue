@@ -5,7 +5,7 @@
       <q-item v-for="(day, keyDay) in schedule" :key="keyDay" clickable style="padding: 8px">
         <div class="row full-width items-center">
           <!--Day Name-->
-          <div class="col-xs-4 text-blue-grey"><b>{{ $tr(`ui.label.${day.name}`) }}</b></div>
+          <div class="col-xs-4 text-blue-grey"><b class="q-pl-md">{{ $tr(`ui.label.${day.name}`) }}</b></div>
           <!--Schedules-->
           <div class="col-xs-6 text-left q-body-2">
             <!--Message Close-->

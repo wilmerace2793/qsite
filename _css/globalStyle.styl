@@ -159,6 +159,17 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
     &.q-table-container, &.q-card
       padding 0
 
+  .btn-extra-small
+    .q-btn__wrapper
+      padding 2px 10px !important
+      min-height 18px !important
+      min-width 18px !important
+      font-size 12px !important
+
+      .q-icon
+        font-size 12px !important
+        margin-right 8px
+
   .btn-small
     .q-btn__wrapper
       min-height 34px !important
@@ -253,7 +264,7 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
 
   .q-btn
     &.q-btn--rounded
-      border-radius $custom-radius-items !important
+      border-radius $custom-radius-items
 
   .q-field--outlined
     .q-field__control:before, .q-field__control:after

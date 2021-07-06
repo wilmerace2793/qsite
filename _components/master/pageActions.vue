@@ -2,6 +2,7 @@
   <div id="pageActionscomponent" class="row q-col-gutter-y-sm full-width items-center justify-between">
     <!--Title-->
     <div class="text-h6 text-blue-grey text-weight-bold text-subtitle1 ellipsis">
+      <q-icon v-if="icon" :name="icon" size="22px" class="q-mr-sm"/>
       <label v-if="title">{{ title }}</label>
     </div>
     <!--Actions-->
@@ -33,6 +34,7 @@ import masterExport from "@imagina/qsite/_components/master/masterExport"
 export default {
   props: {
     title: {type: String},
+    icon: {type: String},
     gutter: {type: String, default: 'sm'},
     size: {type: String, default: 'small'},
     extraActions: {type: Array}
@@ -63,7 +65,8 @@ export default {
         unelevated: true,
         color: "blue-grey",
         class: `btn-${this.size}`,
-        outline: true
+        outline: true,
+        noCaps : true
       }
     },
     //Page Actions

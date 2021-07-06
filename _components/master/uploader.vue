@@ -4,32 +4,32 @@
     <div id="contentUploader" class="row q-col-gutter-md">
       <!---File block-->
       <div :class="`relative-position ${file.columns}`" v-for="(file , indexFile) in showFiles" :key="indexFile">
-        <!--content-->
-        <div class="file-block" @click="file.action(file)">
-          <!---Content file block-->
-          <div :class="`file-block_content row items-center justify-center img-as-bg ${file.class}`"
-               :style="file.style">
-            <!--Information-->
-            <div class="text-center">
-              <!--Icon-->
-              <q-icon v-if="!loading && file.icon" class="file-block_icon" :name="file.icon" @added="setFiles"/>
-              <!--Helper label-->
-              <div v-if="!loading && file.label" class="text-caption text-grey-7 q-mt-md">{{ file.label }}</div>
+          <!--content-->
+          <div class="file-block" @click="file.action(file)">
+            <!---Content file block-->
+            <div :class="`file-block_content row items-center justify-center img-as-bg ${file.class}`"
+                 :style="file.style">
+              <!--Information-->
+              <div class="text-center">
+                <!--Icon-->
+                <q-icon v-if="!loading && file.icon" class="file-block_icon" :name="file.icon" @added="setFiles"/>
+                <!--Helper label-->
+                <div v-if="!loading && file.label" class="text-caption text-grey-7 q-mt-md">{{ file.label }}</div>
+              </div>
+              <!--Tooltip-->
+              <q-tooltip v-if="file.tooltip" anchor="center middle" self="center middle" :delay="500">
+                {{ file.tooltip }}
+              </q-tooltip>
+              <!---Inner loading-->
+              <q-spinner-oval v-if="file.loading" color="primary" size="40px"/>
             </div>
-            <!--Tooltip-->
-            <q-tooltip v-if="file.tooltip" anchor="center middle" self="center middle" :delay="500">
-              {{ file.tooltip }}
-            </q-tooltip>
-            <!---Inner loading-->
-            <q-spinner-oval v-if="file.loading" color="primary" size="40px"/>
+            <!--File title-->
+            <div v-if="false && file.name" class="file-block_title ellipsi"> {{ file.name }}</div>
           </div>
-          <!--File title-->
-          <div v-if="file.name" class="file-block_title ellipsis"> {{ file.name }}</div>
-        </div>
-        <!--Delete action-->
-        <div v-if="file.actionDelete" class="btn-delete row items-center justify-center"
-             @click="file.actionDelete(file.index)">
-          <q-icon name="fas fa-trash-alt"/>
+          <!--Delete action-->
+          <div v-if="file.actionDelete" class="btn-delete row items-center justify-center"
+               @click="file.actionDelete(file.index)">
+            <q-icon name="fas fa-trash-alt"/>
         </div>
       </div>
     </div>
@@ -107,7 +107,7 @@ export default {
             index: fileIndex,
             name: file ? (file.name || filePath) : false,
             icon: file ? (fileIsImage ? false : 'task') :
-              (this.accept == 'images' ? 'add_a_photo' : 'note_add'),
+                (this.accept == 'images' ? 'add_a_photo' : 'note_add'),
             label: file ? false : this.helpText || this.$tr('ui.message.addFile'),
             style: filePath ? `background-image: url('${filePath}')` : '',
             class: file ? 'file-block_loaded' : '',

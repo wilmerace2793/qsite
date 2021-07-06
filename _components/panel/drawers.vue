@@ -9,31 +9,98 @@
       </div>
       <!--List iadmin-->
       <q-scroll-area
-        :style="`height: calc(100vh - ${this.windowSize == 'mobile' ? '152' : (miniState ? '100' : '252')}px`">
+          :style="`height: calc(100vh - ${(miniState ? '50' : '202')}px`">
         <!--Menu-->
         <menu-list ref="menuList" group :menu="menu"/>
       </q-scroll-area>
+      <!--== Button User ==-->
+      <q-no-ssr>
+        <div id="btnProfile" v-if="quserState.authenticated">
+          <!--Content-->
+          <div class="row items-center justify-between">
+            <!--Title-->
+            <div class="row items-center">
+              <div id="profileImage" class="img-as-bg q-mr-sm items-center"
+                   :style="`background-image: url('${quserState.userData.mainImage}')`"></div>
+              <div class="q-ml-xs" v-if="!miniState">{{ quserState.userData.firstName }}</div>
+            </div>
+            <!--Icon-->
+            <div v-if="!miniState" class="q-pr-md">
+              <q-icon name="fas fa-chevron-up"/>
+            </div>
+          </div>
+          <!--Actions-->
+          <q-menu anchor="bottom right" self="top right">
+            <div class="row no-wrap q-pa-md">
+              <!--Left content-->
+              <div class="column">
+                <div style="max-width: 110px">
+                  <!--Image profile-->
+                  <div class="text-center">
+                    <q-avatar size="72px" class="q-mx-auto">
+                      <img :src="quserState.userData.mainImage">
+                    </q-avatar>
+                  </div>
+                  <!--User Data-->
+                  <div class="text-subtitle1 ellipsis q-mt-md">{{ quserState.userData.fullName }}</div>
+                  <div class="ellipsis text-caption">
+                    {{ quserState.userData.roles.map(role => role.name).join(', ') }}
+                  </div>
+                </div>
+              </div>
+              <!--Seaprator-->
+              <q-separator vertical inset class="q-mx-lg"/>
+              <!--Right content-->
+              <div class="column">
+                <!--Title-->
+                <div class="text-h6 q-mb-xs text-blue-grey">{{ $tr('ui.label.profile') }}</div>
+                <!--Actions-->
+                <q-list>
+                  <!--Profile-->
+                  <q-item clickable v-close-popup :to="{name: 'user.profile.me'}" style="padding: 0; min-width: 130px">
+                    <q-item-section>
+                      <div class="row items-center text-blue-grey text-right">
+                        <q-icon name="fas fa-user-circle" color="green" size="16px" class="q-mr-sm"/>
+                        {{ $tr('quser.sidebar.panelProfile') }}
+                      </div>
+                    </q-item-section>
+                  </q-item>
+                  <!--Logout-->
+                  <q-item clickable v-close-popup :to="{name: 'auth.logout'}" style="padding: 0; min-width: 130px">
+                    <q-item-section>
+                      <div class="row items-center text-blue-grey">
+                        <q-icon name="fas fa-sign-out-alt" color="red" size="16px" class="q-mr-sm"/>
+                        {{ $t('ui.configList.signOut') }}
+                      </div>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </div>
+            </div>
+          </q-menu>
+        </div>
+      </q-no-ssr>
     </q-drawer>
 
     <!--Master filter-->
-    <q-drawer id="drawerFilterMaster" v-model="drawer.filter" side="right" v-if="filter.load" :overlay="false">
+    <q-drawer id="drawerFilterMaster" v-model="drawer.filter" side="right" v-if="filter.load">
       <master-filter/>
     </q-drawer>
 
     <!--checking-->
-    <q-drawer id="drawerCheckinMaster" v-model="drawer.checkin" side="right" overlay
+    <q-drawer id="drawerCheckinMaster" v-model="drawer.checkin" side="right"
               v-if="(appConfig.mode == 'ipanel') && $auth.hasAccess('icheckin.shifts.create')">
       <checkin/>
     </q-drawer>
 
     <!--Recommendation-->
-    <q-drawer id="drawerRecommendationMaster" v-model="drawer.recommendation" side="right" :overlay="false"
+    <q-drawer id="drawerRecommendationMaster" v-model="drawer.recommendation" side="right"
               v-if="routeSubHeader.recommendations ? true : false">
       <master-recommendation/>
     </q-drawer>
 
     <!--Notification-->
-    <q-drawer id="dawerNotificatiosMaster" v-model="drawer.notification" side="right" overlay
+    <q-drawer id="dawerNotificatiosMaster" v-model="drawer.notification" side="right"
               v-if="$auth.hasAccess('notification.notifications.manage')">
       <master-notifications/>
     </q-drawer>
@@ -47,7 +114,7 @@ import menuList from '@imagina/qsite/_components/master/recursiveItem'
 import masterFilter from '@imagina/qsite/_components/master/masterFilter'
 import checkin from '@imagina/qcheckin/_components/checkin'
 import masterRecommendation from '@imagina/qsite/_components/master/masterRecommendations'
-import masterNotifications from  '@imagina/qnotification/_components/drawerNotifications'
+import masterNotifications from '@imagina/qnotification/_components/drawerNotifications'
 
 export default {
   beforeDestroy() {
@@ -77,7 +144,6 @@ export default {
         checkin: false,
         recommendation: false,
         notification: false
-
       },
       menu: config('sidebar'),
       appConfig: config('app'),
@@ -85,6 +151,10 @@ export default {
     }
   },
   computed: {
+    //Quser state
+    quserState() {
+      return this.$store.state.quserAuth
+    },
     windowSize() {
       return this.windowWith >= '992' ? 'desktop' : 'mobile'
     },
@@ -116,8 +186,6 @@ export default {
         if (drawer != drawerName) {
           if ((drawer == 'menu') && (this.windowSize != 'mobile')) {
             this.miniState = true
-          } else if (drawer == 'recommendation') {
-            this.drawer[drawer] = (this.windowSize == 'mobile') ? false : true
           } else this.drawer[drawer] = false
         }
       }
@@ -150,6 +218,7 @@ export default {
 #menuMaster
   .q-scrollarea
     padding-top 5px
+
   hr
     background-color $grey-3
 
@@ -189,6 +258,23 @@ export default {
 
   .expansion-selected
     background-color $primary
+
+  #btnProfile
+    cursor pointer
+    position absolute
+    bottom 0
+    left 0
+    background-color $primary
+    border-radius 0
+    color white
+    height 50px
+    width 100%
+    padding 7px 8.5px
+
+    #profileImage
+      height 36px
+      width 36px
+      border-radius 50%
 
 #masterDrawers
   #drawerRecomendationMaster

@@ -1,5 +1,5 @@
 <template>
-  <q-layout id="layoutMaster" :view="(appConfig.mode == 'iadmin') ? 'hHh LpR lFf' : 'lHh LpR lFf'">
+  <q-layout id="layoutMaster" :view="(appConfig.mode == 'iadmin') ? 'hHh LpR lFf' : 'lHr LpR lFf'">
     <!-- HEADER -->
     <header-admin v-if="appState.loadPage && (appConfig.mode == 'iadmin')"/>
     <header-panel v-if="appState.loadPage && (appConfig.mode == 'ipanel')"/>
