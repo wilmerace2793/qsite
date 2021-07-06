@@ -53,6 +53,7 @@ export default {
       return [
         //Go To Site
         {
+          name: 'goToSite',
           label: this.$tr('ui.configList.goToSite'),
           props: {
             ...defaultButtonProps,
@@ -64,8 +65,9 @@ export default {
         },
         //checking
         {
+          name: 'checking',
           label: this.$tr('qcheckin.sidebar.checkin'),
-          vIf: this.$auth.hasAccess('icheckin.shifts.create'),
+          vIf: (config('app.mode') == 'ipanel') && this.$auth.hasAccess('icheckin.shifts.create'),
           props: {
             ...defaultButtonProps,
             icon: 'fas fa-stopwatch'
@@ -74,6 +76,7 @@ export default {
         },
         //Chat
         {
+          name: 'chat',
           label: 'Chat',
           vIf: (config('app.mode') == 'iadmin') && this.$auth.hasAccess('ichat.conversations.index'),
           props: {
@@ -85,6 +88,7 @@ export default {
         },
         //Notifications
         {
+          name: 'notifications',
           label: this.$trp('ui.label.notification'),
           vIf: this.$auth.hasAccess('notification.notifications.manage'),
           props: {
@@ -96,6 +100,7 @@ export default {
         },
         //Settings
         {
+          name: 'settings',
           label: this.$trp('ui.label.setting'),
           vIf: (config('app.mode') == 'iadmin'),
           props: {
