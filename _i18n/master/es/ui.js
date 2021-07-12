@@ -257,7 +257,8 @@ export default {
     writing: 'Escritura',
     drink: 'Bebida | Bebidas',
     video: 'Vídeo | Vídeos',
-    custom: 'Personalizado | Personalizados'
+    custom: 'Personalizado | Personalizados',
+    subscription: 'Suscripción | Suscripciones'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
@@ -312,7 +313,7 @@ export default {
     notAuthorized: "Lo sentimos, No estas autorizad@ para estar aquí",
     noValue: 'Sin Valor',
     rateYour: 'Califica tu <b>{name}</b>',
-    withoutIcon : 'Sin Icono'
+    withoutIcon: 'Sin Icono'
   },
   form: {
     id: 'ID',

@@ -251,7 +251,8 @@ export default {
     winter: 'Winter',
     writing: 'Writing',
     video: 'Video | Videos',
-    custom: 'Custom'
+    custom: 'Custom',
+    subscription: 'Subscription | Subscriptions'
   },
   message: {
     notFound: 'Sorry, nothing here',
