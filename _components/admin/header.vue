@@ -1,5 +1,5 @@
 <template>
-  <div id="masterHeader">
+  <div id="masterAdminHeader">
     <!-- HEADER -->
     <q-header class="bg-white">
       <!-- Toolbar  -->
@@ -166,7 +166,7 @@ export default {
 }
 </script>
 <style lang="stylus">
-#masterHeader
+#masterAdminHeader
   #toolbarTop
     padding-left 8px
     padding-right 10px

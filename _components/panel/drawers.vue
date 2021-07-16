@@ -145,12 +145,21 @@ export default {
         recommendation: false,
         notification: false
       },
-      menu: config('sidebar'),
       appConfig: config('app'),
       filter: this.$filter
     }
   },
   computed: {
+    //Return menu
+    menu() {
+      let menu = config('sidebar').map(item => {
+        //Add `toRoute` param to home page
+        if (item.name == 'app.home') item.toRoute = this.$store.state.qsiteApp.baseUrl
+        return item
+      })
+      //response
+      return menu
+    },
     //Quser state
     quserState() {
       return this.$store.state.quserAuth

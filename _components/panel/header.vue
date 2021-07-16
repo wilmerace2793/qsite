@@ -1,5 +1,5 @@
 <template>
-  <div id="masterHeader">
+  <div id="masterPanelHeader">
     <!-- HEADER -->
     <q-header class="bg-custom-accent-color">
       <!-- Toolbar header -->
@@ -101,7 +101,7 @@ export default {
 }
 </script>
 <style lang="stylus">
-#masterHeader
+#masterPanelHeader
   #toolbarTop
     padding-left 0
     padding-right 10px
