@@ -258,7 +258,10 @@ export default {
     drink: 'Bebida | Bebidas',
     video: 'Vídeo | Vídeos',
     custom: 'Personalizado | Personalizados',
-    subscription: 'Suscripción | Suscripciones'
+    subscription: 'Suscripción | Suscripciones',
+    finished : 'Terminado | Terminados',
+    value : 'Valor | Valores',
+    decimal : 'Decimal | Decimales'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

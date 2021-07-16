@@ -252,7 +252,10 @@ export default {
     writing: 'Writing',
     video: 'Video | Videos',
     custom: 'Custom',
-    subscription: 'Subscription | Subscriptions'
+    subscription: 'Subscription | Subscriptions',
+    finished: 'Finished',
+    value: 'Value | Values',
+    decimal : 'Decimal | Decimals'
   },
   message: {
     notFound: 'Sorry, nothing here',
