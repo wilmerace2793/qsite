@@ -29,4 +29,16 @@ export default {
     icon: 'fas fa-home',
     authenticated: true,
   },
+  //test PAge
+  testPage: {
+    permission: null,
+    activated: true,
+    path: '/test-page',
+    name: 'app.test.page',
+    layout: () => import('@imagina/qsite/_layouts/master'),
+    page: () => import('@imagina/qsite/_pages/master/testPage'),
+    title: 'sidebar.pageHome',
+    icon: 'fas fa-flask',
+    authenticated: true,
+  },
 }
