@@ -82,7 +82,7 @@ class PluginCollapsibleItem {
         });
       },
       onLoad: function (event) {
-        //Add Class
+        //Add Styles
         CKEDITOR.addCss(
           'a.collapsible-item-title-link { display: block; }' +
           '.collapsible-item::before {font-size:10px;color:#000;content: "Bootstrap collapsible element"}' +
@@ -100,7 +100,7 @@ class PluginCollapsibleItem {
           var this_instance = document.getElementById(event.editor.id + '_toolbox');
           var this_button = this_instance.querySelector('.cke_button__collapsibleitem_icon');
           if (typeof this_button != 'undefined') {
-            this_button.innerHTML = '<div id="iconToolbarCollapsibleitem"></div>';
+            this_button.innerHTML = '<div id="iconToolbarCollapsibleitem" class="btn-content-toolbar"></div>';
           }
         });
       }
