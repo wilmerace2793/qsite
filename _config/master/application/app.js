@@ -38,6 +38,7 @@ export default {
     'qmedia',
     'qslider',
     'qbanner',
+    'qtranslation',
     'qsite',
     'qchat'
   ],
