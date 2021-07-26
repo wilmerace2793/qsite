@@ -139,26 +139,30 @@ export default {
   },
   methods: {
     //Init method
-    init() {
-      this.getData()//Get data
+    async init() {
+      await this.getData()//Get data
+      this.openSettingName()//Open default group
       this.$root.$on('page.data.refresh', () => this.getData())//Listen refresh event
     },
     //Get Data
-    async getData() {
-      this.loading = true
-      await Promise.all([
-        this.$store.dispatch('qsiteApp/GET_SITE_SETTINGS'),//Get settings
-        this.getSettingFields()//Get setting fields
-      ])
-      //Set Default selected
-      if (!this.moduleSelected && this.dataSettings) {
-        this.moduleSelected = Object.keys(this.settingsGroup)[0]//Set module selected
-        //Set group selected
-        if (!this.groupSelected) this.groupSelected = Object.keys(this.settingsGroup[this.moduleSelected])[0]
-      }
-      this.$store.dispatch('qsiteApp/SET_SITE_COLORS')//Set colors
-      this.setLocaleConfig()//Set locale data
-      this.loading = false
+    getData() {
+      return new Promise(async resolve => {
+        this.loading = true
+        await Promise.all([
+          this.$store.dispatch('qsiteApp/GET_SITE_SETTINGS'),//Get settings
+          this.getSettingFields()//Get setting fields
+        ])
+        //Set Default selected
+        if (!this.moduleSelected && this.dataSettings) {
+          this.moduleSelected = Object.keys(this.settingsGroup)[0]//Set module selected
+          //Set group selected
+          if (!this.groupSelected) this.groupSelected = Object.keys(this.settingsGroup[this.moduleSelected])[0]
+        }
+        this.$store.dispatch('qsiteApp/SET_SITE_COLORS')//Set colors
+        this.setLocaleConfig()//Set locale data
+        this.loading = false
+        resolve(true)
+      })
     },
     //Get settings Fields
     getSettingFields() {
@@ -307,6 +311,24 @@ export default {
         console.error('[UPDATE-SETTINGS]::error:', error)
         this.loading = false
       })
+    },
+    //Open setting name
+    openSettingName() {
+      //Get setting from URL
+      let settingName = this.$route.query.settingName
+      //Search group setting name
+      if (settingName) {
+        Object.keys(this.settingsGroup).forEach(moduleName => {//loop each module
+          Object.keys(this.settingsGroup[moduleName]).forEach(groupName => {//loop each module group
+            Object.values(this.settingsGroup[moduleName][groupName]).forEach(setting => {//loop each setting
+              if (setting.name == settingName) {
+                this.moduleSelected = this.$clone(moduleName)
+                this.groupSelected = this.$clone(groupName)
+              }
+            })
+          })
+        })
+      }
     }
   }
 }
