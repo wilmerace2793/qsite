@@ -92,7 +92,7 @@ export default {
     event: 'Evento | Eventos',
     profile: 'Perfil | Perfiles',
     place: 'Lugar | Lugares',
-    welcome: 'Bienvenido | Bienvenidos',
+    welcome: 'Bienvenid@ | Bienvenid@s',
     message: 'Mensaje | Mensajes',
     chat: 'Chat | Chats',
     pagination: 'Paginación',
