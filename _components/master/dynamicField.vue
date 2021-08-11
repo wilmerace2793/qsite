@@ -209,6 +209,10 @@
         </q-field>
         <!--icon select-->
         <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps"/>
+        <!--rating-->
+        <q-field v-model="responseValue" v-if="loadField('optionGroup')" v-bind="fieldProps.fieldComponent">
+          <q-option-group v-model="responseValue" v-bind="fieldProps.field"/>
+        </q-field>
       </div>
     </div>
   </div>
@@ -616,6 +620,21 @@ export default {
             ...props
           }
           break;
+        case'optionGroup':
+          props = {
+            field: {
+              options: [],
+              color: 'primary',
+              ...props
+            },
+            fieldComponent: {
+              outlined: false,
+              borderless: true,
+              dense: true,
+              ...props
+            }
+          }
+          break;
       }
 
       //Add ruler to required field
@@ -815,6 +834,9 @@ export default {
           this.responseValue = (propValue !== undefined) ? propValue : 1
           break
         case 'selectIcon':
+          this.responseValue = (propValue !== undefined) ? propValue : null
+          break
+        case 'optionGroup':
           this.responseValue = (propValue !== undefined) ? propValue : null
           break
         default :
