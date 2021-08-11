@@ -73,7 +73,8 @@ export default {
     formId: {default: false},
     sendTo: {default: false},
     actions: {default: false},
-    defaultColClass: {default: 'col-12 col-md-6'}
+    defaultColClass: {default: 'col-12 col-md-6'},
+    useCaptcha: {type: Boolean, default: false}
   },
   watch: {
     value: {
@@ -141,6 +142,9 @@ export default {
         //Merge blocks
         blocks = [...blocks, ...form.blocks]
       }
+
+      //Add captcha field
+      if (this.useCaptcha && blocks.length) blocks[blocks.length - 1].fields.captcha = {type: 'captcha'}
 
       //Response
       return blocks
@@ -332,6 +336,7 @@ export default {
 
       .q-stepper__step-inner
         padding 0
+
   .q-btn
     .q-icon
       font-size 14px
