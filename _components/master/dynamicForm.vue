@@ -1,5 +1,4 @@
 <template>
-  <!---Form content-->
   <div id="dynamicFormComponent">
     <div id="dynamicFormComponentContent" class="relative-position" :key="componentId">
       <!--Top Content-->
@@ -161,7 +160,7 @@ export default {
       //Default actions config
       let actions = {
         previous: {
-          color: "grey-7",
+          color: "grey-6",
           icon: "fas fa-arrow-left",
           label: this.$tr('ui.label.previous'),
           ...(this.actions.previous || {}),
@@ -197,6 +196,19 @@ export default {
       //Response
       return response
     },
+    //Return all form fields
+    blocksFieldsName() {
+      //Defualt fields anme
+      let fields = []
+      //Get field name form every block
+      this.blocksData.forEach(block => {
+        Object.keys(block.fields).forEach(fieldKey => {
+          fields.push(block.fields[fieldKey].name || fieldKey)
+        })
+      })
+      //Response
+      return fields
+    }
   },
   methods: {
     //Init method
@@ -240,7 +252,14 @@ export default {
     //Set value to formData
     setValueToFormData() {
       if (JSON.stringify(this.value) != JSON.stringify(this.formData)) {
-        this.formData = this.$clone({...this.formData, ...this.value})
+        //Merge formData with Value
+        let formData = this.$clone({...this.formData, ...this.value})
+        //Clear fields
+        Object.keys(formData).forEach(fieldName => {
+          if (!this.blocksFieldsName.includes(fieldName)) delete formData[fieldName]
+        })
+        //Set formData
+        this.formData = this.$clone(formData)
       }
     },
     //Listener to step head click
@@ -313,4 +332,7 @@ export default {
 
       .q-stepper__step-inner
         padding 0
+  .q-btn
+    .q-icon
+      font-size 14px
 </style>
