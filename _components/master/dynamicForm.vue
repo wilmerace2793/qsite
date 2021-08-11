@@ -38,11 +38,11 @@
             <!--Fields-->
             <div class="row q-col-gutter-x-md">
               <dynamic-field v-for="(field, keyField) in block.fields" :key="keyField" :field="field"
-                             v-model="formData[field.name || keyField]" :class="field.colClass || 'col-12 col-md-6'"/>
+                             v-model="formData[field.name || keyField]" :class="field.colClass || defaultColClass"/>
             </div>
 
             <!--Actions-->
-            <div :class="`row justify-${step == 0 ? 'end' : 'between'}`">
+            <div :class="`actions__content row justify-${step == 0 ? 'end' : 'between'}`">
               <q-btn v-for="(action, keyAction) in formActions" :key="keyAction" v-bind="action"
                      unelevated rounded no-caps @click="action.action(keyBlock)" type="button"
                      v-if="action.vIf != undefined ? action.vIf : true"/>
@@ -72,7 +72,9 @@ export default {
     blocks: {default: false},
     allowNavigation: {type: Boolean, default: false},
     formId: {default: false},
-    sendTo: {default: false}
+    sendTo: {default: false},
+    actions: {default: false},
+    defaultColClass: {default: 'col-12 col-md-6'}
   },
   watch: {
     value: {
@@ -122,7 +124,7 @@ export default {
 
       //Add count steps
       if ((this.blocksData.length >= 2) && (this.formType == 'stepHorizontal'))
-        response.title = `${form.title} (${this.step + 1}/${this.blocksData.length})`
+        response.title = `${form.title || response.title} (${this.step + 1}/${this.blocksData.length})`
 
       //Response
       return response
@@ -156,28 +158,44 @@ export default {
     },
     //Step actions
     formActions() {
-      //Validate if is last step
-      let isLastStep = this.step == (this.blocksData.length - 1)
-
-      return {
+      //Default actions config
+      let actions = {
         previous: {
-          vIf: (this.step == 0) ? false : true,
           color: "grey-7",
           icon: "fas fa-arrow-left",
           label: this.$tr('ui.label.previous'),
-          action: () => {
-            this.changeStep('previous')
-          }
+          ...(this.actions.previous || {}),
+          vIf: (this.step == 0) ? false : true,
+          action: () => this.changeStep('previous')
         },
         next: {
-          label: isLastStep ? this.$tr('ui.label.save') : this.$tr('ui.label.next'),
-          icon: isLastStep ? 'fas fa-save' : 'fas fa-arrow-right',
           color: "green",
-          action: () => {
-            this.changeStep('next', isLastStep)
-          }
-        }
+          iconRight: "fas fa-arrow-right",
+          label: this.$tr('ui.label.next'),
+          ...(this.actions.next || {}),
+          action: () => this.changeStep('next', isLastStep)
+        },
+        submit: {
+          color: "green",
+          icon: "fas fa-save",
+          label: this.$tr('ui.label.save'),
+          ...(this.actions.submit || {}),
+          action: () => this.changeStep('next', isLastStep)
+        },
       }
+
+      //Validate if is last step
+      let isLastStep = this.step == (this.blocksData.length - 1)
+
+      //Instance Response
+      let response = {previous: actions.previous, next: (isLastStep ? actions.submit : actions.next)}
+
+      //Validate prop icon
+      if (!response.previous.icon) delete response.previous.icon
+      if (!response.next.icon) delete response.next.icon
+
+      //Response
+      return response
     },
   },
   methods: {
@@ -193,6 +211,8 @@ export default {
     //Get form fields
     getFormFields() {
       return new Promise((resolve, reject) => {
+        //Reset formBlocks
+        this.formBlocks = false
         //Validate form data
         if (!this.formId) return resolve(false)
         //Request Params
