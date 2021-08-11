@@ -1,56 +1,55 @@
 <template>
-  <div id="pageCaptcha">
-    <q-no-ssr>
-      <!--Widget V2 Checkbox-->
-      <div v-if="key && checkbox" id="g-recaptcha"></div>
-      <!--Text V#-->
-      <div v-else-if="key" class="text-info-v3" v-html="$tr('ui.message.captcha')"></div>
-    </q-no-ssr>
+  <div id="masterCaptchaComponent" v-if="captcha.key">
+    <!--Widget V2-->
+    <div v-if="captcha.version == '2'" id="g-recaptcha"></div>
+    <!--Text V3-->
+    <div v-if="captcha.version == '3'" class="text-info-v3" v-html="$tr('ui.message.captcha')"></div>
   </div>
 </template>
 <script>
-  export default {
-    name: 'captchaComponent',
-    props: {
-      case: {default: 'login'},
-      checkbox: {
-        default: false,
-        type: Boolean
-      }
-    },
-    components: {},
-    watch: {},
-    mounted() {
-      this.$nextTick(function () {
-        this.init()
-      })
-    },
-    data() {
+export default {
+  name: 'captchaComponent',
+  props: {},
+  mounted() {
+    this.$nextTick(function () {
+      this.init()
+    })
+  },
+  data() {
+    return {
+      widget: null
+    }
+  },
+  computed: {
+    //Return settings data
+    settings() {
       return {
-        key: null,
-        widget: null
+        captchV2: this.$store.getters['qsiteApp/getSettingValueByName']('isite::reCaptchaV2Site'),
+        captchV3: this.$store.getters['qsiteApp/getSettingValueByName']('isite::reCaptchaV3Site'),
+        activeCaptcha: this.$store.getters['qsiteApp/getSettingValueByName']('isite::activateCaptcha')
       }
     },
-    methods: {
-      //Init
-      init() {
-        if (process.env.CLIENT) {
-          //Define KEY according to version of recaptcha
-          this.key = this.checkbox ?
-            this.$store.getters['qsiteApp/getSettingValueByName']('isite::reCaptchaV2Site') :
-            this.$store.getters['qsiteApp/getSettingValueByName']('isite::reCaptchaV3Site')
-          if (this.key) {
-            this.addCDNCaptcha()
-          }//add cdn
-          else {
-            this.$emit('input', {token: true})
-          }//Emmit true value
-        }
-      },
-      //add CDN captcha
-      addCDNCaptcha() {
+    //Return config captcha
+    captcha() {
+      //Define what version use (v3 has priority)
+      let version = !this.settings.activeCaptcha ? null : (this.settings.captchV3 ? '3' : (this.settings.captchV2 ? '2' : null))
+      //Response
+      return {version: version, key: version ? this.settings[`captchV${version}`] : null}
+    },
+  },
+  methods: {
+    //Init
+    init() {
+      if (process.env.CLIENT) {
+        this.loadCaptcha()
+      }
+    },
+    //add CDN captcha
+    loadCaptcha() {
+      if (this.captcha.key) {
         try {
-          let cdnAttributes = this.checkbox ? '' : '?render=' + this.key //attributes according Version of recaptcha
+          //Instance attributes by version
+          let cdnAttributes = (this.captcha.version == '2') ? '' : '?render=' + this.captcha.key
           let recaptcha = document.createElement('script')//create CDN google recaptcha
           recaptcha.setAttribute('src', 'https://www.google.com/recaptcha/api.js' + cdnAttributes)
           recaptcha.onload = this.initCaptcha()//callback when loaded cdn
@@ -58,59 +57,66 @@
         } catch (e) {
           console.error(e)
         }
-      },
-      //Listen token catpcha and emit token
-      initCaptcha() {
-        try {
-          //Set time out to permit success loaded of cdn
-          setTimeout(() => {
-            if (this.checkbox) {//(V2)
-              this.widget = grecaptcha.render('g-recaptcha', {
-                sitekey: this.key,
-                callback: (token) => {
-                  this.$emit('input', {version: 2, token: token})
-                }
-              })
-            } else {//(V3)
-              grecaptcha.ready(() => {
-                this.vEmitTokenV3()
-              })
-            }
-          }, 500)
-        } catch (error) {
-          console.error(error)
-        }
-      },
-      //Emit token of version 3
-      vEmitTokenV3() {
-        grecaptcha.execute(this.key, {action: 'homepage'}).then(token => {
-          this.$emit('input', {version: 3, token: token})
-        })
-      },
-      //Reset captcha
-      reset() {
-        if (this.key) {
-          if (this.checkbox) {
-            grecaptcha.reset(this.widget)
-          } else {
-            this.vEmitTokenV3()
+      } else this.$emit('input', {token: true})
+    },
+    //Listen token catpcha and emit token
+    initCaptcha() {
+      try {
+        //Set time out to permit success loaded of cdn
+        setTimeout(() => {
+          if (this.captcha.version == '2') {//(V2)
+            this.widget = grecaptcha.render('g-recaptcha', {
+              sitekey: this.captcha.key,
+              callback: (token) => {
+                this.$emit('input', {version: 2, token: token})
+              },
+              'expired-callback': () => {
+                this.$emit('input', null)
+                this.reset()
+              }
+            })
+          } else {//(V3)
+            grecaptcha.ready(() => {
+              this.vEmitTokenV3()
+            })
           }
-        }
-      },
-    }
+        }, 500)
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    //Emit token of version 3
+    vEmitTokenV3() {
+      grecaptcha.execute(this.captcha.key, {action: 'homepage'}).then(token => {
+        this.$emit('input', {version: 3, token: token})
+      })
+    },
+    //Reset captcha
+    reset() {
+      if (this.captcha.key) {
+        if (this.captcha.version == '2') grecaptcha.reset(this.widget)
+        else this.vEmitTokenV3()
+      }
+    },
   }
+}
 </script>
 
 <style lang="stylus">
-  #pageCaptcha
-    .text-info-v3
-      color $grey-5
-      font-size 14px
+#masterCaptchaComponent
+  #g-recaptcha
+    width max-content
+    margin auto
 
-      a
-        color $light-blue-13
+  .text-info-v3
+    color $grey-5
+    font-size 14px
+    text-align justify
 
-  //Hidden badage
-  .grecaptcha-badge
-    visibility hidden
+    a
+      color $light-blue-13
+
+//Hidden badage
+.grecaptcha-badge
+  visibility hidden
 </style>
