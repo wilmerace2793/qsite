@@ -32,10 +32,14 @@ export default function ({app, router, store, Vue, ssrContext}) {
 
   //========== Response interceptor
   axios.interceptors.response.use((response) => {
-    if (response.data && response.data.messages) showMessages(response.data.messages)//Show messages
+    //Show messages
+    if (response.data && response.data.messages) showMessages(response.data.messages)
+    //Response
     return response;
   }, (error) => {
-    if (error.response.data && error.response.data.messages) showMessages(error.response.data.messages)//Show messages
+    //Show messages
+    if (error.response.data && error.response.data.messages) showMessages(error.response.data.messages)
+    //Response
     if (error.response) {
       let status = error.response.status;
       switch (status) {
@@ -44,6 +48,19 @@ export default function ({app, router, store, Vue, ssrContext}) {
           //Logout
           if ((routeName != 'auth.login') && (routeName != 'auth.change.password'))
             router.push({name: 'auth.logout'})
+          break;
+        case 400://Intercep request errors to show alert message
+          if (error.response.data && error.response.data.errors) {
+            //Get messages
+            let errorsRequest = JSON.parse(error.response.data.errors)
+            //Instance alert message
+            if (Object.keys(errorsRequest).length) {
+              showMessages([{
+                type: 'error',
+                message: Object.values(errorsRequest).map(item => `<div>• ${item.join(',')}</div>`).join('')
+              }])
+            }
+          }
           break;
       }
     }
