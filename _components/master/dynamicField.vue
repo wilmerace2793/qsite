@@ -213,6 +213,10 @@
         <q-field v-model="responseValue" v-if="loadField('optionGroup')" v-bind="fieldProps.fieldComponent">
           <q-option-group v-model="responseValue" v-bind="fieldProps.field"/>
         </q-field>
+        <!--rating-->
+        <q-field v-model="responseValue" v-if="loadField('captcha')" v-bind="fieldProps.fieldComponent">
+          <captcha v-model="responseValue"/>
+        </q-field>
       </div>
     </div>
   </div>
@@ -230,6 +234,7 @@ import mapLeaflet from '@imagina/qsite/_components/master/mapLeaflet'
 import signature from '@imagina/qsite/_components/master/signature'
 import uploader from '@imagina/qsite/_components/master/uploader'
 import selectIcon from '@imagina/qsite/_components/master/selectIcon'
+import captcha from '@imagina/qsite/_components/master/captcha'
 
 export default {
   name: 'dynamicField',
@@ -257,7 +262,8 @@ export default {
     mapLeaflet,
     signature,
     uploader,
-    selectIcon
+    selectIcon,
+    captcha
   },
   watch: {
     value: {
@@ -635,6 +641,20 @@ export default {
             }
           }
           break;
+        case'captcha':
+          props = {
+            field: {
+              ...props
+            },
+            fieldComponent: {
+              outlined: false,
+              borderless: true,
+              dense: true,
+              ...props,
+              rules: [val => !!val || this.$tr('ui.message.fieldRequired')],
+            }
+          }
+          break;
       }
 
       //Add ruler to required field
@@ -837,6 +857,9 @@ export default {
           this.responseValue = (propValue !== undefined) ? propValue : null
           break
         case 'optionGroup':
+          this.responseValue = (propValue !== undefined) ? propValue : null
+          break
+        case 'captcha':
           this.responseValue = (propValue !== undefined) ? propValue : null
           break
         default :
