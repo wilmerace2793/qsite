@@ -2,7 +2,7 @@
   <div id="dynamicFormComponent">
     <div id="dynamicFormComponentContent" class="relative-position" :key="componentId">
       <!--Top Content-->
-      <div id="topContent">
+      <div id="topContent" v-if="!hideTitle">
         <!--Title-->
         <div class="box-title text-center q-mb-md" v-if="formProps.title" v-html="formProps.title"></div>
         <!--Description-->
@@ -10,7 +10,7 @@
       </div>
 
       <!--Progress bar-->
-      <div id="progressContent" class="q-mb-md">
+      <div id="progressContent" class="q-mb-md" v-if="!hideProgressBar">
         <q-linear-progress :value="progress" color="primary"/>
       </div>
 
@@ -74,7 +74,9 @@ export default {
     sendTo: {default: false},
     actions: {default: false},
     defaultColClass: {default: 'col-12 col-md-6'},
-    useCaptcha: {type: Boolean, default: false}
+    useCaptcha: {type: Boolean, default: false},
+    hideTitle: {type: Boolean, default: false},
+    hideProgressBar: {type: Boolean, default: false}
   },
   watch: {
     value: {
@@ -322,6 +324,8 @@ export default {
 
 <style lang="stylus">
 #dynamicFormComponentContent
+  min-height 150px
+
   #stepperContent
     padding 0
 
