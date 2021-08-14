@@ -9,19 +9,18 @@
       </div>
 
       <!--Tabs-->
-      <q-separator class="q-mb-sm" inset/>
-      <div id="tabsContent" class="full-width">
+      <q-separator class="q-mb-md" inset/>
+      <div id="tabsContent" class="full-width" v-if="false">
         <q-tabs v-model="tabName" dense class="text-grey" active-color="primary" indicator-color="primary"
                 align="justify" v-if="filter.hasValues" :breakpoint="0">
           <q-tab name="tabForm" :label="$tr('ui.label.filter')"/>
           <q-tab name="tabSummary" :label="$tr('ui.form.summary')"/>
         </q-tabs>
       </div>
-      <q-separator v-if="filter.hasValues"/>
     </div>
 
     <!--Content-->
-    <q-scroll-area id="contentMasterField" class="q-py-md" style="height: calc(100vh - 253px)">
+    <q-scroll-area id="contentMasterField" class="q-pm-md" style="height: calc(100vh - 253px)">
       <!--Tab panels-->
       <q-tab-panels v-model="tabName" animated keep-alive>
         <!--Tab form-->

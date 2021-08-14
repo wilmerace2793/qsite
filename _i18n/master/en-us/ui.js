@@ -255,7 +255,9 @@ export default {
     subscription: 'Subscription | Subscriptions',
     finished: 'Finished',
     value: 'Value | Values',
-    decimal : 'Decimal | Decimals'
+    decimal: 'Decimal | Decimals',
+    summary: 'Summary | Summaries',
+    quote: 'Quote | Quotes'
   },
   message: {
     notFound: 'Sorry, nothing here',

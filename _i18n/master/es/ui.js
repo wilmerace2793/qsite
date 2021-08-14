@@ -261,7 +261,9 @@ export default {
     subscription: 'Suscripción | Suscripciones',
     finished : 'Terminado | Terminados',
     value : 'Valor | Valores',
-    decimal : 'Decimal | Decimales'
+    decimal : 'Decimal | Decimales',
+    summary: 'Resumen | Resumenes',
+    quote: 'Cotización | Cotizaciones'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

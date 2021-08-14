@@ -11,7 +11,8 @@
           <b>{{ title }}</b>
         </div>
         <!--Close Button-->
-        <q-btn v-close-popup icon="fas fa-times" round color="blue-grey" unelevated class="btn-small" outline/>
+        <q-btn v-close-popup icon="fas fa-times" round color="blue-grey" unelevated class="btn-small" outline
+               v-if="!hideCloseAction"/>
       </div>
       <!--Slot content-->
       <div class="master-dialog__body">
@@ -39,7 +40,8 @@ export default {
     title: {type: String},
     icon: {type: String},
     actions: {type: Array},
-    id: {type: String}
+    id: {type: String},
+    hideCloseAction: {type: Boolean, default: false}
   },
   components: {},
   watch: {
