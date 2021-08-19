@@ -44,7 +44,8 @@ export const GET_SITE_SETTINGS = ({commit, dispatch, state, getters}) => {
       commit('SET_DEFAULT_LOCALE', data.defaultLocale)
       commit('SET_SELECTED_LOCALES')
       //Set logo
-      let logo = getters.getSettingMediaByName('isite::logoIadmin') || getters.getSettingMediaByName('isite::logo1')
+      let logo = getters.getSettingMediaByName('isite::logoIadmin')
+      if (!logo || !logo.path || logo.path.includes('defaultLogo')) logo = getters.getSettingMediaByName('isite::logo1')
       commit('SET_SITE_LOGO', logo.path)
       //Set filters
       filter.setFilters(data.filters)
