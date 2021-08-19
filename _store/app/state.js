@@ -10,5 +10,6 @@ export default {
   selectedLocales: [],
   defaultLocale: '',
   hooks: [],
-  configs: []
+  configs: [],
+  logo: null
 }

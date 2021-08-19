@@ -30,7 +30,7 @@ export const REFRESH_PAGE = ({state, commit, dispatch, getters}) => {
 }
 
 //Get site settings
-export const GET_SITE_SETTINGS = ({commit, dispatch, state}) => {
+export const GET_SITE_SETTINGS = ({commit, dispatch, state, getters}) => {
   return new Promise((resolve, reject) => {
     let params = {refresh: true}
     let configName = 'apiRoutes.qsite.siteSettings'
@@ -43,8 +43,11 @@ export const GET_SITE_SETTINGS = ({commit, dispatch, state}) => {
       commit('SET_AVAILABLE_THEMES', data.availableThemes)
       commit('SET_DEFAULT_LOCALE', data.defaultLocale)
       commit('SET_SELECTED_LOCALES')
+      //Set logo
+      let logo = getters.getSettingMediaByName('isite::logoIadmin') || getters.getSettingMediaByName('isite::logo1')
+      commit('SET_SITE_LOGO', logo.path)
+      //Set filters
       filter.setFilters(data.filters)
-
       //Set setting if is admin
       axios.defaults.params.setting.fromAdmin = (configApp.mode == 'iadmin' ? true : false)
       axios.defaults.params.setting.appMode = configApp.mode

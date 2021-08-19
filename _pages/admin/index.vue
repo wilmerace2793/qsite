@@ -2,7 +2,7 @@
   <div id="indexMasterPage">
     <!--Logo-->
     <div v-if="!quickCards.list1.length" id="logoContent" class="flex flex-center">
-      <img style="max-width: 40vw" :src="$store.getters['qsiteApp/getSettingMediaByName']('isite::logo1').path">
+      <img style="max-width: 40vw" :src="$store.state.qsiteApp.logo">
     </div>
 
     <!--Quick cards-->

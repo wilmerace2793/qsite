@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       projectName: this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name'),
-      logo: this.$store.getters['qsiteApp/getSettingMediaByName']('isite::logo1').path,
+      logo: this.$store.state.qsiteApp.logo,
       appConfig: config('app'),
       badge: {
         chat: false,

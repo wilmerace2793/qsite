@@ -6,6 +6,7 @@ export const RESET = (state) => {
   state.defaultLocale = '';
   state.filters = {};
   state.configs = [];
+  state.logo = null;
 };
 
 export function SET_SITE_SETTINGS(state, data) {
@@ -63,4 +64,8 @@ export function SET_SITE_HOOKS(state, data) {
 
 export function SET_MODULE_CONFIGS(state, data) {
   state.configs = data
+}
+
+export function SET_SITE_LOGO(state, data) {
+  state.logo = data;
 }

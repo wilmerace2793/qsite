@@ -30,7 +30,7 @@
     },
     computed: {
       siteLogo() {
-        return this.logo || this.$store.getters['qsiteApp/getSettingMediaByName']('isite::logo1').path
+        return this.$store.state.qsiteApp.logo
       }
     },
     methods: {}
