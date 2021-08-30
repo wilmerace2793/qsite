@@ -26,7 +26,7 @@
               <q-list separator class="q-pl-md">
                 <q-item v-for="(group, groupName) in settingsGroup[moduleName]" :key="groupName" clickable v-ripple
                         :active="groupSelected == groupName && moduleSelected == moduleName" class="q-pl-sm q-pr-md"
-                        @click.native="moduleSelected = moduleName, groupSelected = groupName, setLocaleConfig()"
+                        @click.native="openGroupSettings(moduleName, groupName)"
                         dense v-if="Object.keys(group).length">
                   <q-item-section>{{ groupName }}</q-item-section>
                   <q-item-section side> {{ Object.keys(group).length }}</q-item-section>
@@ -321,14 +321,19 @@ export default {
         Object.keys(this.settingsGroup).forEach(moduleName => {//loop each module
           Object.keys(this.settingsGroup[moduleName]).forEach(groupName => {//loop each module group
             Object.values(this.settingsGroup[moduleName][groupName]).forEach(setting => {//loop each setting
-              if (setting.name == settingName) {
-                this.moduleSelected = this.$clone(moduleName)
-                this.groupSelected = this.$clone(groupName)
+              if ((setting.name == settingName) || (setting.fakeFieldName == settingName)) {
+                this.openGroupSettings(moduleName, groupName)
               }
             })
           })
         })
       }
+    },
+    //Open moodule group setting
+    openGroupSettings(moduleName, groupName) {
+      this.moduleSelected = moduleName
+      this.groupSelected = groupName
+      this.setLocaleConfig()
     }
   }
 }
