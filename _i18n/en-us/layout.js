@@ -1,5 +1,5 @@
 export default {
-  newRecommendation : 'New Recommendation',
+  newRecommendation: 'New Recommendation',
   updateRecommendation: 'Update Recomendation',
   deleteRecommendation: 'Delete Recommendation',
   messages: {
@@ -13,5 +13,8 @@ export default {
     reportInProgress: 'Report {fileName} in progress...',
     newExportHelpText: 'Export <b class="text-blue-grey">{pageTitle}</b> with current filters (without pagination)',
     exportReady: 'Your <b>{fileName}</b> report is Ready!'
-  }
+  },
+  startTime: 'Start time',
+  endTime: 'End time',
+  shiftTime: 'Shift time'
 }

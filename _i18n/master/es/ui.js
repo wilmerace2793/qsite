@@ -259,11 +259,12 @@ export default {
     video: 'Vídeo | Vídeos',
     custom: 'Personalizado | Personalizados',
     subscription: 'Suscripción | Suscripciones',
-    finished : 'Terminado | Terminados',
-    value : 'Valor | Valores',
-    decimal : 'Decimal | Decimales',
+    finished: 'Terminado | Terminados',
+    value: 'Valor | Valores',
+    decimal: 'Decimal | Decimales',
     summary: 'Resumen | Resumenes',
-    quote: 'Cotización | Cotizaciones'
+    quote: 'Cotización | Cotizaciones',
+    and: 'y'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

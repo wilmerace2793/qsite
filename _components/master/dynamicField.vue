@@ -67,8 +67,7 @@
             <q-icon v-if="fieldProps.field.icon" :name="fieldProps.field.icon" size="18px"/>
             <!--Float Time-->
             <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
-              <q-time v-model="responseValue" :format24h="false" @input="() => $refs.qTimeProxy.hide()"
-                      v-bind="fieldProps.slot"/>
+              <q-time v-model="responseValue" @input="() => $refs.qTimeProxy.hide()" v-bind="fieldProps.slot"/>
             </q-popup-proxy>
           </template>
           <template v-slot:append>
@@ -217,6 +216,10 @@
         <q-field v-model="responseValue" v-if="loadField('captcha')" v-bind="fieldProps.fieldComponent">
           <captcha v-model="responseValue"/>
         </q-field>
+        <!--Schedulable-->
+        <div class="round bg-white" v-if="loadField('schedulable')">
+          <schedulable v-model="responseValue" @input="watchValue" class="q-mb-sm" v-bind="fieldProps"/>
+        </div>
       </div>
     </div>
   </div>
@@ -235,6 +238,7 @@ import signature from '@imagina/qsite/_components/master/signature'
 import uploader from '@imagina/qsite/_components/master/uploader'
 import selectIcon from '@imagina/qsite/_components/master/selectIcon'
 import captcha from '@imagina/qsite/_components/master/captcha'
+import schedulable from '@imagina/qsite/_components/master/schedulable'
 
 export default {
   name: 'dynamicField',
@@ -263,7 +267,8 @@ export default {
     signature,
     uploader,
     selectIcon,
-    captcha
+    captcha,
+    schedulable
   },
   watch: {
     value: {
@@ -421,6 +426,7 @@ export default {
               mask: ''
             },
             slot: {
+              format24h: false,
               ...props
             }
           }
@@ -653,6 +659,11 @@ export default {
               ...props,
               rules: [val => !!val || this.$tr('ui.message.fieldRequired')],
             }
+          }
+          break;
+        case'schedulable':
+          props = {
+            ...props
           }
           break;
       }

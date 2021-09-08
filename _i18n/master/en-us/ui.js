@@ -257,7 +257,8 @@ export default {
     value: 'Value | Values',
     decimal: 'Decimal | Decimals',
     summary: 'Summary | Summaries',
-    quote: 'Quote | Quotes'
+    quote: 'Quote | Quotes',
+    and: 'and'
   },
   message: {
     notFound: 'Sorry, nothing here',
