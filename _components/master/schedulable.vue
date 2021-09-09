@@ -313,6 +313,9 @@ export default {
 </script>
 <style lang="stylus">
 #scheduleComponent
+  border 1px solid $grey-4
+  border-radius $custom-radius
+
   .day-work-time
     border 1px solid $grey-4
     border-radius $custom-radius

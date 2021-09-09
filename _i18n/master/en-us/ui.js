@@ -258,7 +258,9 @@ export default {
     decimal: 'Decimal | Decimals',
     summary: 'Summary | Summaries',
     quote: 'Quote | Quotes',
-    and: 'and'
+    and: 'and',
+    meeting: 'Meeting | Meetings',
+    service : 'Service | Services'
   },
   message: {
     notFound: 'Sorry, nothing here',

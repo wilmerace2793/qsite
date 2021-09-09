@@ -31,6 +31,7 @@ export default {
     'qcheckin',
     'qlocations',
     'qappointment',
+    'qbooking',
     'qevent',
     'qpage',
     'qredirect',

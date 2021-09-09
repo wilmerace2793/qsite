@@ -264,7 +264,9 @@ export default {
     decimal: 'Decimal | Decimales',
     summary: 'Resumen | Resumenes',
     quote: 'Cotización | Cotizaciones',
-    and: 'y'
+    and: 'y',
+    meeting: 'Reunión | Reuniones',
+    service : 'Servicio | Servicios'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
