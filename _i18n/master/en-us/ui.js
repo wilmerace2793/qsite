@@ -260,7 +260,10 @@ export default {
     quote: 'Quote | Quotes',
     and: 'and',
     meeting: 'Meeting | Meetings',
-    service : 'Service | Services'
+    service: 'Service | Services',
+    skip: 'Skip',
+    reserved: 'Reserved',
+    finalize: 'Finalize'
   },
   message: {
     notFound: 'Sorry, nothing here',

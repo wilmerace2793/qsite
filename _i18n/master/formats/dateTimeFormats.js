@@ -20,6 +20,10 @@ export default {
     },
     time: {
       hour: '2-digit', minute: 'numeric', hour12: true
+    },
+    shortHuman: {
+      weekday: 'long', day: '2-digit', month: 'long',
+      hour: '2-digit', minute: 'numeric', hour12: true
     }
   },
   'es': {
@@ -40,6 +44,10 @@ export default {
       weekday: 'long', year: 'numeric', month: 'long', day: '2-digit'
     },
     time: {
+      hour: '2-digit', minute: 'numeric', hour12: true
+    },
+    shortHuman: {
+      weekday: 'long', day: '2-digit', month: 'long',
       hour: '2-digit', minute: 'numeric', hour12: true
     }
   },

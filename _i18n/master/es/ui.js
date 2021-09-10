@@ -266,7 +266,10 @@ export default {
     quote: 'Cotización | Cotizaciones',
     and: 'y',
     meeting: 'Reunión | Reuniones',
-    service : 'Servicio | Servicios'
+    service: 'Servicio | Servicios',
+    skip: 'Omitir',
+    reserved: 'Reservado | Reservados',
+    finalize: 'Finalizar'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
