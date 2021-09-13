@@ -3,8 +3,8 @@
          unelevated size="sm" style="font-size: 8px; padding: 6px" v-if="actions && actions.length">
     <q-menu max-width="200px" content-class="btn-menu-component__menu" anchor="bottom right" self="top right">
       <q-list dense separator>
-        <q-item v-for="(action, keyAction) in actions" :key="keyAction"
-                clickable v-close-popup v-if="action.vIf != undefined ? action.vIf : true"
+        <q-item v-for="(action, keyAction) in actionsData" :key="keyAction" v-bind="action.props"
+                v-close-popup v-if="action.vIf != undefined ? action.vIf : true"
                 @click.native="runAction(action)">
           <q-item-section>
             <div class="row items-center text-blue-grey">
@@ -32,7 +32,23 @@ export default {
   data() {
     return {}
   },
-  computed: {},
+  computed: {
+    actionsData() {
+      return this.actions.map(item => {
+        //Instance item props
+        item.props = {tag: 'a', key: this.$uid(), clickable: true}
+
+        //Define external redirect
+        if (item.toRoute) item.props.href = item.toRoute
+
+        //Instance vue route redirect
+        if (item.route) item.props.to = {name: item.route, params: this.$clone(this.actionData || {})}
+
+        //Return item
+        return item
+      })
+    }
+  },
   methods: {
     //Call custom action
     async runAction(action) {
@@ -40,8 +56,6 @@ export default {
       let actionData = this.$clone(this.actionData || {})
       //Check if has action function
       if (action.action) await action.action(actionData)
-      //Check if has redirect to route
-      if (action.route) this.$router.push({name: action.route, params: actionData})
     },
   }
 }
