@@ -3,8 +3,8 @@ export default {
   index: {
     permission: 'isite.settings.manage',
     activated: true,
-    path: '/site/index',
-    name: 'app.site.index',
+    path: '/site/settings',
+    name: 'app.site.settings',
     page: () => import('@imagina/qsite/_pages/admin/settings/index'),
     layout: () => import('@imagina/qsite/_layouts/master.vue'),
     title: 'qsite.sidebar.adminIndex',

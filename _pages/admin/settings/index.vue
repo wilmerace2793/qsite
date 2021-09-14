@@ -49,8 +49,7 @@
                    v-show="locale.fieldsTranslatable && Object.keys(locale.fieldsTranslatable).length"/>
           <!--Fields content-->
           <div class="row full-width q-mb-md q-col-gutter-sm" v-if="locale.success && settingsGroup[moduleSelected]">
-            <div v-for="(field, key) in settingsGroup[moduleSelected][groupSelected]" :key="key" :ref="key"
-                 :class="field.columns || 'col-12'">
+            <div v-for="(field, key) in formFields" :key="key" :ref="key" :class="field.columns || 'col-12'">
               <!--Dynamic field-->
               <dynamic-field v-if="!field.fakeFieldName && !field.children" :field="field" :language="locale.language"
                              :item-id="getSettingId(field,key)" v-model="locale.formTemplate[field.name || key]"/>
@@ -112,7 +111,8 @@ export default {
       locale: {fields: {}, fieldsTranslatable: {}},
       dataSettings: false,
       moduleSelected: false,
-      groupSelected: false
+      groupSelected: false,
+      settingsToEdit: []
     }
   },
   computed: {
@@ -135,6 +135,11 @@ export default {
 
       //Response
       return response
+    },
+    //Return form fields settings to edit
+    formFields() {
+      if (this.settingsToEdit.length) return this.$clone(this.settingsToEdit)
+      else return this.$clone(this.settingsGroup[this.moduleSelected][this.groupSelected])
     }
   },
   methods: {
@@ -207,7 +212,7 @@ export default {
       //Set field to locale
       if (this.moduleSelected) {
         //Get fields
-        let fields = this.$clone(this.settingsGroup[this.moduleSelected][this.groupSelected])
+        let fields = this.$clone(this.formFields)
         //Order fields
         Object.values(fields).forEach(field => {
           //Get setting value
@@ -314,25 +319,38 @@ export default {
     },
     //Open setting name
     openSettingName() {
-      //Get setting from URL
-      let settingName = this.$route.query.settingName
-      //Search group setting name
-      if (settingName) {
-        Object.keys(this.settingsGroup).forEach(moduleName => {//loop each module
-          Object.keys(this.settingsGroup[moduleName]).forEach(groupName => {//loop each module group
-            Object.values(this.settingsGroup[moduleName][groupName]).forEach(setting => {//loop each setting
-              if ((setting.name == settingName) || (setting.fakeFieldName == settingName)) {
-                this.openGroupSettings(moduleName, groupName)
+      let moduleName = this.$route.query.module//Get setting from URL
+      let groupName = this.$route.query.group//Get settings name from url
+      let settingsName = this.$route.query.settings//Get settings name from url
+
+      //Get settings by module name
+      const moduleSettings = this.$clone(this.settingsGroup[this.$helper.toCapitalize(moduleName || '')])
+
+      if (moduleSettings) {
+        let settingsToEdit = []//Reset settings to edit
+        //Search by setting name
+        if (settingsName) {
+          //Add module name to every setting name
+          settingsName = settingsName.split(',').map(item => `${moduleName.toLowerCase()}::${item}`)
+          //Search setting by name
+          Object.keys(moduleSettings || []).forEach(moduleGroupName => {
+            Object.values(moduleSettings[moduleGroupName]).forEach(setting => {
+              if (settingsName.includes(setting.name) || settingsName.includes(setting.fakeFieldName)) {
+                settingsToEdit.push(setting)
               }
             })
           })
-        })
+        }
+        //Open group settings
+        groupName = Object.keys(moduleSettings).includes(groupName) ? groupName : Object.keys(moduleSettings).pop()
+        this.openGroupSettings(moduleName, groupName, settingsToEdit)
       }
     },
     //Open moodule group setting
-    openGroupSettings(moduleName, groupName) {
-      this.moduleSelected = moduleName
+    openGroupSettings(moduleName, groupName, settingsToEdit = []) {
+      this.moduleSelected = this.$helper.toCapitalize(moduleName)
       this.groupSelected = groupName
+      this.settingsToEdit = settingsToEdit
       this.setLocaleConfig()
     }
   }
