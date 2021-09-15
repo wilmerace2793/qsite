@@ -116,6 +116,12 @@ export default {
     }
   },
   computed: {
+    //Return setting assigned settings
+    assignedSettings() {
+      let userSettings = this.$store.state.quserAuth.settings || {}
+      let assignedSettings = userSettings.assignedSettings || []
+      return Array.isArray(assignedSettings) ? assignedSettings : []
+    },
     //Return settings group
     settingsGroup() {
       let settings = this.$clone(this.dataSettings)
@@ -132,6 +138,31 @@ export default {
           response[moduleName][field.group || 'General'][fieldName] = field
         })
       })
+
+      //Validate assigned settings
+      if (this.assignedSettings.length) {
+        Object.keys(response).forEach(moduleName => {
+          Object.keys(response[moduleName]).forEach(moduleGroupName => {
+            Object.keys(response[moduleName][moduleGroupName]).forEach(settingName => {
+              let setting = response[moduleName][moduleGroupName][settingName]
+              if (!this.assignedSettings.includes(setting.fakeFieldName || setting.name))
+                delete response[moduleName][moduleGroupName][settingName]
+            })
+          })
+        })
+      }
+
+      //Validate empty groups
+      Object.keys(response).forEach(moduleName => {
+        let keepModule = false
+        //Validate if some child group has settings
+        Object.keys(response[moduleName]).forEach(moduleGroupName => {
+          if(Object.keys(response[moduleName][moduleGroupName]).length) keepModule = true
+        })
+        //Delete module from data
+        if(!keepModule) delete response[moduleName]
+      })
+
 
       //Response
       return response
