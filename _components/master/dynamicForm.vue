@@ -282,34 +282,34 @@ export default {
       }
     },
     //Handler step transition
-    changeStep(toStep, isSubmit = false) {
+    async changeStep(toStep, isSubmit = false) {
       //Validate if new Step it's not same to current step
-      this.$refs.formContent.validate().then(isValid => {
-        if (isValid) {
-          //Emit submit form
-          if (isSubmit) {
-            if (this.sendTo && this.sendTo.apiRoute) {
-              this.innerLoading = true
-              //Request Data
-              let requestData = {...this.formData, ...(this.sendTo.extraData || {})}
-              //Request
-              this.$crud.create(this.sendTo.apiRoute, requestData).then(response => {
-                this.innerLoading = false
-                this.reset()
-                this.$emit('sent', this.$clone(this.formData))
-              }).catch(error => {
-                this.innerLoading = false
-              })
-            } else {
-              this.$emit('submit', this.$clone(this.formData))
-            }
-          } else {//Change step
-            if (toStep == 'previous') this.$refs.stepper.previous()//To previous step
-            else if (toStep == 'next') this.$refs.stepper.next()//To next step
-            else if (this.allowNavigation) this.$refs.stepper.goTo(toStep)//To specific step
+      let isValid = (toStep == 'previous') ? true : await this.$refs.formContent.validate()
+      //Validate if new Step it's not same to current step
+      if (isValid) {
+        //Emit submit form
+        if (isSubmit) {
+          if (this.sendTo && this.sendTo.apiRoute) {
+            this.innerLoading = true
+            //Request Data
+            let requestData = {...this.formData, ...(this.sendTo.extraData || {})}
+            //Request
+            this.$crud.create(this.sendTo.apiRoute, requestData).then(response => {
+              this.innerLoading = false
+              this.reset()
+              this.$emit('sent', this.$clone(this.formData))
+            }).catch(error => {
+              this.innerLoading = false
+            })
+          } else {
+            this.$emit('submit', this.$clone(this.formData))
           }
+        } else {//Change step
+          if (toStep == 'previous') this.$refs.stepper.previous()//To previous step
+          else if (toStep == 'next') this.$refs.stepper.next()//To next step
+          else if (this.allowNavigation) this.$refs.stepper.goTo(toStep)//To specific step
         }
-      })
+      }
     },
     //Reset form
     reset() {
