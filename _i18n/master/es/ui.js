@@ -324,7 +324,8 @@ export default {
     notAuthorized: "Lo sentimos, No estas autorizad@ para estar aquí",
     noValue: 'Sin Valor',
     rateYour: 'Califica tu <b>{name}</b>',
-    withoutIcon: 'Sin Icono'
+    withoutIcon: 'Sin Icono',
+    mustContainAlphanumeric: 'Debe contener solo caracteres alfanumericoss'
   },
   form: {
     id: 'ID',

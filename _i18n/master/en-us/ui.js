@@ -323,7 +323,8 @@ export default {
     notAuthorized: "Sorry, You are not authorized to be here",
     noValue: 'No Value',
     rateYour: 'Rate your <b>{name}</b>',
-    withoutIcon: 'Without Icon'
+    withoutIcon: 'Without Icon',
+    mustContainAlphanumeric: 'Must contain only alphanumeric'
   },
   form: {
     id: 'ID',

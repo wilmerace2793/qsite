@@ -447,6 +447,12 @@ class Helper {
     audio.volume = params.volume || 1
     audio.play();
   }
+
+  //Validate if values is only alphanumeric
+  validateAlphaNumeric(val){
+    var re = /^[a-z0-9]+$/i
+    return re.test(val);
+  }
 }
 
 const helper = new Helper();
