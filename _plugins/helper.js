@@ -417,6 +417,7 @@ class Helper {
   downloadFromURL(url) {
     let a = document.createElement('a')
     a.href = url
+    a.target = '_blank'
     a.click()
     a.remove()
   }
@@ -449,7 +450,7 @@ class Helper {
   }
 
   //Validate if values is only alphanumeric
-  validateAlphaNumeric(val){
+  validateAlphaNumeric(val) {
     var re = /^[a-z0-9]+$/i
     return re.test(val);
   }
