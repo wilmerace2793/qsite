@@ -1,12 +1,12 @@
 <template>
   <div id="pageActionscomponent" class="row q-col-gutter-y-sm full-width items-center justify-between">
     <!--Title-->
-    <div class="text-h6 text-blue-grey text-weight-bold text-subtitle1 ellipsis">
+    <div class="text-h6 text-blue-grey text-weight-bold text-subtitle1 ellipsis title-content">
       <q-icon v-if="icon" :name="icon" size="22px" class="q-mr-sm"/>
       <label v-if="title">{{ title }}</label>
     </div>
     <!--Actions-->
-    <div :class="`row q-gutter-${gutter} items-center`">
+    <div :class="`actions-content row q-gutter-${gutter} items-center justify-end`">
       <!--Search-->
       <q-input v-model="search" bg-color="white" debounce="800" outlined dense clearable
                :placeholder="$tr('ui.label.search')" class="page-input-search"
@@ -66,7 +66,7 @@ export default {
         color: "blue-grey",
         class: `btn-${this.size}`,
         outline: true,
-        noCaps : true
+        noCaps: true
       }
     },
     //Page Actions
@@ -143,7 +143,19 @@ export default {
 </script>
 <style lang="stylus">
 #pageActionscomponent
+  .title-content
+    @media screen and (max-width: $breakpoint-md)
+      text-align center
+      width 100%
+
+  .actions-content
+    @media screen and (max-width: $breakpoint-md)
+      width 100%
+
   .page-input-search
+    @media screen and (max-width: $breakpoint-md)
+      width 100%
+
     .q-field__control, .q-field__control:after, .q-field__control-container, .q-field__append
       min-height 34px
       max-height 34px
