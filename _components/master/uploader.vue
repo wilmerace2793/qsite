@@ -4,32 +4,32 @@
     <div id="contentUploader" class="row q-col-gutter-md">
       <!---File block-->
       <div :class="`relative-position ${file.columns}`" v-for="(file , indexFile) in showFiles" :key="indexFile">
-          <!--content-->
-          <div class="file-block" @click="file.action(file)">
-            <!---Content file block-->
-            <div :class="`file-block_content row items-center justify-center img-as-bg ${file.class}`"
-                 :style="file.style">
-              <!--Information-->
-              <div class="text-center">
-                <!--Icon-->
-                <q-icon v-if="!loading && file.icon" class="file-block_icon" :name="file.icon" @added="setFiles"/>
-                <!--Helper label-->
-                <div v-if="!loading && file.label" class="text-caption text-grey-7 q-mt-md">{{ file.label }}</div>
-              </div>
-              <!--Tooltip-->
-              <q-tooltip v-if="file.tooltip" anchor="center middle" self="center middle" :delay="500">
-                {{ file.tooltip }}
-              </q-tooltip>
-              <!---Inner loading-->
-              <q-spinner-oval v-if="file.loading" color="primary" size="40px"/>
+        <!--content-->
+        <div class="file-block" @click="file.action(file)">
+          <!---Content file block-->
+          <div :class="`file-block_content row items-center justify-center img-as-bg ${file.class}`"
+               :style="file.style">
+            <!--Information-->
+            <div class="text-center">
+              <!--Icon-->
+              <q-icon v-if="!loading && file.icon" class="file-block_icon" :name="file.icon" @added="setFiles"/>
+              <!--Helper label-->
+              <div v-if="!loading && file.label" class="text-caption text-grey-7 q-mt-md">{{ file.label }}</div>
             </div>
-            <!--File title-->
-            <div v-if="false && file.name" class="file-block_title ellipsi"> {{ file.name }}</div>
+            <!--Tooltip-->
+            <q-tooltip v-if="file.tooltip" anchor="center middle" self="center middle" :delay="500">
+              {{ file.tooltip }}
+            </q-tooltip>
+            <!---Inner loading-->
+            <q-spinner-oval v-if="file.loading" color="primary" size="40px"/>
           </div>
-          <!--Delete action-->
-          <div v-if="file.actionDelete" class="btn-delete row items-center justify-center"
-               @click="file.actionDelete(file.index)">
-            <q-icon name="fas fa-trash-alt"/>
+          <!--File title-->
+          <div v-if="false && file.name" class="file-block_title ellipsi"> {{ file.name }}</div>
+        </div>
+        <!--Delete action-->
+        <div v-if="file.actionDelete" class="btn-delete row items-center justify-center"
+             @click="file.actionDelete(file.index)">
+          <q-icon name="fas fa-trash-alt"/>
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@ export default {
   name: 'uploaderComponentMaster',
   props: {
     value: {default: false},
-    accept: {default: '.pdf, .xlsx, .docx, .pptx, .mp4, .mp3, .jpg, image/*'},
+    accept: {default: '.pdf,.xlsx,.xls,.docx,.doc,.pptx,.ppt,.mp4,.mp3,.jpg,image/*'},
     maxFiles: {default: 1},
     emitBase64: {type: Boolean, default: false},
     emitFile: {type: Boolean, default: false},
@@ -88,6 +88,7 @@ export default {
 
       //Default
       let mediaConfig = this.$store.state.qsiteApp.configs.Media
+
       return this.$clone(mediaConfig ? mediaConfig['allowed-types'] : this.accept)
     },
     //Order Show Files
