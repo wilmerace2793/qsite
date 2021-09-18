@@ -269,7 +269,8 @@ export default {
     service: 'Servicio | Servicios',
     skip: 'Omitir',
     reserved: 'Reservado | Reservados',
-    finalize: 'Finalizar'
+    finalize: 'Finalizar',
+    record : 'Registro | Registros'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

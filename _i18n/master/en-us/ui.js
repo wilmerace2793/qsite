@@ -263,7 +263,8 @@ export default {
     service: 'Service | Services',
     skip: 'Skip',
     reserved: 'Reserved',
-    finalize: 'Finalize'
+    finalize: 'Finalize',
+    record : 'Record | Records'
   },
   message: {
     notFound: 'Sorry, nothing here',

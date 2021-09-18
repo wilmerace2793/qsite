@@ -1,7 +1,6 @@
 <template>
   <master-modal v-model="showModal" icon="fas fa-file-download" width="380px" :loading="loading"
-                :title="`${$tr('ui.label.export')} | ${$tr($route.meta.title)}`"
-                @hide="reset()" @show="init()">
+                :title="modalTitle" @hide="reset()" @show="init()">
     <div class="relative-position" style="max-width: 350px">
       <div class="row q-col-gutter-md">
         <!--Generate new report-->
@@ -11,8 +10,11 @@
             <div class="text-blue-grey q-mb-sm">
               <b>{{ $tr('qsite.layout.messages.newReport') }}</b>
             </div>
+            <!--Text help Item-->
+            <div class="text-caption q-mb-xs" v-if="exportItem && paramsItem.item"
+                 v-html="$tr('qsite.layout.messages.newExportItemHelpText', {id: paramsItem.item.id})"></div>
             <!--Text help-->
-            <div class="text-caption q-mb-xs"
+            <div class="text-caption q-mb-xs" v-else
                  v-html="$tr('qsite.layout.messages.newExportHelpText', {pageTitle: $tr($route.meta.title)})"></div>
             <!--Actions-->
             <div class="text-right q-mt-md">
@@ -66,7 +68,9 @@ export default {
     this.$root.$off('export.data.refresh')
     this.$eventBus.$off('isite.export.ready')
   },
-  props: {},
+  props: {
+    exportItem: {type: Boolean, default: false}
+  },
   components: {},
   watch: {
     '$route.name': {
@@ -85,6 +89,7 @@ export default {
     return {
       loading: false,
       params: false,
+      paramsItem: {},
       customExportData: false,
       showModal: false,
       fileExport: false,
@@ -107,6 +112,18 @@ export default {
         }
       }
 
+      //Response
+      return response
+    },
+    //Modal export title
+    modalTitle() {
+      //Default response
+      let response = `${this.$tr('ui.label.export')} | `
+      //Extra titel
+      if (this.exportItem)
+        response += `${this.$tr('ui.label.record')} ID: ${this.paramsItem.item ? this.paramsItem.item.id : ''}`
+      else
+        response += `${this.$tr(this.$route.meta.title)}`
       //Response
       return response
     }
@@ -152,7 +169,9 @@ export default {
         let requestParams = {
           refresh: true,
           params: {
-            filter: {configName: `${this.routeParams.moduleName}.config.exportable.${this.routeParams.entityName}`}
+            filter: {
+              configName: `${this.routeParams.moduleName}.config.exportable.${this.routeParams.entityName}${this.exportItem ? 'Item' : ''}`
+            }
           }
         }
 
@@ -176,8 +195,8 @@ export default {
         let requestParams = {
           refresh: true,
           params: {
-            exportParams: this.params,
-            filter: this.$filter ? this.$filter.values : {}
+            exportParams: this.exportItem ? {...this.params, ...(this.paramsItem.exportParams || {})} : this.params,
+            filter: this.exportItem ? (this.paramsItem.filter || {}) : (this.$filter ? this.$filter.values : {})
           }
         }
 
@@ -197,8 +216,8 @@ export default {
 
         //Request params
         let requestParams = {
-          exportParams: this.params,
-          filter: {...(this.$filter ? this.$filter.values : {}), ...this.filters}
+          exportParams: this.exportItem ? {...this.params, ...(this.paramsItem.exportParams || {})} : this.params,
+          filter: this.exportItem ? (this.paramsItem.filter || {}) : (this.$filter ? this.$filter.values : {})
         }
 
         //Request
@@ -213,6 +232,11 @@ export default {
     //Show report
     showReport(customExportData) {
       this.customExportData = this.$clone(customExportData)
+      this.showModal = true
+    },
+    //Show report Item
+    showReportItem(params) {
+      this.paramsItem = params
       this.showModal = true
     },
     //Reset
