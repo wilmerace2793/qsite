@@ -1,6 +1,5 @@
 <template>
-  <div id="avatarImageComponent" class="inline-block"
-       @click="() => {dialog.show = true; $emit('click')}">
+  <div id="avatarImageComponent" @click="() => {dialog.show = true; $emit('click')}">
     <!--Avatar-->
     <div v-if="srcComponent && !noPreview" :class="`avatar-img-content ${!noOpen ? 'cursor-pointer' : ''}`"
          :style="`background-image: url('${srcComponent}'); ${defaultSize}`"></div>
