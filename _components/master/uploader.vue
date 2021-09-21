@@ -1,57 +1,28 @@
 <template>
   <div id="uploaderMasterComponent" class="full-width">
-    <!---Content-->
-    <div id="contentUploader" class="row q-col-gutter-md">
-      <!---File block-->
-      <div :class="`relative-position ${file.columns}`" v-for="(file , indexFile) in showFiles" :key="indexFile">
-        <!--content-->
-        <div class="file-block" @click="file.action(file)">
-          <!---Content file block-->
-          <div :class="`file-block_content row items-center justify-center img-as-bg ${file.class}`"
-               :style="file.style">
-            <!--Information-->
-            <div class="text-center">
-              <!--Icon-->
-              <q-icon v-if="!loading && file.icon" class="file-block_icon" :name="file.icon" @added="setFiles"/>
-              <!--Helper label-->
-              <div v-if="!loading && file.label" class="text-caption text-grey-7 q-mt-md">{{ file.label }}</div>
-            </div>
-            <!--Tooltip-->
-            <q-tooltip v-if="file.tooltip" anchor="center middle" self="center middle" :delay="500">
-              {{ file.tooltip }}
-            </q-tooltip>
-            <!---Inner loading-->
-            <q-spinner-oval v-if="file.loading" color="primary" size="40px"/>
-          </div>
-          <!--File title-->
-          <div v-if="false && file.name" class="file-block_title ellipsi"> {{ file.name }}</div>
-        </div>
-        <!--Delete action-->
-        <div v-if="file.actionDelete" class="btn-delete row items-center justify-center"
-             @click="file.actionDelete(file.index)">
-          <q-icon name="fas fa-trash-alt"/>
-        </div>
-      </div>
-    </div>
+    <!--File List-->
+    <file-list v-model="filesData" v-bind="fileListParams"/>
     <!--Uploader image-->
     <q-uploader ref="qUploaderComponent" v-show="false" :accept="acceptFiles" @added="setFiles"
                 :max-files="maxFiles - filesData.length" :multiple="maxFiles >= 2 ? true : false"/>
-    <!--Image preview-->
-    <avatar-image ref="avatarImage" no-preview/>
   </div>
 </template>
 <script>
+//components
+import fileList from '@imagina/qsite/_components/master/fileList'
+
 export default {
   name: 'uploaderComponentMaster',
   props: {
     value: {default: false},
     accept: {default: '.pdf,.xlsx,.xls,.docx,.doc,.pptx,.ppt,.mp4,.mp3,.jpg,image/*'},
     maxFiles: {default: 1},
+    title: {default: ''},
     emitBase64: {type: Boolean, default: false},
     emitFile: {type: Boolean, default: false},
-    helpText: {default: false}
+    gridColClass: {default: 'col-6 col-md-3 col-lg-2'}
   },
-  components: {},
+  components: {fileList},
   watch: {
     value: {
       deep: true,
@@ -71,12 +42,39 @@ export default {
   data() {
     return {
       loading: false,
-      uploaderFiles: [],
-      filesData: [],
-      tmpFile: false
+      filesData: []
     }
   },
   computed: {
+    //Params to file List
+    fileListParams() {
+      return {
+        title: `${this.$clone(this.title)} (${this.filesData.length}/${this.maxFiles})`,
+        gridColClass: this.gridColClass,
+        actions: [
+          {
+            label: this.$tr('ui.label.select'),
+            icon : 'fas fa-file-upload',
+            padding : 'xs sm',
+            color: 'green',
+            rounded: true,
+            outline: true,
+            action: () => this.$refs.qUploaderComponent.pickFiles(),
+            disable: this.filesData.length >= this.maxFiles ? true : false
+          }
+        ],
+        itemActions: [
+          {
+            label: this.$tr('ui.label.delete'),
+            icon: 'fas fa-trash',
+            action: (item) => {
+              let fileIndex = this.filesData.findIndex(file => item.id == file.id)
+              if (fileIndex >= 0) this.filesData.splice(fileIndex, 1)
+            }
+          }
+        ]
+      }
+    },
     //Return accept files
     acceptFiles() {
       //Images
@@ -90,45 +88,6 @@ export default {
       let mediaConfig = this.$store.state.qsiteApp.configs.Media
 
       return this.$clone(mediaConfig ? mediaConfig['allowed-types'] : this.accept)
-    },
-    //Order Show Files
-    showFiles() {
-      let files = this.$clone(this.filesData)
-      let response = []
-
-      for (var fileIndex = 0; fileIndex < (files.length + 1); fileIndex++) {
-        if ((fileIndex + 1) <= this.maxFiles) {
-          let file = files[fileIndex]//Get file
-          let fileIsImage = !file ? false : (file.isImage || (typeof file == 'string') ? true : false)
-          let filePath = fileIsImage ? (file.base64 || file) : false
-
-          //Add data
-          response.push({
-            ...(file && (typeof file != 'string') ? file : {}),
-            index: fileIndex,
-            name: file ? (file.name || filePath) : false,
-            icon: file ? (fileIsImage ? false : 'task') :
-                (this.accept == 'images' ? 'add_a_photo' : 'note_add'),
-            label: file ? false : this.helpText || this.$tr('ui.message.addFile'),
-            style: filePath ? `background-image: url('${filePath}')` : '',
-            class: file ? 'file-block_loaded' : '',
-            columns: (files.length && this.maxFiles >= 2) ? 'col-6 col-md-3 col-lg-2' : 'col-12',
-            tooltip: file ? file.name : false,
-            loading: file ? false : this.loading,
-            action: () => {
-              file ? this.fileAction(file) : this.$refs.qUploaderComponent.pickFiles()
-            },
-            actionDelete: file ? index => this.filesData.splice(index, 1) : false
-          })
-        }
-      }
-
-      //Set add card as first item
-      if (this.filesData.length < this.maxFiles)
-        response.splice(0, 0, response.pop())
-
-      //Response
-      return response
     }
   },
   methods: {
@@ -165,11 +124,15 @@ export default {
             let base64 = await this.$helper.getBase64(file)
             //File data
             fileData = {
+              id: this.$uid(),
               file: file,
               name: file.name,
+              filename: file.name,
               size: file.size,
               type: file.type,
               base64: base64,
+              mediumThumb: base64,
+              path: base64,
               isImage: file.__img ? true : false,
               width: file.__img ? file.__img.naturalWidth : 0,
               height: file.__img ? file.__img.naturalHeight : 0,
@@ -203,13 +166,6 @@ export default {
         //Hide loading
         this.loading = false
       }, 500)
-    },
-    //File action
-    fileAction(file) {
-      //Action if is image
-      if (file.isImage || (typeof file == 'string')) {
-        this.$refs.avatarImage.open(file.base64 || file)
-      }
     },
     //Emit response
     emitFiles() {
