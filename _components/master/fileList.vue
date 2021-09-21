@@ -12,20 +12,25 @@
             <!---Title-->
             <q-icon v-if="icon" :name="icon" class="q-mr-sm"/>
             <!---Title-->
-            <b>{{ title }}</b>
+            <b v-if="title">{{ title }}</b>
             <!--Counter-->
             <span v-if="allowCounter" class="q-ml-sm">({{ table.pagination.rowsNumber }})</span>
           </div>
           <!--Actions-->
           <div id="tableActions" class="row q-gutter-sm">
+            <!--customActions-->
+            <q-btn v-for="(item, itemKey) in actions" :key="itemKey" class="btn-small" v-bind="item"
+                   v-if="item.vIf != undefined ? item.vIf : true" @click="item.action()">
+              <q-tooltip v-if="item.tooltip">{{ item.tooltip }}.</q-tooltip>
+            </q-btn>
             <!--Order-->
             <q-btn v-if="allowOrder" class="btn-small" round unelevated outline color="blue-grey"
                    :icon="`fas fa-arrow-${table.filter.order.way == 'asc' ? 'up' : 'down'}`" @click="toggleOrder()">
               <q-tooltip>{{ $tr('ui.label.order') }} {{ table.filter.order.way }}.</q-tooltip>
             </q-btn>
             <!--toogle view-->
-            <q-btn :icon="table.grid ? 'fas fa-grip-horizontal' : 'fas fa-list-ul'" class="btn-small"
-                   @click="table.grid = !table.grid" round unelevated outline color="blue-grey">
+            <q-btn v-if="allowChangeView" :icon="table.grid ? 'fas fa-grip-horizontal' : 'fas fa-list-ul'"
+                   class="btn-small" @click="table.grid = !table.grid" round unelevated outline color="blue-grey">
               <q-tooltip>{{ $tr(`ui.message.${table.grid ? 'gribView' : 'listView'}`) }}</q-tooltip>
             </q-btn>
           </div>
@@ -38,7 +43,7 @@
       <!--Custom Grid-->
       <template v-slot:item="props">
         <!---Card-->
-        <div class="q-pa-xs col-6 col-md-3 col-lg-2" v-if="gridType == 'card'">
+        <div :class="`${gridColClass} q-pa-xs`" v-if="gridType == 'card'">
           <div class="file-card cursor-pointer">
             <!--Image Preview-->
             <div v-if="props.row.isImage" class="file-card_img img-as-bg" @click="fileAction(props.row)"
@@ -69,7 +74,7 @@
           </div>
         </div>
         <!--Chips-->
-        <div class="q-pa-xs col-6 col-md-3 col-lg-2" v-else-if="gridType == 'chip'">
+        <div :class="`${gridColClass} q-pa-xs`" v-else-if="gridType == 'chip'">
           <div class="file-chip cursor-pointer">
             <!--Image Preview-->
             <div v-if="props.row.isImage" class="file-chip__img img-as-bg" @click="fileAction(props.row)"
@@ -139,7 +144,9 @@
 <script>
 export default {
   name: 'fileListComponent',
+  components: {},
   props: {
+    value: {default: null},
     params: {
       default: () => {
         return {folderId: 0}
@@ -150,17 +157,36 @@ export default {
     title: {default: false},
     allowCounter: {type: Boolean, default: false},
     allowOrder: {type: Boolean, default: false},
+    allowChangeView: {type: Boolean, default: false},
     actions: {
       type: Array, default: () => {
         return []
       }
     },
-    itemActions: {type: Array, default: false},
+    gridColClass: {default: 'col-6 col-md-3 col-lg-2'},
+    itemActions: {
+      type: Array, default: () => {
+        return []
+      }
+    },
     allowPagination: {type: Boolean, default: false},
     loadFiles: {default: false}
   },
-  components: {},
   watch: {
+    value: {
+      deep: true,
+      handler: function (newValue, oldValue) {
+        if (JSON.stringify(newValue) != JSON.stringify(this.table.data))
+          this.table.data = this.$clone(newValue)
+      }
+    },
+    'table.data': {
+      deep: true,
+      handler: function (newValue, oldValue) {
+        if (JSON.stringify(newValue) != JSON.stringify(oldValue))
+          this.$emit('input', this.$clone(newValue))
+      }
+    },
     loadFiles: {
       deep: true,
       handler: function (newValue, oldValue) {
@@ -245,7 +271,7 @@ export default {
     //Table data
     tableData() {
       //Get data table
-      let items = this.table.data
+      let items = this.table.data || []
 
       //Icons by extensions
       let iconByExtension = {
@@ -271,6 +297,7 @@ export default {
   },
   methods: {
     init() {
+      this.table.data = this.$clone(this.value)
       this.getData()
     },
     //Get data
