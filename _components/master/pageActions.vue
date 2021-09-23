@@ -23,6 +23,18 @@
         </q-btn>
       </div>
     </div>
+    <!--Filter data-->
+    <div class="col-12" v-if="filter.hasValues">
+      <q-separator class="q-mb-sm"/>
+      <div class="text-blue-grey ellipsis text-caption">
+        <q-icon name="fas fa-exclamation-circle" class="q-mr-xs" color="amber" size="14px"/>
+        <b>{{ $trp('ui.label.filter') }}:</b>
+        <label v-for="(item, itemKey) in filter.readValues" :key="itemKey" v-if="item.value"
+               class="q-ml-xs text-grey-7">
+          {{ item.label }} {{ item.value }},
+        </label>
+      </div>
+    </div>
     <!-- Export Component -->
     <master-export v-model="exportParams" ref="exportComponent"/>
   </div>
@@ -32,6 +44,9 @@
 import masterExport from "@imagina/qsite/_components/master/masterExport"
 
 export default {
+  beforeDestroy() {
+    this.$root.$off('page.data.filter.read')
+  },
   props: {
     title: {type: String},
     icon: {type: String},
@@ -43,13 +58,15 @@ export default {
   watch: {},
   mounted() {
     this.$nextTick(function () {
+      this.init()
     })
   },
   data() {
     return {
       filter: this.$filter,
       exportParams: false,
-      search: null
+      search: null,
+      filterReadData: {}
     }
   },
   computed: {
@@ -138,7 +155,13 @@ export default {
       return response
     },
   },
-  methods: {}
+  methods: {
+    init() {
+      this.$root.$on('page.data.filter.read', (readValues) => {
+        this.$set(this.filter, 'readValues', readValues)
+      })
+    }
+  }
 }
 </script>
 <style lang="stylus">
