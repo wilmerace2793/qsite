@@ -287,6 +287,7 @@ export default {
     },
     rootOptions(newValue) {
       this.options = this.rootOptions
+      setTimeout(() => this.watchValue(), 500)
     },
     'field.props.options'(newValue, oldValue) {
       if (JSON.stringify(newValue) != JSON.stringify(oldValue))
@@ -993,8 +994,12 @@ export default {
       let response = this.$clone(this.responseValue)
 
       if (JSON.stringify(value) !== JSON.stringify(response)) {
+        //Emit input data
         this.$emit('input', response)
       }
+
+      //Emit info read only data
+      this.$emit('inputReadOnly', this.$clone({label: this.fieldLabel, value: this.infoReadOnly}))
     },
     //Validate if show  field
     loadField(name) {
