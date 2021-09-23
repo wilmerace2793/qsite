@@ -161,7 +161,8 @@
         <!--Media-->
         <q-field v-model="responseValue" v-if="loadField('media')" label="" class="field-no-padding no-border"
                  v-bind="fieldProps.fieldComponent">
-          <media v-model="responseValue" class="bg-white" v-bind="fieldProps.field"/>
+          <!--<media v-model="responseValue" class="bg-white" v-bind="fieldProps.field" />-->
+          <select-media v-model="responseValue" class="bg-white" v-bind="fieldProps.field"/>
         </q-field>
         <!--Manage Permission-->
         <manage-permissions v-model="responseValue" class="q-mb-sm" v-if="loadField('permissions')"
@@ -239,6 +240,7 @@ import uploader from '@imagina/qsite/_components/master/uploader'
 import selectIcon from '@imagina/qsite/_components/master/selectIcon'
 import captcha from '@imagina/qsite/_components/master/captcha'
 import schedulable from '@imagina/qsite/_components/master/schedulable'
+import selectMedia from '@imagina/qmedia/_components/selectMedia'
 
 export default {
   name: 'dynamicField',
@@ -268,7 +270,8 @@ export default {
     uploader,
     selectIcon,
     captcha,
-    schedulable
+    schedulable,
+    selectMedia
   },
   watch: {
     value: {
