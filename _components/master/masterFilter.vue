@@ -14,7 +14,6 @@
         <q-tabs v-model="tabName" dense class="text-grey" active-color="primary" indicator-color="primary"
                 align="justify" v-if="filter.hasValues" :breakpoint="0">
           <q-tab name="tabForm" :label="$tr('ui.label.filter')"/>
-          <q-tab name="tabSummary" :label="$tr('ui.form.summary')"/>
         </q-tabs>
       </div>
     </div>
@@ -56,22 +55,9 @@
             </div>
             <!--others Fields-->
             <dynamic-field v-for="(field, key) in filter.fields" :key="key" v-model="filterValues[field.name || key]"
-                           v-if="['search','pagination'].indexOf(key) == -1" class="q-mb-sm" :field="field"/>
+                           v-if="['search','pagination'].indexOf(key) == -1" class="q-mb-sm" :field="field"
+                           @inputReadOnly="data => $set(readOnlyData, (field.name || key), data)"/>
           </div>
-        </q-tab-panel>
-        <!--Tab Summary-->
-        <q-tab-panel name="tabSummary" class="q-pa-none q-px-md">
-          <!--Search-->
-          <dynamic-field v-model="filterValues.search" v-if="filter.fields && filter.fields.search"
-                         :field="filter.fields.search" read-only class="q-mb-sm"/>
-          <!--Date-->
-          <dynamic-field v-for="(fieldDate, key) in dateFields" :key="key" :field="fieldDate" class="q-mb-sm"
-                         v-model="filterValues.date[fieldDate.name || key]" read-only
-                         v-if="filter.fields && filter.fields.date && key != 'type'"/>
-          <!--others Fields-->
-          <dynamic-field v-for="(field, key) in filter.fields" :key="key" read-only class="q-mb-sm"
-                         v-model="filterValues[field.name || key]" :field="field"
-                         v-if="['search','pagination', 'date'].indexOf(key) == -1"/>
         </q-tab-panel>
       </q-tab-panels>
     </q-scroll-area>
@@ -107,6 +93,12 @@ export default {
       handler: function (newValue) {
         this.$filter.reset()
       }
+    },
+    readOnlyData: {
+      deep: true,
+      handler: function () {
+        this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData))
+      }
     }
   },
   mounted() {
@@ -119,7 +111,8 @@ export default {
       filter: this.$filter,
       tabName: 'tabForm',
       filterValues: {},
-      pagination: {}
+      pagination: {},
+      readOnlyData: {}
     }
   },
   computed: {
