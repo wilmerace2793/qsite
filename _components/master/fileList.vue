@@ -3,7 +3,7 @@
     <!--Table-->
     <q-table :data="tableData" :columns="tableColumns" :pagination.sync="table.pagination" :grid="table.grid"
              :hide-pagination="!allowPagination" :rows-per-page-options="table.rowsPerPageOptions"
-             @request="getDataTable" :loading="loading">
+             @request="getDataTable" :loading="loading" hide-no-data>
       <!---Top content-->
       <template v-slot:top>
         <div id="tableTopContent" class="row items-center justify-between full-width">
@@ -36,7 +36,7 @@
           </div>
         </div>
         <!--Separator-->
-        <div class="full-width q-my-sm">
+        <div class="full-width q-mt-sm" v-if="tableData.length">
           <q-separator/>
         </div>
       </template>
@@ -69,7 +69,12 @@
                 {{ props.row.filename }}
               </div>
               <!--Actions-->
-              <btn-menu class="file-card__bottom_actions" :actions="itemActions" :action-data="props.row"/>
+              <div class="file-card__bottom_actions">
+                <!--select file-->
+                <q-checkbox v-if="allowSelect" v-model="table.selected" :val="props.row.filename" color="green"/>
+                <!--button Actions-->
+                <btn-menu class="" :actions="itemActions" :action-data="props.row"/>
+              </div>
             </div>
           </div>
         </div>
@@ -92,7 +97,12 @@
               </q-tooltip>
             </div>
             <!--Actions-->
-            <btn-menu class="file-chip__actions" :actions="itemActions" :action-data="props.row"/>
+            <div class="file-chip__actions">
+              <!--select file-->
+              <q-checkbox v-if="allowSelect" v-model="table.selected" :val="props.row.filename" color="green"/>
+              <!--button Actions-->
+              <btn-menu class="" :actions="itemActions" :action-data="props.row"/>
+            </div>
           </div>
         </div>
       </template>
@@ -111,7 +121,13 @@
         </q-td>
         <!-- actions columns -->
         <q-td v-else-if="props.col.name == 'actions'" :props="props">
-          <btn-menu class="file-card__bottom_actions" :actions="itemActions" :action-data="props.row"/>
+          <!--Actions-->
+          <div class="file-card__bottom_actions">
+            <!--select file-->
+            <q-checkbox v-if="allowSelect" v-model="table.selected" :val="props.row.filename" color="green"/>
+            <!--button Actions-->
+            <btn-menu class="" :actions="itemActions" :action-data="props.row"/>
+          </div>
         </q-td>
         <!--Default columns-->
         <q-td v-else :props="props" :title="props.value">
@@ -147,11 +163,6 @@ export default {
   components: {},
   props: {
     value: {default: null},
-    params: {
-      default: () => {
-        return {folderId: 0}
-      }
-    },
     gridType: {type: String, default: 'card'},
     icon: {default: false},
     title: {default: false},
@@ -170,7 +181,8 @@ export default {
       }
     },
     allowPagination: {type: Boolean, default: false},
-    loadFiles: {default: false}
+    loadFiles: {default: false},
+    allowSelect: {type: Number, default: 0}
   },
   watch: {
     value: {
@@ -195,6 +207,13 @@ export default {
           this.getData()
         }
       }
+    },
+    'table.selected': {
+      deep: true,
+      handler: function (newValue, oldValue) {
+        if (JSON.stringify(newValue) != JSON.stringify(oldValue))
+          this.handlerSelectedFiles()
+      }
     }
   },
   mounted() {
@@ -216,12 +235,12 @@ export default {
         },
         rowsPerPageOptions: [5, 10, 20, 50, 100, 300, 500],
         filter: {
-          folderId: 0,
           order: {
             field: 'created_at',
             way: 'desc'
           }
-        }
+        },
+        selected: []
       },
       modalPdf: {
         show: false,
@@ -237,7 +256,8 @@ export default {
         show: false,
         src: false,
         fileName: ''
-      }
+      },
+      selectedFiles: []
     }
   },
   computed: {
@@ -318,12 +338,12 @@ export default {
         //Update table filters
         this.table.filter = this.$clone({
           ...this.table.filter,
+          ...(filter || {}),
           ...((this.loadFiles && this.loadFiles.requestParams) ? (this.loadFiles.requestParams.filter || {}) : {}),
-          ...(filter || {})
         })
         //Request params
         let requestParams = {
-          refresh: refresh,
+          refresh: true,
           params: {
             page: this.$clone(pagination.page),
             take: this.$clone((this.loadFiles && this.loadFiles.requestParams) ?
@@ -356,11 +376,6 @@ export default {
     },
     //Do Item action
     fileAction(file) {
-      //Action if is folder
-      if (file.isFolder) {
-        this.table.filter.folderId = this.$clone(file.id)
-        this.getData()
-      }
       //Action if is image
       if (file.isImage) {
         this.$refs.avatarImage.open(file.mediumThumb)
@@ -390,13 +405,36 @@ export default {
         }
       }
       //Emit selection item
-      this.$emit('selected', file)
+      this.$emit('clickItem', file)
     },
     //Toggle order
     toggleOrder() {
       this.table.filter.order.way = this.$clone(this.table.filter.order.way == 'asc' ? 'desc' : 'asc')
       this.table.pagination.page = 1
       this.getData()
+    },
+    //Handler selected files data
+    handlerSelectedFiles() {
+      let dataFiles = []
+      let selectedFiles = this.$clone(this.table.selected.slice(0, this.allowSelect))
+
+      //Validate keep selected files
+      this.selectedFiles.forEach(file => {
+        if (selectedFiles.includes(file.filename)) dataFiles.push(file)
+      })
+
+      //Validate new files selected
+      selectedFiles.forEach(filename => {
+        if (!this.selectedFiles.map(file => file.filename).includes(filename)) {
+          dataFiles.push(this.table.data.find(file => file.filename == filename))
+        }
+      })
+
+      //Set selected files
+      this.table.selected = this.$clone(selectedFiles)
+      this.selectedFiles = this.$clone(dataFiles)
+      //Emit selected files
+      this.$emit('selected', this.$clone(this.selectedFiles))
     }
   }
 }
@@ -407,6 +445,7 @@ export default {
     width 100%
     box-shadow none
     color $grey-9
+    padding 10px
 
     .q-table__top
       padding 0
@@ -497,5 +536,11 @@ export default {
         position absolute
         right 2px
         top 0
+
+  th:last-child, td:last-child
+    background-color white
+    position: sticky
+    right: 0
+    z-index: 1
 </style>
 
