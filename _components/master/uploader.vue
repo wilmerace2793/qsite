@@ -54,8 +54,8 @@ export default {
         actions: [
           {
             label: this.$tr('ui.label.select'),
-            icon : 'fas fa-file-upload',
-            padding : 'xs sm',
+            icon: 'fas fa-file-upload',
+            padding: 'xs sm',
             color: 'green',
             rounded: true,
             outline: true,
@@ -100,6 +100,7 @@ export default {
       if (this.value) {
         let newFilesData = this.$clone(Array.isArray(this.value) ? this.value : [this.value])
         let filesData = this.$clone(this.filesData)
+
         //Default condition to set new files
         let setFiles = newFilesData.length != filesData.length ? true : false
         //Set files
@@ -155,10 +156,30 @@ export default {
                 })
               })
             }
+          } else { //if file us a url
+            if (file.includes('http://') || file.includes('https://')) {
+              //Get file data from url
+              let urlFile = new URL(file)
+              let splitPath = urlFile.pathname.split('/')
+              let fileName = splitPath[splitPath.length - 1]
+              let extension = fileName.split('.').pop()
+              //Instance file data
+              fileData = {
+                id: this.$uid(),
+                file: file,
+                base64: file,
+                mediumThumb: file,
+                filename: fileName,
+                extension: extension,
+                isImage: ['jpg', 'png', 'webp'].includes(extension)
+              }
+            }
           }
+
           //Set file data
           filesData.push(fileData)
         }
+
         //Set to files data
         this.filesData = this.$clone(filesData)
         //Reset uploader
