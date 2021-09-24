@@ -270,7 +270,8 @@ export default {
     skip: 'Omitir',
     reserved: 'Reservado | Reservados',
     finalize: 'Finalizar',
-    record : 'Registro | Registros'
+    record : 'Registro | Registros',
+    pay : 'Pagar'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

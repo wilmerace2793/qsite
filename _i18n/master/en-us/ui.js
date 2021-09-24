@@ -264,7 +264,8 @@ export default {
     skip: 'Skip',
     reserved: 'Reserved',
     finalize: 'Finalize',
-    record : 'Record | Records'
+    record : 'Record | Records',
+    pay : 'Pay'
   },
   message: {
     notFound: 'Sorry, nothing here',
