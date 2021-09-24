@@ -149,9 +149,18 @@
         <!--Checkbox-->
         <q-field v-model="responseValue" v-if="loadField('checkbox')" label="" class="field-no-padding"
                  v-bind="fieldProps.fieldComponent">
-          <q-checkbox v-model="responseValue" label="" v-bind="fieldProps.field">
-            <div class="text-blue-grey" v-if="fieldProps.field.label" v-html="fieldProps.field.label"></div>
-          </q-checkbox>
+          <q-item tag="label" dense style="padding: 0">
+            <!--checkbox-->
+            <q-item-section side style="padding: 0">
+              <q-checkbox v-model="responseValue" label="" v-bind="fieldProps.field"/>
+            </q-item-section>
+            <!--Label-->
+            <q-item-section v-if="fieldProps.field.label">
+              <q-item-label caption>
+                <div class="float-right" v-html="fieldProps.field.label"></div>
+              </q-item-label>
+            </q-item-section>
+          </q-item>
         </q-field>
         <!--Image-->
         <q-field v-model="responseValue" v-if="loadField('image')" class="field-image" label=""
