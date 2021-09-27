@@ -311,7 +311,7 @@ export default {
         //Set icon by extension
         item.icon = item.isFolder ? 'fas fa-folder' : (iconByExtension[item.extension] || 'fas fa-file')
         //Vlaidate extra format to image type
-        if (['svg','jfif'].includes(item.extension)) item.isImage = true
+        if (['svg', 'jfif'].includes(item.extension)) item.isImage = true
       })
 
       //Response
@@ -419,7 +419,7 @@ export default {
     //Handler selected files data
     handlerSelectedFiles() {
       let dataFiles = []
-      let selectedFiles = this.$clone(this.table.selected.slice(0, this.allowSelect))
+      let selectedFiles = this.$clone(this.table.selected.reverse().slice(0, this.allowSelect))
 
       //Validate keep selected files
       this.selectedFiles.forEach(file => {
@@ -436,6 +436,7 @@ export default {
       //Set selected files
       this.table.selected = this.$clone(selectedFiles)
       this.selectedFiles = this.$clone(dataFiles)
+
       //Emit selected files
       this.$emit('selected', this.$clone(this.selectedFiles))
     }
