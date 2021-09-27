@@ -454,6 +454,12 @@ class Helper {
     var re = /^[a-z0-9]+$/i
     return re.test(val);
   }
+
+  //Validate if values is only slugable
+  validateSlugFormat(val) {
+    var re = /^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/
+    return re.test(val);
+  }
 }
 
 const helper = new Helper();

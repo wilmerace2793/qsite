@@ -1,7 +1,7 @@
 <template>
   <div id="uploaderMasterComponent" class="full-width">
     <!--File List-->
-    <file-list v-model="filesData" v-bind="fileListParams"/>
+    <file-list v-model="filesData" v-bind="fileListParams" v-if="!hideFileList"/>
     <!--Uploader image-->
     <q-uploader ref="qUploaderComponent" v-show="false" :accept="acceptFiles" @added="setFiles"
                 :max-files="maxFiles - filesData.length" :multiple="maxFiles >= 2 ? true : false"/>
@@ -20,7 +20,8 @@ export default {
     title: {default: ''},
     emitBase64: {type: Boolean, default: false},
     emitFile: {type: Boolean, default: false},
-    gridColClass: {default: 'col-6 col-md-3 col-lg-2'}
+    gridColClass: {default: 'col-6 col-md-3 col-lg-2'},
+    hideFileList: {type: Boolean, default: false}
   },
   components: {fileList},
   watch: {
@@ -59,7 +60,7 @@ export default {
             color: 'green',
             rounded: true,
             outline: true,
-            action: () => this.$refs.qUploaderComponent.pickFiles(),
+            action: () => this.pickFiles(),
             disable: this.filesData.length >= this.maxFiles ? true : false
           }
         ],
@@ -94,6 +95,10 @@ export default {
     init() {
       this.setValueToFileData()
       this.emitFiles()
+    },
+    //pick files
+    pickFiles() {
+      this.$refs.qUploaderComponent.pickFiles()
     },
     //Set value to file data
     setValueToFileData() {
