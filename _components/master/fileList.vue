@@ -308,7 +308,10 @@ export default {
 
       //Transform data
       items.forEach(item => {
+        //Set icon by extension
         item.icon = item.isFolder ? 'fas fa-folder' : (iconByExtension[item.extension] || 'fas fa-file')
+        //Vlaidate extra format to image type
+        if (['svg','jfif'].includes(item.extension)) item.isImage = true
       })
 
       //Response
