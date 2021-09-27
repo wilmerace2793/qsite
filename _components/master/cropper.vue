@@ -26,7 +26,7 @@
                :icon="item.icon" @click="item.action()" color="white" size="11px"/>
       </div>
       <!--Inner loading-->
-      <inner-loading :visible="loading" />
+      <inner-loading :visible="loading"/>
     </div>
   </q-dialog>
 </template>
@@ -80,6 +80,13 @@ export default {
     cropperActions() {
       return {
         top: [
+          {
+            icon: 'fas fa-ban',
+            value: this.$tr('ui.label.cancel'),
+            action: () => {
+              this.cropImage(false)
+            }
+          },
           {
             popupName: 'width',
             icon: 'fas fa-arrows-alt-h',
@@ -159,21 +166,32 @@ export default {
       }
     },
     //Crop Image
-    cropImage() {
-      this.loading = true
-      //Get base 64
-      let base64 = this.$refs.cropper.getCroppedCanvas().toDataURL(this.imgType)
-      //Data response
-      let dataResponse = {
-        base64: base64,
-        size: parseInt((base64).replace(/=/g, "").length * 0.75),
-        height: this.information.cropper.height,
-        width: this.information.cropper.width
+    cropImage(emitImage = true) {
+      //Emit image
+      if (emitImage) {
+        this.loading = true
+        //Get base 64
+        let base64 = this.$refs.cropper.getCroppedCanvas().toDataURL(this.imgType)
+        //Data response
+        let dataResponse = {
+          base64: base64,
+          size: parseInt((base64).replace(/=/g, "").length * 0.75),
+          height: this.information.cropper.height,
+          width: this.information.cropper.width
+        }
+        //Emit value
+        this.$emit('cropped', dataResponse)
+        //Call back
+        if (this.callBack) this.callBack(dataResponse)
       }
-      //Emit value
-      this.$emit('cropped', dataResponse)
-      //Call back
-      if (this.callBack) this.callBack(dataResponse)
+      //Emit canceled cropper
+      else {
+        //Emit value
+        this.$emit('canceled')
+        //Call back
+        if (this.callBack) this.callBack(null)
+      }
+
       //Reset component
       this.show = false
       this.imgSrc = false

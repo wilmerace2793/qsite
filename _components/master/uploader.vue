@@ -151,10 +151,15 @@ export default {
                   src: base64,
                   type: fileData.type,
                   callBack: async (fileCropped) => {
-                    //Merge data
-                    fileData = {...fileData, ...fileCropped}
-                    //Get file
-                    fileData.file = await this.$helper.urlToFile(fileData.base64, file.name, file.type)
+                    if (fileCropped) {
+                      //Merge data
+                      fileData = {...fileData, ...fileCropped}
+                      //Get file
+                      fileData.file = await this.$helper.urlToFile(fileData.base64, file.name, file.type)
+                    }
+                    //Cancel emit file
+                    else fileData = null
+
                     //Resolve
                     resolve(true)
                   }
@@ -182,7 +187,7 @@ export default {
           }
 
           //Set file data
-          filesData.push(fileData)
+          if (fileData) filesData.push(fileData)
         }
 
         //Set to files data
