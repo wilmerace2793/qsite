@@ -221,7 +221,7 @@ export default {
 <style lang="stylus">
 #uploaderMasterComponent
   color $grey-9
-  display inline-grid
+  //display inline-grid
 
   #contentUploader
     .file-block
