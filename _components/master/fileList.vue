@@ -42,68 +42,71 @@
       </template>
       <!--Custom Grid-->
       <template v-slot:item="props">
-        <!---Card-->
-        <div :class="`${gridColClass} q-pa-xs`" v-if="gridType == 'card'">
-          <div class="file-card cursor-pointer">
-            <!--Image Preview-->
-            <div v-if="props.row.isImage" class="file-card_img img-as-bg" @click="fileAction(props.row)"
-                 :style="`background-image: url('${props.row.mediumThumb}')`">
-              <!--Tooltip-->
-              <q-tooltip anchor="center middle" self="center middle" :delay="500">
-                {{ props.row.filename }}
-              </q-tooltip>
-            </div>
-            <!--Icon-->
-            <div v-else class="file-card_icon img-as-bg row items-center justify-center"
-                 @click="fileAction(props.row)">
-              <q-icon :name="props.row.icon" color="blue-grey"/>
-              <!--Tooltip-->
-              <q-tooltip anchor="center middle" self="center middle" :delay="500">
-                {{ props.row.filename }}
-              </q-tooltip>
-            </div>
-            <!--Bottom content-->
-            <div class="file-card__bottom">
-              <!--Name-->
-              <div class="file-card__bottom_title ellipsis">
-                {{ props.row.filename }}
+        <div class="col-12" v-if="props.rowIndex == firstIndexTableData">
+          <!--Loop every items and set as dragabble-->
+          <draggable group="bocksBlocks" v-model="table.data" class="row" :disabled="!draggable" handle=".drag-handle">
+            <div v-for="(itemRow, itemRowKey) in tableData" :key="itemRowKey" :class="`${gridColClass} q-pa-xs`">
+              <!---Card-->
+              <div v-if="gridType == 'card'" class="file-card cursor-pointer">
+                <!--Image Preview-->
+                <div v-if="itemRow.isImage" class="file-card_img img-as-bg" @click="fileAction(itemRow)"
+                     :style="`background-image: url('${itemRow.mediumThumb}')`">
+                  <!--Tooltip-->
+                  <q-tooltip anchor="center middle" self="center middle" :delay="500">
+                    {{ itemRow.filename }}
+                  </q-tooltip>
+                </div>
+                <!--Icon-->
+                <div v-else class="file-card_icon img-as-bg row items-center justify-center"
+                     @click="fileAction(itemRow)">
+                  <q-icon :name="itemRow.icon" color="blue-grey"/>
+                  <!--Tooltip-->
+                  <q-tooltip anchor="center middle" self="center middle" :delay="500">
+                    {{ itemRow.filename }}
+                  </q-tooltip>
+                </div>
+                <!--Bottom content-->
+                <div class="file-card__bottom">
+                  <!--Name-->
+                  <div :class="`file-card__bottom_title ellipsis ${draggable ? 'drag-handle' : ''}`">
+                    {{ itemRow.filename }}
+                  </div>
+                  <!--Actions-->
+                  <div class="file-card__bottom_actions">
+                    <!--select file-->
+                    <q-checkbox v-if="allowSelect" v-model="table.selected" :val="itemRow.filename" color="green"/>
+                    <!--button Actions-->
+                    <btn-menu class="" :actions="itemActions" :action-data="itemRow"/>
+                  </div>
+                </div>
               </div>
-              <!--Actions-->
-              <div class="file-card__bottom_actions">
-                <!--select file-->
-                <q-checkbox v-if="allowSelect" v-model="table.selected" :val="props.row.filename" color="green"/>
-                <!--button Actions-->
-                <btn-menu class="" :actions="itemActions" :action-data="props.row"/>
+              <!--Chips-->
+              <div v-else-if="gridType == 'chip'" :class="`file-chip ${draggable ? 'drag-handle' : 'cursor-pointer'}`">
+                <!--Image Preview-->
+                <div v-if="itemRow.isImage" class="file-chip__img img-as-bg" @click="fileAction(itemRow)"
+                     :style="`background-image: url('${itemRow.mediumThumb}')`">
+                </div>
+                <!--Icon-->
+                <q-icon v-else :name="`fas fa-${itemRow.isFolder ? 'folder' : 'file'}`" class="file-chip__icon"
+                        @click="fileAction(itemRow)"/>
+                <!--Title-->
+                <div class="file-chip__title ellipsis" @click="fileAction(itemRow)">
+                  {{ itemRow.filename }}
+                  <!--Tooltip-->
+                  <q-tooltip anchor="center middle" self="center middle" :delay="500">
+                    {{ itemRow.filename }}
+                  </q-tooltip>
+                </div>
+                <!--Actions-->
+                <div class="file-chip__actions">
+                  <!--select file-->
+                  <q-checkbox v-if="allowSelect" v-model="table.selected" :val="itemRow.filename" color="green"/>
+                  <!--button Actions-->
+                  <btn-menu class="" :actions="itemActions" :action-data="itemRow"/>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <!--Chips-->
-        <div :class="`${gridColClass} q-pa-xs`" v-else-if="gridType == 'chip'">
-          <div class="file-chip cursor-pointer">
-            <!--Image Preview-->
-            <div v-if="props.row.isImage" class="file-chip__img img-as-bg" @click="fileAction(props.row)"
-                 :style="`background-image: url('${props.row.mediumThumb}')`">
-            </div>
-            <!--Icon-->
-            <q-icon v-else :name="`fas fa-${props.row.isFolder ? 'folder' : 'file'}`" class="file-chip__icon"
-                    @click="fileAction(props.row)"/>
-            <!--Title-->
-            <div class="file-chip__title ellipsis" @click="fileAction(props.row)">
-              {{ props.row.filename }}
-              <!--Tooltip-->
-              <q-tooltip anchor="center middle" self="center middle" :delay="500">
-                {{ props.row.filename }}
-              </q-tooltip>
-            </div>
-            <!--Actions-->
-            <div class="file-chip__actions">
-              <!--select file-->
-              <q-checkbox v-if="allowSelect" v-model="table.selected" :val="props.row.filename" color="green"/>
-              <!--button Actions-->
-              <btn-menu class="" :actions="itemActions" :action-data="props.row"/>
-            </div>
-          </div>
+          </draggable>
         </div>
       </template>
       <!--Custom columns-->
@@ -158,9 +161,12 @@
   </div>
 </template>
 <script>
+//components
+import draggable from 'vuedraggable'
+
 export default {
   name: 'fileListComponent',
-  components: {},
+  components: {draggable},
   props: {
     value: {default: null},
     gridType: {type: String, default: 'card'},
@@ -182,7 +188,8 @@ export default {
     },
     allowPagination: {type: Boolean, default: false},
     loadFiles: {default: false},
-    allowSelect: {type: Number, default: 0}
+    allowSelect: {type: Number, default: 0},
+    draggable: {type: Boolean, default: false}
   },
   watch: {
     value: {
@@ -229,7 +236,7 @@ export default {
         data: [],
         pagination: {
           page: 1,
-          rowsPerPage: 20,
+          rowsPerPage: (this.loadFiles && this.loadFiles.requestParams) ? (this.loadFiles.requestParams.take) || 20 : 20,
           lastPage: 1,
           rowsNumber: 0
         },
@@ -316,6 +323,11 @@ export default {
 
       //Response
       return items
+    },
+    //Return first index from current tableData
+    firstIndexTableData() {
+      let pagination = this.$clone(this.table.pagination)
+      return ((pagination.rowsPerPage * pagination.page) - pagination.rowsPerPage)
     }
   },
   methods: {
@@ -349,8 +361,7 @@ export default {
           refresh: true,
           params: {
             page: this.$clone(pagination.page),
-            take: this.$clone((this.loadFiles && this.loadFiles.requestParams) ?
-                (this.loadFiles.requestParams.take || pagination.rowsPerPage) : pagination.rowsPerPage),
+            take: pagination.rowsPerPage,
             filter: this.$clone(this.table.filter)
           }
         }
@@ -368,6 +379,7 @@ export default {
           //Set pagination
           this.table.pagination.page = this.$clone(response.meta.page.currentPage)
           this.table.pagination.rowsNumber = this.$clone(response.meta.page.total)
+          this.table.pagination.rowsPerPage = this.$clone(response.meta.page.perPage)
           this.table.pagination.lastPage = this.$clone(response.meta.page.lastPage)
           this.table.pagination.sortBy = this.$clone(pagination.sortBy)
           this.table.pagination.descending = this.$clone(pagination.descending)
@@ -546,5 +558,8 @@ export default {
     position: sticky
     right: 0
     z-index: 1
+
+  .drag-handle
+    cursor move
 </style>
 
