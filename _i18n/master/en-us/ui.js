@@ -326,7 +326,8 @@ export default {
     noValue: 'No Value',
     rateYour: 'Rate your <b>{name}</b>',
     withoutIcon: 'Without Icon',
-    mustContainAlphanumeric: 'Must contain only alphanumeric'
+    mustContainAlphanumeric: 'Must contain only alphanumeric',
+    hintUseChips : 'Ingrese el valor y presione enter'
   },
   form: {
     id: 'ID',

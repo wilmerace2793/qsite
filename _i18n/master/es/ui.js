@@ -327,7 +327,8 @@ export default {
     noValue: 'Sin Valor',
     rateYour: 'Califica tu <b>{name}</b>',
     withoutIcon: 'Sin Icono',
-    mustContainAlphanumeric: 'Debe contener solo caracteres alfanumericoss'
+    mustContainAlphanumeric: 'Debe contener solo caracteres alfanumericoss',
+    hintUseChips : 'Ingrese el valor y presione Enter'
   },
   form: {
     id: 'ID',

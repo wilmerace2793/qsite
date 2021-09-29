@@ -479,6 +479,11 @@ export default {
             ...props
           }
           props.loading = props.loading || this.loading
+
+          //add hint to UX when use chips
+          if (props.multiple && props.useChips && props.hideDropdownIcon && !props.hint)
+            props.hint = this.$tr('ui.message.hintUseChips')
+
           break;
         case'treeSelect':
           props = {
