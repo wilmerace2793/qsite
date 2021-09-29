@@ -36,7 +36,7 @@
           </div>
         </div>
         <!--Separator-->
-        <div class="full-width q-mt-sm" v-if="tableData.length">
+        <div class="full-width q-mt-sm">
           <q-separator/>
         </div>
       </template>
@@ -45,6 +45,7 @@
         <div class="col-12" v-if="props.rowIndex == firstIndexTableData">
           <!--Loop every items and set as dragabble-->
           <draggable group="bocksBlocks" v-model="table.data" class="row" :disabled="!draggable" handle=".drag-handle">
+            <!--Files-->
             <div v-for="(itemRow, itemRowKey) in tableData" :key="itemRowKey" :class="`${gridColClass} q-pa-xs`">
               <!---Card-->
               <div v-if="gridType == 'card'" class="file-card cursor-pointer">
@@ -106,6 +107,13 @@
                 </div>
               </div>
             </div>
+            <!--Quantity files-->
+            <div v-if="quantity && (gridType == 'card')" :class="`${gridColClass} q-pa-xs`"
+                 v-for="itemNum in emptyQuantityFiles" :key="`item${itemNum}`">
+              <div class="file-item-quantity row items-center justify-center" @click="$emit('emptyFileAction')">
+                <q-icon name="fas fa-photo-video" size="45px"/>
+              </div>
+            </div>
           </draggable>
         </div>
       </template>
@@ -138,6 +146,15 @@
         </q-td>
       </template>
     </q-table>
+    <!---No data-->
+    <div v-if="!tableData.length" class="row q-px-sm q-pb-sm">
+      <div v-if="quantity && (gridType == 'card')" :class="`${gridColClass} q-pa-xs`"
+           v-for="itemNum in emptyQuantityFiles" :key="`item${itemNum}`">
+        <div class="file-item-quantity row items-center justify-center" @click="$emit('emptyFileAction')">
+          <q-icon name="fas fa-photo-video" size="45px"/>
+        </div>
+      </div>
+    </div>
     <!--Image preview-->
     <avatar-image ref="avatarImage" no-preview/>
     <!---PDF preview-->
@@ -189,7 +206,8 @@ export default {
     allowPagination: {type: Boolean, default: false},
     loadFiles: {default: false},
     allowSelect: {type: Number, default: 0},
-    draggable: {type: Boolean, default: false}
+    draggable: {type: Boolean, default: false},
+    quantity: {default: 0}
   },
   watch: {
     value: {
@@ -328,6 +346,11 @@ export default {
     firstIndexTableData() {
       let pagination = this.$clone(this.table.pagination)
       return ((pagination.rowsPerPage * pagination.page) - pagination.rowsPerPage)
+    },
+    //return empty files to selec
+    emptyQuantityFiles() {
+      let quantityEmpty = (this.quantity - this.tableData.length)
+      return (quantityEmpty >= 1) ? quantityEmpty : 0
     }
   },
   methods: {
@@ -552,6 +575,13 @@ export default {
         position absolute
         right 2px
         top 0
+
+  .file-item-quantity
+    cursor pointer
+    height 188px
+    border 2px dotted $grey-5
+    border-radius 5px
+    color $grey-5
 
   th:last-child, td:last-child
     background-color white
