@@ -529,6 +529,8 @@ export default {
         case'checkbox':
           props = {
             field: {
+              trueValue : 1,
+              falseValue : 0,
               ...props
             },
             fieldComponent: {
