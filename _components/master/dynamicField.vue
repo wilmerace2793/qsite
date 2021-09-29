@@ -201,7 +201,10 @@
         <!--position Marker (MAP)-->
         <q-field v-model="responseValue" v-if="loadField('positionMarkerMap')" label=""
                  class="field-no-padding no-border" v-bind="fieldProps.fieldComponent">
-          <map-leaflet v-model="responseValue" type="positionMarkerMap" v-bind="fieldProps.field"/>
+          <!--Google map-->
+          <google-map-marker v-model="responseValue" v-bind="fieldProps.field" v-if="settings.mapType == 'googleMaps'"/>
+          <!--open street map-->
+          <map-leaflet v-model="responseValue" type="positionMarkerMap" v-bind="fieldProps.field" v-else/>
         </q-field>
         <!--Signature-->
         <q-field v-model="responseValue" v-if="loadField('signature')"
@@ -250,6 +253,7 @@ import selectIcon from '@imagina/qsite/_components/master/selectIcon'
 import captcha from '@imagina/qsite/_components/master/captcha'
 import schedulable from '@imagina/qsite/_components/master/schedulable'
 import selectMedia from '@imagina/qmedia/_components/selectMedia'
+import googleMapMarker from '@imagina/qsite/_components/master/googleMapMarker'
 
 export default {
   name: 'dynamicField',
@@ -280,7 +284,8 @@ export default {
     selectIcon,
     captcha,
     schedulable,
-    selectMedia
+    selectMedia,
+    googleMapMarker
   },
   watch: {
     value: {
@@ -795,6 +800,12 @@ export default {
     isFieldPassword() {
       let field = this.$clone(this.field)
       return (field.props.type && (field.props.type == 'password')) ? true : false
+    },
+    //Settings
+    settings() {
+      return {
+        mapType: this.$store.getters['qsiteApp/getSettingValueByName']('isite::mapInShow')
+      }
     }
   },
   methods: {

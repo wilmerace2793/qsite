@@ -1,8 +1,10 @@
 import {Notify, Loading} from 'quasar'
+import helper from '@imagina/qsite/_plugins/helper'
 
 export default async ({app, router, store, Vue}) => {
   //Loading
   if (!process.env.isExtension) Loading.show()
+
   //====== Reset Service Worker
   if (navigator && navigator.serviceWorker && navigator.serviceWorker.controller
     && navigator.serviceWorker.controller.postMessage) {//Reset Service Worker
@@ -15,6 +17,18 @@ export default async ({app, router, store, Vue}) => {
   store.dispatch('qsiteApp/SET_SITE_COLORS')
   //====== Load extra state in store
   store.dispatch('qsiteApp/SET_EXTRA')
+
+  //====== laod cdn google maps
+  let loadGoogleApiCDN = () => {
+    return new Promise(resolve => {
+      let apiKey = store.getters['qsiteApp/getSettingValueByName']('isite::api-maps')
+      if (apiKey) {
+        helper.loadCDN(`https://maps.googleapis.com/maps/api/js?offset=5&key=${apiKey}&libraries=places`)
+        setTimeout(() => resolve(true), 500)
+      } else resolve(true)
+    })
+  }
+  await loadGoogleApiCDN()
 
   //======= Load message Install as native APP(PWA)
   /*window.addEventListener('beforeinstallprompt', (e) => {
