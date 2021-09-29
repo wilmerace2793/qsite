@@ -15,7 +15,7 @@ export default {
   name: 'uploaderComponentMaster',
   props: {
     value: {default: false},
-    accept: {default: '.pdf,.xlsx,.xls,.docx,.doc,.pptx,.ppt,.mp4,.mp3,.jpg,image/*'},
+    accept: {default: false},
     maxFiles: {default: 1},
     title: {default: ''},
     emitBase64: {type: Boolean, default: false},
@@ -78,17 +78,31 @@ export default {
     },
     //Return accept files
     acceptFiles() {
-      //Images
-      if (this.accept == 'images') return '.jpg, image/*'
-      //documents
-      if (this.accept == 'documents') return '.pdf, .xlsx, .docx, .pptx'
-      //Media
-      if (this.accept == 'media') return '.mp4, .mp3, .jpg, image/*'
+      //instance response
+      let accept = this.$clone(this.accept ? this.accept.split(',') : ['images', 'videos', 'audio', 'files'])
+      let response = []
 
-      //Default
-      let mediaConfig = this.$store.state.qsiteApp.configs.Media
+      //Get extensions settings
+      let extensions = {
+        images: this.$store.getters['qsiteApp/getSettingValueByName']('media::allowedImageTypes'),
+        videos: this.$store.getters['qsiteApp/getSettingValueByName']('media::allowedVideoTypes'),
+        audio: this.$store.getters['qsiteApp/getSettingValueByName']('media::allowedAudioTypes'),
+        files: this.$store.getters['qsiteApp/getSettingValueByName']('media::allowedFileTypes')
+      }
 
-      return this.$clone(mediaConfig ? mediaConfig['allowed-types'] : this.accept)
+      //Parse extensions
+      accept.forEach(extensionName => {
+        if (extensions[extensionName]) response = [...response, ...extensions[extensionName]]
+        else response = [...response, extensionName]
+      })
+
+      //validate point by extension
+      response.forEach((extensionName, key) => {
+        if (!extensionName.includes('.')) response[key] = `.${response[key]}`
+      })
+
+      //response
+      return response.join(',')
     }
   },
   methods: {
