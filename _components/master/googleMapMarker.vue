@@ -51,9 +51,11 @@ export default {
   },
   methods: {
     async init() {
-      this.initMap()
-      this.initAutocomplete()
-      this.setMarkerFromValue()
+      setTimeout(() => {
+        this.initMap()
+        this.initAutocomplete()
+        this.setMarkerFromValue()
+      }, 500)
     },
     //Init Map
     initMap() {

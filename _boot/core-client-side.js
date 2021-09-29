@@ -19,16 +19,8 @@ export default async ({app, router, store, Vue}) => {
   store.dispatch('qsiteApp/SET_EXTRA')
 
   //====== laod cdn google maps
-  let loadGoogleApiCDN = () => {
-    return new Promise(resolve => {
-      let apiKey = store.getters['qsiteApp/getSettingValueByName']('isite::api-maps')
-      if (apiKey) {
-        helper.loadCDN(`https://maps.googleapis.com/maps/api/js?offset=5&key=${apiKey}&libraries=places`)
-        setTimeout(() => resolve(true), 500)
-      } else resolve(true)
-    })
-  }
-  await loadGoogleApiCDN()
+  let apiKey = store.getters['qsiteApp/getSettingValueByName']('isite::api-maps')
+  if (apiKey) helper.loadCDN(`https://maps.googleapis.com/maps/api/js?offset=5&key=${apiKey}&libraries=places`)
 
   //======= Load message Install as native APP(PWA)
   /*window.addEventListener('beforeinstallprompt', (e) => {
