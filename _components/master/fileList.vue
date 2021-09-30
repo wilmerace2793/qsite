@@ -3,9 +3,9 @@
     <!--Table-->
     <q-table :data="tableData" :columns="tableColumns" :pagination.sync="table.pagination" :grid="table.grid"
              :hide-pagination="!allowPagination" :rows-per-page-options="table.rowsPerPageOptions"
-             @request="getDataTable" :loading="loading" hide-no-data>
+             @request="getDataTable" :loading="loading" hide-no-data :hide-header="hideHeader">
       <!---Top content-->
-      <template v-slot:top>
+      <template v-slot:top v-if="!hideHeader">
         <div id="tableTopContent" class="row items-center justify-between full-width">
           <!--Left content-->
           <div class="text-blue-grey text-subtitle1">
@@ -207,7 +207,8 @@ export default {
     loadFiles: {default: false},
     allowSelect: {type: Number, default: 0},
     draggable: {type: Boolean, default: false},
-    quantity: {default: 0}
+    quantity: {default: 0},
+    hideHeader: {type: Boolean, default: false}
   },
   watch: {
     value: {
