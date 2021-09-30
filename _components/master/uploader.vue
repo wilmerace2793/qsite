@@ -192,6 +192,7 @@ export default {
                 id: this.$uid(),
                 file: file,
                 base64: file,
+                path: file,
                 mediumThumb: file,
                 filename: fileName,
                 extension: extension,
