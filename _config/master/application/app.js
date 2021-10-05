@@ -51,7 +51,7 @@ export default {
       'auth.role.id',
       'impersonatorData',
       'app.state.extra',
-      //'app.data.filters'
+      'auth.organization.id'
     ],
     logout: [
       'offlineRequests',

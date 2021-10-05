@@ -117,6 +117,24 @@
     <!--Separator-->
     <q-separator class="q-my-md" v-if="$auth.hasAccess('profile.user.impersonate') || quserState.impersonating"/>
 
+    <!--Organization-->
+    <q-no-ssr>
+      <!--Title-->
+      <div class="title-block q-mb-sm">
+        {{ $tr('ui.label.organization') }}
+      </div>
+      <!--dynamic field to organizations-->
+      <dynamic-field v-model="organizationId" :field="organizationField" v-if="organizationField"
+                     @input="setOrganization"/>
+      <!--no organizations-->
+      <div v-else class="q-px-sm text-grey-7" style="line-height: 1.2">
+        {{ $tr('qsite.layout.messages.noOrganization') }}...
+      </div>
+    </q-no-ssr>
+
+    <!--Separator-->
+    <q-separator class="q-my-md"/>
+
     <!-- Language -->
     <div>
       <!--Title-->
@@ -196,6 +214,7 @@ export default {
   data() {
     return {
       valueConsistsOf: 'BRANCH_PRIORITY',
+      organizationId: this.$clone(this.$store.state.quserAuth.organizationId),
       roleId: false,
       departmentId: false,
       locale: this.$store.state.qsiteApp.defaultLocale,
@@ -225,6 +244,27 @@ export default {
     },
     forceRoleAndDepartment() {
       return config('app.forceRoleAndDepartment')
+    },
+    //return organization field
+    organizationField() {
+      //get organizations
+      let organizations = this.$store.state.quserAuth.organizations || []
+
+      //validate organizations
+      if (!organizations.length) return false
+
+      //return field
+      return {
+        value: null,
+        type: 'select',
+        props: {
+          label: this.$tr('ui.label.organization'),
+          options: organizations.map(item => {
+            return {label: item.title, value: item.id}
+          }),
+          readonly: organizations.length == 1 ? true : false
+        }
+      }
     }
   },
   methods: {
@@ -324,6 +364,12 @@ export default {
         this.loadingCacheClear = false
         this.$store.dispatch('qsiteApp/REFRESH_PAGE')
       }).catch(error => this.loadingCacheClear = false)
+    },
+
+    //set organization
+    async setOrganization(organizationId) {
+      await this.$store.dispatch('quserAuth/SET_ORGANIZATION', {organizationId})
+      this.$store.dispatch('qsiteApp/REFRESH_PAGE')
     }
   }
 }

@@ -271,7 +271,8 @@ export default {
     reserved: 'Reservado | Reservados',
     finalize: 'Finalizar',
     record : 'Registro | Registros',
-    pay : 'Pagar'
+    pay : 'Pagar',
+    organization: 'Organización | Organizaciones'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

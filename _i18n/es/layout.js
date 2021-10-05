@@ -13,7 +13,8 @@ export default {
         reportInProgress: 'Reporte {fileName} en progreso...',
         newExportHelpText: 'Exportar <b class="text-blue-grey">{pageTitle}</b> con los filtros actuales (sin paginación)',
         newExportItemHelpText: 'Exportar <b class="text-blue-grey">Registro ID: {id}</b>',
-        exportReady: 'Tu report <b>{fileName}</b> está listo!'
+        exportReady: 'Tu report <b>{fileName}</b> está listo!',
+        noOrganization: "Todavía no perteneces a una organización"
     },
     startTime: 'Hora de inicio',
     endTime: 'Hora de finalización',
