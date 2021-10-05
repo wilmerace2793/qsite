@@ -11,15 +11,19 @@
 
       <!--Progress bar-->
       <div id="progressContent" class="q-mb-md" v-if="!hideProgressBar">
-        <q-linear-progress :value="progress" color="primary"/>
+        <q-linear-progress :value="progress" color="primary" rounded/>
       </div>
 
       <!--Form Content-->
-      <q-form autocorrect="off" autocomplete="off" ref="formContent" class="full-width"
+      <q-form autocorrect="off" autocomplete="off" ref="formContent" class="full-width" v-if="success"
               @validation-error="$alert.error($tr('ui.message.formInvalid'))">
+        <!--Language-->
+        <div class="q-mb-md" v-show="locale.fieldsTranslatable && Object.keys(locale.fieldsTranslatable).length">
+          <locales v-model="locale" ref="localeComponent" :form="$refs.formContent"/>
+        </div>
         <!--Stepper content-->
-        <q-stepper id="stepperContent" v-model="step" color="primary" animated ref="stepper" flat
-                   :vertical="formType == 'stepVertical' ? true : false"
+        <q-stepper id="stepperContent" v-model="step" v-if="locale.success" color="primary" ref="stepper"
+                   flat animated :vertical="formType == 'stepVertical' ? true : false"
                    :header-class="formType == 'stepVertical' ? '' : 'q-hide'">
           <!--Steps-->
           <q-step v-for="(block, keyBlock) in blocksData" :key="keyBlock" :name="keyBlock"
@@ -36,10 +40,34 @@
 
             <!--Fields-->
             <div class="row q-col-gutter-x-md">
-              <dynamic-field v-for="(field, keyField) in block.fields" :key="keyField" :field="field"
-                             v-model="formData[field.name || keyField]" :class="field.colClass || defaultColClass"/>
+              <div v-for="(field, key) in block.fields" :key="key"
+                   :class="field.children ? 'col-12' : (field.colClass || defaultColClass)">
+                <!--fake field-->
+                <dynamic-field v-if="field.fakeFieldName" :field="field" :key="key" :language="locale.language"
+                               v-model="locale.formTemplate[field.fakeFieldName][field.name || key]"
+                               :item-id="field.fieldItemId"/>
+                <!--Sample field-->
+                <dynamic-field v-else :field="field" :key="key" :item-id="field.fieldItemId"
+                               v-model="locale.formTemplate[field.name || key]" :language="locale.language"/>
+                <!--Child fields-->
+                <div v-if="field.children">
+                  <!--Title-->
+                  <div class="text-blue-grey q-mb-xs">
+                    <b>{{ field.label }} <label v-if="field.isTranslatable">({{ locale.language }})</label></b>
+                  </div>
+                  <!---Child fields-->
+                  <div class="row q-col-gutter-x-md">
+                    <div v-for="(childField, childKey) in getParsedFields(field.children)" :key="childKey"
+                         :class="childField.colClass || defaultColClass">
+                      <!--Child field-->
+                      <dynamic-field :field="childField" :key="childKey" :language="locale.language"
+                                     v-model="locale.formTemplate[field.name || key][childField.name || childKey]"
+                                     :item-id="childField.fieldItemId"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-
             <!--Actions-->
             <div :class="`actions__content row justify-${step == 0 ? 'end' : 'between'}`">
               <q-btn v-for="(action, keyAction) in formActions" :key="keyAction" v-bind="action"
@@ -82,13 +110,21 @@ export default {
     value: {
       deep: true,
       handler: function (newValue, oldValue) {
-        this.setValueToFormData()
+        if (JSON.stringify(newValue) != JSON.stringify(oldValue)) this.setLocaleFormData()
       }
     },
-    formData: {
+    blocks: {
       deep: true,
       handler: function (newValue, oldValue) {
-        this.$emit('input', this.$clone(this.formData))
+        if (JSON.stringify(newValue) != JSON.stringify(oldValue)) this.setLocaleFields()
+      }
+    },
+    'locale.form': {
+      deep: true,
+      handler: function (newValue, oldValue) {
+        if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
+          this.$emit('input', this.$clone(this.locale.form))
+        }
       }
     },
     formId() {
@@ -102,14 +138,22 @@ export default {
   },
   data() {
     return {
+      success: false,
       componentId: this.$uid(),
+      locale: {},
       step: 0,
       innerLoading: false,
       formBlocks: false,
-      formData: {},
     }
   },
   computed: {
+    //Settings
+    settings() {
+      return {
+        defaultLocale: this.$clone(this.$store.state.qsiteApp.defaultLocale),//Get selected locales
+        locales: this.$clone(this.$store.state.qsiteApp.selectedLocales)//Get selected locales
+      }
+    },
     //From Props
     formProps() {
       //Get form data
@@ -147,6 +191,39 @@ export default {
 
       //Add captcha field
       if (this.useCaptcha && blocks.length) blocks[blocks.length - 1].fields.captcha = {type: 'captcha'}
+
+      //Validate if field should be translatable
+      blocks.forEach((block, blockKey) => {
+        let blockFields = this.$clone(block.fields)//get block fields
+        let parsedFields = this.getParsedFields(blockFields)//Parse fields
+
+        //Get translatable fields
+        let translatableFields = []//Translatable fields name
+        for (var key in parsedFields) {
+          if (parsedFields[key].isTranslatable)
+            translatableFields.push(parsedFields[key].fakeFieldName || parsedFields[key].name || key)
+        }
+
+        //Parse block fields
+        for (var key in blockFields) {
+          let field = blockFields[key]
+          //validate first level
+          if (translatableFields.includes(field.fakeFieldName || field.name || key))
+            blockFields[key].isTranslatable = true
+          //Validate children fields
+          if (field.children) {
+            for (var keyChild in field.children) {
+              let fieldChild = blockFields[key].children[keyChild]
+              //validate first level
+              if (translatableFields.includes(fieldChild.fakeFieldName || fieldChild.name || keyChild))
+                blockFields[key].children[keyChild].isTranslatable = true
+            }
+          }
+        }
+
+        //Set fields to blocks
+        blocks[blockKey].fields = this.$clone(blockFields)
+      })
 
       //Response
       return blocks
@@ -219,12 +296,14 @@ export default {
   methods: {
     //Init method
     async init() {
+      this.success = false
       this.innerLoading = true
       await this.getFormFields()
-      this.setFormFields()
-      this.setValueToFormData()
+      this.setLocaleFields()
+      this.setLocaleFormData()
       this.listenerStepTabClick()
       this.innerLoading = false
+      this.success = true
     },
     //Get form fields
     getFormFields() {
@@ -246,27 +325,140 @@ export default {
         }).catch(error => reject(error))
       })
     },
-    //Set form Fields from blocks
-    setFormFields() {
+    //set locale form data
+    setLocaleFormData() {
+      let formData = this.$clone({...this.locale.form, ...this.value})
+
+      //Clear fields
+      Object.keys(formData).forEach(fieldName => {
+        if (!this.settings.locales.includes(fieldName) && !this.blocksFieldsName.includes(fieldName))
+          delete formData[fieldName]
+      })
+
+      //Validate data to fake fields
       this.blocksData.forEach(block => {
-        for (var fieldName in block.fields) {
-          let field = block.fields[fieldName]
-          this.$set(this.formData, (field.name || fieldName), field.value)
+        //Parse fields
+        let parsedFields = this.getParsedFields(block.fields)
+        //Loop every fields
+        for (var key in parsedFields) {
+          //get field data
+          let field = parsedFields[key]
+          //Validate translatable field
+          if (field.isTranslatable) {
+            this.settings.locales.forEach(locale => {
+              //validate if exist locale in form data
+              if (formData[locale] == undefined) formData[locale] = {}
+
+              //Validate translatable as fake field
+              if (field.fakeFieldName) {
+                //Validate fake field
+                if ((formData[locale][field.fakeFieldName] == undefined) || (typeof formData[locale][field.fakeFieldName] != 'object'))
+                  formData[locale][field.fakeFieldName] = {}
+                //Validate field
+                if (formData[locale][field.fakeFieldName][field.name || key] == undefined)
+                  formData[locale][field.fakeFieldName][field.name || key] = field.value
+              }
+              //Validate translatable
+              else if (formData[locale][field.name || key] == undefined) {
+                formData[locale][field.name || key] = field.value
+              }
+            })
+          } else {
+            if (field.fakeFieldName) {
+              //Validate fake field
+              if ((formData[field.fakeFieldName] == undefined) || (typeof formData[field.fakeFieldName] != 'object'))
+                formData[field.fakeFieldName] = {}
+              //Validate field
+              if (formData[field.fakeFieldName][field.name || key] == undefined)
+                formData[field.fakeFieldName][field.name || key] = field.value
+            }
+            //Validate translatable
+            else if (formData[field.name || key] == undefined)
+              formData[field.name || key] = field.value
+          }
         }
       })
+
+      //set locale form data
+      this.$set(this.locale, 'form', this.$clone(formData))
     },
-    //Set value to formData
-    setValueToFormData() {
-      if (JSON.stringify(this.value) != JSON.stringify(this.formData)) {
-        //Merge formData with Value
-        let formData = this.$clone({...this.formData, ...this.value})
-        //Clear fields
-        Object.keys(formData).forEach(fieldName => {
-          if (!this.blocksFieldsName.includes(fieldName)) delete formData[fieldName]
-        })
-        //Set formData
-        this.formData = this.$clone(formData)
-      }
+    //Set form Fields from blocks
+    setLocaleFields() {
+      //Reset locale component
+      if (this.$refs.localeComponent) this.$refs.localeComponent.vReset()
+
+      //Instance variables to locale fields
+      let fields = {}, fieldsTranslatables = {}
+
+      //Loop every fields from all blocks
+      this.blocksData.forEach(block => {
+        //Parse fields
+        let parsedFields = this.getParsedFields(block.fields)
+
+        //Validate every fields
+        for (var key in parsedFields) {
+          let field = parsedFields[key]//get field data
+          //Add to data locale to field
+          if (field.isTranslatable) {
+            if (field.fakeFieldName) {
+              if (!fieldsTranslatables[field.fakeFieldName]) fieldsTranslatables[field.fakeFieldName] = {}
+              fieldsTranslatables[field.fakeFieldName][field.name || key] = field.value
+            } else fieldsTranslatables[field.name || key] = field.value
+          } else {
+            //Set fake field
+            if (field.fakeFieldName) {
+              if (!fields[field.fakeFieldName]) fields[field.fakeFieldName] = {}
+              fields[field.fakeFieldName][field.name || key] = field.value
+            } else {//Set field
+              fields[field.name || key] = field.value
+            }
+          }
+        }
+      })
+
+      //Assign fields and validations to locale
+      this.$set(this.locale, 'fields', this.$clone(fields))
+      this.$set(this.locale, 'fieldsTranslatable', this.$clone(fieldsTranslatables))
+    },
+    //return parsed fields
+    getParsedFields(fields) {
+      let response = {}//instance response
+
+      //loop every fields
+      Object.keys(fields).forEach(fieldKey => {
+        let field = fields[fieldKey]//get field data
+        let fieldName = (field.name || fieldKey)//instance field name
+
+        //Validate field permission
+        if (field.permission && !this.$auth.hasAccess(field.permission)) return
+
+        //parse child fields
+        if (field.children) {
+          Object.keys(field.children).forEach(childFieldKey => {
+            response[`${fieldName}-${childFieldKey}`] = {
+              ...field.children[childFieldKey],
+              fakeFieldName: fieldName,
+              isTranslatable: field.isTranslatable,
+              permission: field.permission
+            }
+          })
+        } else {//Set to response
+          response[fieldKey] = {
+            ...field,
+            ...((field.isFakeField && !field.fakeFieldName) ? {fakeFieldName: 'options'} : {})
+          }
+        }
+      })
+
+      //Parse every fields
+      Object.keys(response).forEach(fieldName => {
+        //Validate col class
+        let colClass = (response[fieldName].colClass || response[fieldName].columns || this.defaultColClass)
+        response[fieldName].colClass = colClass.split(' ').filter(item => item.includes('col-')).join(' ')
+      })
+
+      //response
+      return response
     },
     //Listener to step head click
     listenerStepTabClick() {
@@ -292,17 +484,17 @@ export default {
           if (this.sendTo && this.sendTo.apiRoute) {
             this.innerLoading = true
             //Request Data
-            let requestData = {...this.formData, ...(this.sendTo.extraData || {})}
+            let requestData = {...this.locale.form, ...(this.sendTo.extraData || {})}
             //Request
             this.$crud.create(this.sendTo.apiRoute, requestData).then(response => {
               this.innerLoading = false
               this.reset()
-              this.$emit('sent', this.$clone(this.formData))
+              this.$emit('sent', this.$clone(this.locale.form))
             }).catch(error => {
               this.innerLoading = false
             })
           } else {
-            this.$emit('submit', this.$clone(this.formData))
+            this.$emit('submit', this.$clone(this.locale.form))
           }
         } else {//Change step
           if (toStep == 'previous') this.$refs.stepper.previous()//To previous step
@@ -313,7 +505,6 @@ export default {
     },
     //Reset form
     reset() {
-      this.setFormFields()
       this.componentId = this.$uid()
       this.$refs.formContent.resetValidation()
       this.step = 0
