@@ -70,7 +70,8 @@ export default {
       dataSettings: false,
       moduleSelected: false,
       groupSelected: false,
-      settingsToEdit: []
+      settingsToEdit: [],
+      deprecatedSettings: []
     }
   },
   computed: {
@@ -93,7 +94,8 @@ export default {
           //Create group fields
           if (!response[moduleName][field.group || 'General']) response[moduleName][field.group || 'General'] = {}
           //Add field
-          response[moduleName][field.group || 'General'][fieldName] = field
+          if (!this.deprecatedSettings.includes(field.name) && !this.deprecatedSettings.includes(field.fakeFieldName))
+            response[moduleName][field.group || 'General'][fieldName] = field
         })
       })
 
@@ -126,14 +128,15 @@ export default {
     },
     //Return form fields settings to edit
     formFields() {
+      let response = {}
       //get form fields
-      let response = this.settingsToEdit.length ? this.$clone(this.settingsToEdit) :
+      let fields = Object.keys(this.settingsToEdit).length ? this.$clone(this.settingsToEdit) :
           this.$clone(this.moduleSelected ? this.settingsGroup[this.moduleSelected][this.groupSelected] : [])
 
-      //Set all fields as translatables
-      Object.keys(response).forEach(fieldName => {
-        //response[fieldName].isTranslatable = true
-        response[fieldName].fieldItemId = this.getSettingId(response[fieldName], fieldName)
+      //Set extra data to every field
+      Object.keys(fields).forEach(fieldName => {
+        let field = fields[fieldName]
+        response[fieldName] = {...field, fieldItemId: this.getSettingId(field, fieldName)}
       })
 
       //response
@@ -153,7 +156,8 @@ export default {
         this.loading = true
         await Promise.all([
           this.$store.dispatch('qsiteApp/GET_SITE_SETTINGS'),//Get settings
-          this.getSettingFields()//Get setting fields
+          this.getSettingFields(),//Get setting fields
+          this.getDeprecatedSettings()//Get seprecated settings
         ])
         //Set Default selected
         if (!this.moduleSelected && this.dataSettings) {
@@ -191,6 +195,24 @@ export default {
 
           //Set settings fields
           if (Object.keys(settingsFields).length) this.dataSettings = settingsFields
+          resolve(response.data)
+        }).catch(e => {
+          this.$alert.error(this.$tr('ui.message.errorRequest'))
+          resolve([])
+        })
+      })
+    },
+    //Get deprecate settings config
+    getDeprecatedSettings() {
+      return new Promise((resolve, reject) => {
+        //Request Params
+        let requestParams = {
+          refresh: true,
+          params: {filter: {configName: 'isite.deprecated-settings'}}
+        }
+        //Request
+        this.$crud.index('apiRoutes.qsite.configs', requestParams).then(response => {
+          this.deprecatedSettings = this.$clone(response.data)
           resolve(response.data)
         }).catch(e => {
           this.$alert.error(this.$tr('ui.message.errorRequest'))
@@ -280,20 +302,22 @@ export default {
       let moduleSettings = this.$clone(this.settingsGroup[this.$helper.toCapitalize(moduleName || '')])
 
       if (moduleSettings) {
-        let settingsToEdit = []//Reset settings to edit
+        let settingsToEdit = {}//Reset settings to edit
         //Search by setting name
         if (settingsName) {
           //Add module name to every setting name
           settingsName = settingsName.split(',').map(item => `${moduleName.toLowerCase()}::${item}`)
           //Search setting by name
           Object.keys(moduleSettings || []).forEach(moduleGroupName => {
-            Object.values(moduleSettings[moduleGroupName]).forEach(setting => {
+            Object.keys(moduleSettings[moduleGroupName]).forEach(settingName => {
+              let setting = moduleSettings[moduleGroupName][settingName]
               if (settingsName.includes(setting.name) || settingsName.includes(setting.fakeFieldName)) {
-                settingsToEdit.push(setting)
+                settingsToEdit[settingName] = setting
               }
             })
           })
         }
+
         //Open group settings
         groupName = Object.keys(moduleSettings).includes(groupName) ? groupName : Object.keys(moduleSettings).pop()
         this.openGroupSettings(moduleName, groupName, settingsToEdit)
