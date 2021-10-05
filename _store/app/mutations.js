@@ -1,5 +1,6 @@
 export const RESET = (state) => {
   state.settings = [];
+  state.modules = {};
   state.availableLocales = [];
   state.availableThemes = [];
   state.selectedLocales = [];
@@ -31,6 +32,10 @@ export function SET_SELECTED_LOCALES(state) {
 
 export function SET_DEFAULT_LOCALE(state, data) {
   state.defaultLocale = data;
+}
+
+export function SET_MODULES_DATA(state, data) {
+  state.modules = data;
 }
 
 export function LOAD_PAGE(state, data) {

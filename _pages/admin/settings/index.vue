@@ -21,8 +21,9 @@
           <!--List Modules-->
           <q-list separator>
             <q-expansion-item v-for="(item, moduleName) in settingsGroup" :key="moduleName" expand-separator
-                              :label="moduleName" header-style="min-height: 38px" group="menuSettings"
-                              :header-class="`q-pr-sm q-pl-md ${moduleSelected == moduleName ? 'q-item--active' : ''}`">
+                              :label="getModuleData(moduleName).title" header-style="min-height: 38px"
+                              :header-class="`q-pr-sm q-pl-md ${moduleSelected == moduleName ? 'q-item--active' : ''}`"
+                              group="menuSettings">
               <q-list separator class="q-pl-md">
                 <q-item v-for="(group, groupName) in settingsGroup[moduleName]" :key="groupName" clickable v-ripple
                         :active="groupSelected == groupName && moduleSelected == moduleName" class="q-pl-sm q-pr-md"
@@ -127,7 +128,7 @@ export default {
     formFields() {
       //get form fields
       let response = this.settingsToEdit.length ? this.$clone(this.settingsToEdit) :
-          this.$clone(this.settingsGroup[this.moduleSelected][this.groupSelected])
+          this.$clone(this.moduleSelected ? this.settingsGroup[this.moduleSelected][this.groupSelected] : [])
 
       //Set all fields as translatables
       Object.keys(response).forEach(fieldName => {
@@ -304,6 +305,11 @@ export default {
       this.groupSelected = groupName
       this.settingsToEdit = settingsToEdit
       this.setFormData()
+    },
+    //return module name
+    getModuleData(moduleName) {
+      let moduleData = this.$store.state.qsiteApp.modules
+      return Object.values(moduleData).find(module => module.alias == moduleName.toLowerCase())
     }
   }
 }

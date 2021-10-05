@@ -42,6 +42,7 @@ export const GET_SITE_SETTINGS = ({commit, dispatch, state, getters}) => {
       commit('SET_AVAILABLE_LOCALES', data.availableLocales)
       commit('SET_AVAILABLE_THEMES', data.availableThemes)
       commit('SET_DEFAULT_LOCALE', data.defaultLocale)
+      commit('SET_MODULES_DATA', data.modulesEnabled)
       commit('SET_SELECTED_LOCALES')
       //Set logo
       let logo = getters.getSettingMediaByName('isite::logoIadmin')

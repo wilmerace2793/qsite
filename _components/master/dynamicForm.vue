@@ -119,7 +119,7 @@ export default {
         if (JSON.stringify(newValue) != JSON.stringify(oldValue)) this.setLocaleFields()
       }
     },
-    'locale.form': {
+    'locale.formTemplate': {
       deep: true,
       handler: function (newValue, oldValue) {
         if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
