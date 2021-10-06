@@ -259,41 +259,16 @@ export default {
           props: {
             label: this.$tr('qsite.layout.shiftTime'),
             useInput: false,
-            options: this.shiftTimeOptions
+            options: this.$helper.getShiftTimeOptions({
+              hour: this.$tr('ui.label.hour'),
+              hours: this.$trp('ui.label.hour'),
+              minutes: this.$trp('ui.label.minute'),
+              hours: this.$tr('ui.label.and'),
+            })
           }
         }
       }
-    },
-    //Return shifts time options by intervals of 5 minutes until 8 hours
-    shiftTimeOptions() {
-      let response = []//Instance default response
-      let minutes = 5//Instance minutes
-      let hours = 0//Intance hours
-
-      //Lopp each hour until 8 hours
-      while (hours <= 8) {
-        //Instance label to hours
-        let labelHours = hours ? `${hours} ${hours >= 2 ? this.$trp('ui.label.hour') : this.$tr('ui.label.hour')}` : ''
-        //Add to response de hour lopt
-        if (hours) response.push({label: labelHours, value: (hours * 60)})
-        //Loop intervals of 5 minutes
-        while (minutes <= 55) {
-          //Add option of minutes
-          response.push({
-            label: labelHours + (hours ? ` ${this.$tr('ui.label.and')}` : '') + ` ${minutes} ${this.$trp('ui.label.minute')}`,
-            value: minutes + (hours * 60)
-          })
-          //Sum 5 minutes to loop
-          minutes += 5
-        }
-        hours += 1//Sum 1 hour to loop
-        minutes = 5//Restore minutes to 5 minutes to loop
-      }
-
-
-      //Response
-      return response
-    },
+    }
   },
   methods: {
     //Init

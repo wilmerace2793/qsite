@@ -460,6 +460,37 @@ class Helper {
     var re = /^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$/
     return re.test(val);
   }
+
+  //Return shifts time options by intervals of 5 minutes until 8 hours
+  getShiftTimeOptions(params = {hours: 'Horas', hour: 'Hora', minutes: 'Minutos', and: 'Y'}) {
+    let response = []//Instance default response
+    let minutes = 5//Instance minutes
+    let hours = 0//Intance hours
+
+    //Lopp each hour until 8 hours
+    while (hours <= 8) {
+      //Instance label to hours
+      let labelHours = hours ? `${hours} ${hours >= 2 ? params.hours : params.hour}` : ''
+      //Add to response de hour lopt
+      if (hours) response.push({label: labelHours, value: (hours * 60)})
+      //Loop intervals of 5 minutes
+      while (minutes <= 55) {
+        //Add option of minutes
+        response.push({
+          label: labelHours + (hours ? ` ${params.and}` : '') + ` ${minutes} ${params.minutes}`,
+          value: minutes + (hours * 60)
+        })
+        //Sum 5 minutes to loop
+        minutes += 5
+      }
+      hours += 1//Sum 1 hour to loop
+      minutes = 5//Restore minutes to 5 minutes to loop
+    }
+
+
+    //Response
+    return response
+  }
 }
 
 const helper = new Helper();
