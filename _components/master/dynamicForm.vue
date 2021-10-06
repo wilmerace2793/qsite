@@ -119,7 +119,7 @@ export default {
         if (JSON.stringify(newValue) != JSON.stringify(oldValue)) this.setLocaleFields()
       }
     },
-    'locale.formTemplate': {
+    'locale.form': {
       deep: true,
       handler: function (newValue, oldValue) {
         if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
@@ -143,7 +143,7 @@ export default {
       locale: {},
       step: 0,
       innerLoading: false,
-      formBlocks: false,
+      formBlocks: false
     }
   },
   computed: {
@@ -330,10 +330,10 @@ export default {
       let formData = this.$clone({...this.locale.form, ...this.value})
 
       //Clear fields
-      Object.keys(formData).forEach(fieldName => {
+      /*Object.keys(formData).forEach(fieldName => {
         if (!this.settings.locales.includes(fieldName) && !this.blocksFieldsName.includes(fieldName))
           delete formData[fieldName]
-      })
+      })*/
 
       //Validate data to fake fields
       this.blocksData.forEach(block => {
