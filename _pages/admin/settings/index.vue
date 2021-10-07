@@ -29,7 +29,7 @@
                         :active="groupSelected == groupName && moduleSelected == moduleName" class="q-pl-sm q-pr-md"
                         @click.native="openGroupSettings(moduleName, groupName)"
                         dense v-if="Object.keys(group).length">
-                  <q-item-section>{{ groupName }}</q-item-section>
+                  <q-item-section>{{ groupsName[moduleName][groupName] }}</q-item-section>
                   <q-item-section side> {{ Object.keys(group).length }}</q-item-section>
                 </q-item>
               </q-list>
@@ -71,7 +71,8 @@ export default {
       moduleSelected: false,
       groupSelected: false,
       settingsToEdit: [],
-      deprecatedSettings: []
+      deprecatedSettings: [],
+      groupsName: {}
     }
   },
   computed: {
@@ -85,6 +86,7 @@ export default {
     settingsGroup() {
       let settings = this.$clone(this.dataSettings)
       let response = {} //Default response
+      this.groupsName = {}// reset group names
 
       //Group fields
       Object.keys(settings).forEach(moduleName => {
@@ -92,10 +94,14 @@ export default {
         Object.keys(settings[moduleName]).forEach(fieldName => {
           let field = settings[moduleName][fieldName]//Get field
           //Create group fields
-          if (!response[moduleName][field.group || 'General']) response[moduleName][field.group || 'General'] = {}
+          //Set group name
+          if (!this.groupsName[moduleName]) this.groupsName[moduleName] = {}
+          this.groupsName[moduleName][field.groupName || 'General'] = (field.groupTitle || 'General')
+          //validate ig group already exist
+          if (!response[moduleName][field.groupName || 'General']) response[moduleName][field.groupName || 'General'] = {}
           //Add field
           if (!this.deprecatedSettings.includes(field.name) && !this.deprecatedSettings.includes(field.fakeFieldName))
-            response[moduleName][field.group || 'General'][fieldName] = field
+            response[moduleName][field.groupName || 'General'][fieldName] = field
         })
       })
 
