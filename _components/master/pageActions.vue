@@ -124,6 +124,7 @@ export default {
             icon: 'fas fa-redo'
           },
           action: () => {
+            this.$emit('refresh')
             this.$root.$emit('page.data.refresh')
             this.$root.$emit('crud.data.refresh')
             this.$root.$emit('export.data.refresh')

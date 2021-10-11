@@ -7,7 +7,7 @@
       <!--Page Actions-->
       <div class="col-xs-12">
         <div class="box box-auto-height">
-          <page-actions :title="$tr($route.meta.title)"/>
+          <page-actions :title="$tr($route.meta.title)" @refresh="getData"/>
         </div>
       </div>
       <!--Menu settings-->
@@ -41,7 +41,8 @@
       <div class="col-12 col-md-9">
         <div class="box">
           <dynamic-form v-if="!loading" v-model="form" :blocks="[{fields: this.$clone(formFields)}]"
-                        :title="`${this.moduleSelected || ''} - ${this.groupSelected || ''}`" @submit="saveSettings()"/>
+                        :title="`${getModuleData(moduleSelected).title} - ${groupsName[moduleSelected][groupSelected]}`"
+                        @submit="saveSettings()"/>
         </div>
       </div>
     </div>
@@ -51,9 +52,6 @@
 </template>
 <script>
 export default {
-  beforeDestroy() {
-    this.$root.$off('page.data.refresh')
-  },
   props: {},
   components: {},
   watch: {},
@@ -154,7 +152,6 @@ export default {
     async init() {
       await this.getData()//Get data
       this.openSettingName()//Open default group
-      this.$root.$on('page.data.refresh', () => this.getData())//Listen refresh event
     },
     //Get Data
     getData() {
