@@ -134,7 +134,12 @@
         <q-field v-model="responseValue" v-if="loadField('treeSelect')" :label="fieldLabel"
                  v-bind="fieldProps.fieldComponent">
           <tree-select v-model="responseValue" :options="formatOptions" placeholder="" v-bind="fieldProps.field"
-                       @select="(node, instanceId) => $emit('select', {node, instanceId})"/>
+                       @select="(node, instanceId) => $emit('select', {node, instanceId})">
+            <!--Before options slot-->
+            <template slot="before-list">
+              <slot name="before-options"></slot>
+            </template>
+          </tree-select>
         </q-field>
         <!--HTML-->
         <q-field v-model="responseValue" v-if="loadField('html')" label="" class="field-no-padding"
@@ -529,8 +534,8 @@ export default {
         case'checkbox':
           props = {
             field: {
-              trueValue : 1,
-              falseValue : 0,
+              trueValue: 1,
+              falseValue: 0,
               ...props
             },
             fieldComponent: {
