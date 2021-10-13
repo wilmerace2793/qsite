@@ -272,7 +272,7 @@ export default {
         else {//Set translatables values. Order translate values
           Object.keys(formData[fieldName]).forEach(transfieldName => {
             if (!response[transfieldName]) response[transfieldName] = {}
-            response[transfieldName][fieldName] = (typeof formData[fieldName][transfieldName] == 'strign') ?
+            response[transfieldName][fieldName] = (typeof formData[fieldName][transfieldName] == 'string') ?
                 formData[fieldName][transfieldName] : JSON.stringify(formData[fieldName][transfieldName])
 
           })
