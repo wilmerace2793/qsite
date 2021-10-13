@@ -462,7 +462,10 @@ class Helper {
   }
 
   //Return shifts time options by intervals of 5 minutes until 8 hours
-  getShiftTimeOptions(params = {hours: 'Horas', hour: 'Hora', minutes: 'Minutos', and: 'Y'}) {
+  getShiftTimeOptions(params = {}) {
+    //parse params data
+    params = {hours: 'Horas', hour: 'Hora', minutes: 'Minutos', and: 'Y', ...params}
+
     let response = []//Instance default response
     let minutes = 5//Instance minutes
     let hours = 0//Intance hours

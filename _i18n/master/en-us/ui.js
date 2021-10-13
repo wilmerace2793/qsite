@@ -266,7 +266,8 @@ export default {
     finalize: 'Finalize',
     record : 'Record | Records',
     pay : 'Pay',
-    organization: 'Organization | Organizations'
+    organization: 'Organization | Organizations',
+    availability: 'Availability | Availabilities'
   },
   message: {
     notFound: 'Sorry, nothing here',

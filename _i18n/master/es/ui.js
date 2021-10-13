@@ -270,9 +270,10 @@ export default {
     skip: 'Omitir',
     reserved: 'Reservado | Reservados',
     finalize: 'Finalizar',
-    record : 'Registro | Registros',
-    pay : 'Pagar',
-    organization: 'Organización | Organizaciones'
+    record: 'Registro | Registros',
+    pay: 'Pagar',
+    organization: 'Organización | Organizaciones',
+    availability: 'Disponibilidad | Disponibilidades'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
@@ -329,7 +330,7 @@ export default {
     rateYour: 'Califica tu <b>{name}</b>',
     withoutIcon: 'Sin Icono',
     mustContainAlphanumeric: 'Debe contener solo caracteres alfanumericoss',
-    hintUseChips : 'Ingrese el valor y presione Enter'
+    hintUseChips: 'Ingrese el valor y presione Enter'
   },
   form: {
     id: 'ID',
