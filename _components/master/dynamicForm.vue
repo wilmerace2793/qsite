@@ -37,9 +37,8 @@
               <!--Description-->
               <div class="text-body2 q-mb-md text-grey-8" v-if="block.description">{{ block.description }}</div>
             </div>
-
             <!--Fields-->
-            <div class="row q-col-gutter-x-md">
+            <div class="row q-col-gutter-x-md q-mb-sm">
               <div v-for="(field, key) in block.fields" :key="key"
                    :class="field.children ? 'col-12' : (field.colClass || defaultColClass)">
                 <!--fake field-->
@@ -69,7 +68,7 @@
               </div>
             </div>
             <!--Actions-->
-            <div :class="`actions__content row justify-${step == 0 ? 'end' : 'between'}`">
+            <div :class="`actions__content row justify-${step == 0 ? 'end' : 'between'}`" v-if="!noActions">
               <q-btn v-for="(action, keyAction) in formActions" :key="keyAction" v-bind="action"
                      unelevated rounded no-caps @click="action.action(keyBlock)" type="button"
                      v-if="action.vIf != undefined ? action.vIf : true"/>
@@ -104,7 +103,8 @@ export default {
     defaultColClass: {default: 'col-12 col-md-6'},
     useCaptcha: {type: Boolean, default: false},
     hideTitle: {type: Boolean, default: false},
-    hideProgressBar: {type: Boolean, default: false}
+    hideProgressBar: {type: Boolean, default: false},
+    noActions: {type: Boolean, default: false}
   },
   watch: {
     value: {
@@ -169,7 +169,7 @@ export default {
       if (form) response.title = form.title
 
       //Add count steps
-      if ((this.blocksData.length >= 2) && (this.formType == 'stepHorizontal'))
+      if (this.blocksData.length >= 2)
         response.title = `${form.title || response.title} (${this.step + 1}/${this.blocksData.length})`
 
       //Response
@@ -244,7 +244,7 @@ export default {
       let actions = {
         previous: {
           color: "grey-6",
-          icon: "fas fa-arrow-left",
+          icon: this.formType == 'stepVertical' ? "fas fa-arrow-up" : "fas fa-arrow-left",
           label: this.$tr('ui.label.previous'),
           ...(this.actions.previous || {}),
           vIf: (this.step == 0) ? false : true,
@@ -252,7 +252,7 @@ export default {
         },
         next: {
           color: "green",
-          iconRight: "fas fa-arrow-right",
+          iconRight: this.formType == 'stepVertical' ? "fas fa-arrow-down" : "fas fa-arrow-right",
           label: this.$tr('ui.label.next'),
           ...(this.actions.next || {}),
           action: () => this.changeStep('next', isLastStep)

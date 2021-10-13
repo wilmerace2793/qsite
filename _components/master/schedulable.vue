@@ -1,9 +1,11 @@
 <template>
   <div id="scheduleComponent">
     <!--Schedule config-->
-    <div class="row items-center justify-between q-pa-md">
-      <div class="text-blue-grey text-h6"><b>{{ $tr('ui.form.schedule') }}</b></div>
-      <dynamic-field v-model="schedule.status" :field="formFields.status"/>
+    <div class="row items-center q-pt-md q-px-md">
+      <div class="text-blue-grey text-h6 col q-pb-md"><b>{{ $tr('ui.form.schedule') }}</b></div>
+      <div class="col">
+        <dynamic-field v-model="schedule.status" :field="formFields.status"/>
+      </div>
     </div>
     <q-separator class="-my-md" inset/>
     <!--Work time list-->
@@ -263,7 +265,7 @@ export default {
               hour: this.$tr('ui.label.hour'),
               hours: this.$trp('ui.label.hour'),
               minutes: this.$trp('ui.label.minute'),
-              hours: this.$tr('ui.label.and'),
+              and: this.$tr('ui.label.and'),
             })
           }
         }
