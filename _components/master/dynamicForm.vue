@@ -40,7 +40,7 @@
             <!--Fields-->
             <div class="row q-col-gutter-x-md q-mb-sm">
               <div v-for="(field, key) in block.fields" :key="key"
-                   :class="field.children ? 'col-12' : (field.colClass || defaultColClass)">
+                   :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)">
                 <!--fake field-->
                 <dynamic-field v-if="field.fakeFieldName" :field="field" :key="key" :language="locale.language"
                                v-model="locale.formTemplate[field.fakeFieldName][field.name || key]"
@@ -57,7 +57,7 @@
                   <!---Child fields-->
                   <div class="row q-col-gutter-x-md">
                     <div v-for="(childField, childKey) in getParsedFields(field.children)" :key="childKey"
-                         :class="childField.colClass || defaultColClass">
+                         :class="childField.colClass || childField.columns || defaultColClass">
                       <!--Child field-->
                       <dynamic-field :field="childField" :key="childKey" :language="locale.language"
                                      v-model="locale.formTemplate[field.name || key][childField.name || childKey]"
