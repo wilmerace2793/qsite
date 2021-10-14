@@ -273,7 +273,8 @@ export default {
     record: 'Registro | Registros',
     pay: 'Pagar',
     organization: 'Organización | Organizaciones',
-    availability: 'Disponibilidad | Disponibilidades'
+    availability: 'Disponibilidad | Disponibilidades',
+    goTo: 'Ir a {string}'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

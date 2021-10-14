@@ -267,7 +267,8 @@ export default {
     record : 'Record | Records',
     pay : 'Pay',
     organization: 'Organization | Organizations',
-    availability: 'Availability | Availabilities'
+    availability: 'Availability | Availabilities',
+    goTo: 'Go to {string}'
   },
   message: {
     notFound: 'Sorry, nothing here',
