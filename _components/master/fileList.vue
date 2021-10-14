@@ -351,7 +351,7 @@ export default {
     //return empty files to selec
     emptyQuantityFiles() {
       let quantityEmpty = (this.quantity - this.tableData.length)
-      return (quantityEmpty >= 1) ? quantityEmpty : 0
+      return (quantityEmpty >= 1) ? (quantityEmpty > 3 ? 3 : quantityEmpty) : 0
     }
   },
   methods: {
