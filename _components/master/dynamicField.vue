@@ -767,7 +767,8 @@ export default {
           response = response ? this.$trd(response) : false
           break;
         case 'hour':
-          response = response ? this.$trd(response, {type: 'time'}) : false
+          let date = this.field.withFullDate ? '' : this.$moment().format('Y-MM-DD')
+          response = response ? this.$trd(`${date} ${response}`, {type: 'time'}) : ''
           break;
       }
 
