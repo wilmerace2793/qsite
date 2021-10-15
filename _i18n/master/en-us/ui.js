@@ -268,7 +268,8 @@ export default {
     pay : 'Pay',
     organization: 'Organization | Organizations',
     availability: 'Availability | Availabilities',
-    goTo: 'Go to {string}'
+    goTo: 'Go to {string}',
+    meet: 'Meet | Mettings'
   },
   message: {
     notFound: 'Sorry, nothing here',

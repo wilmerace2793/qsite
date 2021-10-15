@@ -515,7 +515,7 @@ export default {
 
 <style lang="stylus">
 #dynamicFormComponentContent
-  min-height 150px
+  //min-height 150px
 
   #stepperContent
     padding 0
