@@ -118,7 +118,7 @@
     <q-separator class="q-my-md" v-if="$auth.hasAccess('profile.user.impersonate') || quserState.impersonating"/>
 
     <!--Organization-->
-    <q-no-ssr>
+    <q-no-ssr v-if="organizationField">
       <!--Title-->
       <div class="title-block q-mb-sm">
         {{ $tr('ui.label.organization') }}
