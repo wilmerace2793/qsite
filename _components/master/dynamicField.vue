@@ -427,6 +427,7 @@ export default {
               readonly: true,
               icon: 'fas fa-calendar-alt',
               ...props,
+              type : 'input',
               mask: ''
             },
             slot: {
