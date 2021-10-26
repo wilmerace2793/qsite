@@ -13,4 +13,5 @@ export default {
   cacheClear: `${urlBase}/site/cache-clear`,
   export: `${urlBase}/export`,
   recommendations: `${urlBase}/recommendations`,
+  icruds: `${urlBase}/icruds`,
 }

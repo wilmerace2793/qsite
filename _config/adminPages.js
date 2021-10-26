@@ -13,5 +13,20 @@ export default {
     subHeader: {
       refresh: true,
     }
+  },
+  //Organization Page
+  organization: {
+    permission: 'isite.organizations.manage',
+    activated: true,
+    path: '/site/organization',
+    name: 'app.site.organization',
+    page: () => import('@imagina/qsite/_pages/admin/organizations/form'),
+    layout: () => import('@imagina/qsite/_layouts/master.vue'),
+    title: 'qsite.sidebar.adminOrganization',
+    icon: 'fas fa-crown',
+    authenticated: true,
+    subHeader: {
+      refresh: true,
+    }
   }
 }
