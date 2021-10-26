@@ -39,11 +39,9 @@
       </div>
       <!--Form-->
       <div class="col-12 col-md-9">
-        <div class="box">
-          <dynamic-form v-if="!loading" v-model="form" :blocks="[{fields: this.$clone(formFields)}]"
-                        :title="`${getModuleData(moduleSelected).title} - ${groupsName[moduleSelected][groupSelected]}`"
-                        @submit="saveSettings()"/>
-        </div>
+        <dynamic-form v-if="!loading" v-model="form" :blocks="[{fields: this.$clone(formFields)}]"
+                      :title="`${getModuleData(moduleSelected).title} - ${groupsName[moduleSelected][groupSelected]}`"
+                      @submit="saveSettings()"/>
       </div>
     </div>
     <!--Loading-->
