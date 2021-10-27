@@ -284,7 +284,7 @@ export default {
             ...(strtToMerge.wrapperLocales?.props || {})
           },
           directives: {
-            vShow: this.locale.fieldsTranslatable && Object.keys(this.locale.fieldsTranslatable).length,
+            vShow: this.locale.fieldsTranslatable && Object.keys(this.locale.fieldsTranslatable).length && (this.locale.languages?.length >= 2),
             ...(strtToMerge.wrapperLocales?.directives || {})
           },
         },
