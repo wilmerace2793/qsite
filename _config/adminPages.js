@@ -16,7 +16,7 @@ export default {
   },
   //Organization Page
   organization: {
-    permission: 'isite.organizations.manage',
+    permission: 'isite.organizations.manageee',
     activated: true,
     path: '/site/organization',
     name: 'app.site.organization',
