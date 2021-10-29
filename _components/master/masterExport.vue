@@ -217,7 +217,10 @@ export default {
         //Request params
         let requestParams = {
           exportParams: this.exportItem ? {...this.params, ...(this.paramsItem.exportParams || {})} : this.params,
-          filter: this.exportItem ? (this.paramsItem.filter || {}) : (this.$filter ? this.$filter.values : {})
+          filter: {
+            ...(this.exportItem ? (this.paramsItem.filter || {}) : (this.$filter ? this.$filter.values : {})),
+            ...this.filters
+          }
         }
 
         //Request
