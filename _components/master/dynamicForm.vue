@@ -394,6 +394,9 @@ export default {
     },
     //Step actions
     formActions() {
+      //Validate if is last step
+      let isLastStep = this.step == (this.blocksData.length - 1)
+
       //Default actions config
       let actions = {
         previous: {
@@ -416,12 +419,9 @@ export default {
           icon: "fas fa-save",
           label: this.$tr('ui.label.save'),
           ...(this.actions.submit || {}),
-          action: () => this.changeStep('next', isLastStep)
+          action: () => this.changeStep('next', true)
         },
       }
-
-      //Validate if is last step
-      let isLastStep = this.step == (this.blocksData.length - 1)
 
       //Instance Response
       let response = {previous: actions.previous, next: (isLastStep ? actions.submit : actions.next)}

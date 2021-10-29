@@ -11,7 +11,8 @@
         <page-actions :title="$tr($route.meta.title)" @refresh="getData(true)"/>
       </div>
       <!--dynamic form-->
-      <dynamic-form v-if="crudData" :blocks="crudData.form.blocks" form-type="grid"/>
+      <dynamic-form v-model="form" v-if="crudData" :blocks="crudData.form.blocks" form-type="grid"
+                    @submit="syncOrganization"/>
       <!--Inner loading-->
       <inner-loading :visible="loading"/>
     </div>
@@ -30,7 +31,8 @@ export default {
   data() {
     return {
       loading: false,
-      crudData: false
+      crudData: false,
+      form: {}
     }
   },
   computed: {},
@@ -57,6 +59,12 @@ export default {
         })
       })
     },
+    //Syn organization data
+    syncOrganization() {
+      console.warn(this.form)
+    },
+
+
     //updtae form
     updateForm() {
       this.loading = true
