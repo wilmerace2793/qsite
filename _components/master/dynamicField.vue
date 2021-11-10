@@ -427,7 +427,7 @@ export default {
               readonly: true,
               icon: 'fas fa-calendar-alt',
               ...props,
-              type : 'input',
+              type: 'input',
               mask: ''
             },
             slot: {
@@ -729,6 +729,14 @@ export default {
           //convert children
           if (item.children) item.children = toString(item.children)
         })
+
+        //sort by label
+        items.sort((a, b) => {
+          if (a.label > b.label) return 1
+          if (a.label < b.label) return -1
+          return 0;
+        })
+
         //response
         return items
       }
