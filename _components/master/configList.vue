@@ -9,53 +9,6 @@
     <!--Separator-->
     <q-separator class="q-my-md"/>
 
-    <!--user Data-->
-    <q-no-ssr>
-      <!--Title-->
-      <div class="title-block">
-        {{ $tr('ui.label.session', {capitalize: true}) }}
-      </div>
-
-      <!--Roles-->
-      <div class="q-mt-xs q-px-sm">
-        <!-- Title -->
-        <div class="text-primary">
-          <q-icon name="fas fa-user-circle"/>
-          {{ $trp('ui.label.role') }}
-        </div>
-
-        <!--Roles-->
-        <label class="block text-grey-8" style="line-height: 1.4">
-          {{
-            quserState.userData.roles.map(role => {
-              return role.name
-            }).join(', ')
-          }}
-        </label>
-      </div>
-
-      <!--Department-->
-      <div class="q-mt-xs q-px-sm">
-        <!-- Title -->
-        <div class="text-primary">
-          <q-icon name="fas fa-people-arrows"/>
-          {{ this.$trp('quser.layout.label.userGroup') }}
-        </div>
-
-        <!--Departments-->
-        <label class="block text-grey-8" style="line-height: 1.4">
-          {{
-            quserState.userData.departments.map(department => {
-              return department.title
-            }).join(', ')
-          }}
-        </label>
-      </div>
-    </q-no-ssr>
-
-    <!--Separator-->
-    <q-separator class="q-my-md" v-if="$auth.hasAccess('profile.user.impersonate') || quserState.impersonating"/>
-
     <!--Impersonate-->
     <q-no-ssr>
       <div v-if="$auth.hasAccess('profile.user.impersonate') || quserState.impersonating">
@@ -111,6 +64,53 @@
             </div>
           </q-item-section>
         </q-item>
+      </div>
+    </q-no-ssr>
+
+    <!--Separator-->
+    <q-separator class="q-my-md" v-if="$auth.hasAccess('profile.user.impersonate') || quserState.impersonating"/>
+
+    <!--user Data-->
+    <q-no-ssr>
+      <!--Title-->
+      <div class="title-block">
+        {{ $tr('ui.label.session', {capitalize: true}) }}
+      </div>
+
+      <!--Roles-->
+      <div class="q-mt-xs q-px-sm">
+        <!-- Title -->
+        <div class="text-primary">
+          <q-icon name="fas fa-user-circle"/>
+          {{ $trp('ui.label.role') }}
+        </div>
+
+        <!--Roles-->
+        <label class="block text-grey-8" style="line-height: 1.4">
+          {{
+            quserState.userData.roles.map(role => {
+              return role.name
+            }).join(', ')
+          }}
+        </label>
+      </div>
+
+      <!--Department-->
+      <div class="q-mt-xs q-px-sm">
+        <!-- Title -->
+        <div class="text-primary">
+          <q-icon name="fas fa-people-arrows"/>
+          {{ this.$trp('quser.layout.label.userGroup') }}
+        </div>
+
+        <!--Departments-->
+        <label class="block text-grey-8" style="line-height: 1.4">
+          {{
+            quserState.userData.departments.map(department => {
+              return department.title
+            }).join(', ')
+          }}
+        </label>
       </div>
     </q-no-ssr>
 
