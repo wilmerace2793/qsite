@@ -5,16 +5,19 @@
     </div>
 
     <!--Content-->
-    <div id="pageContent" class="relative-position">
+    <div id="pageContent">
       <!--page actions-->
       <div class="box box-auto-height q-mb-md">
         <page-actions :title="$tr($route.meta.title)" @refresh="getData(true)"/>
       </div>
-      <!--dynamic form-->
-      <dynamic-form v-model="form" v-if="crudData" :blocks="crudData.form.blocks" form-type="grid"
-                    @submit="syncOrganization"/>
-      <!--Inner loading-->
-      <inner-loading :visible="loading"/>
+      <!--Form-->
+      <div class="relative-position">
+        <!--dynamic form-->
+        <dynamic-form v-model="form" v-if="crudData" :blocks="parseCrudData.form.blocks" form-type="grid"
+                      @submit="syncOrganization" :item-id="organization.id"/>
+        <!--Inner loading-->
+        <inner-loading :visible="loading"/>
+      </div>
     </div>
   </div>
 </template>
@@ -31,41 +34,95 @@ export default {
   data() {
     return {
       loading: false,
+      organization: false,
       crudData: false,
       form: {}
     }
   },
-  computed: {},
+  computed: {
+    //Parse crud data
+    parseCrudData() {
+      let crudData = this.$clone(this.crudData)
+
+      //Parse blocks
+      crudData.form.blocks.forEach((block, blockKey) => {
+        //Parse block fields
+        Object.keys(block.fields).forEach(fieldName => {
+          crudData.form.blocks[blockKey].fields[fieldName].fieldItemId = this.organization.id
+        })
+      })
+
+      //response
+      return crudData
+    }
+  },
   methods: {
     init() {
       this.getData()
     },
     //Get data
     getData(refresh = false) {
-      return new Promise((resolve, reject) => {
+      return new Promise(async resolve => {
         this.loading = true
+        await Promise.all([
+          this.getOrganizationData(refresh),
+          this.getCrudData(refresh)
+        ])
+        this.loading = false
+      })
+    },
+    //get organizations data
+    getOrganizationData(refresh = false) {
+      return new Promise((resolve, reject) => {
+        let organizationId = this.$store.state.quserAuth.organizationId
         //Requets params
         let requestParams = {
           refresh: refresh,
-          filter: {module: 'isite', entity: 'organization'}
+          params: {
+            include : 'fields,schedule.workTimes',
+            filter: {allTranslations: true}
+          }
+        }
+        //Request
+        this.$crud.show('apiRoutes.qsite.organizations', organizationId, requestParams).then(response => {
+          this.organization = this.$clone(response.data)
+          this.form = this.$clone(response.data)
+          resolve(response.data)
+        }).catch(error => reject(error))
+      })
+    },
+    //get crud data
+    getCrudData(refresh = false) {
+      return new Promise((resolve, reject) => {
+        //Requets params
+        let requestParams = {
+          refresh: refresh,
+          params: {
+            filter: {module: 'isite', entity: 'organization'}
+          }
         }
         //Request
         this.$crud.index('apiRoutes.qsite.icruds', requestParams).then(response => {
           this.crudData = response.data.length ? response.data[0].projectCrud : false
-          //console.warn(this.crudData)
-          this.loading = false
-        }).catch(error => {
-          this.loading = false
-        })
+          resolve(response.data)
+        }).catch(error => reject(error))
       })
     },
     //Syn organization data
     syncOrganization() {
-      console.warn(this.form)
+      return new Promise((resolve, reject) => {
+        this.loading = true
+        //Request
+        this.$crud.update('apiRoutes.qsite.organizations', this.organization.id, this.form).then(response => {
+          this.$alert.info({message: this.$tr('ui.message.recordUpdated')})
+          this.loading = false
+        }).catch(error => {
+          this.$alert.error({message: this.$tr('ui.message.recordNoUpdated')})
+          this.loading = false
+        })
+      })
     },
-
-
-    //updtae form
+    //update form
     updateForm() {
       this.loading = true
 
@@ -81,34 +138,54 @@ export default {
                 description: "information Block form",
                 name: "information",
                 fields: {
-                  name: {
-                    value: '',
+                  title: {
+                    value: null,
                     type: 'input',
                     isTranslatable: true,
+                    required: true,
                     props: {
                       label: `${this.$tr('ui.form.name')}*`,
-                      rules: [val => !!val || this.$tr('ui.message.fieldRequired')],
                     },
                   },
-                  slogan: {
-                    value: '',
-                    type: 'input',
-                    isTranslatable: true,
+                  categoryId: {
+                    value: null,
+                    type: 'treeSelect',
+                    required: true,
                     props: {
-                      label: `Slogan*`,
-                      rules: [val => !!val || this.$tr('ui.message.fieldRequired')],
+                      label: `${this.$tr('ui.form.category')}*`,
                     },
+                    loadOptions: {
+                      apiRoute: 'apiRoutes.qsite.categories'
+                    }
                   },
                   description: {
-                    value: '',
+                    value: null,
                     type: 'html',
                     isTranslatable: true,
                     colClass: 'col-12',
+                    required: true,
                     props: {
-                      label: `${this.$tr('ui.form.description')}*`,
-                      rules: [
-                        val => !!val || this.$tr('ui.message.fieldRequired')
-                      ],
+                      label: `${this.$tr('ui.form.description')}*`
+                    }
+                  },
+                }
+              },
+              {
+                title: "media",
+                description: "media Block form",
+                name: "media",
+                fields: {
+                  logo: {
+                    name: 'mediasSingle',
+                    value: {},
+                    type: 'media',
+                    colClass: 'col-12',
+                    props: {
+                      label: 'Logo',
+                      zone: 'mainimage',
+                      entity: "Modules\\Isite\\Entities\\Organization",
+                      entityId: null,
+                      accept: 'images',
                     }
                   }
                 }
@@ -121,96 +198,48 @@ export default {
                   provinceId: {
                     value: null,
                     type: 'select',
+                    isTranslatable: true,
                     props: {
-                      label: `${this.$tr('ui.form.province')}*`
+                      label: `${this.$tr('ui.form.province')}`
                     },
                     loadOptions: {
                       apiRoute: 'apiRoutes.qlocations.provinces',
                       select: {label: 'name', id: 'id'},
-                      requestParams: {filter: {allTranslations: true, country: 48}}
+                      requestParams: {filter: {allTranslations: true, country: 48}},
+                      filterByQuery: true
                     },
                   },
                   cityId: {
                     value: null,
                     type: 'select',
+                    isTranslatable : true,
                     props: {
-                      label: `${this.$tr('ui.form.city')}*`,
-                      options: [],
+                      label: `${this.$tr('ui.form.city')}`,
                       readonly: false
-                    }
+                    },
+                    loadOptions: {
+                      apiRoute: 'apiRoutes.qlocations.cities',
+                      select: {label: 'name', id: 'id'},
+                      requestParams: {filter: {allTranslations: true, country: 48}},
+                      filterByQuery: true
+                    },
                   },
                   address: {
-                    value: '',
+                    value: null,
                     type: 'input',
+                    colClass: 'col-12',
+                    isTranslatable : true,
                     props: {
-                      label: `${this.$tr('ui.form.address')}*`,
-                      rules: [val => !!val || this.$tr('ui.message.fieldRequired')],
+                      label: `${this.$tr('ui.form.address')}`,
                     },
                   },
                   map: {
-                    value: '',
-                    type: 'input',
-                    isFakeField: true,
-                    props: {
-                      label: `${this.$tr('ui.form.urlMap')}`
-                    },
-                  }
-                }
-              },
-              {
-                title: "media",
-                description: "media Block form",
-                name: "media",
-                fields: {
-                  favicon: {
-                    name: 'mediasSingle',
-                    value: {},
-                    type: 'media',
-                    props: {
-                      label: 'Favicon',
-                      zone: 'favicon',
-                      entity: "Modules\\Marketplace\\Entities\\Store",
-                      entityId: 1
-                    }
-                  },
-                  logo: {
-                    name: 'mediasSingle',
-                    value: {},
-                    type: 'media',
-                    props: {
-                      label: 'Logo',
-                      zone: 'mainimage',
-                      entity: "Modules\\Marketplace\\Entities\\Store",
-                      entityId: 1
-                    }
-                  },
-                  slider: {
-                    name: 'mediasMulti',
-                    value: {},
-                    type: 'media',
+                    value: null,
+                    type: 'positionMarkerMap',
                     colClass: 'col-12',
+                    isTranslatable : true,
                     props: {
-                      multiple: true,
-                      label: 'Slider',
-                      zone: 'slider',
-                      entity: "Modules\\Marketplace\\Entities\\Store",
-                      entityId: 1
-                    }
-                  }
-                }
-              },
-              {
-                title: "schedule",
-                description: "schedule Block form",
-                name: "schedule",
-                fields: {
-                  schedule: {
-                    value: '',
-                    type: 'schedulable',
-                    colClass: 'col-12',
-                    props: {
-                      label: `${this.$tr('ui.form.schedule')}*`,
-                      rules: [val => !!val || this.$tr('ui.message.fieldRequired')],
+                      label: `${this.$tr('ui.label.map')}`
                     },
                   }
                 }
@@ -221,79 +250,168 @@ export default {
                 name: "socialNetworks",
                 fields: {
                   email: {
-                    value: '',
+                    value: null,
                     type: 'input',
-                    isFakeField: true,
+                    isTranslatable : true,
                     props: {
-                      label: `${this.$tr('ui.form.email')}*`,
-                      rules: [
-                        val => !!val || this.$tr('ui.message.fieldRequired'),
-                        val => this.$helper.validateEmail(val) || this.$tr('ui.message.fieldEmail')
-                      ],
+                      label: `${this.$tr('ui.form.email')}`,
                     },
                   },
                   facebook: {
-                    value: '',
+                    value: null,
                     type: 'input',
-                    isFakeField: true,
+                    isTranslatable : true,
                     props: {
                       label: `Facebook`
                     },
                   },
                   instagram: {
-                    value: '',
+                    value: null,
                     type: 'input',
-                    isFakeField: true,
+                    isTranslatable : true,
                     props: {
                       label: `Instagram`
                     },
                   },
                   youtube: {
-                    value: '',
+                    value: null,
                     type: 'input',
-                    isFakeField: true,
+                    isTranslatable : true,
                     props: {
                       label: `Youtube`
                     },
                   },
-                  whatsapp1: {
-                    value: '',
-                    type: 'input',
-                    isFakeField: true,
+                  phones: {
+                    value: null,
+                    type: 'select',
+                    colClass: 'col-12',
+                    isTranslatable : true,
                     props: {
-                      unmaskedValue: true,
-                      label: `Whatsapp 1`,
-                      mask: 'phone'
-                    },
+                      label: 'Phones',
+                      useInput: true,
+                      useChips: true,
+                      multiple: true,
+                      hideDropdownIcon: true,
+                      hint: 'isite::common.settingHints.phones',
+                      newValueMode: 'add-unique'
+                    }
+                  },
+                  whatsapp1: {
+                    label: 'Whatsapp #1',
+                    isTranslatable : true,
+                    children: {
+                      callingCode: {
+                        value: null,
+                        type: 'select',
+                        colClass: 'col-6',
+                        props: {
+                          label: 'isite::common.settings.whatsapp.callingCode',
+                        },
+                        loadOptions: {
+                          apiRoute: 'apiRoutes.qlocations.countries', //apiRoute to request
+                          select: {label: 'name', id: 'callingCode'} //Define fields to config select
+                        }
+                      },
+                      number: {
+                        value: null,
+                        type: 'input',
+                        colClass: 'col-6',
+                        props: {
+                          label: 'isite::common.settings.whatsapp.number',
+                          type: 'number'
+                        }
+                      },
+                      message: {
+                        value: null,
+                        type: 'input',
+                        colClass: 'col-12',
+                        props: {
+                          label: 'isite::common.settings.whatsapp.message'
+                        }
+                      },
+                      label: {
+                        value: null,
+                        type: 'input',
+                        colClass: 'col-6',
+                        props: {
+                          label: 'isite::common.settings.whatsapp.label'
+                        }
+                      },
+                      iconLabel: {
+                        value: null,
+                        type: 'input',
+                        colClass: 'col-6',
+                        props: {
+                          label: 'isite::common.settings.whatsapp.icon-label'
+                        }
+                      },
+                    }
                   },
                   whatsapp2: {
-                    value: '',
-                    type: 'input',
-                    isFakeField: true,
+                    label: 'Whatsapp #2',
+                    isTranslatable : true,
+                    children: {
+                      callingCode: {
+                        value: null,
+                        type: 'select',
+                        colClass: 'col-6',
+                        props: {
+                          label: 'isite::common.settings.whatsapp.callingCode',
+                        },
+                        loadOptions: {
+                          apiRoute: 'apiRoutes.qlocations.countries', //apiRoute to request
+                          select: {label: 'name', id: 'callingCode'} //Define fields to config select
+                        }
+                      },
+                      number: {
+                        value: null,
+                        type: 'input',
+                        colClass: 'col-6',
+                        props: {
+                          label: 'isite::common.settings.whatsapp.number',
+                          type: 'number'
+                        }
+                      },
+                      message: {
+                        value: null,
+                        type: 'input',
+                        colClass: 'col-12',
+                        props: {
+                          label: 'isite::common.settings.whatsapp.message'
+                        }
+                      },
+                      label: {
+                        value: null,
+                        type: 'input',
+                        colClass: 'col-6',
+                        props: {
+                          label: 'isite::common.settings.whatsapp.label'
+                        }
+                      },
+                      iconLabel: {
+                        value: null,
+                        type: 'input',
+                        colClass: 'col-6',
+                        props: {
+                          label: 'isite::common.settings.whatsapp.icon-label'
+                        }
+                      },
+                    }
+                  }
+                }
+              },
+              {
+                title: "schedule",
+                description: "schedule Block form",
+                name: "schedule",
+                fields: {
+                  schedule: {
+                    value: null,
+                    type: 'schedulable',
+                    colClass: 'col-12',
                     props: {
-                      unmaskedValue: true,
-                      label: `Whatsapp 2`,
-                      mask: 'phone'
-                    },
-                  },
-                  phone1: {
-                    value: '',
-                    type: 'input',
-                    isFakeField: true,
-                    props: {
-                      unmaskedValue: true,
-                      mask: 'phone',
-                      label: `${this.$tr('ui.form.phone')} 1`
-                    },
-                  },
-                  phone2: {
-                    value: '',
-                    type: 'input',
-                    isFakeField: true,
-                    props: {
-                      unmaskedValue: true,
-                      mask: 'phone',
-                      label: `${this.$tr('ui.form.phone')} 2`
+                      label: `${this.$tr('ui.form.schedule')}*`,
+                      rules: [val => !!val || this.$tr('ui.message.fieldRequired')],
                     },
                   }
                 }
@@ -304,32 +422,21 @@ export default {
                 name: "colors",
                 fields: {
                   colorPrimary: {
-                    name: 'color_primary',
-                    value: null,
+                    value: '#420b0b',
                     type: 'inputColor',
+                    isTranslatable : true,
                     props: {
-                      label: `${this.$tr('ui.form.primaryColor')}*`,
-                      rules: [val => !!val || this.$tr('ui.message.fieldRequired')]
+                      label: `${this.$tr('ui.form.primaryColor')}*`
                     }
                   },
                   colorSecondary: {
-                    name: 'color_secondary',
-                    value: null,
+                    value: '#8b2d2d',
                     type: 'inputColor',
+                    isTranslatable : true,
                     props: {
-                      label: `${this.$tr('ui.form.secondaryColor')}*`,
-                      rules: [val => !!val || this.$tr('ui.message.fieldRequired')]
+                      label: `${this.$tr('ui.form.secondaryColor')}*`
                     }
-                  },
-                  colorTertiary: {
-                    name: 'color_tertiary',
-                    value: null,
-                    type: 'inputColor',
-                    props: {
-                      label: `${this.$tr('ui.form.tertiaryColor')}*`,
-                      rules: [val => !!val || this.$tr('ui.message.fieldRequired')]
-                    }
-                  },
+                  }
                 }
               }
             ]
