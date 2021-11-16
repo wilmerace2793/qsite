@@ -23,60 +23,63 @@
         </div>
         <!--Wrapper blocks-->
         <component v-model="step" v-bind="structure.wrapperBlocks.props" v-if="structure.wrapperBlocks.directives.vIf">
-          <!--Blocks-->
-          <component v-for="(block, keyBlock) in structure.blocks" :key="keyBlock" v-bind="block.props">
-            <div :class="block.childClass">
-              <!--Top step Info-->
-              <div class="step-top-content q-mb-md" v-if="block.title || block.description">
-                <!--Title-->
-                <div class="box-title" v-if="block.title && (formType != 'stepVertical')">
-                  {{ block.title }}
+          <!--Columns-->
+          <component v-for="(column, keyColumn) in structure.columns()" :key="keyColumn" v-bind="column.props">
+            <!--Blocks-->
+            <div v-for="(block, keyBlock) in column.blocks" :key="keyBlock" v-bind="block.props">
+              <div :class="block.childClass">
+                <!--Top step Info-->
+                <div class="step-top-content q-mb-md" v-if="block.title || block.description">
+                  <!--Title-->
+                  <div class="box-title" v-if="block.title && (formType != 'stepVertical')">
+                    {{ block.title }}
+                  </div>
+                  <!--Description-->
+                  <div class="text-caption q-mb-md text-grey-8" v-if="block.description">{{ block.description }}</div>
                 </div>
-                <!--Description-->
-                <div class="text-caption q-mb-md text-grey-8" v-if="block.description">{{ block.description }}</div>
-              </div>
-              <!--Fields-->
-              <div class="row q-col-gutter-x-md q-mb-sm">
-                <div v-for="(field, key) in block.fields" :key="key"
-                     :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)">
-                  <!--fake field-->
-                  <dynamic-field v-if="field.fakeFieldName" :field="field" :key="key" :language="locale.language"
-                                 v-model="locale.formTemplate[field.fakeFieldName][field.name || key]"
-                                 :item-id="field.fieldItemId"/>
-                  <!--Sample field-->
-                  <dynamic-field v-else :field="field" :key="key" :item-id="field.fieldItemId"
-                                 v-model="locale.formTemplate[field.name || key]" :language="locale.language"/>
-                  <!--Child fields-->
-                  <div v-if="field.children">
-                    <!--Title-->
-                    <div class="text-blue-grey q-mb-xs">
-                      <b>{{ field.label }} <label v-if="field.isTranslatable">({{ locale.language }})</label></b>
-                    </div>
-                    <!---Child fields-->
-                    <div class="row q-col-gutter-x-md">
-                      <div v-for="(childField, childKey) in getParsedFields(field.children)" :key="childKey"
-                           :class="childField.colClass || childField.columns || defaultColClass">
-                        <!--Child field-->
-                        <dynamic-field :field="childField" :key="childKey" :language="locale.language"
-                                       v-model="locale.formTemplate[field.name || key][childField.name || childKey]"
-                                       :item-id="childField.fieldItemId"/>
+                <!--Fields-->
+                <div class="row q-col-gutter-x-md q-mb-sm">
+                  <div v-for="(field, key) in block.fields" :key="key"
+                       :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)">
+                    <!--fake field-->
+                    <dynamic-field v-if="field.fakeFieldName" :field="field" :key="key" :language="locale.language"
+                                   v-model="locale.formTemplate[field.fakeFieldName][field.name || key]"
+                                   :item-id="field.fieldItemId"/>
+                    <!--Sample field-->
+                    <dynamic-field v-else :field="field" :key="key" :item-id="field.fieldItemId"
+                                   v-model="locale.formTemplate[field.name || key]" :language="locale.language"/>
+                    <!--Child fields-->
+                    <div v-if="field.children">
+                      <!--Title-->
+                      <div class="text-blue-grey q-mb-xs">
+                        <b>{{ field.label }} <label v-if="field.isTranslatable">({{ locale.language }})</label></b>
+                      </div>
+                      <!---Child fields-->
+                      <div class="row q-col-gutter-x-md">
+                        <div v-for="(childField, childKey) in getParsedFields(field.children)" :key="childKey"
+                             :class="childField.colClass || childField.columns || defaultColClass">
+                          <!--Child field-->
+                          <dynamic-field :field="childField" :key="childKey" :language="locale.language"
+                                         v-model="locale.formTemplate[field.name || key][childField.name || childKey]"
+                                         :item-id="childField.fieldItemId"/>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <!--Actions-->
-              <div :class="`actions__content row justify-${step == 0 ? 'end' : 'between'}`"
-                   v-if="(formType == 'stepper') && !noActions">
-                <q-btn v-for="(action, keyAction) in formActions" :key="keyAction" v-bind="action"
-                       unelevated rounded no-caps @click="action.action(keyBlock)" type="button"
-                       v-if="action.vIf != undefined ? action.vIf : true"/>
+                <!--Actions-->
+                <div :class="`actions__content row justify-${step == 0 ? 'end' : 'between'}`"
+                     v-if="(formType == 'stepper') && !noActions">
+                  <q-btn v-for="(action, keyAction) in formActions" :key="keyAction" v-bind="action"
+                         unelevated rounded no-caps @click="action.action(keyBlock)" type="button"
+                         v-if="action.vIf != undefined ? action.vIf : true"/>
+                </div>
               </div>
             </div>
           </component>
         </component>
         <!--Actions-->
-        <div class="box box-auto-height q-mt-md row justify-end" v-if="(formType == 'grid') && !noActions">
+        <div class="box box-auto-height row justify-end" v-if="(formType == 'grid') && !noActions">
           <q-btn v-for="(action, keyAction) in formActions" :key="keyAction" v-bind="action"
                  unelevated rounded no-caps @click="action.action('next')" type="button"
                  v-if="action.vIf != undefined ? action.vIf : true"/>
@@ -110,7 +113,12 @@ export default {
     useCaptcha: {type: Boolean, default: false},
     hideTitle: {type: Boolean, default: false},
     hideProgressBar: {type: Boolean, default: false},
-    noActions: {type: Boolean, default: false}
+    noActions: {type: Boolean, default: false},
+    formColNumber: {
+      type: Number,
+      default: 1,
+      validator: (value) => [1, 2, 3].includes(value)
+    }
   },
   watch: {
     value: {
@@ -175,18 +183,22 @@ export default {
               'header-class': 'q-hide'
             }
           },
-          blocks: this.blocksData.map((block, keyBlock) => {
-            return {
-              props: {
-                is: 'q-step',
-                name: keyBlock,
-                title: block.title || `#${keyBlock + 1}`,
-                class: this.allowNavigation ? 'cursor-pointer' : ''
-              },
-              childClass: '',
-              ...block
-            }
-          })
+          columns: () => {
+            let response = this.blocksData.map((block, keyBlock) => {
+              return {
+                props: {
+                  is: 'q-step',
+                  name: keyBlock,
+                  title: block.title || `#${keyBlock + 1}`,
+                  class: `col-12 ${this.allowNavigation ? 'cursor-pointer' : ''}`
+                },
+                blocks: [{props: {}, childClass: '', ...block}]
+              }
+            })
+
+            //response
+            return response
+          }
         },
         //as a grid
         grid: {
@@ -208,17 +220,30 @@ export default {
               class: 'row q-col-gutter-md'
             }
           },
-          blocks: this.blocksData.map((block, keyBlock) => {
-            return {
-              props: {
-                is: 'div',
-                title: block.title || `#${keyBlock + 1}`,
-                class: block.colClass || block.colums || 'col-12 col-md-6'
-              },
-              childClass: 'box box-auto-height',
-              ...block
-            }
-          })
+          columns: () => {
+            //Instance form columns number grid class
+            let formColumsClass = {1: 'col-md-12', 2: 'col-md-6', 3: 'col-md-4'}
+            //Instance response
+            let response = Array(this.formColNumber).fill(0).map((_, i) => {
+              return {blocks: [], props: {is: 'div', class: `col-12 ${formColumsClass[this.formColNumber]}`}}
+            });
+            //Transform blocks data
+            let blocksData = this.blocksData.map((block, keyBlock) => {
+              return {
+                props: {class: 'q-mb-md'},
+                childClass: 'box box-auto-height',
+                ...block
+              }
+            })
+            //Split blocks in columns
+            let posColumn = 0
+            blocksData.forEach(block => {
+              response[posColumn].blocks.push(block)
+              posColumn = (posColumn >= (this.formColNumber - 1)) ? 0 : (posColumn + 1)
+            })
+            //response
+            return response
+          }
         },
       }
 
@@ -298,7 +323,7 @@ export default {
             ...(strtToMerge.wrapperBlocks?.props || {})
           }
         },
-        blocks: strtToMerge.blocks
+        columns: strtToMerge.columns
       }
     },
     //Settings
