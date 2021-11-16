@@ -1,7 +1,7 @@
 <template>
   <div id="organizationFormPage">
     <!--Content-->
-    <div id="pageContent">
+    <div v-if="organizationId" id="pageContent">
       <!--page actions-->
       <div class="box box-auto-height q-mb-md">
         <page-actions :title="$tr($route.meta.title)" @refresh="getData(true)"/>
@@ -13,6 +13,13 @@
                       @submit="syncOrganization" :item-id="organization.id" :form-col-number="2"/>
         <!--Inner loading-->
         <inner-loading :visible="loading"/>
+      </div>
+    </div>
+    <!--Empty conten-->
+    <div v-else class="box box-auto-height text-center">
+      <div class="q-py-md">
+        <q-icon name="fas fa-crown" size="40px" color="primary" class="q-mb-md"/>
+        <div>{{ $tr('qsite.layout.messages.noOrganization') }}...</div>
       </div>
     </div>
   </div>
@@ -36,6 +43,10 @@ export default {
     }
   },
   computed: {
+    //Organization data
+    organizationId() {
+      return this.$clone(this.$store.state.quserAuth.organizationId)
+    },
     //Parse crud data
     parseCrudData() {
       let crudData = this.$clone(this.crudData)
@@ -70,7 +81,8 @@ export default {
     //get organizations data
     getOrganizationData(refresh = false) {
       return new Promise((resolve, reject) => {
-        let organizationId = this.$store.state.quserAuth.organizationId
+        //Validate if user has a organization
+        if (!this.organizationId) return resolve(null)
         //Requets params
         let requestParams = {
           refresh: refresh,
@@ -80,7 +92,7 @@ export default {
           }
         }
         //Request
-        this.$crud.show('apiRoutes.qsite.organizations', organizationId, requestParams).then(response => {
+        this.$crud.show('apiRoutes.qsite.organizations', this.organizationId, requestParams).then(response => {
           this.organization = this.$clone(response.data)
           this.form = this.$clone(response.data)
           resolve(response.data)
