@@ -40,6 +40,7 @@ export default {
     'qslider',
     'qbanner',
     'qtranslation',
+    'qrequestable',
     'qsite',
     'qchat'
   ],
