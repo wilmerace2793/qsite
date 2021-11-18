@@ -269,7 +269,8 @@ export default {
     organization: 'Organization | Organizations',
     availability: 'Availability | Availabilities',
     goTo: 'Go to {string}',
-    meet: 'Meet | Mettings'
+    meet: 'Meet | Mettings',
+    checked: 'Checked'
   },
   message: {
     notFound: 'Sorry, nothing here',

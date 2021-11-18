@@ -160,7 +160,7 @@ export default {
         recent: 'Reciente | Recientes',
         size: 'Tamaño | Tamaños',
         shareWith: 'Compartir con',
-        checked: 'Validado | Validados',
+        checked: 'Verificado | Verificados',
         map: 'Mapa | Mapas',
         ad: 'Anuncio | Anuncios',
         price: 'Precio | Precios',
