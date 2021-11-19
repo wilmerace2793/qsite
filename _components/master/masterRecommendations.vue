@@ -19,8 +19,7 @@
       </div>
       <q-separator class="q-my-sm"/>
       <!--Items-->
-      <q-scroll-area :thumb-style="thumbStyle" v-if="items.length"
-                     :style="`height: calc(100vh - ${this.windowSize == 'mobile' ? '120' : '230'}px`">
+      <q-scroll-area :thumb-style="thumbStyle" v-if="items.length" style="height: calc(100vh - 120px)">
         <div class="box item q-px-none q-py-md" v-for="item in items" :key="item.id">
           <!--Content-->
           <div class="ellipsis relative-position">
