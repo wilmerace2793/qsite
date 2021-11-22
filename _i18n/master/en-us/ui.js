@@ -162,6 +162,9 @@ export default {
     new: 'New',
     old: 'Old',
     country: 'Country | Countries',
+    city: 'City | Cities',
+    province: 'Province | Provinces',
+    neighborhood: 'Neighborhood | Neighborhoods',
     mainImage: 'Main Image',
     amount: 'Amount | Amounts',
     photo: 'Photo | Photos',
@@ -264,8 +267,8 @@ export default {
     skip: 'Skip',
     reserved: 'Reserved',
     finalize: 'Finalize',
-    record : 'Record | Records',
-    pay : 'Pay',
+    record: 'Record | Records',
+    pay: 'Pay',
     organization: 'Organization | Organizations',
     availability: 'Availability | Availabilities',
     goTo: 'Go to {string}',
@@ -332,7 +335,7 @@ export default {
     rateYour: 'Rate your <b>{name}</b>',
     withoutIcon: 'Without Icon',
     mustContainAlphanumeric: 'Must contain only alphanumeric',
-    hintUseChips : 'Ingrese el valor y presione enter'
+    hintUseChips: 'Ingrese el valor y presione enter'
   },
   form: {
     id: 'ID',
