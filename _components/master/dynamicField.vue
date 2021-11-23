@@ -238,6 +238,10 @@
         <div class="round bg-white" v-if="loadField('schedulable')">
           <schedulable v-model="responseValue" @input="watchValue" class="q-mb-sm" v-bind="fieldProps"/>
         </div>
+        <!--Code Editor-->
+        <q-field v-model="responseValue" v-if="loadField('json')" v-bind="fieldProps.fieldComponent">
+          <v-json-editor v-model="responseValue" height="300px" :options="fieldProps.field"/>
+        </q-field>
       </div>
     </div>
   </div>
@@ -259,14 +263,13 @@ import captcha from '@imagina/qsite/_components/master/captcha'
 import schedulable from '@imagina/qsite/_components/master/schedulable'
 import selectMedia from '@imagina/qmedia/_components/selectMedia'
 import googleMapMarker from '@imagina/qsite/_components/master/googleMapMarker'
+import VJsonEditor from 'v-jsoneditor/src/index'
 
 export default {
   name: 'dynamicField',
   beforeDestroy() {
     //Close listen event
-    if (this.$refs.crudComponent) {
-      this.$root.$off(`crudForm${this.$refs.crudComponent.params.apiRoute}Created`)
-    }
+
   },
   props: {
     value: {default: null},
@@ -290,7 +293,8 @@ export default {
     captcha,
     schedulable,
     selectMedia,
-    googleMapMarker
+    googleMapMarker,
+    VJsonEditor
   },
   watch: {
     value: {
@@ -695,6 +699,23 @@ export default {
         case'schedulable':
           props = {
             ...props
+          }
+          break;
+        case'json':
+          props = {
+            field: {
+              ...props,
+              mode: 'code',
+              mainMenuBar: true,
+              enableTransform: false,
+              enableSort: false
+            },
+            fieldComponent: {
+              outlined: false,
+              borderless: true,
+              dense: true,
+              ...props
+            }
           }
           break;
       }
