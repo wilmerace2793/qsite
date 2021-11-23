@@ -1,5 +1,6 @@
 export default {
   adminIndex : 'Ajustes',
   adminDynamicForm: 'Formulario Dinámico',
-  adminOrganization : 'Organización',
+  adminOrganization : 'Organizaciónes',
+  adminOrganizationForm : 'Formulario',
 }

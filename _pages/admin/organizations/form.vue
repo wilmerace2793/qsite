@@ -9,7 +9,7 @@
       <!--Form-->
       <div class="relative-position">
         <!--dynamic form-->
-        <dynamic-form v-model="form" v-if="crudData" :blocks="parseCrudData.form.blocks" form-type="grid"
+        <dynamic-form v-model="form" v-if="!loading && crudData" :blocks="parseCrudData.form.blocks" form-type="grid"
                       @submit="syncOrganization" :item-id="organization.id" :form-col-number="2"/>
         <!--Inner loading-->
         <inner-loading :visible="loading"/>
@@ -28,7 +28,11 @@
 export default {
   props: {},
   components: {},
-  watch: {},
+  watch: {
+    '$route.params.id'(organizationId) {
+      this.init()
+    }
+  },
   mounted() {
     this.$nextTick(function () {
       this.init()
@@ -45,7 +49,8 @@ export default {
   computed: {
     //Organization data
     organizationId() {
-      return this.$clone(this.$store.state.quserAuth.organizationId)
+      //return this.$clone(this.$store.state.quserAuth.organizationId)
+      return this.$clone(this.$route.params.id)
     },
     //Parse crud data
     parseCrudData() {
@@ -65,7 +70,7 @@ export default {
   },
   methods: {
     init() {
-      this.getData()
+      this.getData(true)
     },
     //Get data
     getData(refresh = false) {
@@ -93,9 +98,11 @@ export default {
         }
         //Request
         this.$crud.show('apiRoutes.qsite.organizations', this.organizationId, requestParams).then(response => {
-          this.organization = this.$clone(response.data)
-          this.form = this.$clone(response.data)
-          resolve(response.data)
+          setTimeout(() => {
+            this.organization = this.$clone(response.data)
+            this.form = this.$clone(response.data)
+            resolve(response.data)
+          }, 800)
         }).catch(error => reject(error))
       })
     },
