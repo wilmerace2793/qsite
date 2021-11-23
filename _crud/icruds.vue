@@ -58,6 +58,7 @@ export default {
               name: 'actions', label: this.$tr('ui.form.actions'), align: 'center'
             },
           ],
+          requestParams: {filter: {noTranslate: true}},
           actions: [
             {
               label: 'Edit Form',
