@@ -43,7 +43,23 @@ export default {
     authenticated: true,
     subHeader: {
       refresh: true,
-      breadcrumb : ['qsite.organizations']
+      breadcrumb: ['qsite.organizations']
+    }
+  },
+  //Icruds
+  icruds: {
+    permission: 'isite.icruds.manage',
+    activated: true,
+    path: '/site/icruds',
+    name: 'qsite.admin.icruds.index',
+    crud: import('@imagina/qsite/_crud/icruds'),
+    page: () => import('@imagina/qcrud/_pages/admin/crudPage'),
+    layout: () => import('@imagina/qsite/_layouts/master.vue'),
+    title: 'qsite.sidebar.adminIcruds',
+    icon: 'fas fa-code',
+    authenticated: true,
+    subHeader: {
+      refresh: true
     }
   }
 }
