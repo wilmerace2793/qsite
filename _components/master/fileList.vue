@@ -17,7 +17,7 @@
             <span v-if="allowCounter" class="q-ml-sm">({{ table.pagination.rowsNumber }})</span>
           </div>
           <!--Actions-->
-          <div id="tableActions" class="row q-gutter-sm">
+          <div id="tableActions" class="row q-gutter-sm" v-if="!readonly">
             <!--customActions-->
             <q-btn v-for="(item, itemKey) in actions" :key="itemKey" class="btn-small" v-bind="item"
                    v-if="item.vIf != undefined ? item.vIf : true" @click="item.action()">
@@ -73,7 +73,7 @@
                     {{ itemRow.filename }}
                   </div>
                   <!--Actions-->
-                  <div class="file-card__bottom_actions">
+                  <div class="file-card__bottom_actions" v-if="!readonly">
                     <!--select file-->
                     <q-checkbox v-if="allowSelect" v-model="table.selected" :val="itemRow.filename" color="green"/>
                     <!--button Actions-->
@@ -108,7 +108,7 @@
               </div>
             </div>
             <!--Quantity files-->
-            <div v-if="quantity && (gridType == 'card')" :class="`${gridColClass} q-pa-xs`"
+            <div v-if="!readonly && quantity && (gridType == 'card')" :class="`${gridColClass} q-pa-xs`"
                  v-for="itemNum in emptyQuantityFiles" :key="`item${itemNum}`">
               <div class="file-item-quantity row items-center justify-center" @click="$emit('emptyFileAction')">
                 <q-icon name="fas fa-photo-video" size="45px"/>
@@ -147,7 +147,7 @@
       </template>
     </q-table>
     <!---No data-->
-    <div v-if="!tableData.length" class="row q-px-sm q-pb-sm">
+    <div v-if="!readonly && !tableData.length" class="row q-px-sm q-pb-sm">
       <div v-if="quantity && (gridType == 'card')" :class="`${gridColClass} q-pa-xs`"
            v-for="itemNum in emptyQuantityFiles" :key="`item${itemNum}`">
         <div class="file-item-quantity row items-center justify-center" @click="$emit('emptyFileAction')">
@@ -208,7 +208,8 @@ export default {
     allowSelect: {type: Number, default: 0},
     draggable: {type: Boolean, default: false},
     quantity: {default: 0},
-    hideHeader: {type: Boolean, default: false}
+    hideHeader: {type: Boolean, default: false},
+    readonly: {type: Boolean, default: false}
   },
   watch: {
     value: {
