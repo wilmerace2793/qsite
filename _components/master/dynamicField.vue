@@ -222,7 +222,7 @@
         </q-field>
         <!--rating-->
         <q-field v-model="responseValue" v-if="loadField('rating')" v-bind="fieldProps.fieldComponent">
-          <q-rating v-model="responseValue" v-bind="fieldProps.field"/>
+          <q-rating v-model="responseValue" v-bind="fieldProps.field" class="q-mt-sm"/>
         </q-field>
         <!--icon select-->
         <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps"/>
