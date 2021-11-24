@@ -52,7 +52,8 @@ export default {
     icon: {type: String},
     gutter: {type: String, default: 'sm'},
     size: {type: String, default: 'small'},
-    extraActions: {type: Array}
+    extraActions: {type: Array},
+    excludeActions: {default: false}
   },
   components: {masterExport},
   watch: {},
@@ -88,11 +89,14 @@ export default {
     },
     //Page Actions
     actions() {
+      //Instance excludeActions prop
+      let excludeActions = this.$clone(Array.isArray(this.excludeActions) ? this.excludeActions : [])
+
       let response = [
         //Export
         {
           label: this.$tr('ui.label.export'),
-          vIf: this.exportParams,
+          vIf: (this.exportParams && !excludeActions.includes('export')),
           props: {
             icon: 'fas fa-file-download'
           },
@@ -101,7 +105,7 @@ export default {
         //recommendations
         {
           label: this.$trp('ui.label.recommendation'),
-          vIf: this.params.recommendations ? true : false,
+          vIf: (this.params.recommendations && !excludeActions.includes('recommendations')) ? true : false,
           props: {
             icon: 'fas fa-hat-wizard'
           },
@@ -110,7 +114,7 @@ export default {
         //Filter
         {
           label: this.$tr('ui.label.filter'),
-          vIf: this.filter.load,
+          vIf: (this.filter.load && !excludeActions.includes('filter')),
           props: {
             icon: 'fas fa-filter'
           },
@@ -119,7 +123,7 @@ export default {
         //Refresh
         {
           label: this.$trp('ui.label.refresh'),
-          vIf: this.params.refresh,
+          vIf: (this.params.refresh && !excludeActions.includes('refresh')),
           props: {
             icon: 'fas fa-redo'
           },
