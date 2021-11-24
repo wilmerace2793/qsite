@@ -186,6 +186,7 @@ export default {
     collapsible: 'Collapsible',
     room: 'Room | Rooms',
     rating: 'Rating | Ratings',
+    rate: 'Rate',
     appointment: 'Appointment | Appointments',
     show: 'Show',
     accessibility: 'Accessibility',

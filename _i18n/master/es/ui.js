@@ -191,6 +191,7 @@ export default {
     collapsible: 'Plegable',
     room: 'Sala | Salas',
     rating: 'Calificación | Calificaciones',
+    rate: 'Calificar',
     appointment: 'Cita | Citas',
     show: 'Mostrar',
     accessibility: 'Accesibilidad',
