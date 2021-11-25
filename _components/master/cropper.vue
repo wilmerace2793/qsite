@@ -3,9 +3,14 @@
     <div id="cropperContent" class="row items-center justify-center">
       <!---Cropper-->
       <vue-cropper v-if="imgSrc" v-bind="cropperProps" ref="cropper" @crop="getCropperData()"/>
-      <!---top actions-->
-      <div id="topAction" class="row q-gutter-x-sm" v-if="information">
-        <div v-for="(item, keyItemAction) in cropperActions.top" :key="keyItemAction"
+      <!---Top actions-->
+      <div id="topActions" class="row q-gutter-x-xs">
+        <q-btn v-for="(item, keyItem) in cropperActions.top" :key="keyItem" round flat
+               :icon="item.icon" @click="item.action()" color="white" size="11px"/>
+      </div>
+      <!---Bottom actions-->
+      <div id="bottomActions" class="row q-gutter-x-sm" v-if="information">
+        <div v-for="(item, keyItemAction) in cropperActions.bottom" :key="keyItemAction"
              class="btnActionCropper row items-center text-center" @click="item.popupName ? false : item.action()">
           <q-icon :name="item.icon" class="q-mr-xs"/>
           {{ item.value }}
@@ -19,11 +24,6 @@
             </q-input>
           </q-popup-edit>
         </div>
-      </div>
-      <!---Bottom actions-->
-      <div id="buttomAction" class="row q-gutter-x-xs">
-        <q-btn v-for="(item, keyItem) in cropperActions.bottom" :key="keyItem" round flat
-               :icon="item.icon" @click="item.action()" color="white" size="11px"/>
       </div>
       <!--Inner loading-->
       <inner-loading :visible="loading"/>
@@ -66,7 +66,7 @@ export default {
     cropperProps() {
       return {
         ref: 'cropper',
-        autoCropArea: 0.98,
+        autoCropArea: 1,
         background: false,
         toggleDragModeOnDblclick: false,
         cropBoxResizable: true,
@@ -80,6 +80,55 @@ export default {
     cropperActions() {
       return {
         top: [
+          {icon: 'fas fa-search-plus', action: () => this.$refs.cropper.relativeZoom(0.2)},
+          {icon: 'fas fa-search-minus', action: () => this.$refs.cropper.relativeZoom(-0.2)},
+          {icon: 'fas fa-undo-alt', action: () => this.$refs.cropper.rotate(-45)},
+          {icon: 'fas fa-redo-alt', action: () => this.$refs.cropper.rotate(45)},
+          {
+            icon: 'fas fa-vector-square', action: () => {
+              let imageData = this.$refs.cropper.getImageData()//Get image data
+              let cropData = this.$refs.cropper.getData()//Get crop data
+              let percentages = [1.00, 0.90, 0.80, 0.70]//Instance options to percentages
+
+              //Calculate current percentage between image original data and cropperData
+              let currentPercentaje = parseFloat((((cropData.width * 100) / imageData.naturalWidth) / 100).toFixed(2))
+
+              /**
+               * Instance the next percentage acoording to current percentage, and validate that not be more than
+               * the last option percentages or reset it to 0
+               */
+              let indexPercentage = (percentages.indexOf(currentPercentaje) + 1)
+              if (indexPercentage > (percentages.length - 1)) indexPercentage = 0
+
+              //instance size to cropBox acoording to the instanced percentage
+              let sizeCropBox = {
+                width: imageData.naturalWidth * percentages[indexPercentage],
+                height: imageData.naturalHeight * percentages[indexPercentage]
+              }
+
+              //Set bos data calculating the percentage size and X and Y
+              this.$refs.cropper.setData({
+                ...sizeCropBox,
+                x: (imageData.naturalWidth - sizeCropBox.width) / 2,
+                y: (imageData.naturalHeight - sizeCropBox.height) / 2,
+              })
+            }
+          },
+          {
+            icon: 'fas fa-arrows-alt-h', action: () => {
+              this.$refs.cropper.scaleY(-this.scale.y)
+              this.scale.y = -this.scale.y
+            }
+          },
+          {
+            icon: 'fas fa-arrows-alt-v', action: () => {
+              this.$refs.cropper.scaleX(-this.scale.x)
+              this.scale.x = -this.scale.x
+            }
+          },
+          {icon: 'fas fa-reply', action: () => this.$refs.cropper.reset()},
+        ],
+        bottom: [
           {
             icon: 'fas fa-ban',
             value: this.$tr('ui.label.cancel'),
@@ -114,25 +163,6 @@ export default {
           {
             icon: 'fas fa-save', value: this.$tr('ui.label.save'), action: this.cropImage
           },
-        ],
-        bottom: [
-          {icon: 'fas fa-search-plus', action: () => this.$refs.cropper.relativeZoom(0.2)},
-          {icon: 'fas fa-search-minus', action: () => this.$refs.cropper.relativeZoom(-0.2)},
-          {icon: 'fas fa-undo-alt', action: () => this.$refs.cropper.rotate(-45)},
-          {icon: 'fas fa-redo-alt', action: () => this.$refs.cropper.rotate(45)},
-          {
-            icon: 'fas fa-arrows-alt-h', action: () => {
-              this.$refs.cropper.scaleY(-this.scale.y)
-              this.scale.y = -this.scale.y
-            }
-          },
-          {
-            icon: 'fas fa-arrows-alt-v', action: () => {
-              this.$refs.cropper.scaleX(-this.scale.x)
-              this.scale.x = -this.scale.x
-            }
-          },
-          {icon: 'fas fa-reply', action: () => this.$refs.cropper.reset()},
         ]
       }
     }
@@ -208,7 +238,7 @@ export default {
     position relative
     background #000
 
-    #topAction
+    #bottomActions
       position absolute
       right 10px
       bottom 10px
@@ -225,7 +255,7 @@ export default {
           font-size 16px
           color white
 
-    #buttomAction
+    #topActions
       padding 3px 5px
       border-radius 20px
       background #00000099
