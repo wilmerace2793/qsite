@@ -274,7 +274,8 @@ export default {
     availability: 'Availability | Availabilities',
     goTo: 'Go to {string}',
     meet: 'Meet | Mettings',
-    checked: 'Checked'
+    checked: 'Checked',
+    workSpace: 'Work Space | Work Spaces'
   },
   message: {
     notFound: 'Sorry, nothing here',

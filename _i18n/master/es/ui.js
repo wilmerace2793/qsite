@@ -279,7 +279,8 @@ export default {
     organization: 'Organización | Organizaciones',
     availability: 'Disponibilidad | Disponibilidades',
     goTo: 'Ir a {string}',
-    meet: 'Reunión | Reuniones'
+    meet: 'Reunión | Reuniones',
+    workSpace: 'Espacio de Trabajo | Espacios de Trabajo'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
