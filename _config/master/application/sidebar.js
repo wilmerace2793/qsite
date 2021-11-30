@@ -11,6 +11,8 @@ class AutoLoadSidebar {
     if (appConfig.mode == 'iadmin') this.loadModulesSidebar({name: 'adminSidebar'})
     //Load ipanel sidebar
     if (appConfig.mode == 'ipanel') this.loadModulesSidebar({name: 'panelSidebar'})
+    //order sidebar
+    this.orderSidebar()
   }
 
   //Add extra fields to sidebar
@@ -18,7 +20,6 @@ class AutoLoadSidebar {
     if (this.pages.mainqsite)
       this.sidebar['app'] = this.pages.mainqsite.home || {}
   }
-
 
   //Load node_modules sidebar
   loadModulesSidebar(params = {}) {
@@ -42,6 +43,23 @@ class AutoLoadSidebar {
         })
       }
     })
+  }
+
+  //Order sidebar
+  orderSidebar() {
+    //instance counters
+    let multipleSidebar = {}
+    let singleSidebar = {}
+
+    //Group sidebar by type
+    Object.keys(this.sidebar).forEach(name => {
+      let sidebar = this.sidebar[name]
+      if ((sidebar.name == 'app.home') || sidebar.children) multipleSidebar[name] = sidebar
+      else singleSidebar[name] = sidebar
+    })
+
+    //Assign response
+    this.sidebar = {...multipleSidebar, ...singleSidebar}
   }
 }
 
