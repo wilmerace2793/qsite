@@ -46,6 +46,22 @@ export default {
       breadcrumb: ['qsite.organizations']
     }
   },
+  //Organization Page
+  categories: {
+    permission: 'isite.categories.manage',
+    activated: true,
+    path: '/site/categories',
+    name: 'qsite.admin.catgeories.index',
+    crud: import('@imagina/qsite/_crud/categories'),
+    page: () => import('@imagina/qcrud/_pages/admin/crudPage'),
+    layout: () => import('@imagina/qsite/_layouts/master.vue'),
+    title: 'qsite.sidebar.adminCategories',
+    icon: 'fas fa-layer-group',
+    authenticated: true,
+    subHeader: {
+      refresh: true,
+    }
+  },
   //Icruds
   icruds: {
     permission: 'isite.icruds.manage',
