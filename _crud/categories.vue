@@ -148,18 +148,6 @@ export default {
               ]
             }
           },
-          internal: {
-            value: '0',
-            type: 'select',
-            isTranslatable: false,
-            props: {
-              label: this.$tr('ui.label.internal'),
-              options: [
-                {label: this.$tr('ui.label.yes'), value: '1'},
-                {label: this.$tr('ui.label.no'), value: '0'}
-              ]
-            }
-          },
           sortOrder: {
             value: '0',
             type: 'input',
