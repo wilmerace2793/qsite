@@ -280,7 +280,8 @@ export default {
     availability: 'Disponibilidad | Disponibilidades',
     goTo: 'Ir a {string}',
     meet: 'Reunión | Reuniones',
-    workSpace: 'Espacio de Trabajo | Espacios de Trabajo'
+    workSpace: 'Espacio de Trabajo | Espacios de Trabajo',
+    paymentMethod: 'Método de Pago'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
@@ -337,7 +338,10 @@ export default {
     rateYour: 'Califica tu <b>{name}</b>',
     withoutIcon: 'Sin Icono',
     mustContainAlphanumeric: 'Debe contener solo caracteres alfanumericoss',
-    hintUseChips: 'Ingrese el valor y presione Enter'
+    hintUseChips: 'Ingrese el valor y presione Enter',
+    finishRegister: 'Falta poco para terminar tu registro',
+    ready: 'Todo está listo',
+    noRegistered: 'Aún no estás registrado'
   },
   form: {
     id: 'ID',

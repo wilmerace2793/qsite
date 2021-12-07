@@ -275,7 +275,8 @@ export default {
     goTo: 'Go to {string}',
     meet: 'Meet | Mettings',
     checked: 'Checked',
-    workSpace: 'Work Space | Work Spaces'
+    workSpace: 'Work Space | Work Spaces',
+    paymentMethod: 'Payment Method'
   },
   message: {
     notFound: 'Sorry, nothing here',
@@ -337,7 +338,10 @@ export default {
     rateYour: 'Rate your <b>{name}</b>',
     withoutIcon: 'Without Icon',
     mustContainAlphanumeric: 'Must contain only alphanumeric',
-    hintUseChips: 'Ingrese el valor y presione enter'
+    hintUseChips: 'Ingrese el valor y presione enter',
+    finishRegister: 'There is little left to finish your registration...',
+    ready: 'Todo está listo',
+    noRegistered: 'You are not registered yet'
   },
   form: {
     id: 'ID',
