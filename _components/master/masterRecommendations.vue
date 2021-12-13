@@ -19,7 +19,7 @@
       </div>
       <q-separator class="q-my-sm"/>
       <!--Items-->
-      <q-scroll-area :thumb-style="thumbStyle" v-if="items.length" style="height: calc(100vh - 120px)">
+      <q-scroll-area :thumb-style="thumbStyle" v-if="items.length" style="height: calc(100vh - 167px)">
         <div class="box item q-px-none q-py-md" v-for="item in items" :key="item.id">
           <!--Content-->
           <div class="ellipsis relative-position">
@@ -184,7 +184,7 @@ export default {
 </script>
 <style lang="stylus">
 #recommendationsComponent
-  padding 20px 20px 30px 8px
+  padding 16px
   background $custom-accent-color
   height 100%
 

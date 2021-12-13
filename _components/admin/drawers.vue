@@ -1,15 +1,14 @@
 <template>
   <div id="masterDrawers">
     <!-- MENU -->
-    <q-drawer id="menuMaster" class="no-shadow" v-model="drawer.menu" bordered ref="menuMaster"
-              :mini="miniState" @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
+    <q-drawer id="menuMaster" class="no-shadow" v-model="drawer.menu" ref="menuMaster"
+              @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
       <!--Logo-->
-      <div class="q-pa-md logo-bg-primary" v-if="!miniState && drawer.menu">
-        <q-img contain :src="logo" style="height: 120px; min-height: 120px"/>
+      <div id="logoSite">
+        <q-img contain :src="logo" style="height: 80px; min-height: 80px"/>
       </div>
       <!--List iadmin-->
-      <q-scroll-area
-          :style="`height: calc(100vh - ${this.windowSize == 'mobile' ? '152' : (miniState ? '100' : '252')}px`">
+      <q-scroll-area :style="`height: calc(100vh - 120px`">
         <!--Menu-->
         <menu-list ref="menuList" group :menu="menu"/>
       </q-scroll-area>
@@ -143,62 +142,56 @@ export default {
 }
 </script>
 <style lang="stylus">
-.q-layout-drawer-delimiter
-  box-shadow $shadow-1
-
-.q-drawer--mini
-  width 57px !important
-
-  .q-item__section
-    padding 0px 20px !important
-
-#menuMaster
-  hr
-    background-color $grey-3
-
-  .q-expansion-item
-    background-color $grey-3
-
-  .q-expansion-item__container
-    .q-expansion-item__content
-      padding 0 0 0 1px
-      border-left 15px solid white
-
-  .q-item
-    padding-left 0
-    min-height 40px
-    color $blue-grey
-
-    .q-item__section--avatar
-      padding 0 18px !important
-
-      .q-icon
-        font-size 20px
-        color $blue-grey
-
-    &:hover
-      background-color $grey-4
-      color $primary
-
-      .q-icon
-        color $primary
-        font-size 22px
-
-    &.item-is-active
-      background-color white
-
-      .q-item__section, .q-icon
-        color $primary
-
-  .expansion-selected
-    background-color $primary
-
 #masterDrawers
+
   #drawerRecomendationMaster
     .q-drawer
       max-height max-content
 
     .q-drawer__content
-      background #ebf1fa
+      background white
+
+  #menuMaster
+    #logoSite
+      padding 20px 15px
+      height 120px
+      background-color $primary
+
+    .q-expansion-item
+      background-color $grey-3
+
+    .q-expansion-item__container
+      .q-expansion-item__content
+        padding 0 0 0 2px
+        border-left 15px solid white
+
+    .q-item
+      padding-left 0
+      min-height 40px
+      color $blue-grey
+
+      .q-item__section--avatar
+        padding 0 18px !important
+
+        .q-icon
+          font-size 20px
+          color $blue-grey
+
+      &:hover
+        background-color $grey-4
+        color $primary
+
+        .q-icon
+          color $primary
+          font-size 22px
+
+      &.item-is-active
+        background-color white
+
+        .q-item__section, .q-icon
+          color $primary
+
+    .expansion-selected
+      background-color $primary
 
 </style>

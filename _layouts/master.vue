@@ -1,5 +1,5 @@
 <template>
-  <q-layout id="layoutMaster" :view="(appConfig.mode == 'iadmin') ? 'hHh LpR lFf' : 'lHr LpR lFf'">
+  <q-layout id="layoutMaster" :view="(appConfig.mode == 'iadmin') ? 'lHh LpR lFf' : 'lHr LpR lFf'">
     <!-- HEADER -->
     <header-admin v-if="appState.loadPage && (appConfig.mode == 'iadmin')"/>
     <header-panel v-if="appState.loadPage && (appConfig.mode == 'ipanel')"/>
@@ -11,6 +11,22 @@
 
     <!-- ROUTER VIEW -->
     <q-page-container>
+      <!--Page route-->
+      <div id="pageRouteContent" v-if="appConfig.mode == 'iadmin'">
+        <div id="subContent" class="row items-center">
+          <!-- Back Button -->
+          <q-btn icon="fas fa-arrow-left" unelevated round color="primary" class="btn-small q-mr-md"
+                 @click="$helper.backHistory()">
+            <q-tooltip>{{ $tr('ui.label.back') }}</q-tooltip>
+          </q-btn>
+          <!--Breadcrumb-->
+          <q-breadcrumbs class="text-blue-grey">
+            <q-breadcrumbs-el v-for="(item, key) in breadcrumbs" :key="key" :label="item.label" :icon="item.icon"
+                              :to="item.to ? {name : item.to} : false"/>
+          </q-breadcrumbs>
+        </div>
+      </div>
+      <!--Router view-->
       <router-view v-if="appState.loadPage" class="layout-padding"/>
     </q-page-container>
 
@@ -77,6 +93,32 @@ export default {
   computed: {
     appState() {
       return this.$store.state.qsiteApp
+    },
+    //Return data breadcrumd
+    breadcrumbs() {
+      let response = []
+      //Get breadcrumbs from params
+      let breadcrumbs = (this.$route.meta?.subHeader?.breadcrumb || []).reverse()
+
+      //Set Home page and current page
+      let pages = (this.$route.name.indexOf('app.home') == -1) ?
+          [config(`pages.mainqsite.home`), this.$route.meta] : [config(`pages.mainqsite.home`)]
+
+      //Get page from breadcrum
+      breadcrumbs.forEach(pageName => pages.splice(1, 0, config(`pages.${pageName}`)))
+
+      //Format all routes to breadcrum
+      pages.forEach(page => {
+        if (page && page.activated && this.$auth.hasAccess(page.permission))
+          response.push({
+            label: this.$tr(page.headerTitle || page.title),
+            icon: page.icon,
+            to: page.name
+          })
+      })
+
+      //Response
+      return response
     }
   },
   methods: {
@@ -89,4 +131,15 @@ export default {
 <style lang="stylus">
 #layoutMaster
   background-color $custom-accent-color
+
+  #pageRouteContent
+    width 100%
+    background-color $primary
+
+    #subContent
+      padding 8px 10px 8px 16px
+      border-radius $custom-radius 0 0 0
+      background-color $custom-accent-color
+    @media screen and (max-width: $breakpoint-md)
+      display none
 </style>
