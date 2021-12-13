@@ -12,7 +12,7 @@
     <!-- ROUTER VIEW -->
     <q-page-container>
       <!--Page route-->
-      <div id="pageRouteContent" v-if="appConfig.mode == 'iadmin'">
+      <div id="routeInformationContent" v-if="appConfig.mode == 'iadmin'" class="q-hide q-md-show">
         <div id="subContent" class="row items-center">
           <!-- Back Button -->
           <q-btn icon="fas fa-arrow-left" unelevated round color="primary" class="btn-small q-mr-md"
@@ -26,6 +26,8 @@
           </q-breadcrumbs>
         </div>
       </div>
+      <div id="fakeRouteInformationContent" class="q-hide q-md-show" v-if="appConfig.mode == 'iadmin'"></div>
+
       <!--Router view-->
       <router-view v-if="appState.loadPage" class="layout-padding"/>
     </q-page-container>
@@ -132,14 +134,18 @@ export default {
 #layoutMaster
   background-color $custom-accent-color
 
-  #pageRouteContent
+  #routeInformationContent
     width 100%
     background-color $primary
+    position fixed
+    z-index 2
 
     #subContent
       padding 8px 10px 8px 16px
       border-radius $custom-radius 0 0 0
       background-color $custom-accent-color
-    @media screen and (max-width: $breakpoint-md)
-      display none
+
+  #fakeRouteInformationContent
+    height 35px
+    width 100%
 </style>
