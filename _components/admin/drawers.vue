@@ -153,7 +153,7 @@ export default {
 
   #menuMaster
     #logoSite
-      padding 20px 15px
+      padding 20px 25px
       height 120px
       background-color $primary
 
