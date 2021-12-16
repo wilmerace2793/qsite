@@ -8,7 +8,10 @@ class AutoLoadSidebar {
     this.pages = pagesConfig
     this.addDefaultItems()
     //Load iadmin sidebar
-    if (appConfig.mode == 'iadmin') this.loadModulesSidebar({name: 'adminSidebar'})
+    if (appConfig.mode == 'iadmin') {
+      this.loadModulesSidebar({name: 'adminSidebar'})
+      this.loadPerzonalizationSidebar()
+    }
     //Load ipanel sidebar
     if (appConfig.mode == 'ipanel') this.loadModulesSidebar({name: 'panelSidebar'})
     //order sidebar
@@ -60,6 +63,17 @@ class AutoLoadSidebar {
 
     //Assign response
     this.sidebar = {...multipleSidebar, ...singleSidebar}
+  }
+
+  //Add perzonalization/settings page
+  loadPerzonalizationSidebar() {
+    this.modules.forEach(moduleName => {
+      if (pagesConfig[moduleName].personalization) {
+        if (this.sidebar[moduleName].children) {
+          this.sidebar[moduleName].children.push(pagesConfig[moduleName].personalization)
+        }
+      }
+    })
   }
 }
 

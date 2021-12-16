@@ -1,4 +1,5 @@
 import appConfig from 'src/config/app'
+import mainConfigs from '@imagina/qsite/_config/master/application/main'
 
 class AutoLoadPages {
   constructor() {
@@ -8,7 +9,10 @@ class AutoLoadPages {
     //Load main pages
     this.loadPages({prefix: 'main', name: 'mainPages'})
     //Load iadmin pages
-    if (appConfig.mode == 'iadmin') this.loadPages({name: 'adminPages'})
+    if (appConfig.mode == 'iadmin') {
+      this.loadPages({name: 'adminPages'})
+      this.loadPerzonalizationPage()
+    }
     //Load ipanel pages
     if (appConfig.mode == 'ipanel') this.loadPages({name: 'panelPages'})
     //Update pages
@@ -33,8 +37,10 @@ class AutoLoadPages {
       } catch (e) {
       }
 
-      if (configPage) this.pages[namePage] = configPage.default//Add pages
-      if (configPage.updatePages) this.updatePages.push(configPage.updatePages)//Add method to updated pages
+      //Add pages
+      this.pages[namePage] = configPage ? configPage.default : {}
+      //Add method to updated pages
+      if (configPage.updatePages) this.updatePages.push(configPage.updatePages)
     })
   }
 
@@ -42,6 +48,28 @@ class AutoLoadPages {
   loadUpdatePages() {
     this.updatePages.forEach(updatedPages => {
       this.pages = updatedPages(this.pages)
+    })
+  }
+
+  //Add perzonalization/settings page
+  loadPerzonalizationPage() {
+    this.modules.forEach(moduleName => {
+      let moduleMainConfig = mainConfigs[moduleName] || {}
+      if (moduleMainConfig.moduleName) {
+        this.pages[moduleName].personalization = {
+          permission: 'isite.settings.manage',
+          activated: true,
+          path: `/${moduleMainConfig.moduleName}/personalization`,
+          name: `${moduleName}.admin.personalization`,
+          page: () => import('@imagina/qsite/_pages/admin/settings/settingsByModule'),
+          layout: () => import('@imagina/qsite/_layouts/master.vue'),
+          title: 'ui.label.personalization',
+          icon: 'fas fa-brush',
+          authenticated: true,
+          subHeader: {refresh: true},
+          mainConfig: moduleMainConfig
+        }
+      }
     })
   }
 }
