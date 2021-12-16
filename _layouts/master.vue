@@ -27,9 +27,10 @@
         </div>
       </div>
       <div id="fakeRouteInformationContent" class="q-hide q-md-show" v-if="appConfig.mode == 'iadmin'"></div>
-
       <!--Router view-->
-      <router-view v-if="appState.loadPage" class="layout-padding"/>
+      <div id="routerPageContent" class="layout-padding">
+        <router-view v-if="appState.loadPage"/>
+      </div>
     </q-page-container>
 
     <!---Cropper-->
