@@ -28,7 +28,7 @@ export function SET_SELECTED_LOCALES(state) {
   locales = locales ? locales.value : [];
 
   //Validate if there is selected locales, and set defaultLocale if not exist
-  if(!state.selectedLocales.length) locales = [state.defaultLocale]
+  if (!locales.length) locales = [state.defaultLocale]
 
   //Set locales to state. sort
   state.selectedLocales = locales.sort();
