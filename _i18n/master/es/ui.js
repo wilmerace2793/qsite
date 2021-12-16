@@ -281,7 +281,9 @@ export default {
     goTo: 'Ir a {string}',
     meet: 'Reunión | Reuniones',
     workSpace: 'Espacio de Trabajo | Espacios de Trabajo',
-    paymentMethod: 'Método de Pago'
+    paymentMethod: 'Método de Pago',
+    personalize: 'Personalizar',
+    personalization: 'Personalización'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

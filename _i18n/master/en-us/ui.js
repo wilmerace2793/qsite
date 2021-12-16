@@ -276,7 +276,9 @@ export default {
     meet: 'Meet | Mettings',
     checked: 'Checked',
     workSpace: 'Work Space | Work Spaces',
-    paymentMethod: 'Payment Method'
+    paymentMethod: 'Payment Method',
+    personalize: 'Personalize',
+    personalization : 'Personalization'
   },
   message: {
     notFound: 'Sorry, nothing here',

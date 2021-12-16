@@ -1,7 +1,7 @@
 export default {
+  adminGroup: 'Site',
   adminIndex: 'Settings',
   adminDynamicForm: 'Dynamic Form',
-  adminGroupOrganizations: 'Organizations',
   adminOrganization: 'Organizations List',
   adminCategories : 'Categories',
   adminIcruds: 'Icruds',
