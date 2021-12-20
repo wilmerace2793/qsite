@@ -8,7 +8,7 @@
         <q-img contain :src="logo" style="height: 80px; min-height: 80px"/>
       </div>
       <!--List iadmin-->
-      <q-scroll-area :style="`height: calc(100vh - 120px`">
+      <q-scroll-area :style="`height: calc(100vh - 140px`">
         <!--Menu-->
         <menu-list ref="menuList" group :menu="menu"/>
       </q-scroll-area>
