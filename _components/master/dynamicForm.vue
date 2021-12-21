@@ -26,12 +26,12 @@
           <!--Columns-->
           <component v-for="(column, keyColumn) in structure.columns()" :key="keyColumn" v-bind="column.props">
             <!--Blocks-->
-            <div v-for="(block, keyBlock) in column.blocks" :key="keyBlock" v-bind="block.props">
+            <component v-for="(block, keyBlock) in column.blocks" :key="keyBlock" v-bind="block.props">
               <div :class="block.childClass">
                 <!--Top step Info-->
-                <div class="step-top-content q-mb-md" v-if="block.title || block.description">
+                <div class="step-top-content" v-if="block.title || block.description">
                   <!--Title-->
-                  <div class="box-title" v-if="block.title && (formType != 'stepVertical')">
+                  <div class="box-title" v-if="block.title && !['stepVertical','grid'].includes(formType)">
                     {{ block.title }}
                   </div>
                   <!--Description-->
@@ -75,7 +75,7 @@
                          v-if="action.vIf != undefined ? action.vIf : true"/>
                 </div>
               </div>
-            </div>
+            </component>
           </component>
         </component>
         <!--Actions-->
@@ -192,7 +192,7 @@ export default {
                   title: block.title || `#${keyBlock + 1}`,
                   class: `col-12 ${this.allowNavigation ? 'cursor-pointer' : ''}`
                 },
-                blocks: [{props: {}, childClass: '', ...block}]
+                blocks: [{props: {is: 'div'}, childClass: '', ...block}]
               }
             })
 
@@ -230,8 +230,17 @@ export default {
             //Transform blocks data
             let blocksData = this.blocksData.map((block, keyBlock) => {
               return {
-                props: {class: 'q-mb-md'},
-                childClass: 'box box-auto-height',
+                props: {
+                  is: 'q-expansion-item',
+                  group: 'blockCollapsible',
+                  defaultOpened: (keyBlock == 0) ? true : false,
+                  style: 'padding : 0',
+                  class: 'q-mb-md',
+                  label: block.title,
+                  class: 'box box-auto-height q-mb-md',
+                  headerClass : 'box-title text-blue-grey'
+                },
+                childClass: 'q-py-sm q-px-md',
                 ...block
               }
             })
