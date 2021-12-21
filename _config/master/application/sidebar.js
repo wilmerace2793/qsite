@@ -69,7 +69,7 @@ class AutoLoadSidebar {
   loadPerzonalizationSidebar() {
     this.modules.forEach(moduleName => {
       if (pagesConfig[moduleName].personalization) {
-        if (this.sidebar[moduleName].children) {
+        if (this.sidebar[moduleName] && this.sidebar[moduleName].children) {
           this.sidebar[moduleName].children.push(pagesConfig[moduleName].personalization)
         }
       }
