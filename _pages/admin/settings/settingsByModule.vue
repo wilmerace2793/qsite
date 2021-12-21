@@ -12,8 +12,11 @@
       </div>
       <!--Form-->
       <div class="col-12">
-        <dynamic-form v-if="!loading" v-model="form" :blocks="formBlocks" form-type="grid"
+        <!--Form-->
+        <dynamic-form v-if="!loading && formBlocks.length" v-model="form" :blocks="formBlocks" form-type="grid"
                       @submit="saveSettings()" :form-col-number="1"/>
+        <!--Empty results-->
+        <not-result class="box box-auto-height" v-else/>
       </div>
     </div>
     <!--Loading-->
