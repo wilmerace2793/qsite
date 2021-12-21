@@ -13,7 +13,7 @@
       <!--Form-->
       <div class="col-12">
         <dynamic-form v-if="!loading" v-model="form" :blocks="formBlocks" form-type="grid"
-                      @submit="saveSettings()"/>
+                      @submit="saveSettings()" :form-col-number="1"/>
       </div>
     </div>
     <!--Loading-->
@@ -123,9 +123,7 @@ export default {
         blocks.push({title: 'General', fields: this.$clone(this.settingsToEdit)})
       } else {//Get module settgins
         //Get module name
-        let modulesToLoadSettings = [this.mainConfig.moduleName.toLowerCase()]
-        //If moduleName is Isite, malso load core settings
-        if (modulesToLoadSettings.includes('isite')) modulesToLoadSettings.unshift('core')
+        let modulesToLoadSettings = (this.mainConfig.modulesSettings || this.mainConfig.moduleName)
         //Get settings
         Object.keys(this.settingsGroup).forEach(moduleName => {
           if (modulesToLoadSettings.includes(moduleName.toLowerCase())) {
