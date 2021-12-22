@@ -1,8 +1,9 @@
 <template>
-  <q-dialog v-model="show" class="master-dialog" no-esc-dismiss no-backdrop-dismiss v-on="$listeners">
+  <q-dialog v-model="show" :content-class="`master-dialog${customPosition ? '-custom' : ''}`" no-esc-dismiss
+            no-backdrop-dismiss v-on="$listeners" :position="customPosition ? 'right' : 'standard'">
     <!--Content-->
-    <div :id="id || 'masterModalContent'" class="master-dialog__content round relative-position"
-         :style="`min-width: ${width}`" v-if="show">
+    <div :id="id || 'masterModalContent'" :style="customPosition ? '' : `min-width: ${width}`"
+         v-if="show" class="master-dialog__content round relative-position">
       <!--Header-->
       <div :class="`master-dialog__header text-${color} row justify-between items-center box box-auto-height`">
         <!--Title-->
@@ -30,6 +31,7 @@
     </div>
   </q-dialog>
 </template>
+
 <script>
 export default {
   props: {
@@ -41,7 +43,8 @@ export default {
     icon: {type: String},
     actions: {type: Array},
     id: {type: String},
-    hideCloseAction: {type: Boolean, default: false}
+    hideCloseAction: {type: Boolean, default: false},
+    customPosition: {type: Boolean, default: false}
   },
   components: {},
   watch: {
@@ -78,25 +81,50 @@ export default {
   methods: {}
 }
 </script>
-<style lang="stylus">
-.master-dialog__content
-  background-color $custom-accent-color
 
-  .master-dialog__header
+<style lang="stylus">
+.master-dialog
+  &__content
+    background-color $custom-accent-color
+
+  &__header
     margin 16px 16px 0 16px
 
-  .master-dialog__body
+  &__body
     margin 16px
-    max-height calc(100vh - 240px)
     overflow-y scroll
-
     @media screen and (min-width: $breakpoint-md)
       margin 16px 0 16px 16px
 
-  .master-dialog__actions
+  &__actions
     margin 0 16px 16px 16px
 
     .q-btn
       .q-icon
         font-size 20px
+
+.master-dialog
+  .master-dialog__body
+    max-height calc(100vh - 240px)
+
+.master-dialog-custom
+  .q-dialog__inner
+    padding 15px 0 0 0
+    width 65vw
+    @media screen and (max-width: $breakpoint-md)
+      width 90vw
+    @media screen and (max-width: $breakpoint-xs)
+      width 100vw
+
+  .master-dialog
+    &__content
+      height 100%
+      max-height 100%
+      width 100%
+      max-width 100%
+      border-radius $custom-radius 0 0 0 !important
+
+    &__body
+      height calc(100vh - 207px)
+
 </style>
