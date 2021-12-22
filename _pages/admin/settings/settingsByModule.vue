@@ -1,24 +1,39 @@
 <template>
   <div id="settingPage" class="relative-position">
-    <!--Empty result-->
-    <not-result class="q-my-md" v-if="!loading && !dataSettings"/>
-    <!--Content-->
-    <div class="row q-col-gutter-md" v-else>
-      <!--Page Actions-->
-      <div class="col-xs-12">
-        <div class="box box-auto-height">
-          <page-actions :title="titlePage" @refresh="getData"/>
-        </div>
-      </div>
-      <!--Form-->
-      <div class="col-12">
-        <!--Form-->
-        <dynamic-form v-if="!loading && formBlocks.length" v-model="form" :blocks="formBlocks" form-type="grid"
-                      @submit="saveSettings()" :form-col-number="1"/>
-        <!--Empty results-->
-        <not-result class="box box-auto-height" v-else/>
+    <!--Page Actions-->
+    <div class="q-mb-md">
+      <div class="box box-auto-height">
+        <page-actions :title="titlePage" @refresh="getData(true)"/>
       </div>
     </div>
+    <!--Empty results-->
+    <not-result class="box box-auto-height" v-if="!loading && !formBlocks.length"/>
+    <!--Content-->
+    <div v-if="!loading && formBlocks.length">
+      <div class="row q-col-gutter-md">
+        <!--Block targets-->
+        <div v-for="(block, keyBlock) in formBlocks" :key="keyBlock"
+             class="col-12 col-sm-6 col-lg-4 col-xl-3">
+          <div class="block box box-auto-height" @click="openBlock(block)">
+            <!--Icon-->
+            <q-icon :name="block.icon || 'fas fa-paint-brush'" class="block__icon q-mr-sm"/>
+            <!--Title-->
+            <div class="block__title-content row items-center">
+              <div class="block__title ellipsis-2-lines">{{ block.title }}</div>
+            </div>
+            <!--Description-->
+            <div class="block__description ellipsis-3-lines">
+              {{ block.description || `${$tr('ui.label.personalization')} | ${block.title}` }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Form modal-->
+    <master-modal v-model="formModal.show" v-bind="formModal.props">
+      <dynamic-form v-model="form" :blocks="formModal.blocks" form-type="grid" no-actions
+                    ref="settingsForm" @submit="saveSettings()" :loading="loading"/>
+    </master-modal>
     <!--Loading-->
     <inner-loading :visible="loading"/>
   </div>
@@ -45,9 +60,13 @@ export default {
       dataSettings: false,
       moduleSelected: false,
       groupSelected: false,
-      settingsToEdit: [],
+      settingsToEdit: {},
       deprecatedSettings: [],
-      groupsName: {}
+      groupsName: {},
+      formModal: {
+        show: false,
+        blocks: null
+      }
     }
   },
   computed: {
@@ -172,13 +191,13 @@ export default {
       this.openSettingName()//Open default group
     },
     //Get Data
-    getData() {
+    getData(refresh = false) {
       return new Promise(async resolve => {
         this.loading = true
         await Promise.all([
-          this.$store.dispatch('qsiteApp/GET_SITE_SETTINGS'),//Get settings
-          this.getSettingFields(),//Get setting fields
-          this.getDeprecatedSettings()//Get seprecated settings
+          this.$store.dispatch('qsiteApp/GET_SITE_SETTINGS', {refresh: refresh}),//Get settings
+          this.getSettingFields(refresh),//Get setting fields
+          this.getDeprecatedSettings(refresh)//Get seprecated settings
         ])
         //Set Default selected
         if (!this.moduleSelected && this.dataSettings) {
@@ -193,12 +212,12 @@ export default {
       })
     },
     //Get settings Fields
-    getSettingFields() {
+    getSettingFields(refresh = false) {
       return new Promise((resolve, reject) => {
         this.dataSettings = false//Reset data settings
         //Request Params
         let requestParams = {
-          refresh: true,
+          refresh: refresh,
           params: {filter: {allTranslations: true, configNameByModule: 'settings-fields'}}
         }
         //Request
@@ -224,11 +243,11 @@ export default {
       })
     },
     //Get deprecate settings config
-    getDeprecatedSettings() {
+    getDeprecatedSettings(refresh = false) {
       return new Promise((resolve, reject) => {
         //Request Params
         let requestParams = {
-          refresh: true,
+          refresh: refresh,
           params: {filter: {configName: 'isite.deprecated-settings'}}
         }
         //Request
@@ -307,10 +326,13 @@ export default {
     //Save settings
     saveSettings() {
       this.loading = true
+      //Request data
+      let requestData = {attributes: this.getDataForm()}
       //Request
-      this.$crud.post('apiRoutes.qsite.settings', {attributes: this.getDataForm()}).then(async response => {
+      this.$crud.post('apiRoutes.qsite.settings', requestData).then(async response => {
+        this.getData(true)
+        this.formModal.show = false
         this.$alert.info(this.$tr('ui.message.recordUpdated'))
-        this.getData()
       }).catch(error => {
         this.$alert.error(this.$tr('ui.message.recordNoUpdated'))
         console.error('[UPDATE-SETTINGS]::error:', error)
@@ -319,16 +341,14 @@ export default {
     },
     //Open setting name
     openSettingName() {
-      this.settingsToEdit = []//Reset settings module
+      let settingsToEdit = {}//Reset settings module
       let moduleName = this.$route.query.module//Get setting from URL
-      let groupName = this.$route.query.group//Get settings name from url
       let settingsName = this.$route.query.settings//Get settings name from url
 
       //Get settings by module name
       let moduleSettings = this.$clone(this.settingsGroup[this.$helper.toCapitalize(moduleName || '')])
 
       if (moduleSettings) {
-        let settingsToEdit = {}//Reset settings to edit
         //Search by setting name
         if (settingsName) {
           //Add module name to every setting name
@@ -343,10 +363,35 @@ export default {
             })
           })
         }
+      }
 
-        //Open group settings
-        groupName = Object.keys(moduleSettings).includes(groupName) ? groupName : Object.keys(moduleSettings).pop()
-        this.settingsToEdit = settingsToEdit
+      //Set settings to Edit
+      this.settingsToEdit = this.$clone(settingsToEdit)
+      //Open group settings
+      if (Object.keys(this.settingsToEdit).length) this.openBlock(this.formBlocks[0])
+    },
+    //Open block form
+    openBlock(block) {
+      this.formModal = {
+        show: true,
+        blocks: [block],
+        props: {
+          title: `${this.titlePage} - ${block.title}`,
+          customPosition: true,
+          actions: [
+            {
+              props: {
+                label: this.$tr('ui.label.save'),
+                color: 'green',
+              },
+              action: () => {
+                if (this.$refs.settingsForm) {
+                  this.$refs.settingsForm.changeStep('next', true)
+                }
+              }
+            }
+          ]
+        }
       }
     }
   }
@@ -354,13 +399,35 @@ export default {
 </script>
 <style lang="stylus">
 #settingPage
-  .q-item
-    font-size 14px
-    color $grey-9
+  .block
+    position relative
+    cursor pointer
 
-    &.q-item--active
-      color $primary
+    &__icon
+      position absolute
+      left 15px
+      top 15px
+      background-color $primary
+      border-radius 50%
+      padding 6px
+      color white
+      font-size 16px
 
-      .q-icon
-        color $primary
+    &__title-content
+      height 28px
+      max-height 28px
+
+    &__title
+      padding-left 35px
+      line-height 1
+      color $blue-grey
+      font-weight bold
+
+    &__description
+      line-height 1
+      color $grey-8
+      font-size 14px
+      padding-top 8px
+      height 50px
+      max-height 50px
 </style>
