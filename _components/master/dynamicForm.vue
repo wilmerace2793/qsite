@@ -31,7 +31,7 @@
                 <!--Top step Info-->
                 <div class="step-top-content" v-if="block.title || block.description">
                   <!--Title-->
-                  <div class="box-title" v-if="block.title && !['stepVertical','grid'].includes(formType)">
+                  <div class="box-title q-mb-md" v-if="block.title && !['stepVertical','collapsible'].includes(formType)">
                     {{ block.title }}
                   </div>
                   <!--Description-->
@@ -202,6 +202,55 @@ export default {
         },
         //as a grid
         grid: {
+          wrapper: {
+            props: {
+              class: `relative-position`
+            }
+          },
+          wrapperLocales: {
+            props: {
+              class: "q-mb-md box box-auto-height"
+            }
+          },
+          wrapperBlocks: {
+            props: {
+              is: 'div',
+              id: 'gridContent',
+              ref: 'gridContent',
+              class: 'row q-col-gutter-md'
+            }
+          },
+          columns: () => {
+            //Instance form columns number grid class
+            let formColumsClass = {1: 'col-md-12', 2: 'col-md-6', 3: 'col-md-4'}
+            //Instance response
+            let response = Array(this.formColNumber).fill(0).map((_, i) => {
+              return {blocks: [], props: {is: 'div', class: `col-12 ${formColumsClass[this.formColNumber]}`}}
+            });
+            //Transform blocks data
+            let blocksData = this.blocksData.map((block, keyBlock) => {
+              return {
+                props: {
+                  is: 'div',
+                  class: 'q-mb-md',
+                  class: 'box box-auto-height q-mb-md'
+                },
+                //childClass: 'q-py-sm q-px-md',
+                ...block
+              }
+            })
+            //Split blocks in columns
+            let posColumn = 0
+            blocksData.forEach(block => {
+              response[posColumn].blocks.push(block)
+              posColumn = (posColumn >= (this.formColNumber - 1)) ? 0 : (posColumn + 1)
+            })
+            //response
+            return response
+          }
+        },
+        //as a collapsible
+        collapsible: {
           wrapper: {
             props: {
               class: `relative-position`
