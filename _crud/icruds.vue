@@ -1,6 +1,7 @@
 <template>
-  <master-modal v-model="modal.show" v-bind="modal.props">
-    <dynamic-field v-model="field.sectionData" :field="{type : 'json'}"/>
+  <master-modal v-model="modal.show" v-bind="modal.props" custom-position>
+    <dynamic-field v-for="(field, keyField) in crudData.formLeft" :key="keyField"
+                   v-model="form[field.name || keyField]" :field="field"/>
   </master-modal>
 </template>
 <script>
@@ -25,11 +26,8 @@ export default {
           ]
         },
       },
-      field: {
-        section: 'form',
-        data: null,
-        sectionData: null
-      }
+      form: {},
+      selectedCrud: null
     }
   },
   computed: {
@@ -61,11 +59,11 @@ export default {
           requestParams: {filter: {noTranslate: true}},
           actions: [
             {
-              label: 'Edit Form',
+              label: 'Edit',
               icon: 'fas fa-clipboard-list',
               action: (item) => {
-                //Set field params
-                this.field = {section: 'form', data: item, sectionData: item.projectCrud.form}
+                this.selectedCrud = this.$clone(item)
+                this.form = this.$clone(item.projectCrud)
                 //Set modal params
                 this.modal.show = true
               }
@@ -73,7 +71,33 @@ export default {
           ]
         },
         update: false,
-        delete: false
+        delete: false,
+        formLeft: {
+          title: {
+            value: '',
+            type: 'input',
+            props: {
+              label: `${this.$tr('ui.form.title')}`
+            },
+          },
+          description: {
+            value: '',
+            type: 'input',
+            props: {
+              label: `${this.$tr('ui.form.description')}`,
+              type: 'textarea',
+              rows: "3"
+            },
+          },
+          icon: {
+            value: 'fas fa-list-alt',
+            type: 'selectIcon'
+          },
+          form: {
+            value: null,
+            type: 'json'
+          }
+        }
       }
     },
     //Crud info
@@ -85,11 +109,12 @@ export default {
     saveCrud() {
       return new Promise((resolve, reject) => {
         this.modal.props.loading = true
-        //Set section data on field data
-        this.field.data.projectCrud[this.field.section] = this.$clone(this.field.sectionData)
+
+        //request data
+        let requestData = {projectCrud: this.form}
 
         //request
-        this.$crud.update('apiRoutes.qsite.icruds', this.field.data.id, this.field.data).then(response => {
+        this.$crud.update('apiRoutes.qsite.icruds', this.selectedCrud.id, requestData).then(response => {
           this.$alert.info({message: this.$tr('ui.message.recordUpdated')})
           this.$root.$emit('crud.data.refresh')
           this.modal.props.loading = false
