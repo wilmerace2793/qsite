@@ -225,7 +225,7 @@
           <q-rating v-model="responseValue" v-bind="fieldProps.field" class="q-mt-sm"/>
         </q-field>
         <!--icon select-->
-        <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps"/>
+        <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps" class="q-mb-md"/>
         <!--rating-->
         <q-field v-model="responseValue" v-if="loadField('optionGroup')" v-bind="fieldProps.fieldComponent">
           <q-option-group v-model="responseValue" v-bind="fieldProps.field"/>
