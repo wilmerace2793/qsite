@@ -4,11 +4,16 @@
     <q-drawer id="menuMaster" class="no-shadow" v-model="drawer.menu" ref="menuMaster"
               @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
       <!--Logo-->
-      <div id="logoSite">
+      <div id="logoSite" class="relative-position">
         <q-img contain :src="logo" style="height: 80px; min-height: 80px"/>
+        <!--Version-->
+        <div id="versionContent" class="absolute absolute-bottom-right text-white">
+          <q-icon name="fas fa-code-branch" class="q-mr-xs"/>
+          {{ versionText }}
+        </div>
       </div>
       <!--List iadmin-->
-      <q-scroll-area :style="`height: calc(100vh - 140px`">
+      <q-scroll-area :style="`height: calc(100vh - 146px`">
         <!--Menu-->
         <menu-list ref="menuList" group :menu="menu"/>
       </q-scroll-area>
@@ -96,6 +101,10 @@ export default {
       this.drawer.recommendation = false
       return this.$route.meta.subHeader || {}
     },
+    //Version app text
+    versionText() {
+      return 'v' + config('app.version')
+    },
   },
   methods: {
     //init
@@ -153,9 +162,13 @@ export default {
 
   #menuMaster
     #logoSite
-      padding 20px 25px
+      padding 20px 25px 26px 25px
       height 120px
       background-color $primary
+
+    #versionContent
+      padding 3px 15px
+      font-size 13px
 
     .q-expansion-item
       background-color $grey-3
