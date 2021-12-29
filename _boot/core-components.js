@@ -16,6 +16,7 @@ import shareLink from '@imagina/qsite/_components/master/shareLink'
 import btnMenu from '@imagina/qsite/_components/master/btnMenu'
 import masterModal from '@imagina/qsite/_components/master/masterModal'
 import pageActions from '@imagina/qsite/_components/master/pageActions'
+import crudComponent from '@imagina/qcrud/_components/v2/crud'
 
 export default ({app, router, store, Vue}) => {
   //Components
@@ -36,7 +37,8 @@ export default ({app, router, store, Vue}) => {
     {name: 'share-link', component: shareLink},
     {name: 'btn-menu', component: btnMenu},
     {name: 'master-modal', component: masterModal},
-    {name: 'page-actions', component: pageActions}
+    {name: 'page-actions', component: pageActions},
+    {name: 'crud-component', component: crudComponent}
   ]
 
   //Register components
