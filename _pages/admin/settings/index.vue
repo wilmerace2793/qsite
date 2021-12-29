@@ -156,7 +156,7 @@ export default {
       return new Promise(async resolve => {
         this.loading = true
         await Promise.all([
-          this.$store.dispatch('qsiteApp/GET_SITE_SETTINGS'),//Get settings
+          this.$store.dispatch('qsiteApp/GET_SITE_SETTINGS', {refresh: true}),//Get settings
           this.getSettingFields(),//Get setting fields
           this.getDeprecatedSettings()//Get seprecated settings
         ])

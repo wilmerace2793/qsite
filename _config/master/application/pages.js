@@ -55,7 +55,7 @@ class AutoLoadPages {
   loadPerzonalizationPage() {
     this.modules.forEach(moduleName => {
       let moduleMainConfig = mainConfigs[moduleName] || {}
-      if (moduleMainConfig.moduleName) {
+      if (moduleMainConfig.perzonalizationPage) {
         this.pages[moduleName].personalization = {
           permission: 'isite.settings.manage',
           activated: true,
