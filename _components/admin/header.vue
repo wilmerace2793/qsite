@@ -6,19 +6,8 @@
       <div :class="'q-hide q-md-show bg-primary'">
         <q-toolbar id="toolbarTop" color="primary">
           <q-toolbar-title/>
-          <!--Actions-->
-          <div class="row q-gutter-x-sm items-center">
-            <!--== Button User ==-->
-            <q-no-ssr>
-              <q-btn :to="{name: 'user.profile.me'}" flat v-if="quserState.authenticated" padding="5px" rounded no-caps>
-                <div id="profileImage" class="img-as-bg"
-                     :style="`background-image: url('${quserState.userData.mainImage}')`"></div>
-                <div class="q-ml-xs">{{ quserState.userData.firstName }}</div>
-              </q-btn>
-            </q-no-ssr>
-            <!--Site Actions-->
-            <site-actions/>
-          </div>
+          <!--Site Actions-->
+          <site-actions/>
         </q-toolbar>
       </div>
     </q-header>
@@ -105,9 +94,4 @@ export default {
 
   #toolbarTop
     position relative
-
-    #profileImage
-      height 30px
-      width 30px
-      border-radius 50%
 </style>

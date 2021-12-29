@@ -26,5 +26,6 @@ export default {
   },
   startTime: 'Start time',
   endTime: 'End time',
-  shiftTime: 'Shift time'
+  shiftTime: 'Shift time',
+  showSite: 'Show Site'
 }
