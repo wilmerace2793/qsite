@@ -1,7 +1,10 @@
 export default {
   moduleName: 'isite',
-  modulesSettings: ['core', 'isite', 'icustom'],
   moduleTitle: 'qsite.sidebar.adminGroup',
+  //Perzonalization config
+  perzonalization: {
+    otherModules: ['core', 'isite', 'icustom']
+  },
   //Entities
   entityNames: {
     recommendation: 'recommendation',

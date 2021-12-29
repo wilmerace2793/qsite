@@ -15,5 +15,6 @@ export default {
   recommendations: `${urlBase}/recommendations`,
   icruds: `${urlBase}/icruds`,
   organizations: `${urlBase}/organizations`,
+  domains: `${urlBase}/domains`,
   categories: `${urlBase}/categories`,
 }
