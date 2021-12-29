@@ -14,7 +14,7 @@
         <!--Block targets-->
         <div v-for="(block, keyBlock) in formBlocks" :key="keyBlock"
              class="col-12 col-sm-6 col-lg-4 col-xl-3">
-          <div class="block box box-auto-height" @click="openBlock(block)">
+          <div class="block box box-auto-height" @click="block.action ? block.action(block) : null">
             <!--Icon-->
             <q-icon :name="block.icon || 'fas fa-paint-brush'" class="block__icon q-mr-sm"/>
             <!--Title-->
@@ -34,6 +34,12 @@
       <dynamic-form v-model="form" :blocks="formModal.blocks" form-type="grid" no-actions
                     ref="settingsForm" @submit="saveSettings()" :loading="loading"/>
     </master-modal>
+    <!--Crud - Organization-->
+    <crud-component v-if="organization && (mainConfig.moduleName == 'isite')" module="isite" entity="organization"
+                    @obtained="crudData => cruds.push(crudData)" ref="crud-isite-organization"/>
+    <!--Crud - Domains-->
+    <crud-component v-if="organization && (mainConfig.moduleName == 'isite')" module="isite" entity="domain"
+                    @obtained="crudData => cruds.push(crudData)" ref="crud-isite-domain"/>
     <!--Loading-->
     <inner-loading :visible="loading"/>
   </div>
@@ -66,13 +72,29 @@ export default {
       formModal: {
         show: false,
         blocks: null
-      }
+      },
+      cruds: []
     }
   },
   computed: {
+    //Organization
+    organization() {
+      let organizationId = this.$store.state.quserAuth.organizationId
+      let organizations = this.$store.state.quserAuth.organizations
+
+      if (!organizationId) return null
+
+      return organizations.find(item => item.id == organizationId)
+    },
     //Return main config from current route
     mainConfig() {
-      return this.$route.meta.mainConfig
+      return {
+        perzonalization: {
+          otherModules: [],
+          cruds: []
+        },
+        ...this.$route.meta.mainConfig
+      }
     },
     //Return Page Title, according to mainConfig parameter mainConfig
     titlePage() {
@@ -145,7 +167,10 @@ export default {
         blocks.push({title: 'General', fields: this.$clone(this.settingsToEdit)})
       } else {//Get module settgins
         //Get module name
-        let modulesToLoadSettings = (this.mainConfig.modulesSettings || this.mainConfig.moduleName)
+        let modulesToLoadSettings = [
+          this.mainConfig.moduleName,
+          ...(this.mainConfig.perzonalization?.otherModules || [])
+        ]
         //Get settings
         Object.keys(this.settingsGroup).forEach(moduleName => {
           if (modulesToLoadSettings.includes(moduleName.toLowerCase())) {
@@ -172,6 +197,9 @@ export default {
 
       //Set extra data to every field
       blocks.forEach((block, keyBlock) => {
+        //Set action to block
+        blocks[keyBlock].action = this.openBlock
+        //Add field id by fiedl
         Object.keys(block.fields).forEach(fieldName => {
           blocks[keyBlock].fields[fieldName] = {
             ...block.fields[fieldName],
@@ -179,6 +207,28 @@ export default {
           }
         })
       })
+
+      //Add cruds cards
+      if (this.organization && (this.mainConfig.moduleName == 'isite')) {
+        blocks = [...blocks, ...this.cruds.map(crud => {
+          return {
+            ...crud.projectCrud, action: () => {
+              //Organization crud
+              if (crud.entity == 'organization')
+                this.$refs[`crud-${crud.module}-${crud.entity}`].initUpdate(
+                    this.organization.id,
+                    {include: 'fields,schedule.workTimes'}
+                )
+              //Domains crud
+              if (crud.entity == 'domain')
+                this.$refs[`crud-${crud.module}-${crud.entity}`].initUpdate(
+                    this.organization.id,
+                    {filter: {field: 'organization_id'}}
+                )
+            }
+          }
+        })]
+      }
 
       //response
       return blocks
