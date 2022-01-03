@@ -27,5 +27,6 @@ export default {
   startTime: 'Hora de inicio',
   endTime: 'Hora de finalización',
   shiftTime: 'Duración por turno',
-  showSite : 'Ver Sitio'
+  showSite : 'Ver Sitio',
+  quickSettings: 'Ajustes Rapidos'
 }

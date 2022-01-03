@@ -27,5 +27,6 @@ export default {
   startTime: 'Start time',
   endTime: 'End time',
   shiftTime: 'Shift time',
-  showSite: 'Show Site'
+  showSite: 'Show Site',
+  quickSettings: 'Quick Settings'
 }

@@ -9,21 +9,40 @@
     <!--Empty results-->
     <not-result class="box box-auto-height" v-if="!loading && !formBlocks.length"/>
     <!--Content-->
-    <div v-if="!loading && formBlocks.length">
-      <div class="row q-col-gutter-md">
-        <!--Block targets-->
-        <div v-for="(block, keyBlock) in formBlocks" :key="keyBlock"
-             class="col-12 col-sm-6 col-lg-4 col-xl-3">
-          <div class="block box box-auto-height" @click="block.action ? block.action(block) : null">
-            <!--Icon-->
-            <q-icon :name="block.icon || 'fas fa-paint-brush'" class="block__icon q-mr-sm"/>
-            <!--Title-->
-            <div class="block__title-content row items-center">
-              <div class="block__title ellipsis-2-lines">{{ block.title }}</div>
-            </div>
-            <!--Description-->
-            <div class="block__description ellipsis-3-lines">
-              {{ block.description || `${$tr('ui.label.personalization')} | ${block.title}` }}
+    <div v-if="!loading && formBlocks.length" class="row q-col-gutter-md">
+      <!--Quick settings-->
+      <div id="quickSettingsContent" class="col-12 col-xl-4" v-if="Object.keys(quickSettings).length">
+        <div class="block box box-auto-height">
+          <!--Icon-->
+          <q-icon name="fas fa-bolt" class="block__icon q-mr-sm"/>
+          <!--Title-->
+          <div class="block__title-content row items-center q-mb-md">
+            <div class="block__title ellipsis-2-lines">{{ $tr('qsite.layout.quickSettings') }}</div>
+          </div>
+          <!--Group-->
+          <div class="block__content">
+            <dynamic-form v-model="form" :blocks="quickSettings" form-type="grid"
+                          ref="settingsForm" @submit="saveSettings()" :loading="loading"/>
+          </div>
+        </div>
+      </div>
+      <!--Group settings-->
+      <div class="col-12 col-xl">
+        <div class="row q-col-gutter-md">
+          <!--Block targets-->
+          <div v-for="(block, keyBlock) in formBlocks" :key="keyBlock"
+               class="col-12 col-sm-6 col-lg-4">
+            <div class="block box box-auto-height" @click="block.action ? block.action(block) : null">
+              <!--Icon-->
+              <q-icon :name="block.icon || 'fas fa-paint-brush'" class="block__icon q-mr-sm"/>
+              <!--Title-->
+              <div class="block__title-content row items-center">
+                <div class="block__title ellipsis-2-lines">{{ block.title }}</div>
+              </div>
+              <!--Description-->
+              <div class="block__description ellipsis-3-lines">
+                {{ block.description || `${$tr('ui.label.personalization')} | ${block.title}` }}
+              </div>
             </div>
           </div>
         </div>
@@ -89,7 +108,7 @@ export default {
     //Return main config from current route
     mainConfig() {
       return {
-        perzonalization: {
+        perzonalizationPage: {
           otherModules: [],
           cruds: []
         },
@@ -169,7 +188,7 @@ export default {
         //Get module name
         let modulesToLoadSettings = [
           this.mainConfig.moduleName,
-          ...(this.mainConfig.perzonalization?.otherModules || [])
+          ...(this.mainConfig.perzonalizationPage?.otherModules || [])
         ]
         //Get settings
         Object.keys(this.settingsGroup).forEach(moduleName => {
@@ -232,6 +251,30 @@ export default {
 
       //response
       return blocks
+    },
+    //Quick settings
+    quickSettings() {
+      //Instance response
+      let response = []
+      //Get blocks
+      let blocks = this.$clone(this.formBlocks)
+
+      //Set extra data to every field
+      blocks.forEach((block, keyBlock) => {
+        //Add field id by fiedl
+        if (block.fields) {
+          //Keep only quickSettings fields
+          Object.keys(block.fields).forEach(fieldName => {
+            blocks[keyBlock].fields[fieldName].colClass = 'col-12'
+            if (!blocks[keyBlock].fields[fieldName].quickSetting) delete blocks[keyBlock].fields[fieldName]
+          })
+          //Add blocks with quickFields to response
+          if (Object.keys(blocks[keyBlock].fields).length) response.push(blocks[keyBlock])
+        }
+      })
+
+      //Response
+      return response
     }
   },
   methods: {
@@ -449,6 +492,13 @@ export default {
 </script>
 <style lang="stylus">
 #settingPage
+  #quickSettingsContent
+    .block__content
+      .box
+        box-shadow none
+        border 1px solid $grey-3
+        border-radius $custom-radius
+
   .block
     position relative
     cursor pointer
