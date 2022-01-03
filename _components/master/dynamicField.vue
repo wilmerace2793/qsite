@@ -191,10 +191,10 @@
         </div>
         <!--input color-->
         <q-input v-model="responseValue" :label="fieldLabel" v-if="loadField('inputColor')" v-bind="fieldProps.field"
-                 @click="$refs.qColorProxi.show()">
+                 @click="$refs.qColorProxi.show()" :ref="`inputColor-${fieldKey}`">
           <template v-slot:append>
             <!--Icon-->
-            <q-icon name="fas fa-tint" class="cursor-pointer" :style="`color : ${responseValue || 'grey'}`"/>
+            <q-icon name="fas fa-tint" class="cursor-pointer"/>
             <!--Picker-->
             <q-popup-proxy ref="qColorProxi" transition-show="scale" transition-hide="scale">
               <q-color v-model="responseValue"/>
@@ -333,6 +333,7 @@ export default {
     return {
       success: false,//global component status
       loading: false,
+      fieldKey: this.$uid(),
       responseValue: null,//value to response
       showPassword: false,//to show password
       options: [],//Options
@@ -587,13 +588,28 @@ export default {
           }
           break;
         case'inputColor':
+          //Instance color
+          let bgColor = this.responseValue || '#FFFFFF'
+          let textColorClass = this.$helper.pickTextColor(bgColor) == '#000000' ? 'text-t-dark' : 'text-t-light'
+
+          //Set bg color to input
+          setTimeout(() => {
+            let inputElement = this.$refs[`inputColor-${this.fieldKey}`]
+
+            //Set input bg color
+            if (inputElement) {
+              let fieldControl = inputElement.$el.getElementsByClassName('q-field__control')[0]
+              fieldControl.style.setProperty('background-color', bgColor, 'important')
+            }
+          }, 200)
+
           props = {
             field: {
               bgColor: 'white',
-              color: 'primary',
               outlined: true,
               dense: true,
               readonly: true,
+              class: `dynamic-field__color q-mb-md ${textColorClass}`,
               ...props
             },
             slot: {
@@ -1149,6 +1165,18 @@ export default {
       .vue-treeselect__single-value
         line-height 1.9
         padding 0
+
+  .dynamic-field__color
+    .q-field__control
+      border-radius $custom-radius-items
+
+    &.text-t-dark
+      .q-icon, .q-field__label, input
+        color $dark
+
+    &.text-t-light
+      .q-icon, .q-field__label, input
+        color white
 
 #ckEditorComponent
   width 100%
