@@ -3,7 +3,9 @@
     <!--Page Actions-->
     <div class="q-mb-md">
       <div class="box box-auto-height">
-        <page-actions :title="titlePage" @refresh="getData(true)"/>
+        <page-actions :title="$tr(mainConfig.perzonalizationPage.title)"
+                      :description="$tr(mainConfig.perzonalizationPage.description)"
+                      @refresh="getData(true)"/>
       </div>
     </div>
     <!--Empty results-->
@@ -114,12 +116,6 @@ export default {
         },
         ...this.$route.meta.mainConfig
       }
-    },
-    //Return Page Title, according to mainConfig parameter mainConfig
-    titlePage() {
-      let response = this.$tr('ui.label.personalization')
-      if (this.mainConfig.moduleTitle) response += ` | ${this.$tr(this.mainConfig.moduleTitle)}`
-      return response
     },
     //Return setting assigned settings
     assignedSettings() {
@@ -469,7 +465,7 @@ export default {
         show: true,
         blocks: [block],
         props: {
-          title: `${this.titlePage} - ${block.title}`,
+          title: block.title,
           customPosition: true,
           actions: [
             {
