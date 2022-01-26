@@ -1,6 +1,7 @@
 <template>
   <div id="testPageId">
-    <dynamic-field v-for="(field, keyField) in fieldsConfig" :key="keyField" :field="field" class="q-mb-md"/>
+    <dynamic-field v-for="(field, keyField) in fieldsConfig" :key="keyField"
+                   :field="{...field, ...helpProp}" class="q-mb-md"/>
   </div>
 </template>
 <script>
@@ -19,6 +20,13 @@ export default {
     }
   },
   computed: {
+    helpProp(){
+      return {
+        help : {
+          description : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium ad amet aspernatur atque, error harum ipsa magni odit recusandae, repellat totam vitae? Impedit inventore necessitatibus reiciendis soluta! Deserunt, harum, sunt.'
+        }
+      }
+    },
     fieldsConfig() {
       return {
         crud: {
@@ -49,9 +57,9 @@ export default {
           type: 'date',
           props: {label: 'type: date'}
         },
-        time: {
-          type: 'time',
-          props: {label: 'type: time'}
+        hour: {
+          type: 'hour',
+          props: {label: 'type: hour'}
         },
         fullDate: {
           type: 'fullDate',
@@ -59,7 +67,7 @@ export default {
         },
         select: {
           type: 'select',
-          props: {label: 'type: select'}
+          props: {label: 'type: select', options : []}
         },
         treeSelect: {
           type: 'treeSelect',
@@ -108,9 +116,9 @@ export default {
           props: {
             label: 'type: optionGroup',
             options : [
-              {label : 'opt1', val : 'opt1'},
-              {label : 'opt2', val : 'opt2'},
-              {label : 'opt3', val : 'opt3'}
+              {label : 'opt1', value : 'opt1'},
+              {label : 'opt2', value : 'opt2'},
+              {label : 'opt3', value : 'opt3'}
             ]
           }
         },
