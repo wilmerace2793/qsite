@@ -19,6 +19,18 @@
         <div class="input-title text-capitalize" v-if="loadField('html') || loadField('multiSelect')">
           {{ fieldLabel }}
         </div>
+        <!-- Help btn -->
+        <div v-if="helpLoad.load && field.help" :class="helpLoad.class">
+          <q-btn size="xs" class="after-field" :style="'margin:'+helpLoad.margin" round color="blue" icon="fas fa-info"  unelevated>
+            <q-menu anchor="bottom right" self="top right">
+              <q-item>
+                <q-item-section style="max-width:20em">
+                  {{ field.help.description }}
+                </q-item-section>
+              </q-item>
+            </q-menu>
+          </q-btn>
+        </div>
         <!--Crud-->
         <crud v-model="responseValue" @created="getOptions" v-bind="fieldProps" :key="field.name"
               :type="field.props.crudType || 'select'" ref="crudComponent"
@@ -224,13 +236,14 @@
         <q-field v-model="responseValue" v-if="loadField('rating')" v-bind="fieldProps.fieldComponent">
           <q-rating v-model="responseValue" v-bind="fieldProps.field" class="q-mt-sm"/>
         </q-field>
+
         <!--icon select-->
         <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps" class="q-mb-md"/>
-        <!--rating-->
+        <!--optionGroup-->
         <q-field v-model="responseValue" v-if="loadField('optionGroup')" v-bind="fieldProps.fieldComponent">
-          <q-option-group v-model="responseValue" v-bind="fieldProps.field"/>
+          <q-option-group class="q-pt-md" v-model="responseValue" v-bind="fieldProps.field"/>
         </q-field>
-        <!--rating-->
+        <!--captcha-->
         <q-field v-model="responseValue" v-if="loadField('captcha')" v-bind="fieldProps.fieldComponent">
           <captcha v-model="responseValue"/>
         </q-field>
@@ -264,7 +277,6 @@ import schedulable from '@imagina/qsite/_components/master/schedulable'
 import selectMedia from '@imagina/qmedia/_components/selectMedia'
 import googleMapMarker from '@imagina/qsite/_components/master/googleMapMarker'
 import VJsonEditor from 'v-jsoneditor/src/index'
-
 export default {
   name: 'dynamicField',
   beforeDestroy() {
@@ -330,6 +342,7 @@ export default {
     })
   },
   data() {
+
     return {
       success: false,//global component status
       loading: false,
@@ -860,6 +873,108 @@ export default {
       let field = this.$clone(this.field)
       return (field.props.type && (field.props.type == 'password')) ? true : false
     },
+    //Help custom class and styles
+    helpLoad(){
+      let result = { margin: String, class: String, load: false }
+      const objectOptions = {
+        crud:{
+          class:'absolute-right',
+          margin: '1em 4.5em',
+          load: true
+        },
+        input:{
+          class:'absolute-right',
+          margin: '1em',
+          load: true
+        },
+        search:{
+          class:'absolute-right',
+          margin: '1em 5em',
+          load: true
+        },
+        date:{
+          class:'absolute-right',
+          margin: '1em',
+          load: true
+        },
+        hour:{
+          class:'absolute-right',
+          margin: '1em',
+          load: true
+        },
+        fullDate:{
+          class:'absolute-right',
+          margin: '1em 5.5em',
+          load: true
+        },
+        select:{
+          class:'absolute-right',
+          margin: '1em 4.5em',
+          load: true
+        },
+        treeSelect:{
+          class:'absolute-right',
+          margin:'1em 4.5em',
+          load: true
+        },
+        html:{
+          class:'absolute-right',
+          margin:'3.5em 1.5em',
+          load: true
+        },
+        checkbox:{
+          class:'absolute-left',
+          margin:'1em 17em',
+          load: true
+        },
+        media:{
+          class:'absolute-right',
+          margin:'2em 20em',
+          load: true
+        },
+        inputColor:{
+          class:'absolute-right',
+          margin:'1em 5em',
+          load: true
+        },
+        toggle:{
+          class:'absolute-left',
+          margin:'1.3em 20em',
+          load: true
+        },
+        signature:{
+          class:'absolute-right',
+          margin:'4em 1em',
+          load: true
+        },
+        rating:{
+          class:'absolute-left',
+          margin:'0 9em',
+          load: true
+        },
+        selectIcon:{
+          class:'absolute-right',
+          margin:'1em',
+          load: true
+        },
+        optionGroup:{
+          class:"absolute-left",
+          margin:'1.3em 12em',
+          load: true
+        },
+        schedulable:{
+          class:'absolute-left',
+          margin:'2.8em 12em',
+          load: true
+        },
+        json:{
+          class:'absolute-right',
+          margin:'8em 1em',
+          load: true
+        }
+      }
+      return objectOptions[this.field.type] || result
+    },
     //Settings
     settings() {
       return {
@@ -868,7 +983,7 @@ export default {
     }
   },
   methods: {
-    //initi
+    //init
     async init() {
       if (this.field.type) {
         this.setDefaultVModel((this.value != undefined) ? this.value : this.field.value)//Set default values by field type
@@ -1147,37 +1262,31 @@ export default {
   .checkbox-field
     .q-field__control-container
       padding-top 0 !important
-
   .field-no-padding
     .q-field__control
       padding 0 !important
-
       .q-field__control-container
         padding 0 !important
-
   .vue-treeselect
     .vue-treeselect__control
       background transparent !important
       border 0
       max-height 26px
       padding 0
-
       .vue-treeselect__single-value
         line-height 1.9
         padding 0
-
   .dynamic-field__color
     .q-field__control
       border-radius $custom-radius-items
-
     &.text-t-dark
       .q-icon, .q-field__label, input
         color $dark
-
     &.text-t-light
       .q-icon, .q-field__label, input
         color white
-
+  .after-field
+    z-index 4
 #ckEditorComponent
   width 100%
 </style>
