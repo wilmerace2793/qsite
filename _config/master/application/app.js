@@ -42,7 +42,8 @@ export default {
     'qtranslation',
     'qrequestable',
     'qsite',
-    'qchat'
+    'qchat',
+    'qcredit'
   ],
   //Cache
   saveCache: {
