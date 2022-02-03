@@ -130,12 +130,7 @@ export default {
           props: {
             icon: 'fas fa-redo'
           },
-          action: () => {
-            this.$emit('refresh')
-            this.$root.$emit('page.data.refresh')
-            this.$root.$emit('crud.data.refresh')
-            this.$root.$emit('export.data.refresh')
-          }
+          action: this.emitRefresh
         }
       ]
 
@@ -168,6 +163,13 @@ export default {
       this.$root.$on('page.data.filter.read', (readValues) => {
         this.$set(this.filter, 'readValues', readValues)
       })
+    },
+    //Emit refresh
+    emitRefresh() {
+      this.$emit('refresh')
+      this.$root.$emit('page.data.refresh')
+      this.$root.$emit('crud.data.refresh')
+      this.$root.$emit('export.data.refresh')
     }
   }
 }
