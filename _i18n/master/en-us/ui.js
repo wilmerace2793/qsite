@@ -274,7 +274,9 @@ export default {
     workSpace: 'Work Space | Work Spaces',
     paymentMethod: 'Payment Method',
     personalize: 'Personalize',
-    personalization : 'Personalization'
+    personalization : 'Personalization',
+    inbound: 'Inbound',
+    outbound: 'Outbound'
   },
   message: {
     notFound: 'Sorry, nothing here',

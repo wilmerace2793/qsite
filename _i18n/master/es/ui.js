@@ -279,7 +279,9 @@ export default {
     workSpace: 'Espacio de Trabajo | Espacios de Trabajo',
     paymentMethod: 'Método de Pago',
     personalize: 'Personalizar',
-    personalization: 'Personalización'
+    personalization: 'Personalización',
+    inbound: 'Entrada',
+    outbound: 'Salida'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
