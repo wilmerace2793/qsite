@@ -2,9 +2,10 @@
   <div>
     <div id="listMenu">
       <q-no-ssr v-for="(item,key) in menuData" :key="key" :class="`content-item ${inLine ? 'inline-block' : ''}`">
+        <!--ToolTip-->
+        <q-tooltip v-if="withTooltip">{{ props.translatable ? $tr(item.title) : item.title }}</q-tooltip>
         <!--Single Item-->
         <q-item v-bind="item.itemProps" v-if="item.itemProps.vIf != undefined ? item.itemProps.vIf : true">
-
           <q-item-section v-if="item.icon && props.showIcons" avatar>
             <q-icon :name="item.icon"/>
           </q-item-section>
@@ -31,6 +32,7 @@ export default {
   name: 'recursiveMenu',
   components: {},
   props: {
+    withTooltip: {type: Boolean, default: false},
     menu: {default: false},
     showIcons: {type: Boolean, default: true},
     translatable: {type: Boolean, default: true},
