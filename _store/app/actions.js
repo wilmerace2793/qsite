@@ -32,7 +32,7 @@ export const REFRESH_PAGE = ({state, commit, dispatch, getters}) => {
 //Get site settings
 export const GET_SITE_SETTINGS = ({commit, dispatch, state, getters}, payload = {}) => {
   return new Promise((resolve, reject) => {
-    let params = {refresh: payload.refresh}
+    let params = {refresh: true}
     let configName = 'apiRoutes.qsite.siteSettings'
     let configApp = config('app')
 
