@@ -1,21 +1,23 @@
 <template>
   <div id="calendarComponent" :key="componentId">
     <!--Content-->
-    <div id="componentContent" class="relative-position" style="padding: 0px">
+    <div id="componentContent" class="box relative-position" style="padding: 0px">
       <!--Actions-->
-      <div class="row q-px-md q-py-sm items-center q-col-gutter-sm">
+      <div class="row items-center">
         <!--Calendar type-->
-        <div class="col-12 col-md-6">
-          <q-btn-toggle v-model="calendarType" no-caps unelevated toggle-color="primary" color="white"
-                        text-color="primary" :options="calendarTypeOptions" id="btnCalendarType"
-                        size="12px" padding="xs sm"/>
+        <div class="col-12">
+          <q-btn-toggle v-model="calendarType" no-caps unelevated toggle-color="blue-grey" color="white"
+                        text-color="blue-grey" :options="calendarTypeOptions" id="btnCalendarType"
+                        size="14px" padding="md sm" spread/>
         </div>
         <!--Date Actions-->
-        <div class="col-12 col-md-6">
-          <div class="row items-center justify-end q-gutter-x-sm">
+        <div class="col-12" v-if="calendarType != 'all'">
+          <div class="row items-center justify-center q-gutter-x-sm q-py-md">
+            <!--Prev date-->
+            <q-btn v-if="calendarType != 'all'" @click="$refs.calendarComponent.prev()" icon="fas fa-chevron-left"
+                   color="blue-grey" round unelevated size="sm" flat/>
             <!--Current date-->
-            <div class="text-grey-9 text-weight-bold text-subtitle1 cursor-pointer" @click="modalQDate = true"
-                 v-if="calendarType != 'all'">
+            <div class="text-blue-grey text-weight-bold text-subtitle1 cursor-pointer" @click="modalQDate = true">
               {{ calendarType == 'day' ? $trd(calendarDate, {type: 'small'}) : $trd(calendarDate, {type: 'month'}) }},
               {{ $trd(calendarDate, {type: 'year'}) }}
             </div>
@@ -23,17 +25,14 @@
             <q-dialog v-model="modalQDate">
               <q-date v-model="calendarDate" @input="modalQDate = false" mask="YYYY-MM-DD"/>
             </q-dialog>
-            <!--Prev date-->
-            <q-btn v-if="calendarType != 'all'" @click="$refs.calendarComponent.prev()" icon="fas fa-chevron-left"
-                   color="primary" round unelevated size="sm"/>
             <!--Next date-->
             <q-btn v-if="calendarType != 'all'" @click="$refs.calendarComponent.next()" icon="fas fa-chevron-right"
-                   color="primary" round unelevated size="sm"/>
+                   color="blue-grey" round unelevated size="sm" flat/>
           </div>
+          <!--Separator-->
+          <q-separator/>
         </div>
       </div>
-      <!--Separator-->
-      <q-separator/>
       <!--Events-->
       <div id="calendarContent">
         <!---Calendar-->
@@ -49,7 +48,7 @@
                 <div class="event-content" @click="modal.data = event; modal.show = true">
                   <!--Icon-->
                   <div class="event-icon row justify-center">
-                    <q-avatar :icon="event.icon" :style="`background-color : ${event.color}`"/>
+                    <q-avatar :icon="event.icon" :color="event.color"/>
                   </div>
                   <!--Description-->
                   <div class="event-description q-pb-sm q-px-sm">
@@ -73,7 +72,7 @@
               <div v-for="(event, index) in getEventsList(timestamp)" :key="index" class="col-12">
                 <div class="event-content q-px-sm q-py-xs relative-position text-caption ellipsis"
                      style="margin: 0 !important;" @click="modal.data = event; modal.show = true">
-                  <q-avatar :icon="event.icon" :style="`background-color : ${event.color}`" size="sm"
+                  <q-avatar :icon="event.icon" :color="event.color" size="sm"
                             text-color="white"/>
                   {{ event.time }} - {{ event.title }}
                   <q-tooltip>{{ event.title }}</q-tooltip>
@@ -90,7 +89,7 @@
               <div class="event-content" @click="modal.data = event; modal.show = true">
                 <!--Icon-->
                 <div class="event-icon row justify-center">
-                  <q-avatar :icon="event.icon" :style="`background-color : ${event.color}`"/>
+                  <q-avatar :icon="event.icon" :color="event.color"/>
                 </div>
                 <!--Description-->
                 <div class="event-description q-pb-sm q-px-sm">
@@ -110,42 +109,27 @@
         </div>
       </div>
       <!--Service appointment modal-->
-      <q-dialog v-model="modal.show" no-esc-dismiss no-backdrop-dismiss>
-        <q-card class="bg-grey-1 backend-page row">
-          <!--Header-->
-          <q-toolbar class="text-white" :style="`background-color : ${modal.data.color}`">
-            <q-toolbar-title>
-              <q-icon :name="modal.data.icon" class="q-mr-sm"/>
-              <label>{{ $tr('ui.label.event') }} {{ modal.data.id ? ' ID: '+modal.data.id : '' }}</label>
-            </q-toolbar-title>
-            <q-btn flat v-close-popup icon="fas fa-times"/>
-          </q-toolbar>
-
-          <!--Content-->
-          <q-card-section class="relative-position col-12">
-            <q-list separator dense>
-              <q-item v-for="(item, key) in modal.data.extraDetails" :key="key" class="q-px-none">
-                <!--Title-->
-                <q-item-section>
-                  <div class="text-left">
-                    <q-icon :name="item.icon" color="grey-7" class="q-mr-sm" size="sm"/>
-                    {{ item.title }}
-                  </div>
-                </q-item-section>
-                <!--Description-->
-                <q-item-section side v-html="item.value"/>
-              </q-item>
-            </q-list>
-          </q-card-section>
-
-          <!--Actions-->
-          <div id="eventActions" class="text-right full-width q-pa-md" v-if="modal.data.id">
-            <q-btn v-for="(item, key) in (eventActions || [])" :key="key" :icon="item.icon" :color="item.color"
-                   :label="item.label" rounded unelevated no-caps
-                   @click="item.callBack(modal.data), modal.show = false"/>
-          </div>
-        </q-card>
-      </q-dialog>
+      <master-modal v-model="modal.show" custom-position :actions="eventActions || []"
+                    :title="$tr('ui.label.event') + (modal.data.id ? ' ID: ' + modal.data.id : '')">
+        <!--Card Component-->
+        <component v-if="modal.data.card" :is="modal.data.card.component" :row="modal.data.card.row"/>
+        <!--Default Card-->
+        <div class="box" v-else>
+          <q-list separator dense>
+            <q-item v-for="(item, key) in modal.data.extraDetails" :key="key" class="q-px-none">
+              <!--Title-->
+              <q-item-section>
+                <div class="text-left">
+                  <q-icon :name="item.icon" color="grey-7" class="q-mr-sm" size="sm"/>
+                  {{ item.title }}
+                </div>
+              </q-item-section>
+              <!--Description-->
+              <q-item-section side v-html="item.value"/>
+            </q-item>
+          </q-list>
+        </div>
+      </master-modal>
       <!--Inner loading-->
       <inner-loading :visible="loading"/>
     </div>
@@ -173,10 +157,10 @@ export default {
       loading: false,
       calendarType: 'day',
       calendarTypeOptions: [
-        {label: this.$tr('ui.label.month'), value: 'month'},
-        {label: this.$tr('ui.label.week'), value: 'week'},
-        {label: this.$tr('ui.label.day'), value: 'day'},
-        {label: this.$tr('ui.label.all'), value: 'all'}
+        {label: this.$tr('ui.label.month'), value: 'month', icon: 'fas fa-calendar-alt'},
+        {label: this.$tr('ui.label.week'), value: 'week', icon: 'fas fa-calendar-week'},
+        {label: this.$tr('ui.label.day'), value: 'day', icon: 'fas fa-calendar-day'},
+        {label: this.$tr('ui.label.all'), value: 'all', icon: 'fas fa-list-alt'}
       ],
       calendarDate: this.$moment().format('YYYY-MM-DD'),
       modalQDate: false,
@@ -228,8 +212,9 @@ export default {
         //Parse date
         let eventDate = QCalendar.parseDate(new Date(event.date))
         let fullDate = `${eventDate.date} ${eventDate.time}`
+
         //Validate if event is date
-        if (!timestamp || (eventDate.date == timestamp.date))
+        if (!timestamp || (eventDate.date == timestamp.date)) {
           response.push({
             ...event,
             time: this.$trd(fullDate, {type: 'time'}),
@@ -237,9 +222,10 @@ export default {
               {value: event.title},
               {title: this.$tr('ui.label.date'), icon: 'fas fa-calendar-day', value: this.$trd(eventDate.date)},
               {title: this.$tr('ui.label.time'), icon: 'fas fa-clock', value: this.$trd(fullDate, {type: 'time'})},
-              ...event.extraDetails,
+              ...event.extraDetails || [],
             ]
           })
+        }
       })
 
       //Response
@@ -252,14 +238,15 @@ export default {
 #calendarComponent
   #componentContent
     #btnCalendarType
-      border 1px solid $primary
+      //border 1px solid $primary
 
       .q-btn
-        border-right 1px solid $primary
+        border-right 1px solid $grey-4
+        border-bottom 1px solid $grey-4
         min-width 55px
 
         &:last-child
-          border none
+          border-right none
 
     #calendarContent
       overflow-x scroll
@@ -285,6 +272,7 @@ export default {
         background-color $custom-accent-color
         cursor pointer
         color $grey-9
+        border-radius $custom-radius-items
 
         .event-icon
           width 100%
@@ -298,7 +286,7 @@ export default {
             color white
 
       #eventListcontent
-        height 580px
-        max-height 580px
+        height 645px
+        max-height 645px
         overflow-y scroll
 </style>
