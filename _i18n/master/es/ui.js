@@ -281,7 +281,9 @@ export default {
     personalize: 'Personalizar',
     personalization: 'Personalización',
     inbound: 'Entrada',
-    outbound: 'Salida'
+    outbound: 'Salida',
+    payOut: 'Método de Cobro | Mètodos de cobro',
+    account : 'Cuenta | Cuentas'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',
