@@ -21,7 +21,8 @@
         </div>
         <!-- Help btn -->
         <div v-if="helpLoad.load && field.help" :class="helpLoad.class">
-          <q-btn size="xs" class="after-field" :style="'margin:'+helpLoad.margin" round color="blue" icon="fas fa-info"  unelevated>
+          <q-btn size="xs" class="after-field" :style="'margin:'+helpLoad.margin" round color="blue" icon="fas fa-info"
+                 unelevated>
             <q-menu anchor="bottom right" self="top right">
               <q-item>
                 <q-item-section style="max-width:20em">
@@ -236,7 +237,6 @@
         <q-field v-model="responseValue" v-if="loadField('rating')" v-bind="fieldProps.fieldComponent">
           <q-rating v-model="responseValue" v-bind="fieldProps.field" class="q-mt-sm"/>
         </q-field>
-
         <!--icon select-->
         <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps" class="q-mb-md"/>
         <!--optionGroup-->
@@ -255,6 +255,15 @@
         <q-field v-model="responseValue" v-if="loadField('json')" v-bind="fieldProps.fieldComponent">
           <v-json-editor v-model="responseValue" height="300px" :options="fieldProps.field"/>
         </q-field>
+        <!--Text Info-->
+        <div v-if="loadField('banner')" class="q-mb-md">
+          <q-banner rounded dense :class="`bg-${fieldProps.color}`">
+            <template v-slot:avatar v-if="fieldProps.icon">
+              <q-icon :name="fieldProps.icon" :color="fieldProps.iconColor || fieldProps.textColor"/>
+            </template>
+            <div :class="`text-${fieldProps.textColor}`">{{ fieldProps.message }}</div>
+          </q-banner>
+        </div>
       </div>
     </div>
   </div>
@@ -277,6 +286,7 @@ import schedulable from '@imagina/qsite/_components/master/schedulable'
 import selectMedia from '@imagina/qmedia/_components/selectMedia'
 import googleMapMarker from '@imagina/qsite/_components/master/googleMapMarker'
 import VJsonEditor from 'v-jsoneditor/src/index'
+
 export default {
   name: 'dynamicField',
   beforeDestroy() {
@@ -747,6 +757,12 @@ export default {
             }
           }
           break;
+        case'banner':
+          props = {
+            color: 'white',
+            ...props
+          }
+          break;
       }
 
       //Add ruler to required field
@@ -874,102 +890,102 @@ export default {
       return (field.props.type && (field.props.type == 'password')) ? true : false
     },
     //Help custom class and styles
-    helpLoad(){
-      let result = { margin: String, class: String, load: false }
+    helpLoad() {
+      let result = {margin: String, class: String, load: false}
       const objectOptions = {
-        crud:{
-          class:'absolute-right',
+        crud: {
+          class: 'absolute-right',
           margin: '1em 4.5em',
           load: true
         },
-        input:{
-          class:'absolute-right',
+        input: {
+          class: 'absolute-right',
           margin: '1em',
           load: true
         },
-        search:{
-          class:'absolute-right',
+        search: {
+          class: 'absolute-right',
           margin: '1em 5em',
           load: true
         },
-        date:{
-          class:'absolute-right',
+        date: {
+          class: 'absolute-right',
           margin: '1em',
           load: true
         },
-        hour:{
-          class:'absolute-right',
+        hour: {
+          class: 'absolute-right',
           margin: '1em',
           load: true
         },
-        fullDate:{
-          class:'absolute-right',
+        fullDate: {
+          class: 'absolute-right',
           margin: '1em 5.5em',
           load: true
         },
-        select:{
-          class:'absolute-right',
+        select: {
+          class: 'absolute-right',
           margin: '1em 4.5em',
           load: true
         },
-        treeSelect:{
-          class:'absolute-right',
-          margin:'1em 4.5em',
+        treeSelect: {
+          class: 'absolute-right',
+          margin: '1em 4.5em',
           load: true
         },
-        html:{
-          class:'absolute-right',
-          margin:'3.5em 1.5em',
+        html: {
+          class: 'absolute-right',
+          margin: '3.5em 1.5em',
           load: true
         },
-        checkbox:{
-          class:'absolute-left',
-          margin:'1em 17em',
+        checkbox: {
+          class: 'absolute-left',
+          margin: '1em 17em',
           load: true
         },
-        media:{
-          class:'absolute-right',
-          margin:'2em 20em',
+        media: {
+          class: 'absolute-right',
+          margin: '2em 20em',
           load: true
         },
-        inputColor:{
-          class:'absolute-right',
-          margin:'1em 5em',
+        inputColor: {
+          class: 'absolute-right',
+          margin: '1em 5em',
           load: true
         },
-        toggle:{
-          class:'absolute-left',
-          margin:'1.3em 20em',
+        toggle: {
+          class: 'absolute-left',
+          margin: '1.3em 20em',
           load: true
         },
-        signature:{
-          class:'absolute-right',
-          margin:'4em 1em',
+        signature: {
+          class: 'absolute-right',
+          margin: '4em 1em',
           load: true
         },
-        rating:{
-          class:'absolute-left',
-          margin:'0 9em',
+        rating: {
+          class: 'absolute-left',
+          margin: '0 9em',
           load: true
         },
-        selectIcon:{
-          class:'absolute-right',
-          margin:'1em',
+        selectIcon: {
+          class: 'absolute-right',
+          margin: '1em',
           load: true
         },
-        optionGroup:{
-          class:"absolute-left",
-          margin:'1.3em 12em',
+        optionGroup: {
+          class: "absolute-left",
+          margin: '1.3em 12em',
           load: true
         },
-        schedulable:{
-          class:'absolute-left',
-          margin:'2.8em 12em',
+        schedulable: {
+          class: 'absolute-left',
+          margin: '2.8em 12em',
           load: true
         },
-        json:{
-          class:'absolute-right',
-          margin:'8em 1em',
+        json: {
+          class: 'absolute-right',
+          margin: '8em 1em',
           load: true
         }
       }
@@ -1262,33 +1278,42 @@ export default {
   .checkbox-field
     .q-field__control-container
       padding-top 0 !important
+
   .field-no-padding
     .q-field__control
       padding 0 !important
       overflow hidden
       border-radius $custom-radius-items
+
       .q-field__control-container
         padding 0 !important
+
   .vue-treeselect
     .vue-treeselect__control
       background transparent !important
       border 0
       max-height 26px
       padding 0
+
       .vue-treeselect__single-value
         line-height 1.9
         padding 0
+
   .dynamic-field__color
     .q-field__control
       border-radius $custom-radius-items
+
     &.text-t-dark
       .q-icon, .q-field__label, input
         color $dark
+
     &.text-t-light
       .q-icon, .q-field__label, input
         color white
+
   .after-field
     z-index 4
+
 #ckEditorComponent
   width 100%
 </style>
