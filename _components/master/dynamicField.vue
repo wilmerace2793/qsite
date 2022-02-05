@@ -180,7 +180,7 @@
           </q-item>
         </q-field>
         <!--Image-->
-        <q-field v-model="responseValue" v-if="loadField('image')" class="field-image" label=""
+        <q-field v-model="responseValue" v-if="loadField('image')" class="field-no-padding" label=""
                  v-bind="fieldProps.fieldComponent">
           <upload-image v-model="responseValue" v-bind="fieldProps.field"/>
         </q-field>
@@ -1265,6 +1265,8 @@ export default {
   .field-no-padding
     .q-field__control
       padding 0 !important
+      overflow hidden
+      border-radius $custom-radius-items
       .q-field__control-container
         padding 0 !important
   .vue-treeselect
