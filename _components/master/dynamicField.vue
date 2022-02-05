@@ -25,7 +25,7 @@
                  unelevated>
             <q-menu anchor="bottom right" self="top right">
               <q-item>
-                <q-item-section style="max-width:20em">
+                <q-item-section style="max-width:20em; line-height: 1.2" class="text-caption text-grey-9">
                   {{ field.help.description }}
                 </q-item-section>
               </q-item>
