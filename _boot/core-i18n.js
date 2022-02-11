@@ -9,11 +9,14 @@ import helper from '@imagina/qsite/_plugins/helper'
 import customFormats from '@imagina/qsite/_i18n/master/formats/customFormats'
 import numberFormats from '@imagina/qsite/_i18n/master/formats/currencyFormats'
 import dateTimeFormats from '@imagina/qsite/_i18n/master/formats/dateTimeFormats'
-import messages from '@imagina/qsite/_i18n/master/index'
+//import messages from '@imagina/qsite/_i18n/master/index'
 
 Vue.use(VueI18n)
 
 export default async ({router, app, Vue, store, ssrContext}) => {
+  //Request messages
+  let messages = await store.dispatch('qtranslationMaster/GET_TRANSLATIONS')
+
   //===== Get default language
   //From URL
   let defaultLanguage = helper.getLocaleRoutePath(ssrContext ? ssrContext.url : window.location.hash)
