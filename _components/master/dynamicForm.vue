@@ -558,6 +558,7 @@ export default {
         //Request
         this.$crud.show('apiRoutes.qform.forms', this.formId, requestParams).then(response => {
           this.formBlocks = response.data
+          this.$emit('obtainedForm', this.$clone(response.data))
           resolve(response.data)
         }).catch(error => reject(error))
       })
@@ -714,6 +715,8 @@ export default {
     async changeStep(toStep, isSubmit = false) {
       //Validate if new Step it's not same to current step
       let isValid = (toStep == 'previous') ? true : await this.$refs.formContent.validate()
+      //Dispatch event to know if if is valid
+      this.$emit('validated', isValid)
       //Validate if new Step it's not same to current step
       if (isValid) {
         //Emit submit form
