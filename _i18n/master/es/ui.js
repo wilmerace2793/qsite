@@ -3,6 +3,7 @@ export default {
     delete: 'Eliminar',
     cancel: 'Cancelar',
     cancelled: 'Cancelado',
+    approved : 'Aprovado',
     open: 'Abierto',
     close: 'Cerrar',
     closed: 'Cerrado',
@@ -283,7 +284,8 @@ export default {
     inbound: 'Entrada',
     outbound: 'Salida',
     payOut: 'Método de Cobro | Mètodos de cobro',
-    account : 'Cuenta | Cuentas'
+    account : 'Cuenta | Cuentas',
+    resource : 'Recurso | Recursos'
   },
   message: {
     notFound: 'Lo sentimos, no hay nada aquí',

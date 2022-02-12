@@ -3,6 +3,7 @@ export default {
     delete: 'Delete',
     cancel: 'Cancel',
     cancelled: 'Cancelled',
+    approved: 'Approved',
     open: 'Open',
     close: 'Close',
     closed: 'Closed',
@@ -278,7 +279,8 @@ export default {
     inbound: 'Inbound',
     outbound: 'Outbound',
     payOut: 'Payout',
-    account : 'Account | Accounts'
+    account: 'Account | Accounts',
+    resource: 'Resource | Resources'
   },
   message: {
     notFound: 'Sorry, nothing here',
