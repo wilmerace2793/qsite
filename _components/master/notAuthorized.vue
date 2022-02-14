@@ -18,10 +18,10 @@ export default {
   },
   computed: {
     labelText() {
-      return this.label || `${this.$tr('ui.message.notAuthorized')}...`
+      return this.label || `${this.$tr('isite.cms.message.notAuthorized')}...`
     },
     buttonText() {
-      return this.buttonLabel || this.$tr('ui.message.backToSite')
+      return this.buttonLabel || this.$tr('isite.cms.message.backToSite')
     }
   }
 }

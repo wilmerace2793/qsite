@@ -3,7 +3,7 @@
     <!-- ===== Header ===== -->
     <div class="text-subtitle1 row items-center">
       <q-icon name="fas fa-cog" color="primary" size="20px" class="q-mr-sm"/>
-      <label>{{ $tr('ui.label.configuration', {capitalize: true}) }}</label>
+      <label>{{ $tr('isite.cms.label.configuration', {capitalize: true}) }}</label>
     </div>
 
     <!--Separator-->
@@ -14,7 +14,7 @@
       <div v-if="$auth.hasAccess('profile.user.impersonate') || quserState.impersonating">
         <!--Title-->
         <div class="title-block q-mb-sm">
-          {{ $tr('ui.label.impersonate') }}
+          {{ $tr('isite.cms.label.impersonate') }}
         </div>
 
         <!--Select User to impersonate-->
@@ -25,12 +25,12 @@
               <q-select outlined dense v-model="userToImpersonate" use-input hide-selected
                         emit-value map-options
                         input-debounce="800" :options="userList" @filter="getUsers"
-                        :placeholder="`${$tr('ui.label.find')} ${$tr('ui.label.user')}...`"
+                        :placeholder="`${$tr('isite.cms.label.find')} ${$tr('isite.cms.label.user')}...`"
                         @input="impersonate()" style="width: 100%">
                 <template v-slot:no-option>
                   <q-item>
                     <q-item-section class="text-grey">
-                      {{ $tr('ui.message.searchNotFound') }}
+                      {{ $tr('isite.cms.message.searchNotFound') }}
                     </q-item-section>
                   </q-item>
                 </template>
@@ -39,7 +39,7 @@
             <!--Loading-->
             <div v-if="loadingImpersonate" class="q-py-sm">
               <q-spinner class="q-mr-sm"/>
-              {{ `${$tr('ui.label.loading')}...` }}
+              {{ `${$tr('isite.cms.label.loading')}...` }}
             </div>
           </div>
         </div>
@@ -56,10 +56,10 @@
               <!--Loading-->
               <div v-if="loadingImpersonate" class="q-py-sm">
                 <q-spinner class="q-mr-sm"/>
-                {{ `${$tr('ui.label.loading')}...` }}
+                {{ `${$tr('isite.cms.label.loading')}...` }}
               </div>
               <div v-if="!loadingImpersonate" color="grey-10" style="text-decoration: none">
-                {{ $t('ui.configList.leaveImpersonating', {capitalize: true}) }}
+                {{ $t('isite.cms.configList.leaveImpersonating', {capitalize: true}) }}
               </div>
             </div>
           </q-item-section>
@@ -74,7 +74,7 @@
     <q-no-ssr>
       <!--Title-->
       <div class="title-block">
-        {{ $tr('ui.label.session', {capitalize: true}) }}
+        {{ $tr('isite.cms.label.session', {capitalize: true}) }}
       </div>
 
       <!--Roles-->
@@ -82,7 +82,7 @@
         <!-- Title -->
         <div class="text-primary">
           <q-icon name="fas fa-user-circle"/>
-          {{ $trp('ui.label.role') }}
+          {{ $trp('isite.cms.label.role') }}
         </div>
 
         <!--Roles-->
@@ -100,7 +100,7 @@
         <!-- Title -->
         <div class="text-primary">
           <q-icon name="fas fa-people-arrows"/>
-          {{ this.$trp('quser.layout.label.userGroup') }}
+          {{ this.$trp('iprofile.cms.label.userGroup') }}
         </div>
 
         <!--Departments-->
@@ -121,14 +121,14 @@
     <q-no-ssr v-if="organizationField">
       <!--Title-->
       <div class="title-block q-mb-sm">
-        {{ $tr('ui.label.organization') }}
+        {{ $tr('isite.cms.label.organization') }}
       </div>
       <!--dynamic field to organizations-->
       <dynamic-field v-model="organizationId" :field="organizationField" v-if="organizationField"
                      @input="setOrganization"/>
       <!--no organizations-->
       <div v-else class="q-px-sm text-grey-7" style="line-height: 1.2">
-        {{ $tr('qsite.layout.messages.noOrganization') }}...
+        {{ $tr('isite.cms.messages.noOrganization') }}...
       </div>
     </q-no-ssr>
 
@@ -139,7 +139,7 @@
     <div>
       <!--Title-->
       <div class="title-block">
-        {{ $tr('ui.label.language', {capitalize: true}) }}
+        {{ $tr('isite.cms.label.language', {capitalize: true}) }}
       </div>
 
       <!--Data language-->
@@ -147,7 +147,7 @@
         <!-- Title -->
         <div class="text-primary">
           <q-icon name="fas fa-language"/>
-          {{ $tr('ui.label.language', {capitalize: true}) }}
+          {{ $tr('isite.cms.label.language', {capitalize: true}) }}
         </div>
 
         <!--Select Language-->
@@ -169,20 +169,20 @@
     <div>
       <!--Title-->
       <div class="title-block">
-        {{ $trp('ui.label.action', {capitalize: true}) }}
+        {{ $trp('isite.cms.label.action', {capitalize: true}) }}
       </div>
 
       <!--Clear Cache-->
       <div class="q-px-sm cursor-pointer q-pt-md" @click="clearCache()">
         <q-spinner color="primary" size="20px" v-if="loadingCacheClear" class="q-mr-sm"/>
         <q-icon v-else color="primary" size="18px" name="fas fa-broom" class="q-mr-sm"/>
-        {{ $t('ui.configList.clearCache', {capitalize: true}) }}
+        {{ $t('isite.cms.configList.clearCache', {capitalize: true}) }}
       </div>
 
       <!--Full Screen-->
       <div class="q-px-sm cursor-pointer q-pt-md" @click="toggleFullscreen()">
         <q-icon color="primary" size="18px" name="fas fa-expand" class="q-mr-sm"/>
-        {{ $t('ui.configList.fullScreen', {capitalize: true}) }}
+        {{ $t('isite.cms.configList.fullScreen', {capitalize: true}) }}
       </div>
 
       <!--Logout  -->
@@ -190,7 +190,7 @@
         <div class="q-px-sm cursor-pointer q-pt-md" @click="$router.push({name:'auth.logout'})"
              v-if="quserState.authenticated">
           <q-icon color="red" size="18px" name="fas fa-sign-out-alt" class="q-mr-sm"/>
-          {{ $t('ui.configList.signOut', {capitalize: true}) }}
+          {{ $t('isite.cms.configList.signOut', {capitalize: true}) }}
         </div>
       </q-no-ssr>
     </div>
@@ -258,7 +258,7 @@ export default {
         value: null,
         type: 'select',
         props: {
-          label: this.$tr('ui.label.organization'),
+          label: this.$tr('isite.cms.label.organization'),
           options: organizations.map(item => {
             return {label: item.title, value: item.id}
           }),

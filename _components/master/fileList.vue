@@ -26,12 +26,12 @@
             <!--Order-->
             <q-btn v-if="allowOrder" class="btn-small" round unelevated outline color="blue-grey"
                    :icon="`fas fa-arrow-${table.filter.order.way == 'asc' ? 'up' : 'down'}`" @click="toggleOrder()">
-              <q-tooltip>{{ $tr('ui.label.order') }} {{ table.filter.order.way }}.</q-tooltip>
+              <q-tooltip>{{ $tr('isite.cms.label.order') }} {{ table.filter.order.way }}.</q-tooltip>
             </q-btn>
             <!--toogle view-->
             <q-btn v-if="allowChangeView" :icon="table.grid ? 'fas fa-grip-horizontal' : 'fas fa-list-ul'"
                    class="btn-small" @click="table.grid = !table.grid" round unelevated outline color="blue-grey">
-              <q-tooltip>{{ $tr(`ui.message.${table.grid ? 'gribView' : 'listView'}`) }}</q-tooltip>
+              <q-tooltip>{{ $tr(`isite.cms.message.${table.grid ? 'gribView' : 'listView'}`) }}</q-tooltip>
             </q-btn>
           </div>
         </div>
@@ -296,23 +296,23 @@ export default {
           sortable: true
         },
         {
-          name: 'filename', label: this.$tr('ui.form.name'), field: 'filename', align: 'left',
+          name: 'filename', label: this.$tr('isite.cms.form.name'), field: 'filename', align: 'left',
           sortable: true
         },
         {
-          name: 'type', label: this.$tr('ui.form.type'), align: 'left', field: 'id',
-          format: (val, row) => row ? (row.isFolder ? this.$tr('ui.label.folder') :
-              (row.isImage ? this.$tr('ui.label.image') : this.$tr('ui.label.file'))) : ''
+          name: 'type', label: this.$tr('isite.cms.form.type'), align: 'left', field: 'id',
+          format: (val, row) => row ? (row.isFolder ? this.$tr('isite.cms.label.folder') :
+              (row.isImage ? this.$tr('isite.cms.label.image') : this.$tr('isite.cms.label.file'))) : ''
         },
         {
-          name: 'created_at', label: this.$tr('ui.form.createdAt'), field: 'createdAt',
+          name: 'created_at', label: this.$tr('isite.cms.form.createdAt'), field: 'createdAt',
           sortable: true, format: val => val ? this.$trd(val, {type: 'long'}) : '-'
         },
         {
-          name: 'filesize', label: this.$tr('ui.label.size'), field: 'filesize',
+          name: 'filesize', label: this.$tr('isite.cms.label.size'), field: 'filesize',
           format: val => val ? this.$helper.formatBytes(val) : '-'
         },
-        {name: 'actions', label: this.$trp('ui.label.action')},
+        {name: 'actions', label: this.$trp('isite.cms.label.action')},
       ]
     },
     //Table data

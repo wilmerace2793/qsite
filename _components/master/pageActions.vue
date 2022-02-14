@@ -9,7 +9,7 @@
     <div :class="`actions-content row q-gutter-${gutter} items-center justify-end`">
       <!--Search-->
       <q-input v-model="search" bg-color="white" debounce="800" outlined dense clearable
-               :placeholder="$tr('ui.label.search')" class="page-input-search"
+               :placeholder="$tr('isite.cms.label.search')" class="page-input-search"
                v-if="extraActions && extraActions.includes('search')"
                @input="$emit('search', $clone(search))">
         <template v-slot:append>
@@ -30,7 +30,7 @@
       <q-separator class="q-mb-sm"/>
       <div class="text-blue-grey ellipsis text-caption">
         <q-icon name="fas fa-exclamation-circle" class="q-mr-xs" color="amber" size="14px"/>
-        <b>{{ $trp('ui.label.filter') }}:</b>
+        <b>{{ $trp('isite.cms.label.filter') }}:</b>
         <label v-for="(item, itemKey) in filter.readValues" :key="itemKey" v-if="item.value"
                class="q-ml-xs text-grey-7">
           {{ item.label }} {{ item.value }},
@@ -98,7 +98,7 @@ export default {
       let response = [
         //Export
         {
-          label: this.$tr('ui.label.export'),
+          label: this.$tr('isite.cms.label.export'),
           vIf: (this.exportParams && !excludeActions.includes('export')),
           props: {
             icon: 'fas fa-file-download'
@@ -107,7 +107,7 @@ export default {
         },
         //recommendations
         {
-          label: this.$trp('ui.label.recommendation'),
+          label: this.$trp('isite.cms.label.recommendation'),
           vIf: (this.params.recommendations && !excludeActions.includes('recommendations')) ? true : false,
           props: {
             icon: 'fas fa-hat-wizard'
@@ -116,7 +116,7 @@ export default {
         },
         //Filter
         {
-          label: this.$tr('ui.label.filter'),
+          label: this.$tr('isite.cms.label.filter'),
           vIf: (this.filter.load && !excludeActions.includes('filter')),
           props: {
             icon: 'fas fa-filter'
@@ -125,7 +125,7 @@ export default {
         },
         //Refresh
         {
-          label: this.$trp('ui.label.refresh'),
+          label: this.$trp('isite.cms.label.refresh'),
           vIf: (this.params.refresh && !excludeActions.includes('refresh')),
           props: {
             icon: 'fas fa-redo'
@@ -143,7 +143,7 @@ export default {
           response.unshift({
             vIf: this.params.create && this.params.hasPermission.create,
             props: {
-              label: this.$tr(`ui.label.new`),
+              label: this.$tr(`isite.cms.label.new`),
               icon: 'fas fa-plus-circle',
               color: 'green',
               round: false,

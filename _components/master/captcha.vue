@@ -3,7 +3,7 @@
     <!--Widget V2-->
     <div v-if="captcha.version == '2'" id="g-recaptcha"></div>
     <!--Text V3-->
-    <div v-if="captcha.version == '3'" class="text-info-v3" v-html="$tr('ui.message.captcha')"></div>
+    <div v-if="captcha.version == '3'" class="text-info-v3" v-html="$tr('isite.cms.message.captcha')"></div>
   </div>
 </template>
 <script>

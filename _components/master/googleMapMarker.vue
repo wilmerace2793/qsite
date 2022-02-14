@@ -45,7 +45,7 @@ export default {
         bgColor: 'white',
         outlined: true,
         dense: true,
-        label: this.$tr('ui.label.address')
+        label: this.$tr('isite.cms.label.address')
       }
     }
   },

@@ -10,7 +10,7 @@
       <!-- Search -->
       <div :class="'col-12 q-mb-md '+ (icon && title ? 'col-md-6 ' : '')">
         <q-input v-model="search" outlined dense debounce="800"
-                 :placeholder="`${$tr('ui.label.search',{capitalize : true})}...`">
+                 :placeholder="`${$tr('isite.cms.label.search',{capitalize : true})}...`">
           <template v-slot:append>
             <q-icon name="search"/>
           </template>

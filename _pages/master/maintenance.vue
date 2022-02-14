@@ -9,7 +9,7 @@
       <!--title-->
       <div class="text-h5 text-capitalize text-grey-9">
         <q-icon name="fas fa-terminal" class="q-mr-sm" />
-        {{$tr('qsite.layout.messages.maintenancePage')}}...
+        {{$tr('isite.cms.messages.maintenancePage')}}...
       </div>
     </div>
   </div>

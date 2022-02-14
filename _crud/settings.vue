@@ -17,7 +17,7 @@ export default {
         apiRoute: 'apiRoutes.qsite.siteSettings',
         permission: 'isite.settings',
         create: {
-          title: this.$tr('qsite.layout.newRecommendation'),
+          title: this.$tr('isite.cms.newRecommendation'),
         },
         read: false,
         update: false,
@@ -28,9 +28,9 @@ export default {
             type: 'input',
             isTranslatable: true,
             props: {
-              label: `${this.$tr('ui.form.title')}*`,
+              label: `${this.$tr('isite.cms.form.title')}*`,
               rules: [
-                val => !!val || this.$tr('ui.message.fieldRequired')
+                val => !!val || this.$tr('isite.cms.message.fieldRequired')
               ],
             },
           },
@@ -40,9 +40,9 @@ export default {
             isTranslatable: true,
             props: {
               type: 'textarea',
-              label: `${this.$tr('ui.form.description')}*`,
+              label: `${this.$tr('isite.cms.form.description')}*`,
               rules: [
-                val => !!val || this.$tr('ui.message.fieldRequired')
+                val => !!val || this.$tr('isite.cms.message.fieldRequired')
               ],
             }
           },

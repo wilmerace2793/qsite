@@ -27,7 +27,7 @@
     },
     computed: {
       message() {
-        return this.$tr('ui.label.loading')
+        return this.$tr('isite.cms.label.loading')
       },
     },
     methods: {

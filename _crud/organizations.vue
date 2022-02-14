@@ -18,15 +18,15 @@ export default {
           showAs: 'grid',
           allowToggleView: false,
           columns: [
-            {name: 'id', label: this.$tr('ui.form.id'), field: 'id'},
-            {name: 'title', label: this.$tr('ui.form.title'), field: 'title'},
+            {name: 'id', label: this.$tr('isite.cms.form.id'), field: 'id'},
+            {name: 'title', label: this.$tr('isite.cms.form.title'), field: 'title'},
             {
-              name: 'createdAt', label: this.$tr('ui.form.createdAt'), field: 'createdAt',
+              name: 'createdAt', label: this.$tr('isite.cms.form.createdAt'), field: 'createdAt',
               format: val => val ? this.$trd(val) : '-',
               align: 'left', sortable: true
             },
             {
-              name: 'actions', label: this.$tr('ui.form.actions'), align: 'center'
+              name: 'actions', label: this.$tr('isite.cms.form.actions'), align: 'center'
             },
           ],
         },

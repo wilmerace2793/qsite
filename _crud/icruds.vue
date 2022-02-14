@@ -19,7 +19,7 @@ export default {
             {
               action: this.saveCrud,
               props: {
-                label: this.$tr('ui.label.save'),
+                label: this.$tr('isite.cms.label.save'),
                 color: 'green'
               }
             }
@@ -39,21 +39,21 @@ export default {
         create: false,
         read: {
           columns: [
-            {name: 'id', label: this.$tr('ui.form.id'), field: 'id', align: 'left'},
-            {name: 'entity', label: this.$tr('ui.label.entity'), field: 'entity', align: 'left'},
-            {name: 'module', label: this.$tr('ui.label.module'), field: 'module', align: 'left'},
+            {name: 'id', label: this.$tr('isite.cms.form.id'), field: 'id', align: 'left'},
+            {name: 'entity', label: this.$tr('isite.cms.label.entity'), field: 'entity', align: 'left'},
+            {name: 'module', label: this.$tr('isite.cms.label.module'), field: 'module', align: 'left'},
             {
-              name: 'createdAt', label: this.$tr('ui.form.createdAt'), field: 'createdAt',
+              name: 'createdAt', label: this.$tr('isite.cms.form.createdAt'), field: 'createdAt',
               format: val => val ? this.$trd(val) : '-',
               align: 'left', sortable: true
             },
             {
-              name: 'updatedAt', label: this.$tr('ui.form.updatedAt'), field: 'updatedAt',
+              name: 'updatedAt', label: this.$tr('isite.cms.form.updatedAt'), field: 'updatedAt',
               format: val => val ? this.$trd(val) : '-',
               align: 'left', sortable: true
             },
             {
-              name: 'actions', label: this.$tr('ui.form.actions'), align: 'center'
+              name: 'actions', label: this.$tr('isite.cms.form.actions'), align: 'center'
             },
           ],
           requestParams: {filter: {noTranslate: true}},
@@ -77,14 +77,14 @@ export default {
             value: '',
             type: 'input',
             props: {
-              label: `${this.$tr('ui.form.title')}`
+              label: `${this.$tr('isite.cms.form.title')}`
             },
           },
           description: {
             value: '',
             type: 'input',
             props: {
-              label: `${this.$tr('ui.form.description')}`,
+              label: `${this.$tr('isite.cms.form.description')}`,
               type: 'textarea',
               rows: "3"
             },
@@ -115,13 +115,13 @@ export default {
 
         //request
         this.$crud.update('apiRoutes.qsite.icruds', this.selectedCrud.id, requestData).then(response => {
-          this.$alert.info({message: this.$tr('ui.message.recordUpdated')})
+          this.$alert.info({message: this.$tr('isite.cms.message.recordUpdated')})
           this.$root.$emit('crud.data.refresh')
           this.modal.props.loading = false
           this.modal.show = false
           resolve(response.data)
         }).catch(error => {
-          this.$alert.error({message: this.$tr('ui.message.recordNoUpdated')})
+          this.$alert.error({message: this.$tr('isite.cms.message.recordNoUpdated')})
           this.modal.props.loading = false
           reject(error)
         })

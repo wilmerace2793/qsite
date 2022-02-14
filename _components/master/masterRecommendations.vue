@@ -9,12 +9,12 @@
         <!--Title-->
         <div class="text-ellipsis text-subtitle1 row items-center">
           <q-icon class="q-mr-sm" size="20px" color="primary" name="fas fa-hat-wizard"/>
-          {{ $trp('ui.label.recommendation') }}
+          {{ $trp('isite.cms.label.recommendation') }}
         </div>
         <!--Btn to create-->
         <q-btn icon="fas fa-plus" round unelevated size="10px" color="green" @click="$refs.recommendations.create()"
                v-if="($auth.hasAccess('isite.recommendations.create') && (appConfig.mode != 'ipanel'))">
-          <q-tooltip>{{ $tr('ui.label.add') }}</q-tooltip>
+          <q-tooltip>{{ $tr('isite.cms.label.add') }}</q-tooltip>
         </q-btn>
       </div>
       <q-separator class="q-my-sm"/>
@@ -60,7 +60,7 @@
         </div>
       </q-scroll-area>
       <div class="box item q-px-none q-py-md" v-else>
-        {{ $trp('ui.message.notFound') }}
+        {{ $trp('isite.cms.message.notFound') }}
       </div>
       <!--Loading-->
       <inner-loading :visible="loading"/>
@@ -115,7 +115,7 @@ export default {
     fileActions() {
       return [
         {
-          label: this.$tr('ui.label.edit'),
+          label: this.$tr('isite.cms.label.edit'),
           icon: 'fas fa-pen',
           color: 'green',
           action: (item) => {
@@ -123,7 +123,7 @@ export default {
           }
         },
         {
-          label: this.$tr('ui.label.delete'),
+          label: this.$tr('isite.cms.label.delete'),
           icon: 'fas fa-trash',
           color: 'red',
           action: (item) => {

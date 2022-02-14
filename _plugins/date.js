@@ -133,8 +133,8 @@ class DatePlugin {
   getHumanCalendar(date, optionsCalendar = {}) {
     return moment(date).calendar(null, {
       sameDay: 'hh:mm a',
-      nextDay: `[${Vue.prototype.$tr('ui.label.tomorrow')}]`,
-      lastDay: `[${Vue.prototype.$tr('ui.label.yesterday')}]`,
+      nextDay: `[${Vue.prototype.$tr('isite.cms.label.tomorrow')}]`,
+      lastDay: `[${Vue.prototype.$tr('isite.cms.label.yesterday')}]`,
       lastWeek: 'dddd',
       sameElse: 'MM/DD/YYYY',
       ...optionsCalendar

@@ -110,7 +110,7 @@
       </div>
       <!--Service appointment modal-->
       <master-modal v-model="modal.show" custom-position :actions="eventActions || []"
-                    :title="$tr('ui.label.event') + (modal.data.id ? ' ID: ' + modal.data.id : '')">
+                    :title="$tr('isite.cms.label.event') + (modal.data.id ? ' ID: ' + modal.data.id : '')">
         <!--Card Component-->
         <component v-if="modal.data.card" :is="modal.data.card.component" :row="modal.data.card.row"/>
         <!--Default Card-->
@@ -157,10 +157,10 @@ export default {
       loading: false,
       calendarType: 'day',
       calendarTypeOptions: [
-        {label: this.$tr('ui.label.month'), value: 'month', icon: 'fas fa-calendar-alt'},
-        {label: this.$tr('ui.label.week'), value: 'week', icon: 'fas fa-calendar-week'},
-        {label: this.$tr('ui.label.day'), value: 'day', icon: 'fas fa-calendar-day'},
-        {label: this.$tr('ui.label.all'), value: 'all', icon: 'fas fa-list-alt'}
+        {label: this.$tr('isite.cms.label.month'), value: 'month', icon: 'fas fa-calendar-alt'},
+        {label: this.$tr('isite.cms.label.week'), value: 'week', icon: 'fas fa-calendar-week'},
+        {label: this.$tr('isite.cms.label.day'), value: 'day', icon: 'fas fa-calendar-day'},
+        {label: this.$tr('isite.cms.label.all'), value: 'all', icon: 'fas fa-list-alt'}
       ],
       calendarDate: this.$moment().format('YYYY-MM-DD'),
       modalQDate: false,
@@ -220,8 +220,8 @@ export default {
             time: this.$trd(fullDate, {type: 'time'}),
             extraDetails: [
               {value: event.title},
-              {title: this.$tr('ui.label.date'), icon: 'fas fa-calendar-day', value: this.$trd(eventDate.date)},
-              {title: this.$tr('ui.label.time'), icon: 'fas fa-clock', value: this.$trd(fullDate, {type: 'time'})},
+              {title: this.$tr('isite.cms.label.date'), icon: 'fas fa-calendar-day', value: this.$trd(eventDate.date)},
+              {title: this.$tr('isite.cms.label.time'), icon: 'fas fa-clock', value: this.$trd(fullDate, {type: 'time'})},
               ...event.extraDetails || [],
             ]
           })

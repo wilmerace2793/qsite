@@ -12,7 +12,7 @@
               <q-icon name="fas fa-file-image" :color="color"/>
             </q-item-section>
             <q-item-section>
-              {{(file == '') ? $tr('ui.message.uploadImage') : $tr('ui.message.changeImage')}}
+              {{(file == '') ? $tr('isite.cms.message.uploadImage') : $tr('isite.cms.message.changeImage')}}
             </q-item-section>
           </q-item>
           <!--Remove image-->
@@ -21,7 +21,7 @@
             <q-item-section avatar>
               <q-icon name="fas fa-trash" :color="color"/>
             </q-item-section>
-            <q-item-section>{{$tr('ui.message.deleteImage')}}</q-item-section>
+            <q-item-section>{{$tr('isite.cms.message.deleteImage')}}</q-item-section>
           </q-item>
         </q-menu>
       </q-btn>

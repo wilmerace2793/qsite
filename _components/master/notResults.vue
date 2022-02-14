@@ -1,7 +1,7 @@
 <template>
   <div id="notResult" :class="`text-center text-${color}`">
     <q-icon name="fas fa-search-minus" :color="color" size="20px" class="q-mr-sm"/>
-    <label v-html="label || $tr('ui.message.searchNotFound')"></label>
+    <label v-html="label || $tr('isite.cms.message.searchNotFound')"></label>
   </div>
 </template>
 

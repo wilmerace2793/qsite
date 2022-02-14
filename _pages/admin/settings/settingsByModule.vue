@@ -19,7 +19,7 @@
           <q-icon name="fas fa-bolt" class="block__icon q-mr-sm"/>
           <!--Title-->
           <div class="block__title-content row items-center q-mb-md">
-            <div class="block__title ellipsis-2-lines">{{ $tr('qsite.layout.quickSettings') }}</div>
+            <div class="block__title ellipsis-2-lines">{{ $tr('isite.cms.quickSettings') }}</div>
           </div>
           <!--Group-->
           <div class="block__content">
@@ -362,7 +362,7 @@ export default {
           if (Object.keys(settingsFields).length) this.dataSettings = settingsFields
           resolve(response.data)
         }).catch(e => {
-          this.$alert.error(this.$tr('ui.message.errorRequest'))
+          this.$alert.error(this.$tr('isite.cms.message.errorRequest'))
           resolve([])
         })
       })
@@ -380,7 +380,7 @@ export default {
           this.deprecatedSettings = this.$clone(response.data)
           resolve(response.data)
         }).catch(e => {
-          this.$alert.error(this.$tr('ui.message.errorRequest'))
+          this.$alert.error(this.$tr('isite.cms.message.errorRequest'))
           resolve([])
         })
       })
@@ -457,9 +457,9 @@ export default {
       this.$crud.post('apiRoutes.qsite.settings', requestData).then(async response => {
         this.getData(true)
         this.formModal.show = false
-        this.$alert.info(this.$tr('ui.message.recordUpdated'))
+        this.$alert.info(this.$tr('isite.cms.message.recordUpdated'))
       }).catch(error => {
-        this.$alert.error(this.$tr('ui.message.recordNoUpdated'))
+        this.$alert.error(this.$tr('isite.cms.message.recordNoUpdated'))
         console.error('[UPDATE-SETTINGS]::error:', error)
         this.loading = false
       })
@@ -506,7 +506,7 @@ export default {
           actions: [
             {
               props: {
-                label: this.$tr('ui.label.save'),
+                label: this.$tr('isite.cms.label.save'),
                 color: 'green',
               },
               action: () => {

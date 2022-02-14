@@ -114,7 +114,7 @@
           <template v-slot:no-option v-if="!fieldProps.hideDropdownIcon">
             <q-item>
               <q-item-section class="text-grey">
-                {{ $tr('ui.message.notFound') }}
+                {{ $tr('isite.cms.message.notFound') }}
               </q-item-section>
             </q-item>
           </template>
@@ -390,11 +390,11 @@ export default {
         response = this.field.props.label
         if (this.field.isTranslatable) response = `${response} (${this.language})`
       } else if (this.field.type == 'search') {
-        return `${this.$tr('ui.label.search', {capitalize: true})}...`
+        return `${this.$tr('isite.cms.label.search', {capitalize: true})}...`
       } else if (['date', 'fullDate'].includes(this.field.type)) {
-        return `${this.$tr('ui.label.date')}`
+        return `${this.$tr('isite.cms.label.date')}`
       } else if (this.field.type == 'hour')
-        return `${this.$tr('ui.label.hour')}`
+        return `${this.$tr('isite.cms.label.hour')}`
 
       //Set tree data
       if (this.field.type == 'treeSelect' && this.responseValue && !Array.isArray(this.responseValue)) {
@@ -516,7 +516,7 @@ export default {
 
           //add hint to UX when use chips
           if (props.multiple && props.useChips && props.hideDropdownIcon && !props.hint)
-            props.hint = this.$tr('ui.message.hintUseChips')
+            props.hint = this.$tr('isite.cms.message.hintUseChips')
 
           break;
         case'treeSelect':
@@ -731,7 +731,7 @@ export default {
               borderless: true,
               dense: true,
               ...props,
-              rules: [val => !!val || this.$tr('ui.message.fieldRequired')],
+              rules: [val => !!val || this.$tr('isite.cms.message.fieldRequired')],
             }
           }
           break;
@@ -768,7 +768,7 @@ export default {
       //Add ruler to required field
       if (this.field.required) {
         if (!props.rules) props.rules = []
-        props.rules.push(val => !!val || this.$tr('ui.message.fieldRequired'))
+        props.rules.push(val => !!val || this.$tr('isite.cms.message.fieldRequired'))
       }
 
       //Response
@@ -1165,7 +1165,7 @@ export default {
             this.loading = false
             resolve(true)
           }).catch(error => {
-            this.$alert.error({message: this.$tr('ui.message.errorRequest'), pos: 'bottom'})
+            this.$alert.error({message: this.$tr('isite.cms.message.errorRequest'), pos: 'bottom'})
             this.loading = false
             reject(true)
           })
@@ -1243,7 +1243,7 @@ export default {
         this.$crud.show(this.field.validateField.apiRoute, val, requestParams).then(response => {
           if (response.status == 200) {
             //Already exist
-            ruleResponse = false || this.$tr('ui.message.fieldAlreadyExist')
+            ruleResponse = false || this.$tr('isite.cms.message.fieldAlreadyExist')
             //Validate if compare with crudInfo
             if (this.crudInfo && (this.crudInfo.typeForm == 'update') && (this.crudInfo.id == response.data.id))
               ruleResponse = true || 'update'

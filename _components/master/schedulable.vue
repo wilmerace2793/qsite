@@ -2,7 +2,7 @@
   <div id="scheduleComponent">
     <!--Schedule config-->
     <div class="row items-center q-pt-md q-px-md">
-      <div class="text-blue-grey text-h6 col q-pb-md"><b>{{ $tr('ui.form.schedule') }}</b></div>
+      <div class="text-blue-grey text-h6 col q-pb-md"><b>{{ $tr('isite.cms.form.schedule') }}</b></div>
       <div class="col">
         <dynamic-field v-model="schedule.status" :field="formFields.status"/>
       </div>
@@ -18,7 +18,7 @@
             <label class="text-blue-grey text-weight-bold">{{ day.label }}</label>
             <!--Message Close-->
             <label class="text-red capitalize q-ml-xs" v-if="!workTimesByDay[day.id].length">
-              {{ $tr('ui.label.closed') }}
+              {{ $tr('isite.cms.label.closed') }}
             </label>
           </div>
           <!--workTimes-->
@@ -33,16 +33,16 @@
           <div class="col-xs-12 text-left q-body-2" v-if="withShiftTime && workTimesByDay[day.id].length">
             <!--Headers-->
             <div class="row text-blue-grey q-my-xs">
-              <div class="col" style="line-height: 1">{{ $tr('qsite.layout.startTime') }}</div>
-              <div class="col" style="line-height: 1">{{ $tr('qsite.layout.endTime') }}</div>
-              <div class="col" style="line-height: 1">{{ $tr('qsite.layout.shiftTime') }}</div>
+              <div class="col" style="line-height: 1">{{ $tr('isite.cms.startTime') }}</div>
+              <div class="col" style="line-height: 1">{{ $tr('isite.cms.endTime') }}</div>
+              <div class="col" style="line-height: 1">{{ $tr('isite.cms.shiftTime') }}</div>
             </div>
             <!--Work Times-->
             <div v-for="(workTime,index) in workTimesByDay[day.id]" :key="index">
               <div class="row q-mb-xs">
                 <div class="col">{{ $trd(currentDate + workTime.startTime, {type: 'time'}) }}</div>
                 <div class="col">{{ $trd(currentDate + workTime.endTime, {type: 'time'}) }}</div>
-                <div class="col">{{ workTime.shiftTime + ' ' + $trp('ui.label.minute') }}</div>
+                <div class="col">{{ workTime.shiftTime + ' ' + $trp('isite.cms.label.minute') }}</div>
               </div>
             </div>
           </div>
@@ -139,13 +139,13 @@ export default {
     //Day Shifts
     weekDays() {
       return [
-        {id: 1, label: this.$tr('ui.label.monday')},
-        {id: 2, label: this.$tr('ui.label.tuesday')},
-        {id: 3, label: this.$tr('ui.label.wednesday')},
-        {id: 4, label: this.$tr('ui.label.thursday')},
-        {id: 5, label: this.$tr('ui.label.friday')},
-        {id: 6, label: this.$tr('ui.label.saturday')},
-        {id: 7, label: this.$tr('ui.label.sunday')}
+        {id: 1, label: this.$tr('isite.cms.label.monday')},
+        {id: 2, label: this.$tr('isite.cms.label.tuesday')},
+        {id: 3, label: this.$tr('isite.cms.label.wednesday')},
+        {id: 4, label: this.$tr('isite.cms.label.thursday')},
+        {id: 5, label: this.$tr('isite.cms.label.friday')},
+        {id: 6, label: this.$tr('isite.cms.label.saturday')},
+        {id: 7, label: this.$tr('isite.cms.label.sunday')}
       ]
     },
     //Group worktimes by day id
@@ -166,7 +166,7 @@ export default {
       //Response
       return [
         {
-          label: this.$tr('ui.label.edit'),
+          label: this.$tr('isite.cms.label.edit'),
           icon: 'fas fa-pen',
           action: (item) => {
             //Get day schedule
@@ -183,7 +183,7 @@ export default {
           }
         },
         {
-          label: this.$tr('ui.label.closed'),
+          label: this.$tr('isite.cms.label.closed'),
           icon: 'fas fa-store-alt-slash',
           action: (item) => {
             this.removeWorktimesByDay(item.id)
@@ -197,11 +197,11 @@ export default {
       if (!this.modal.show) return {}
       //Response props
       return {
-        title: `${this.$tr('ui.form.schedule')} ${this.modal.day.label}`,
+        title: `${this.$tr('isite.cms.form.schedule')} ${this.modal.day.label}`,
         actions: [
           {
             props: {
-              label: this.$tr('ui.label.add') + ' ' + this.$tr('ui.form.hour'),
+              label: this.$tr('isite.cms.label.add') + ' ' + this.$tr('isite.cms.form.hour'),
               icon: 'fas fa-plus-circle',
               color: 'blue',
               outline: true
@@ -212,7 +212,7 @@ export default {
           },
           {
             props: {
-              label: this.$tr('ui.label.save'),
+              label: this.$tr('isite.cms.label.save'),
               color: 'green'
             },
             action: () => {
@@ -234,10 +234,10 @@ export default {
           value: 1,
           type: 'select',
           props: {
-            label: this.$tr('ui.form.status'),
+            label: this.$tr('isite.cms.form.status'),
             options: [
-              {label: this.$tr('ui.label.enabled'), value: 1},
-              {label: this.$tr('ui.label.disabled'), value: 0}
+              {label: this.$tr('isite.cms.label.enabled'), value: 1},
+              {label: this.$tr('isite.cms.label.disabled'), value: 0}
             ]
           }
         },
@@ -245,27 +245,27 @@ export default {
           value: '08:00',
           type: 'hour',
           props: {
-            label: this.$tr('qsite.layout.startTime')
+            label: this.$tr('isite.cms.startTime')
           }
         },
         endTime: {
           value: '09:00',
           type: 'hour',
           props: {
-            label: this.$tr('qsite.layout.endTime')
+            label: this.$tr('isite.cms.endTime')
           }
         },
         shiftTime: {
           value: 30,
           type: 'select',
           props: {
-            label: this.$tr('qsite.layout.shiftTime'),
+            label: this.$tr('isite.cms.shiftTime'),
             useInput: false,
             options: this.$helper.getShiftTimeOptions({
-              hour: this.$tr('ui.label.hour'),
-              hours: this.$trp('ui.label.hour'),
-              minutes: this.$trp('ui.label.minute'),
-              and: this.$tr('ui.label.and'),
+              hour: this.$tr('isite.cms.label.hour'),
+              hours: this.$trp('isite.cms.label.hour'),
+              minutes: this.$trp('isite.cms.label.minute'),
+              and: this.$tr('isite.cms.label.and'),
             })
           }
         }

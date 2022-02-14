@@ -7,9 +7,9 @@
     <!--Actions-->
     <div class="row justify-between q-mt-sm">
       <!--Clear-->
-      <q-btn color="grey-7" :label="$tr('ui.label.clear')" rounded unelevated size="sm" @click="clear()"/>
+      <q-btn color="grey-7" :label="$tr('isite.cms.label.clear')" rounded unelevated size="sm" @click="clear()"/>
       <!--Undo-->
-      <q-btn color="grey-7" :label="$tr('ui.label.back')" rounded unelevated size="sm" @click="undo()"/>
+      <q-btn color="grey-7" :label="$tr('isite.cms.label.back')" rounded unelevated size="sm" @click="undo()"/>
     </div>
   </div>
 </template>

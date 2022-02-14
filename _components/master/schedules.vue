@@ -5,16 +5,16 @@
       <q-item v-for="(day, keyDay) in schedule" :key="keyDay" clickable style="padding: 8px">
         <div class="row full-width items-center">
           <!--Day Name-->
-          <div class="col-xs-4 text-blue-grey"><b class="q-pl-md">{{ $tr(`ui.label.${day.name}`) }}</b></div>
+          <div class="col-xs-4 text-blue-grey"><b class="q-pl-md">{{ $tr(`isite.cms.label.${day.name}`) }}</b></div>
           <!--Schedules-->
           <div class="col-xs-6 text-left q-body-2">
             <!--Message Close-->
             <div class="text-red capitalize" v-if="day.schedules == '0'">
-              <b>{{ $tr('ui.label.closed') }}</b>
+              <b>{{ $tr('isite.cms.label.closed') }}</b>
             </div>
             <!--Message 24 Hours-->
             <div class="text-green capitalize" v-else-if="day.schedules == '1'">
-              <b>{{ `24 ${$trp('ui.label.hour')}` }}</b>
+              <b>{{ `24 ${$trp('isite.cms.label.hour')}` }}</b>
             </div>
             <!--List Custom-->
             <div v-else>
@@ -113,7 +113,7 @@ export default {
       //Response
       return [
         {
-          label: this.$tr('ui.label.custom'),
+          label: this.$tr('isite.cms.label.custom'),
           icon: 'fas fa-pen',
           action: (item) => {
             //Get day schedule
@@ -127,7 +127,7 @@ export default {
           }
         },
         {
-          label: `24 ${this.$trp('ui.label.hour')}`,
+          label: `24 ${this.$trp('isite.cms.label.hour')}`,
           icon: 'fas fa-store-alt',
           action: (item) => {
             this.schedule.forEach((day, index) => {
@@ -136,7 +136,7 @@ export default {
           }
         },
         {
-          label: this.$tr('ui.label.closed'),
+          label: this.$tr('isite.cms.label.closed'),
           icon: 'fas fa-store-alt-slash',
           action: (item) => {
             this.schedule.forEach((day, index) => {
@@ -152,11 +152,11 @@ export default {
       if (!this.modal.show) return {}
       //Response props
       return {
-        title: `${this.$tr('ui.form.schedule')} ${this.$tr(`ui.label.${this.dayEdit.name}`)}`,
+        title: `${this.$tr('isite.cms.form.schedule')} ${this.$tr(`isite.cms.label.${this.dayEdit.name}`)}`,
         actions: [
           {
             props: {
-              label: this.$tr('ui.label.add') + ' ' + this.$tr('ui.form.hour'),
+              label: this.$tr('isite.cms.label.add') + ' ' + this.$tr('isite.cms.form.hour'),
               icon: 'fas fa-plus-circle',
               color: 'blue',
               outline : true
@@ -167,7 +167,7 @@ export default {
           },
           {
             props: {
-              label: this.$tr('ui.label.save'),
+              label: this.$tr('isite.cms.label.save'),
               color: 'green'
             },
             action: () => {
@@ -186,7 +186,7 @@ export default {
           type: 'hour',
           withFullDate: true,
           props: {
-            label: this.$tr('ui.label.since'),
+            label: this.$tr('isite.cms.label.since'),
             mask: "YYYY-MM-DD HH:mm"
           }
         },
@@ -194,7 +194,7 @@ export default {
           type: 'hour',
           withFullDate: true,
           props: {
-            label: this.$tr('ui.label.until'),
+            label: this.$tr('isite.cms.label.until'),
             mask: "YYYY-MM-DD HH:mm"
           }
         }

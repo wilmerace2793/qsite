@@ -63,7 +63,7 @@ class AutoLoadPages {
           name: `${moduleName}.admin.personalization`,
           page: () => import('@imagina/qsite/_pages/admin/settings/settingsByModule'),
           layout: () => import('@imagina/qsite/_layouts/master.vue'),
-          title: 'ui.label.personalization',
+          title: 'isite.cms.label.personalization',
           icon: 'fas fa-brush',
           authenticated: true,
           subHeader: {refresh: true},

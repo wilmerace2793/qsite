@@ -20,7 +20,7 @@
         <q-toolbar>
           <q-toolbar-title>
             <q-icon name="fas fa-filter" class="q-mr-sm"/>
-            <label>{{$tr('ui.label.filter',{capitalize : true})}}</label>
+            <label>{{$tr('isite.cms.label.filter',{capitalize : true})}}</label>
           </q-toolbar-title>
           <q-btn flat class="q-pr-none" v-close-popup icon="fas fa-times"/>
         </q-toolbar>
@@ -31,7 +31,7 @@
                          :field="field" class="q-mb-sm"/>
           <!--Button filter-->
           <div class="text-center q-mt-md">
-            <q-btn :label="$tr('ui.label.search')" color="primary" rounded
+            <q-btn :label="$tr('isite.cms.label.search')" color="primary" rounded
                    @click="emitFilter()" unelevated/>
           </div>
         </q-card-section>
@@ -71,7 +71,7 @@
     },
     computed: {
       labelText() {
-        return this.label || `${this.$tr('ui.label.search')}...`
+        return this.label || `${this.$tr('isite.cms.label.search')}...`
       }
     },
     methods: {

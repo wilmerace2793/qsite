@@ -17,7 +17,7 @@
           <!-- Back Button -->
           <q-btn icon="fas fa-arrow-left" unelevated round color="primary" class="btn-small q-mr-md"
                  @click="$helper.backHistory()">
-            <q-tooltip>{{ $tr('ui.label.back') }}</q-tooltip>
+            <q-tooltip>{{ $tr('isite.cms.label.back') }}</q-tooltip>
           </q-btn>
           <!--Breadcrumb-->
           <q-breadcrumbs class="text-blue-grey">

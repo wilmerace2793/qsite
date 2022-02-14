@@ -131,7 +131,7 @@ export default {
         bottom: [
           {
             icon: 'fas fa-ban',
-            value: this.$tr('ui.label.cancel'),
+            value: this.$tr('isite.cms.label.cancel'),
             action: () => {
               this.cropImage(false)
             }
@@ -140,7 +140,7 @@ export default {
             popupName: 'width',
             icon: 'fas fa-arrows-alt-h',
             value: `${this.information ? this.information.cropper.width : ''}px`,
-            label: this.$tr('ui.form.width'),
+            label: this.$tr('isite.cms.form.width'),
             action: () => {
               this.$refs.cropper.setData({
                 width: parseInt(this.cropperSize.width),
@@ -152,7 +152,7 @@ export default {
             popupName: 'height',
             icon: 'fas fa-arrows-alt-v',
             value: `${this.information ? this.information.cropper.height : ''}px`,
-            label: this.$tr('ui.form.height'),
+            label: this.$tr('isite.cms.form.height'),
             action: () => {
               this.$refs.cropper.setData({
                 width: parseInt(this.cropperSize.width),
@@ -161,7 +161,7 @@ export default {
             }
           },
           {
-            icon: 'fas fa-save', value: this.$tr('ui.label.save'), action: this.cropImage
+            icon: 'fas fa-save', value: this.$tr('isite.cms.label.save'), action: this.cropImage
           },
         ]
       }

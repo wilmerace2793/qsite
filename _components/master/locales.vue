@@ -2,7 +2,7 @@
   <div id="componentLocales">
     <!--Button Config language-->
     <q-btn icon="fas fa-cog" class="config-buttom q-mr-xs capitalize" size="12px"
-           :label="`${$tr('ui.label.language')}`" color="blue-grey" unelevated rounded
+           :label="`${$tr('isite.cms.label.language')}`" color="blue-grey" unelevated rounded
            @click="options.typeOption = null" no-caps v-if="languageOptions.length >= 2">
       <!--Popover-->
       <q-popup-proxy class="popover-config-locale" ref="modalConfig" persistent>
@@ -11,7 +11,7 @@
           <q-toolbar class="q-pa-none title text-primary relative-green">
             <q-toolbar-title>
               <q-icon name="fas fa-language" class="q-mr-xs"/>
-              <label class="text-subtitle1 text-capitalize" v-html="$trp('ui.label.option')"></label>
+              <label class="text-subtitle1 text-capitalize" v-html="$trp('isite.cms.label.option')"></label>
             </q-toolbar-title>
           </q-toolbar>
           <!--Option replace-->
@@ -29,15 +29,15 @@
             class="capitalize q-mt-xs"
             outlined dense
             v-model="options.languageToClone"
-            :label="$trp('ui.label.language')"
+            :label="$trp('isite.cms.label.language')"
             :options="optionsLanguagesToClone"
           />
           <!--Button clone language-->
           <div class="text-right q-mt-sm q-gutter-x-sm">
-            <q-btn color="red" class="q-pa-none" :label="$tr('ui.label.cancel')"
+            <q-btn color="red" class="q-pa-none" :label="$tr('isite.cms.label.cancel')"
                    @click="$refs.modalConfig.hide()" rounded unelevated size="sm"/>
             <q-btn icon="fas fa-save" color="green" size="sm" @click="makeOptionLocale()"
-                   :label="$tr('ui.label.save')" :disable="!options.typeOption" rounded unelevated/>
+                   :label="$tr('isite.cms.label.save')" :disable="!options.typeOption" rounded unelevated/>
           </div>
         </div>
       </q-popup-proxy>
@@ -116,8 +116,8 @@
         let language = this.locale.language
         let label = this.languageOptions.find(item => item.value == language).label
         return {
-          replace: this.$t('qsite.layout.messages.replaceLang', {lang: label}),
-          duplicate: this.$t('qsite.layout.messages.duplicateLang', {lang: label})
+          replace: this.$t('isite.cms.messages.replaceLang', {lang: label}),
+          duplicate: this.$t('isite.cms.messages.duplicateLang', {lang: label})
         }
       },
       //Option languages to clone data

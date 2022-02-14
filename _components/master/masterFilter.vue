@@ -5,7 +5,7 @@
       <!--Title-->
       <div class="text-subtitle1 row items-center q-pa-md">
         <q-icon name="fas fa-filter" color="primary" size="20px" class="q-mr-sm"/>
-        <label>{{ $trp('ui.label.filter', {capitalize: true}) }}</label>
+        <label>{{ $trp('isite.cms.label.filter', {capitalize: true}) }}</label>
       </div>
 
       <!--Tabs-->
@@ -13,7 +13,7 @@
       <div id="tabsContent" class="full-width" v-if="false">
         <q-tabs v-model="tabName" dense class="text-grey" active-color="primary" indicator-color="primary"
                 align="justify" v-if="filter.hasValues" :breakpoint="0">
-          <q-tab name="tabForm" :label="$tr('ui.label.filter')"/>
+          <q-tab name="tabForm" :label="$tr('isite.cms.label.filter')"/>
         </q-tabs>
       </div>
     </div>
@@ -30,7 +30,7 @@
               <!--Label-->
               <div class="full-width text-primary q-mb-xs">
                 <q-icon name="fas fa-search" class="q-mr-xs"/>
-                {{ $tr('ui.label.search', {capitalize: true}) }}
+                {{ $tr('isite.cms.label.search', {capitalize: true}) }}
               </div>
               <!--Input search-->
               <dynamic-field v-model="filterValues.search"
@@ -47,7 +47,7 @@
               <!--Label-->
               <div class="full-width text-primary q-mb-xs">
                 <q-icon name="fab fa-buffer" class="q-mr-xs"/>
-                {{ $tr('ui.label.pagination', {capitalize: true}) }}
+                {{ $tr('isite.cms.label.pagination', {capitalize: true}) }}
               </div>
               <!--Fields pagination-->
               <dynamic-field v-for="(fieldPagination, key) in paginationFields" :field="fieldPagination" class="q-mb-sm"
@@ -65,7 +65,7 @@
     <!--footer -->
     <div class="absolute-bottom text-center bg-white" ref="footerContent">
       <q-separator/>
-      <q-btn :label="$tr('ui.label.search')" unelevated color="primary" class="q-my-sm" rounded
+      <q-btn :label="$tr('isite.cms.label.search')" unelevated color="primary" class="q-my-sm" rounded
              @click="emitFilter(), $eventBus.$emit('toggleMasterDrawer','filter')"/>
     </div>
   </div>
@@ -128,27 +128,27 @@ export default {
           value: this.filterValues.date.type || null,
           type: 'select',
           props: {
-            label: this.$tr('ui.form.date'),
+            label: this.$tr('isite.cms.form.date'),
             clearable: true,
             options: [
-              {label: this.$tr('ui.label.customRange'), value: 'customRange'},
-              {label: this.$tr('ui.label.today'), value: 'today'},
-              {label: this.$tr('ui.label.yesterday'), value: 'yesterday'},
-              {label: this.$tr('ui.label.tomorrow'), value: 'tomorrow'},
-              {label: this.$tr('ui.label.LastNumDays', {numDays: 7}), value: 'lastSevenDays'},
-              {label: this.$tr('ui.label.LastNumDays', {numDays: 30}), value: 'lastThirtyDays'},
-              {label: this.$tr('ui.label.LastNumDays', {numDays: 60}), value: 'lastSixtyDays'},
-              {label: this.$tr('ui.label.currentWeek'), value: 'currentWeek'},
-              {label: this.$tr('ui.label.lastWeek'), value: 'lastWeek'},
-              {label: this.$tr('ui.label.nextWeek'), value: 'nextWeek'},
-              {label: this.$tr('ui.label.currentMonth'), value: 'currentMonth'},
-              {label: this.$tr('ui.label.lastMonth'), value: 'lastMonth'},
-              {label: this.$tr('ui.label.nextMonth'), value: 'nextMonth'},
-              {label: this.$tr('ui.label.numMonthsAgo', {numMonths: 2}), value: 'twoMonthsAgo'},
-              {label: this.$tr('ui.label.currentYear'), value: 'currentYear'},
-              {label: this.$tr('ui.label.lastYear'), value: 'lastYear'},
-              {label: this.$tr('ui.label.numYearsAgo', {numYears: 2}), value: 'twoYearsAgo'},
-              {label: this.$tr('ui.label.lastNumYears', {numYears: 2}), value: 'lastTwoYears'},
+              {label: this.$tr('isite.cms.label.customRange'), value: 'customRange'},
+              {label: this.$tr('isite.cms.label.today'), value: 'today'},
+              {label: this.$tr('isite.cms.label.yesterday'), value: 'yesterday'},
+              {label: this.$tr('isite.cms.label.tomorrow'), value: 'tomorrow'},
+              {label: this.$tr('isite.cms.label.LastNumDays', {numDays: 7}), value: 'lastSevenDays'},
+              {label: this.$tr('isite.cms.label.LastNumDays', {numDays: 30}), value: 'lastThirtyDays'},
+              {label: this.$tr('isite.cms.label.LastNumDays', {numDays: 60}), value: 'lastSixtyDays'},
+              {label: this.$tr('isite.cms.label.currentWeek'), value: 'currentWeek'},
+              {label: this.$tr('isite.cms.label.lastWeek'), value: 'lastWeek'},
+              {label: this.$tr('isite.cms.label.nextWeek'), value: 'nextWeek'},
+              {label: this.$tr('isite.cms.label.currentMonth'), value: 'currentMonth'},
+              {label: this.$tr('isite.cms.label.lastMonth'), value: 'lastMonth'},
+              {label: this.$tr('isite.cms.label.nextMonth'), value: 'nextMonth'},
+              {label: this.$tr('isite.cms.label.numMonthsAgo', {numMonths: 2}), value: 'twoMonthsAgo'},
+              {label: this.$tr('isite.cms.label.currentYear'), value: 'currentYear'},
+              {label: this.$tr('isite.cms.label.lastYear'), value: 'lastYear'},
+              {label: this.$tr('isite.cms.label.numYearsAgo', {numYears: 2}), value: 'twoYearsAgo'},
+              {label: this.$tr('isite.cms.label.lastNumYears', {numYears: 2}), value: 'lastTwoYears'},
             ]
           }
         },
@@ -157,7 +157,7 @@ export default {
           type: 'date',
           props: {
             vIf: (filterDate && (filterDate.type == 'customRange')) ? true : false,
-            label: this.$tr('ui.form.startDate'),
+            label: this.$tr('isite.cms.form.startDate'),
             clearable: true,
             options: (date) => {
               let toDate = filterDate.to ? this.$moment(filterDate.to).format('YYYY/MM/DD') : false
@@ -170,7 +170,7 @@ export default {
           type: 'date',
           props: {
             vIf: (filterDate && (filterDate.type == 'customRange')) ? true : false,
-            label: this.$tr('ui.form.endDate'),
+            label: this.$tr('isite.cms.form.endDate'),
             clearable: true,
             options: (date) => {
               let fromDate = filterDate.from ? this.$moment(filterDate.from).format('YYYY/MM/DD') : false
@@ -197,7 +197,7 @@ export default {
             value: filter.pagination.page || 1,
             type: 'select',
             props: {
-              label: this.$tr('ui.form.page'),
+              label: this.$tr('isite.cms.form.page'),
               options: pages
             }
           },
@@ -205,9 +205,9 @@ export default {
             value: filter.pagination.rowsPerPage || 20,
             type: 'select',
             props: {
-              label: this.$tr('ui.form.perPage'),
+              label: this.$tr('isite.cms.form.perPage'),
               options: [
-                {label: this.$tr('ui.label.all'), value: '0'},
+                {label: this.$tr('isite.cms.label.all'), value: '0'},
                 {label: '5', value: '5'},
                 {label: '10', value: '10'},
                 {label: '20', value: '20'},

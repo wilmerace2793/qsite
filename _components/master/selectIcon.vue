@@ -1,7 +1,7 @@
 <template>
   <div id="iconSelectComponent">
     <!--Input selected-->
-    <q-input v-model="selectedIcon" bg-color="white" outlined dense clearable :label="label || $tr('ui.form.icon')"
+    <q-input v-model="selectedIcon" bg-color="white" outlined dense clearable :label="label || $tr('isite.cms.form.icon')"
              readonly @click="modal.show = true" class="cursor-pointer" :rules="rules">
       <template v-slot:append v-if="selectedIcon">
         <q-icon :name="selectedIcon" color="blue-grey"/>
@@ -13,14 +13,14 @@
       <q-card class="bg-grey-1 backend-page row">
         <!--Header-->
         <q-toolbar class="bg-primary text-white">
-          <q-toolbar-title>{{ `${$tr('ui.label.select')} ${$tr('ui.form.icon')}` }}</q-toolbar-title>
+          <q-toolbar-title>{{ `${$tr('isite.cms.label.select')} ${$tr('isite.cms.form.icon')}` }}</q-toolbar-title>
           <q-btn flat v-close-popup round dense icon="close"/>
         </q-toolbar>
 
         <!--Content-->
         <q-card-section class="relative-position col-12">
           <!--Search-->
-          <q-input v-model="searchIcon" bg-color="white" outlined dense clearable :label="$tr('ui.label.search')"
+          <q-input v-model="searchIcon" bg-color="white" outlined dense clearable :label="$tr('isite.cms.label.search')"
                    class="q-mb-md">
             <template v-slot:append>
               <q-icon name="search"/>
@@ -28,7 +28,7 @@
           </q-input>
           <!--Icon categories-->
           <q-select v-model="selectedCategory" :options="categoryOptions" emit-value map-options outlined dense
-                    :label="$tr('ui.label.category')" use-input @filter="filterCategoryOptions" v-if="!searchIcon"
+                    :label="$tr('isite.cms.label.category')" use-input @filter="filterCategoryOptions" v-if="!searchIcon"
                     bg-color="white" style="width: 100%" behavior="menu" class="q-mb-md"/>
           <!--Icon list-->
           <div class="icon-list-content row q-col-gutter-xs">
@@ -36,7 +36,7 @@
             <div class="remove-icon col-4 col-md-3">
               <div class="icon-content" @click="selectedIcon = null; modal.show = false">
                 <div class="empty-icon q-mb-xs"></div>
-                <div class="ellipsis text-caption text-grey-7">{{ $tr('ui.message.withoutIcon') }}</div>
+                <div class="ellipsis text-caption text-grey-7">{{ $tr('isite.cms.message.withoutIcon') }}</div>
               </div>
             </div>
             <!--Icons-->
@@ -142,7 +142,7 @@ export default {
     setRootCategoryOptions() {
       //Map options
       let response = Object.keys(this.iconsData).map((key) => {
-        return {label: `${this.$tr(`ui.label.${key}`)} (${this.iconsData[key].length})`, value: key}
+        return {label: `${this.$tr(`isite.cms.label.${key}`)} (${this.iconsData[key].length})`, value: key}
       })
 
       //Sort by label

@@ -359,18 +359,18 @@ class Helper {
       navigator.clipboard.writeText(text).then(function () {
         alert.info({
           icon: 'fas fa-copy',
-          message: Vue.prototype.$tr('qsite.layout.messages.copyToClipboard')
+          message: Vue.prototype.$tr('isite.cms.messages.copyToClipboard')
         });
       }, function (err) {
         alert.error({
           icon: 'fas fa-copy',
-          message: Vue.prototype.$tr('qsite.layout.messages.failedCopyToClipboard')
+          message: Vue.prototype.$tr('isite.cms.messages.failedCopyToClipboard')
         });
       });
     } catch (error) {
       alert.error({
         icon: 'fas fa-copy',
-        message: Vue.prototype.$tr('qsite.layout.messages.failedCopyToClipboard')
+        message: Vue.prototype.$tr('isite.cms.messages.failedCopyToClipboard')
       });
     }
   }

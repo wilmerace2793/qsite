@@ -10,7 +10,7 @@
         </q-toolbar-title>
         <q-btn size="sm" icon="fas fa-times" round color="blue-grey-5" text-color="white" v-close-popup unelevated
                v-if="!actionsModal || !actionsModal.length">
-          <q-tooltip>{{ $tr('ui.label.close') }}</q-tooltip>
+          <q-tooltip>{{ $tr('isite.cms.label.close') }}</q-tooltip>
         </q-btn>
       </q-toolbar>
 
@@ -53,9 +53,9 @@ export default {
       return {
         icon: 'fas fa-bell',
         color: 'cyan',
-        title: this.$tr('ui.label.notification'),
+        title: this.$tr('isite.cms.label.notification'),
         message: 'Message...',
-        actions: [{label: this.$tr('ui.label.ok')}],
+        actions: [{label: this.$tr('isite.cms.label.ok')}],
         ...this.params
       }
     },

@@ -16,7 +16,7 @@
           <!--Title-->
           <div class="text-primary text-subtitle1 row items-center q-mb-sm q-px-md">
             <q-icon name="fas fa-boxes" class="q-mr-sm"/>
-            {{ $trp('ui.label.module') }}
+            {{ $trp('isite.cms.label.module') }}
           </div>
           <!--List Modules-->
           <q-list separator>
@@ -200,7 +200,7 @@ export default {
           if (Object.keys(settingsFields).length) this.dataSettings = settingsFields
           resolve(response.data)
         }).catch(e => {
-          this.$alert.error(this.$tr('ui.message.errorRequest'))
+          this.$alert.error(this.$tr('isite.cms.message.errorRequest'))
           resolve([])
         })
       })
@@ -218,7 +218,7 @@ export default {
           this.deprecatedSettings = this.$clone(response.data)
           resolve(response.data)
         }).catch(e => {
-          this.$alert.error(this.$tr('ui.message.errorRequest'))
+          this.$alert.error(this.$tr('isite.cms.message.errorRequest'))
           resolve([])
         })
       })
@@ -287,10 +287,10 @@ export default {
       this.loading = true
       //Request
       this.$crud.post('apiRoutes.qsite.settings', {attributes: this.getDataForm()}).then(async response => {
-        this.$alert.info(this.$tr('ui.message.recordUpdated'))
+        this.$alert.info(this.$tr('isite.cms.message.recordUpdated'))
         this.getData()
       }).catch(error => {
-        this.$alert.error(this.$tr('ui.message.recordNoUpdated'))
+        this.$alert.error(this.$tr('isite.cms.message.recordNoUpdated'))
         console.error('[UPDATE-SETTINGS]::error:', error)
         this.loading = false
       })

@@ -98,10 +98,10 @@ export default {
           //Go To Site
           {
             name: 'goToSite',
-            label: this.$tr('ui.configList.goToSite'),
+            label: this.$tr('isite.cms.configList.goToSite'),
             props: {
               ...defaultButtonProps,
-              label: this.$tr('qsite.layout.showSite'),
+              label: this.$tr('isite.cms.showSite'),
               type: 'a',
               href: this.$store.state.qsiteApp.baseUrl,
               target: '_blank',
@@ -125,7 +125,7 @@ export default {
           //Notifications
           {
             name: 'notifications',
-            label: this.$trp('ui.label.notification'),
+            label: this.$trp('isite.cms.label.notification'),
             vIf: this.$auth.hasAccess('notification.notifications.manage'),
             props: {
               ...defaultButtonProps,
@@ -141,7 +141,7 @@ export default {
             name: 'profile',
             props: {
               ...defaultButtonProps,
-              label: this.$tr('quser.sidebar.panelProfile'),
+              label: this.$tr('iprofile.cms.sidebar.panelProfile'),
               icon: 'fas fa-user-circle',
               round: false,
               rounded: true,
@@ -155,7 +155,7 @@ export default {
             vIf: (config('app.mode') == 'iadmin'),
             props: {
               ...defaultButtonProps,
-              label: this.$trp('ui.label.setting'),
+              label: this.$trp('isite.cms.label.setting'),
               icon: 'fas fa-cog',
               round: false,
               rounded: true,
@@ -169,7 +169,7 @@ export default {
             vIf: (config('app.mode') == 'ipanel') && this.$auth.hasAccess('icheckin.shifts.create'),
             props: {
               ...defaultButtonProps,
-              label: this.$tr('qcheckin.sidebar.checkin'),
+              label: this.$tr('icheckin.cms.sidebar.checkin'),
               icon: 'fas fa-stopwatch',
               round: false,
               rounded: true,
@@ -183,7 +183,7 @@ export default {
             vIf: (config('app.mode') == 'iadmin'),
             props: {
               ...defaultButtonProps,
-              label: this.$tr('ui.configList.signOut'),
+              label: this.$tr('isite.cms.configList.signOut'),
               icon: 'fas fa-sign-out-alt',
               round: false,
               rounded: true,

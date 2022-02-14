@@ -7,7 +7,7 @@
         <!--Title-->
         <div class="text-subtitle1 text-primary text-capitalize">
           <q-icon name="fas fa-cogs"></q-icon>
-          {{this.$trp('ui.label.setting')}}
+          {{this.$trp('isite.cms.label.setting')}}
         </div>
         <!--Toogle list-->
         <div>

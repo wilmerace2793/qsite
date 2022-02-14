@@ -356,7 +356,7 @@ export default {
           },
           events: {
             validateError: () => {
-              this.$alert.error(this.$tr('ui.message.formInvalid'))
+              this.$alert.error(this.$tr('isite.cms.message.formInvalid'))
             },
             ...(strtToMerge.form?.events || {})
           },
@@ -485,7 +485,7 @@ export default {
         previous: {
           color: "grey-6",
           icon: this.formType == 'stepVertical' ? "fas fa-arrow-up" : "fas fa-arrow-left",
-          label: this.$tr('ui.label.previous'),
+          label: this.$tr('isite.cms.label.previous'),
           ...(this.actions.previous || {}),
           vIf: (this.step == 0) ? false : true,
           action: () => this.changeStep('previous')
@@ -493,14 +493,14 @@ export default {
         next: {
           color: "green",
           iconRight: this.formType == 'stepVertical' ? "fas fa-arrow-down" : "fas fa-arrow-right",
-          label: this.$tr('ui.label.next'),
+          label: this.$tr('isite.cms.label.next'),
           ...(this.actions.next || {}),
           action: () => this.changeStep('next', isLastStep)
         },
         submit: {
           color: "green",
           icon: "fas fa-save",
-          label: this.$tr('ui.label.save'),
+          label: this.$tr('isite.cms.label.save'),
           ...(this.actions.submit || {}),
           action: () => this.changeStep('next', true)
         },

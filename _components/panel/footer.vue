@@ -17,7 +17,7 @@
               <img :src="quserState.userData.mainImage">
             </q-avatar>
           </q-btn>
-          <div>{{ $tr('ui.label.profile') }}</div>
+          <div>{{ $tr('isite.cms.label.profile') }}</div>
         </div>
         <!-- Main -->
         <div class="col" @click="doMainAction()">
@@ -28,12 +28,12 @@
         <!-- Settings -->
         <div class="item-footer col cursor-pointer" @click="$eventBus.$emit('toggleMasterDrawer','config')">
           <q-icon class="item-icon" name="fas fa-cog"/>
-          <div>{{ $tr('ui.label.setting') }}</div>
+          <div>{{ $tr('isite.cms.label.setting') }}</div>
         </div>
         <!-- Others -->
         <div class="item-footer col cursor-pointer" @click="modal.show = true">
           <q-icon class="item-icon" name="fas fa-ellipsis-h"/>
-          <div>{{ $trp('ui.label.other') }}</div>
+          <div>{{ $trp('isite.cms.label.other') }}</div>
         </div>
       </div>
       <!--Footer panel-->
@@ -49,7 +49,7 @@
         <!--Toolbar-->
         <q-toolbar>
           <q-icon class="item-icon" name="fas fa-ellipsis-v"/>
-          <q-toolbar-title> {{ $trp('ui.label.other') }}</q-toolbar-title>
+          <q-toolbar-title> {{ $trp('isite.cms.label.other') }}</q-toolbar-title>
           <!--Close bottom-->
           <q-btn flat round dense icon="close" v-close-popup/>
         </q-toolbar>
@@ -64,7 +64,7 @@
               <q-item-section avatar>
                 <q-icon color="primary" name="far fa-eye"/>
               </q-item-section>
-              <q-item-section class="ellipsis">{{ $tr('ui.configList.goToSite') }}</q-item-section>
+              <q-item-section class="ellipsis">{{ $tr('isite.cms.configList.goToSite') }}</q-item-section>
             </q-item>
             <!--Chat action-->
             <q-item clickable v-ripple v-if="$auth.hasAccess('ichat.conversations.index')"
@@ -80,7 +80,7 @@
               <q-item-section avatar>
                 <q-icon color="primary" name="fas fa-stopwatch"/>
               </q-item-section>
-              <q-item-section class="ellipsis">{{ $tr('qcheckin.sidebar.checkin') }}</q-item-section>
+              <q-item-section class="ellipsis">{{ $tr('icheckin.cms.sidebar.checkin') }}</q-item-section>
             </q-item>
             <!--Recommendation action-->
             <q-item clickable v-ripple @click.native="$eventBus.$emit('toggleMasterDrawer','recommendation')"
@@ -88,7 +88,7 @@
               <q-item-section avatar>
                 <q-icon color="primary" name="fas fa-hat-wizard"/>
               </q-item-section>
-              <q-item-section class="ellipsis">{{ $trp('ui.label.recommendation') }}</q-item-section>
+              <q-item-section class="ellipsis">{{ $trp('isite.cms.label.recommendation') }}</q-item-section>
             </q-item>
             <!--Notification action-->
             <q-item clickable v-ripple @click.native="$eventBus.$emit('toggleMasterDrawer','notification')"
@@ -96,7 +96,7 @@
               <q-item-section avatar>
                 <q-icon color="primary" name="fas fa-bell"/>
               </q-item-section>
-              <q-item-section class="ellipsis">{{ $trp('ui.label.notification') }}</q-item-section>
+              <q-item-section class="ellipsis">{{ $trp('isite.cms.label.notification') }}</q-item-section>
             </q-item>
             <!---->
           </q-list>

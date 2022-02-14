@@ -116,7 +116,8 @@ export const SET_LOCALE = ({commit, dispatch, state}, params = {}) => {
     })
 
     //Set default language to i18n
-    import(`@imagina/qsite/_i18n/master/index`).then(({default: messages}) => {
+    //import(`@imagina/qsite/_i18n/master/index`).then(({default: messages}) => {
+    dispatch('qtranslationMaster/GET_TRANSLATIONS', null, {root: true}).then(({default: messages}) => {
       try {
         Vue.i18n.locale = locale
         Vue.i18n.setLocaleMessage(locale, messages[locale])

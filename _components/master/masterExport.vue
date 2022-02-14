@@ -8,26 +8,26 @@
           <div class="box box-auto-height">
             <!--Title-->
             <div class="text-blue-grey q-mb-sm">
-              <b>{{ $tr('qsite.layout.messages.newReport') }}</b>
+              <b>{{ $tr('isite.cms.messages.newReport') }}</b>
             </div>
             <!--Text help Item-->
             <div class="text-caption q-mb-xs" v-if="exportItem && paramsItem.item"
-                 v-html="$tr('qsite.layout.messages.newExportItemHelpText', {id: paramsItem.item.id})"></div>
+                 v-html="$tr('isite.cms.messages.newExportItemHelpText', {id: paramsItem.item.id})"></div>
             <!--Text help-->
             <div class="text-caption q-mb-xs" v-else
-                 v-html="$tr('qsite.layout.messages.newExportHelpText', {pageTitle: $tr($route.meta.title)})"></div>
+                 v-html="$tr('isite.cms.messages.newExportHelpText', {pageTitle: $tr($route.meta.title)})"></div>
             <!--Actions-->
             <div class="text-right q-mt-md">
               <!--Extra filter fields-->
               <q-form autocorrect="off" autocomplete="off" ref="formContent"
                       class="row full-width"
-                      @submit="newReport()" @validation-error="$alert.error($tr('ui.message.formInvalid'))">
+                      @submit="newReport()" @validation-error="$alert.error($tr('isite.cms.message.formInvalid'))">
                 <!--Fields-->
                 <dynamic-field v-for="(field, keyField) in (params.exportFields || [])" :key="keyField"
                                :field="field" class="col-12" v-model="filters[keyField]"/>
                 <!--Submit-->
                 <div class="text-right col-12">
-                  <q-btn :label="$tr('ui.label.create')" color="green" rounded unelevated size="11px"
+                  <q-btn :label="$tr('isite.cms.label.create')" color="green" rounded unelevated size="11px"
                          padding="xs sm" type="submit"/>
                 </div>
               </q-form>
@@ -39,21 +39,21 @@
           <div class="box box-auto-height">
             <!--Title-->
             <div class="text-blue-grey q-mb-sm">
-              <b>{{ $tr('qsite.layout.messages.lastReport') }}</b>
+              <b>{{ $tr('isite.cms.messages.lastReport') }}</b>
             </div>
             <!--Date-->
             <div class="text-caption">
-              <label class="text-blue-grey">{{ $tr('ui.label.date') }}:</label>
+              <label class="text-blue-grey">{{ $tr('isite.cms.label.date') }}:</label>
               {{ $trd(fileExport.lastModified, {type: 'long'}) }}
             </div>
             <!--Size-->
             <div class="text-caption">
-              <label class="text-blue-grey">{{ $tr('ui.label.size') }}:</label>
+              <label class="text-blue-grey">{{ $tr('isite.cms.label.size') }}:</label>
               {{ $helper.formatBytes(fileExport.size) }}
             </div>
             <!--Action-->
             <div class="text-right q-mt-md">
-              <q-btn :label="$tr('ui.label.download')" color="green" rounded unelevated size="11px" padding="xs sm"
+              <q-btn :label="$tr('isite.cms.label.download')" color="green" rounded unelevated size="11px" padding="xs sm"
                      @click="$helper.downloadFromURL(fileExport.path)"/>
             </div>
           </div>
@@ -118,10 +118,10 @@ export default {
     //Modal export title
     modalTitle() {
       //Default response
-      let response = `${this.$tr('ui.label.export')} | `
+      let response = `${this.$tr('isite.cms.label.export')} | `
       //Extra titel
       if (this.exportItem)
-        response += `${this.$tr('ui.label.record')} ID: ${this.paramsItem.item ? this.paramsItem.item.id : ''}`
+        response += `${this.$tr('isite.cms.label.record')} ID: ${this.paramsItem.item ? this.paramsItem.item.id : ''}`
       else
         response += `${this.$tr(this.$route.meta.title)}`
       //Response
@@ -135,11 +135,11 @@ export default {
       //Listen event to push new messages
       this.$eventBus.$on('isite.export.ready', (response) => {
         this.$alert.info({
-          message: this.$tr('qsite.layout.messages.exportReady', {fileName: response.data.fileName}),
+          message: this.$tr('isite.cms.messages.exportReady', {fileName: response.data.fileName}),
           timeOut: 12000,
           actions: [
             {
-              label: this.$tr('ui.label.showMore'),
+              label: this.$tr('isite.cms.label.showMore'),
               icon: 'fas fa-file-download',
               color: 'white',
               handler: () => {
@@ -225,7 +225,7 @@ export default {
 
         //Request
         this.$crud.post('apiRoutes.qsite.export', requestParams).then(response => {
-          this.$alert.info(this.$tr('qsite.layout.messages.reportInProgress', {fileName: this.params.fileName}))
+          this.$alert.info(this.$tr('isite.cms.messages.reportInProgress', {fileName: this.params.fileName}))
           this.showModal = false
         }).catch(error => {
           this.loading = false

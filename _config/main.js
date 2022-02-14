@@ -1,10 +1,10 @@
 export default {
   moduleName: 'isite',
-  moduleTitle: 'qsite.sidebar.adminGroup',
+  moduleTitle: 'isite.cms.sidebar.adminGroup',
   //Perzonalization config
   perzonalizationPage: {
-    title: 'qsite.layout.perzonalizationTitle',
-    description: 'qsite.layout.perzonalizationDescription',
+    title: 'isite.cms.perzonalizationTitle',
+    description: 'isite.cms.perzonalizationDescription',
     otherModules: ['core', 'isite', 'icustom']
   },
   //Entities

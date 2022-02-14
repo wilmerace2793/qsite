@@ -8,7 +8,7 @@
     </div>
 
     <div class="col-12 text-right">
-      <q-btn color="green" :label="$tr('ui.label.save')" icon="fas fa-save" @click="submit" class="q-mt-sm"/>
+      <q-btn color="green" :label="$tr('isite.cms.label.save')" icon="fas fa-save" @click="submit" class="q-mt-sm"/>
     </div>
 
     <inner-loading :visible="submitModule"/>
@@ -82,11 +82,11 @@
         this.submitModule = true
         let data = this.transformToBackData();
         siteService.updateOrCreate('apiRoutes.qsite.settings', data).then(response => {
-          this.$alert.success({message: this.$tr('ui.message.recordUpdated')})
+          this.$alert.success({message: this.$tr('isite.cms.message.recordUpdated')})
           this.submitModule = false
           this.$emit('getData', true)
         }).catch(error => {
-          this.$alert.error({message: this.$tr('ui.message.recordNoUpdated')})
+          this.$alert.error({message: this.$tr('isite.cms.message.recordNoUpdated')})
           this.submitModule = false
         })
       },

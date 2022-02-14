@@ -17,7 +17,7 @@
           <!--Title-->
           <div class="text-h6 text-primary">
             <q-icon name="fas fa-share-alt" class="q-mr-xs"/>
-            {{$tr('ui.label.share')}}
+            {{$tr('isite.cms.label.share')}}
           </div>
           <q-space/>
           <!--Close button-->
@@ -111,7 +111,7 @@
               break;
             case 'copy':
               navigator.clipboard.writeText(link).then(() => {
-                this.$alert.info(this.$tr('ui.message.copiedToClipboard'))
+                this.$alert.info(this.$tr('isite.cms.message.copiedToClipboard'))
               })
               break;
           }

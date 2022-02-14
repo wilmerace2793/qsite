@@ -53,7 +53,7 @@
               <!--Right content-->
               <div class="column">
                 <!--Title-->
-                <div class="text-h6 q-mb-xs text-blue-grey">{{ $tr('ui.label.profile') }}</div>
+                <div class="text-h6 q-mb-xs text-blue-grey">{{ $tr('isite.cms.label.profile') }}</div>
                 <!--Actions-->
                 <q-list>
                   <!--Profile-->
@@ -61,7 +61,7 @@
                     <q-item-section>
                       <div class="row items-center text-blue-grey text-right">
                         <q-icon name="fas fa-user-circle" color="green" size="16px" class="q-mr-sm"/>
-                        {{ $tr('quser.sidebar.panelProfile') }}
+                        {{ $tr('iprofile.cms.sidebar.panelProfile') }}
                       </div>
                     </q-item-section>
                   </q-item>
@@ -70,7 +70,7 @@
                     <q-item-section>
                       <div class="row items-center text-blue-grey">
                         <q-icon name="fas fa-sign-out-alt" color="red" size="16px" class="q-mr-sm"/>
-                        {{ $t('ui.configList.signOut') }}
+                        {{ $t('isite.cms.configList.signOut') }}
                       </div>
                     </q-item-section>
                   </q-item>

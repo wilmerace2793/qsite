@@ -7,7 +7,7 @@
         <!--Title-->
         <div class="text-subtitle1 text-primary text-capitalize">
           <q-icon name="fas fa-tasks"></q-icon>
-          {{this.$trp('ui.label.permission')}}
+          {{this.$trp('isite.cms.label.permission')}}
         </div>
         <!--Loading-->
         <q-spinner v-if="loading" color="blue-grey" :size="30"/>
@@ -24,7 +24,7 @@
         <q-toolbar class="bg-primary text-white">
           <q-toolbar-title class="text-capitalize">
             <q-icon name="fas fa-tasks"></q-icon>
-            {{this.$trp('ui.label.permission')}}
+            {{this.$trp('isite.cms.label.permission')}}
           </q-toolbar-title>
           <q-btn flat v-close-popup icon="fas fa-times"/>
         </q-toolbar>
@@ -33,8 +33,8 @@
         <!--Tabs-->
         <q-tabs v-model="modal.tab" class="text-grey" active-color="primary"
                 indicator-color="primary" dense inline-label align="justify">
-          <q-tab icon="fas fa-filter" name="filter" :label="$tr('ui.label.filter')"/>
-          <q-tab icon="fas fa-exchange-alt" name="change" :label="$tr('ui.label.change')"/>
+          <q-tab icon="fas fa-filter" name="filter" :label="$tr('isite.cms.label.filter')"/>
+          <q-tab icon="fas fa-exchange-alt" name="change" :label="$tr('isite.cms.label.change')"/>
         </q-tabs>
 
         <q-separator/>
@@ -46,12 +46,12 @@
             <!--== Filters ==-->
             <!--By Module-->
             <q-select outlined dense v-model="modal.filter.module" :options="optionsModule"
-                      :label="$tr('ui.label.module')" popup-content-class="text-capitalize"
+                      :label="$tr('isite.cms.label.module')" popup-content-class="text-capitalize"
                       class="full-width text-capitalize" emit-value map-options/>
 
             <!--By entity-->
             <q-select outlined dense v-model="modal.filter.entity" :options="optionsEntity"
-                      :label="$tr('ui.label.entity')" popup-content-class="text-capitalize"
+                      :label="$tr('isite.cms.label.entity')" popup-content-class="text-capitalize"
                       class="full-width q-mt-sm text-capitalize" emit-value map-options/>
 
             <q-separator class="q-my-md"/>
@@ -99,16 +99,16 @@
           <q-tab-panel name="change" class="q-pa-sm">
             <!--Type change-->
             <q-select outlined dense v-model="modal.change.type" :options="options.typeChange"
-                      :label="$tr('ui.form.type')" popup-content-class="text-capitalize"
+                      :label="$tr('isite.cms.form.type')" popup-content-class="text-capitalize"
                       class="full-width text-capitalize" emit-value map-options/>
             <!--Apply to-->
             <q-select outlined dense v-model="modal.change.applyTo" :options="options.typeApply"
-                      :label="$tr('ui.label.module')" popup-content-class="text-capitalize"
+                      :label="$tr('isite.cms.label.module')" popup-content-class="text-capitalize"
                       class="full-width q-mt-sm text-capitalize" emit-value map-options/>
 
             <!--btn to apply changes-->
             <div class="text-center q-mt-sm">
-              <q-btn :label="$tr('ui.label.change')" rounded unelevated icon="fas fa-share-square"
+              <q-btn :label="$tr('isite.cms.label.change')" rounded unelevated icon="fas fa-share-square"
                      color="green" @click="changePermissions()"/>
             </div>
           </q-tab-panel>
@@ -184,7 +184,7 @@
       },
       //Return options of entity name
       optionsEntity() {
-        let optionsResponse = [{label: this.$tr('ui.label.all'), value: 0}]
+        let optionsResponse = [{label: this.$tr('isite.cms.label.all'), value: 0}]
         let filterModule = this.modal.filter.module
 
         if (filterModule) {
@@ -206,18 +206,18 @@
       options() {
         let response = {
           typeChange: [
-            {label: this.$tr('ui.label.allow'), value: 'allow'},
-            {label: this.$tr('ui.label.inherit'), value: 'inherit'},
-            {label: this.$tr('ui.label.deny'), value: 'deny'},
+            {label: this.$tr('isite.cms.label.allow'), value: 'allow'},
+            {label: this.$tr('isite.cms.label.inherit'), value: 'inherit'},
+            {label: this.$tr('isite.cms.label.deny'), value: 'deny'},
           ],
           typeApply: [
-            {label: this.$tr('ui.label.all'), value: 'all'},
+            {label: this.$tr('isite.cms.label.all'), value: 'all'},
             ...this.optionsModule
           ],
           status: [
-            {label: this.$tr('ui.label.allow'), value: true},
-            {label: this.$tr('ui.label.inherit'), value: 0},
-            {label: this.$tr('ui.label.deny'), value: false}
+            {label: this.$tr('isite.cms.label.allow'), value: true},
+            {label: this.$tr('isite.cms.label.inherit'), value: 0},
+            {label: this.$tr('isite.cms.label.deny'), value: false}
           ]
         }
 
@@ -246,7 +246,7 @@
             this.dataPermission = response.data
             resolve(response.data)
           }).catch(error => {
-            this.$alert.error({message: this.$tr('ui.message.errorRequest'), pos: 'bottom'})
+            this.$alert.error({message: this.$tr('isite.cms.message.errorRequest'), pos: 'bottom'})
             this.loading = false
             resolve([])
           })
@@ -311,7 +311,7 @@
         }
 
         this.modal.listPermissions = this.$clone(permissions)//Set new permissions
-        this.$alert.info(this.$tr('ui.label.success'))//Message success
+        this.$alert.info(this.$tr('isite.cms.label.success'))//Message success
       },
       //Return permission with format to backend
       getPermissions() {

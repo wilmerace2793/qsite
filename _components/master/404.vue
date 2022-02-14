@@ -18,10 +18,10 @@
     },
     computed: {
       labelText() {
-        return this.label || `${this.$tr('ui.message.notFound')}...`
+        return this.label || `${this.$tr('isite.cms.message.notFound')}...`
       },
       buttonText() {
-        return this.buttonLabel || this.$tr('ui.message.goToHome')
+        return this.buttonLabel || this.$tr('isite.cms.message.goToHome')
       }
     }
   }

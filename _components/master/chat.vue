@@ -26,7 +26,7 @@
 
     <!--Input comment-->
     <div class="text-center q-mt-sm">
-      <q-input outlined dense :label="`${$tr('ui.label.message')}...`" v-model="message" @keyup.enter="sendMessage()"
+      <q-input outlined dense :label="`${$tr('isite.cms.label.message')}...`" v-model="message" @keyup.enter="sendMessage()"
                rounded :color="colorsChat.input" :bg-color="colorsChat.bgInput" :label-color="colorsChat.labelInput"
                ref="inputComment">
         <template v-slot:after v-if="$q.platform.is.desktop">

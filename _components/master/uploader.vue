@@ -54,7 +54,7 @@ export default {
         gridColClass: this.gridColClass,
         actions: [
           {
-            label: this.$tr('ui.label.select'),
+            label: this.$tr('isite.cms.label.select'),
             icon: 'fas fa-file-upload',
             padding: 'xs sm',
             color: 'green',
@@ -66,7 +66,7 @@ export default {
         ],
         itemActions: [
           {
-            label: this.$tr('ui.label.delete'),
+            label: this.$tr('isite.cms.label.delete'),
             icon: 'fas fa-trash',
             action: (item) => {
               let fileIndex = this.filesData.findIndex(file => item.id == file.id)

@@ -16,16 +16,16 @@ export default {
         permission: 'isite.recommendations',
         extraFormFields: 'isite.crud-fields.recommendations',
         create: {
-          title: this.$tr('qsite.layout.newRecommendation'),
+          title: this.$tr('isite.cms.newRecommendation'),
         },
         read: {
           columns: []
         },
         update: {
-          title: this.$tr('qsite.layout.updateRecommendation'),
+          title: this.$tr('isite.cms.updateRecommendation'),
         },
         delete: {
-          title: this.$tr('qsite.layout.deleteRecommendation'),
+          title: this.$tr('isite.cms.deleteRecommendation'),
         },
         formLeft: {
           id: {value: ''},
@@ -35,9 +35,9 @@ export default {
             type: 'input',
             isTranslatable: true,
             props: {
-              label: `${this.$tr('ui.form.title')}*`,
+              label: `${this.$tr('isite.cms.form.title')}*`,
               rules: [
-                val => !!val || this.$tr('ui.message.fieldRequired')
+                val => !!val || this.$tr('isite.cms.message.fieldRequired')
               ],
             },
           },
@@ -47,9 +47,9 @@ export default {
             isTranslatable: true,
             props: {
               type: 'textarea',
-              label: `${this.$tr('ui.form.description')}*`,
+              label: `${this.$tr('isite.cms.form.description')}*`,
               rules: [
-                val => !!val || this.$tr('ui.message.fieldRequired')
+                val => !!val || this.$tr('isite.cms.message.fieldRequired')
               ],
             }
           },
