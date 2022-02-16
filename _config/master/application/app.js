@@ -41,6 +41,7 @@ export default {
     'qbanner',
     'qtranslation',
     'qrequestable',
+    'qauction',
     'qsite',
     'qchat',
     'qcredit'
