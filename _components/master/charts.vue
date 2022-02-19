@@ -1,9 +1,11 @@
 <template>
-  <div class="small">
-    <button class="button" @click="exportToPDF(0)">
+  <div 
+    class="q-mt-sm box box-auto-hieght small">
+    <!-- <button class="button" @click="exportToPDF(0)">
       {{ download_status }}
-    </button>
-    <line-chart :chart-data="linedata" id="line"></line-chart>
+    </button> -->
+    <!-- component chart -->
+    <line-chart :chart-data="data" :options="options" id="line"></line-chart>
   </div>
 </template>
 
@@ -14,43 +16,60 @@
     components: {
       LineChart
     },
+    props: {
+      lineData: []
+    },
     data () {
       return {
         download_status: "Download Charts",
-        linedata: {
-          labels: [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-          ],
-          datasets: [
-            {
-              label: "Data One",
-              borderColor: "#FC2525",
-              pointBackgroundColor: "white",
-              borderWidth: 1,
-              pointBorderColor: "white",
-              backgroundColor: this.gradient,
-              data: [40, 39, 10, 40, 39, 60, 40],
-            },
-            {
-              label: "Data Two",
-              borderColor: "#05CBE1",
-              pointBackgroundColor: "white",
-              pointBorderColor: "white",
-              borderWidth: 1,
-              backgroundColor: this.gradient2,
-              data: [60, 55, 32, 10, 2, 12, 53],
-            },
-          ],
-        },
+        options :{
+          responsive: true,
+          maintainAspectRatio: false,
+        }
+      }
+    },
+    computed: {
+      //set chart's labels
+      dataLabels () {
+        if(!this.lineData.length) return [];
+        const label = [{name:'0', label:'0',data:0}]
+        this.lineData.map((item) => {
+          label.push({
+            name:`${item.firstName} ${item.lastName}`,
+            label: `${item.firstName} ${item.lastName}, ${this.$trn(item.amount)}, ${this.$trn(item.points)}`,
+            data: item.points
+          })
+        })
+        return label
+      },
+      //set data set
+      dataSets () {
+        if (!this.dataLabels.length) return [];
+        return [{
+          label: this.$tr('iauctions.cms.bid'),
+          borderColor: this.randomColor(),
+          pointBackgroundColor: this.randomColor(),
+          borderWidth: 1,
+          pointBorderColor: "white",
+          //backgroundColor: this.gradient,
+          data: this.dataLabels.map(({data}) => data )
+        }]
+      },
+      //reder chart
+      data () {
+        return {
+          height: 580,
+          labels: this.dataLabels.map(({name}) => name),
+          datasets: this.dataSets
+        }
       }
     },
     methods: {
+      //create random color
+      randomColor () {
+        return `#${Math.floor(Math.random()*16777215).toString(16)}`
+      },
+      //esport oto pdf chart
       exportToPDF() {
         this.download_status = "Processing...";
         let line = document.getElementById("line");
@@ -67,7 +86,7 @@
 
 <style>
   .small {
-    max-width: 600px;
-    margin:  150px auto;
+    width: 100%;
+    height: 450px;
   }
 </style>
