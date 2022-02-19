@@ -1,12 +1,14 @@
 <template>
   <div id="testPageId">
     tes page...
+    <q-charts />
   </div>
 </template>
 <script>
+import QCharts from '@imagina/qsite/_components/master/charts.vue'
 export default {
   props: {},
-  components: {},
+  components: { QCharts },
   watch: {},
   mounted() {
     this.$nextTick(function () {
