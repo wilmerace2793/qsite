@@ -44,6 +44,9 @@ export default {
         //Instance vue route redirect
         if (item.route) item.props.to = {name: item.route, params: this.$clone(this.actionData || {})}
 
+        // Formatting all instances
+        if (item.format) item = {...item, ...(item.format(this.actionData) || {})}
+        
         //Return item
         return item
       })
