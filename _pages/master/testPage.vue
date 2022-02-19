@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-import QCharts from '@imagina/qsite/_components/master/charts.vue'
+
 export default {
   props: {},
   components: { QCharts },
