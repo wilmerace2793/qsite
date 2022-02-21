@@ -1,14 +1,13 @@
 <template>
   <div id="testPageId">
     tes page...
-    <q-charts />
   </div>
 </template>
 <script>
 
 export default {
   props: {},
-  components: { QCharts },
+  components: { },
   watch: {},
   mounted() {
     this.$nextTick(function () {
