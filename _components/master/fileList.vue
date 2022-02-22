@@ -400,6 +400,9 @@ export default {
 
         //Request
         this.$crud.index(this.loadFiles.apiRoute, requestParams).then(response => {
+          //Emit event to notice loaded files
+          this.$emit('loaded')
+          //Set table data
           this.table.data = response.data
           //Set pagination
           this.table.pagination.page = this.$clone(response.meta.page.currentPage)
