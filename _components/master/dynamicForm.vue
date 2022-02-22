@@ -31,7 +31,8 @@
                 <!--Top step Info-->
                 <div class="step-top-content" v-if="block.title || block.description">
                   <!--Title-->
-                  <div class="box-title q-mb-md" v-if="block.title && !['stepVertical','collapsible'].includes(formType)">
+                  <div class="box-title q-mb-md"
+                       v-if="block.title && !['stepVertical','collapsible'].includes(formType)">
                     {{ block.title }}
                   </div>
                   <!--Description-->
@@ -39,7 +40,7 @@
                 </div>
                 <!--Fields-->
                 <div class="row q-col-gutter-x-md q-mb-sm">
-                  <div v-for="(field, key) in block.fields" :key="key"
+                  <div v-for="(field, key) in block.fields" :key="key" v-if="field.type != 'hidden'"
                        :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)">
                     <!--fake field-->
                     <dynamic-field v-if="field.fakeFieldName" :field="field" :key="key" :language="locale.language"
@@ -57,7 +58,8 @@
                       <!---Child fields-->
                       <div class="row q-col-gutter-x-md">
                         <div v-for="(childField, childKey) in getParsedFields(field.children)" :key="childKey"
-                             :class="childField.colClass || childField.columns || defaultColClass">
+                             :class="childField.colClass || childField.columns || defaultColClass"
+                             v-if="childField.type != 'hidden'">
                           <!--Child field-->
                           <dynamic-field :field="childField" :key="childKey" :language="locale.language"
                                          v-model="locale.formTemplate[field.name || key][childField.name || childKey]"
@@ -287,7 +289,7 @@ export default {
                   class: 'q-mb-md',
                   label: block.title,
                   class: 'box box-auto-height q-mb-md',
-                  headerClass : 'box-title text-blue-grey'
+                  headerClass: 'box-title text-blue-grey'
                 },
                 childClass: 'q-py-sm q-px-md',
                 ...block
