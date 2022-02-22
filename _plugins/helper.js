@@ -178,9 +178,13 @@ class Helper {
 
   //Convert strings to snake_case
   convertStringToSnakeCase(string) {
+    return string.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`)
+
+    /* -> OLD
     return string.replace(/[\w]([A-Z0-9])/g, function (m) {
       return m[0] + '_' + m[1]
     }).toLowerCase()
+    */
   }
 
   //Convert object keys to snake_case
