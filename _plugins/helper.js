@@ -515,6 +515,22 @@ class Helper {
     var L = (0.2126 * c[0]) + (0.7152 * c[1]) + (0.0722 * c[2]);
     return (L > 0.179) ? darkColor : lightColor;
   }
+
+  //Return local baseUrl
+  getBaseURl(baseUrl = false){
+    let tagsToParceHost = ['http://', 'https://', ':8080', ':3000', 'www.']
+    //Get base url
+    let rootHost = baseUrl || window.location.host
+    let host = rootHost
+    //Parse host if not exist in .env
+    if (!baseUrl) {
+      tagsToParceHost.forEach(tagToReplace => host = host.replace(tagToReplace, ''))
+      if (rootHost.indexOf('www') != -1) host = `www.${host}`//Set again WWW
+      host = `https://${host}` //Add protocol
+    }
+    //Response
+    return host
+  }
 }
 
 const helper = new Helper();
