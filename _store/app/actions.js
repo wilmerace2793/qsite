@@ -66,7 +66,7 @@ export const GET_SITE_SETTINGS = ({commit, dispatch, state, getters}, payload = 
 export const GET_PAGES = ({commit}) => {
   return new Promise(async resolve => {
     //Instance base url
-    let endPoint = 'apiRoutes.qpage.pages'
+    const endPoint = 'apiRoutes.qpage.pagesCms'
     //Request data
     await crud.index(endPoint).then (({ data }) => {
       //Response
