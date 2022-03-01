@@ -1,62 +1,103 @@
 import Route from 'vue-routisan'
-import appConfig from 'src/config/app'
-import pagesConfig from 'src/config/pages'
-
 class AutoLoadRoutes {
   constructor() {
-    this.availablesLanguages = appConfig.languages.availables
-    this.defaultLanguage = appConfig.languages.default
-    this.pages = pagesConfig
-    this.loadRoutes()
-    this.addExtraRoutes()
+    this.pages = []
   }
-
+  //get and format paths
+  getRoutes (pages) {
+    //get and format paths
+    this.pages = this.setFormat(pages)
+    //Load main routes
+    this.loadRoutes()
+    //load 404 page
+    this.addExtraRoutes()
+    //return all formatted paths
+    return Route.all()
+  }
   //Load main routes
   loadRoutes() {
-    for (var nameGroupPage in this.pages) {
-      let groupPages = this.pages[nameGroupPage]//Get group pages
-      //Loop group pages
-      if (Object.keys(groupPages).length) {
-        for (var namePage in groupPages) {
-          let page = groupPages[namePage]//Get page
-
-          //Create Route if is active
-          if (page.activated) {
-            //Get localization paths
-            let pagePath = this.getPathPage(page)
-            //Create main route
-            Route.view(pagePath.default, page.layout).children(() => {
-              Route.view('/', page.page).options(this.getOptionsPage(page));
-            })
-            //Create localization routes
-            this.availablesLanguages.forEach(locale => {
-              Route.view(pagePath[locale], page.layout).children(() => {
-                Route.view('/', page.page).options(this.getOptionsPage(page, locale));
-              })
+    this.pages.forEach((page) => {
+      if (page.activated) {
+        //Create main route
+        Route.view(page.path, page.layout).children(() => {
+          Route.view('/', page.page).options(this.getOptionsPage(page));
+        })
+      }
+    })
+  }
+  //format the paths
+  setFormat(pages) {
+    //Instance pages data
+    const vuePages = []
+    //Map pages
+    pages.forEach(page => {
+      for (const key in page.options) {
+        //check key crud
+        if (key === 'crud') {
+          //Require crud component
+          const crudFile = this.requireVueFile(page.options.crud, 'crud')
+          //Require page component
+          const pageFile = this.requireVueFile(page.options.page, 'page')
+         //Require layout component
+          const layoutFile = this.requireVueFile(page.options.layout, 'layout')
+          if (pageFile && layoutFile && crudFile) {
+            vuePages.push({
+              ...page.options, //Concat first all page options
+              activated: parseInt(page.status) ? true : false,
+              path: page.slug,
+              crud: crudFile,
+              page: pageFile,
+              layout: layoutFile,
+              title: page.title
             })
           }
         }
       }
-    }
-  }
-
-  //Get localization page path
-  getPathPage(page) {
-    //Default language
-    let response = {default: page.path[this.defaultLanguage] || page.path}
-    //Add localizations path
-    this.availablesLanguages.forEach(locale => {
-      response[locale] = `/${locale}${(page.path[locale] || page.path)}`
+      //Require page component
+      const pageFile = this.requireVueFile(page.options.page, 'page')
+      //Require layout component
+      const layoutFile = this.requireVueFile(page.options.layout, 'layout')
+      //Add page config if found the page and layout components
+      if (pageFile && layoutFile) {
+        vuePages.push({
+          ...page.options, //Concat first all page options
+          activated: parseInt(page.status) ? true : false,
+          path: page.slug,
+          page: pageFile,
+          layout: layoutFile,
+          title: page.title
+        })
+      }
     })
-    //Response
-    return response
-  }
+  //Response mapped pages
+  return vuePages
+}
 
+requireVueFile(path, type) {
+  //Instance vueFile
+  let vueFile = false
+  //Parse file path
+  let pathExplode = path.split('/')
+  let packageName = pathExplode[0]
+  let filePath = pathExplode.slice(2, pathExplode.length).join('/')
+  if (!filePath.includes('.vue')) filePath += ".vue"
+  //Try to get the vue file by type parameter page/layput/crud
+  try {
+    if (type == 'page') {
+      vueFile = require(`@imagina/${packageName}/_pages/${filePath}`)
+    } else if (type == 'layout') {
+      vueFile = require(`@imagina/${packageName}/_layouts/${filePath}`)
+    } else if (type == 'crud') {
+      vueFile = import(`@imagina/${packageName}/_crud/${filePath}`)
+    }
+  } catch (e) {}
+  //Return vueFile
+  return vueFile ? vueFile.default ? vueFile.default : vueFile : false
+}
   //Return meta data to route
   getOptionsPage(page, locale = false) {
     let middlewares = (page.middleware || [])
     let routeName = locale ? `${locale}.${page.name}` : page.name
-
     return {
       name: routeName,
       meta: {
@@ -75,7 +116,6 @@ class AutoLoadRoutes {
       beforeEnter: middlewares,
     }
   }
-
   //Add extra routes
   addExtraRoutes() {
     //Add not found page
@@ -101,10 +141,6 @@ class AutoLoadRoutes {
     }
   }
 
-  //Return object of routes
-  get() {
-    return Route.all()
-  }
 }
 
 
@@ -112,4 +148,4 @@ class AutoLoadRoutes {
 const routes = new AutoLoadRoutes()
 
 //Response
-export default routes.get()
+export default routes
