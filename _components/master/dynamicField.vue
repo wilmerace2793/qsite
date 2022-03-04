@@ -256,19 +256,36 @@
           <v-json-editor v-model="responseValue" height="300px" :options="fieldProps.field"/>
         </q-field>
         <!--Text Info-->
-        <div v-if="loadField('banner')" class="q-mb-md">
-          <q-banner rounded dense :class="`bg-${fieldProps.color}`">
-            <template v-slot:avatar v-if="fieldProps.icon">
-              <q-icon :name="fieldProps.icon" :color="fieldProps.iconColor || fieldProps.textColor"/>
-            </template>
-            <div :class="`text-${fieldProps.textColor}`">{{ fieldProps.message }}</div>
-          </q-banner>
+        <div id="bannerField" v-if="loadField('banner')" class="q-mb-md">
+          <div class="content q-py-sm q-px-md" :style="`border-color: ${fieldProps.colorValue}`">
+            <!--content-->
+            <div class="row items-center no-wrap">
+              <!--Icon-->
+              <div v-if="fieldProps.icon" class="q-mr-md">
+                <q-icon :name="fieldProps.icon" :color="fieldProps.color || 'info'" size="24px"/>
+              </div>
+              <!--Description-->
+              <div class="content__right">
+                <!--message-->
+                <div v-html="fieldProps.message" class="content__message text-blue-grey"/>
+                <!--separator-->
+                <q-separator v-if="fieldProps.actions.length" class="q-mt-md q-mb-sm"/>
+                <!--Actions-->
+                <div class="row justify-end" v-if="fieldProps.actions.length">
+                  <q-btn v-for="(btn, keyBtn) in fieldProps.actions" :key="keyBtn" v-bind="btn.props"
+                         @click="btn.action ? btn.action() : null"/>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+//Plugins
+import {colors} from 'quasar'
 //Component
 import recursiveSelect from '@imagina/qsite/_components/master/recursiveListSelect'
 import managePermissions from '@imagina/qsite/_components/master/managePermissions'
@@ -758,9 +775,26 @@ export default {
           }
           break;
         case'banner':
+          const {getPaletteColor} = colors
+          let color = props.color || 'info'
+
           props = {
-            color: 'white',
-            ...props
+            icon : 'fas fa-info-circle',
+            ...props,
+            actions: (props.actions || []).map(item => {
+              return {
+                ...item,
+                props: {
+                  unelevated: true,
+                  rounded: true,
+                  padding: 'xs sm',
+                  noCaps: true,
+                  color: 'info',
+                  ...(item.props || [])
+                }
+              }
+            }),
+            colorValue: getPaletteColor(color)
           }
           break;
       }
@@ -1313,6 +1347,15 @@ export default {
 
   .after-field
     z-index 4
+
+  #bannerField
+    .content
+      border-radius $custom-radius-items
+      border 2px solid
+      overflow hidden
+
+      &__message
+        line-height 1
 
 #ckEditorComponent
   width 100%
