@@ -154,7 +154,7 @@ export default {
     menu() {
       let menu = config('sidebar').map(item => {
         //Add `toRoute` param to home page
-        if (item.name == 'app.home') item.toRoute = this.$store.state.qsiteApp.baseUrl
+        //if (item.name == 'app.home') item.toRoute = this.$store.state.qsiteApp.baseUrl
         return item
       })
       //response
