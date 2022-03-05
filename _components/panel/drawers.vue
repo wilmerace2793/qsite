@@ -4,8 +4,8 @@
     <q-drawer id="menuMaster" class="no-shadow" v-model="drawer.menu" ref="menuMaster"
               :mini="miniState" @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
       <!--Logo-->
-      <div class="q-pa-md logo-bg-primary" v-if="!miniState && drawer.menu">
-        <q-img contain :src="logo" style="height: 120px; min-height: 120px"/>
+      <div class="q-pa-md logo-bg-primary text-center" v-if="!miniState && drawer.menu">
+        <q-img contain :src="logo" style="height: 120px; min-height: 120px; max-width: 80%"/>
       </div>
       <!--List iadmin-->
       <q-scroll-area
