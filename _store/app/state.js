@@ -6,6 +6,7 @@ export default {
   extra: {},
   settings: [],
   pages: [],
+  menu: [],
   modules: {},
   availableLocales: [],
   availableThemes: [],

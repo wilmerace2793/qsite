@@ -79,6 +79,34 @@ export const GET_PAGES = ({commit}) => {
   })
 }
 
+export const GET_MENU_SIDEBAR = ({commit}) => {
+  return new Promise(async resolve => {
+    //Instance base url
+    const endPoint = 'apiRoutes.qmenu.menus'
+    //Instance criteria
+    const  criteria = config('app.mode') === 'iadmin' ? 'cms_admin' :  'cms_panel'
+    //Instance params
+    const  params = {
+      refresh: true,
+      params: {
+        filter: {
+          field: 'name'
+        },
+        include: 'menuitems'
+      }
+    }
+    //Request data
+    await crud.show(endPoint, criteria, params).then (({data}) => {
+      //Response
+      commit('SET_MENU', data.menuitems)
+      resolve(true)
+    }).catch(error => {
+        console.warn(">>Error",error)
+        resolve(true)
+    })
+  })
+}
+
 //Set site settins
 export const SET_SITE_COLORS = ({state, commit, dispatch}) => {
   let settings = state.settings
