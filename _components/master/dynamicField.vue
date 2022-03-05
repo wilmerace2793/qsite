@@ -21,14 +21,18 @@
         </div>
         <!-- Help btn -->
         <div v-if="helpLoad.load && field.help" :class="helpLoad.class">
-          <q-btn size="xs" class="after-field" :style="'margin:'+helpLoad.margin" round color="blue" icon="fas fa-info"
+          <q-btn size="xs" class="after-field" :style="'margin:'+helpLoad.margin" round color="info" icon="fas fa-info"
                  unelevated>
-            <q-menu anchor="bottom right" self="top right">
-              <q-item>
-                <q-item-section style="max-width:20em; line-height: 1.2" class="text-caption text-grey-9">
-                  {{ field.help.description }}
-                </q-item-section>
-              </q-item>
+            <q-menu id="dynamicFieldMenuHelp" anchor="top right" self="top right">
+              <!--actions-->
+              <div class="row justify-between items-center">
+                <q-icon name="fas fa-info" color="info"/>
+                <q-btn icon="fas fa-times" v-close-popup color="blue-grey" size="8px" unelevated
+                       round outline padding="xs"/>
+              </div>
+              <q-separator class="q-my-xs"/>
+              <!--description-->
+              <div id="contentHelp" v-html="field.help.description"/>
             </q-menu>
           </q-btn>
         </div>
@@ -779,7 +783,7 @@ export default {
           let color = props.color || 'info'
 
           props = {
-            icon : 'fas fa-info-circle',
+            icon: 'fas fa-info-circle',
             ...props,
             actions: (props.actions || []).map(item => {
               return {
@@ -1359,4 +1363,15 @@ export default {
 
 #ckEditorComponent
   width 100%
+
+#dynamicFieldMenuHelp
+  border 2px solid $info
+  padding 10px 15px
+  border-radius $custom-radius-items
+
+  #contentHelp
+    max-width 20em
+    line-height 1.3
+    color $blue-grey
+    text-align justify
 </style>
