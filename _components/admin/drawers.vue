@@ -15,7 +15,7 @@
       <!--List iadmin-->
       <q-scroll-area :style="`height: calc(100vh - 146px`">
         <!--Menu-->
-        <menu-list ref="menuList" group :menu="menu"/>
+        <menu-list ref="menuList" group :translatable="false" :menu="menu"/>
       </q-scroll-area>
     </q-drawer>
 
@@ -49,6 +49,8 @@
   </div>
 </template>
 <script>
+//mixins
+import sidebarMixins from '@imagina/qsite/_mixins/sidebarMixins'
 //Components
 import configList from '@imagina/qsite/_components/master/configList'
 import chatList from '@imagina/qchat/_components/drawerChatList'
@@ -63,6 +65,7 @@ export default {
     this.$eventBus.$off('toggleMasterDrawer')
     this.$eventBus.$off('openMasterDrawer')
   },
+  mixins:[sidebarMixins],
   props: {},
   components: {menuList, configList, chatList, masterFilter, checkin, masterRecommendation, masterNotifications},
   watch: {},
@@ -88,8 +91,6 @@ export default {
         notification: false
 
       },
-      menu: config('sidebar'),
-      appConfig: config('app'),
       filter: this.$filter
     }
   },

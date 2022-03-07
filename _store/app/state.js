@@ -5,6 +5,8 @@ export default {
   currentRoute: {},
   extra: {},
   settings: [],
+  pages: [],
+  menu: [],
   modules: {},
   availableLocales: [],
   availableThemes: [],

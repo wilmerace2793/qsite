@@ -10,6 +10,10 @@ export const getState = (state) => (name) => {
   return cloneDeep(state[name] || undefined)
 }
 
+export const getMenu = (state) => {
+  return state.menu 
+}
+
 export const getSettings = (state) => {
   return state.settings;
 };

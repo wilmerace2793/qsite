@@ -9,6 +9,7 @@ import axios from "axios";
 import {Loading} from 'quasar';
 import filter from '@imagina/qsite/_plugins/filter'
 import helper from '@imagina/qsite/_plugins/helper'
+import configApp from "src/config/app"
 
 //Refresh page
 export const REFRESH_PAGE = ({state, commit, dispatch, getters}) => {
@@ -58,6 +59,50 @@ export const GET_SITE_SETTINGS = ({commit, dispatch, state, getters}, payload = 
     }).catch(error => {
       console.error('[store-qsite]Error:: Store getting site settings - ', error)
       reject(error)
+    })
+  })
+}
+
+export const GET_PAGES = ({commit}) => {
+  return new Promise(async resolve => {
+    //Instance base url
+    const endPoint = 'apiRoutes.qpage.pagesCms'
+    //Request data
+    await crud.index(endPoint).then (({ data }) => {
+      //Response
+      commit('SET_PAGES', data)
+      resolve(true)
+    }).catch(error => {
+        console.warn(">>Error",error)
+        resolve(false)
+    })
+  })
+}
+
+export const GET_MENU_SIDEBAR = ({commit}) => {
+  return new Promise(async resolve => {
+    //Instance base url
+    const endPoint = 'apiRoutes.qmenu.menus'
+    //Instance criteria
+    const  criteria = config('app.mode') === 'iadmin' ? 'cms_admin' :  'cms_panel'
+    //Instance params
+    const  params = {
+      refresh: true,
+      params: {
+        filter: {
+          field: 'name'
+        },
+        include: 'menuitems'
+      }
+    }
+    //Request data
+    await crud.show(endPoint, criteria, params).then (({data}) => {
+      //Response
+      commit('SET_MENU', data.menuitems)
+      resolve(true)
+    }).catch(error => {
+        console.warn(">>Error",error)
+        resolve(true)
     })
   })
 }

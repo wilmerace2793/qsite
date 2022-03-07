@@ -21,6 +21,13 @@ export function SET_AVAILABLE_LOCALES(state, data) {
 export function SET_AVAILABLE_THEMES(state, data) {
   state.availableThemes = data;
 }
+export function SET_PAGES(state, data) {
+  state.pages = data;
+}
+
+export function SET_MENU(state, data) {
+  state.menu = data;
+}
 
 export function SET_SELECTED_LOCALES(state) {
   //Search locale settigns

@@ -11,7 +11,7 @@
       <q-scroll-area
           :style="`height: calc(100vh - ${(miniState ? '50' : '202')}px`">
         <!--Menu-->
-        <menu-list ref="menuList" group :menu="menu" :with-tooltip="miniState"/>
+        <menu-list ref="menuList" group :translatable="false" :menu="menu" :with-tooltip="miniState"/>
       </q-scroll-area>
       <!--== Button User ==-->
       <q-no-ssr>
@@ -107,6 +107,8 @@
   </div>
 </template>
 <script>
+//mixins
+import sidebarMixins from '@imagina/qsite/_mixins/sidebarMixins'
 //Components
 import configList from '@imagina/qsite/_components/master/configList'
 import chatList from '@imagina/qchat/_components/drawerChatList'
@@ -121,6 +123,7 @@ export default {
     this.$eventBus.$off('toggleMasterDrawer')
     this.$eventBus.$off('openMasterDrawer')
   },
+  mixins: [ sidebarMixins ],
   props: {},
   components: {menuList, configList, chatList, masterFilter, checkin, masterRecommendation, masterNotifications},
   watch: {},
@@ -150,16 +153,6 @@ export default {
     }
   },
   computed: {
-    //Return menu
-    menu() {
-      let menu = config('sidebar').map(item => {
-        //Add `toRoute` param to home page
-        //if (item.name == 'app.home') item.toRoute = this.$store.state.qsiteApp.baseUrl
-        return item
-      })
-      //response
-      return menu
-    },
     //Quser state
     quserState() {
       return this.$store.state.quserAuth
