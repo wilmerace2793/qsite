@@ -65,6 +65,7 @@ export default {
     this.$eventBus.$off('toggleMasterDrawer')
     this.$eventBus.$off('openMasterDrawer')
   },
+  mixins:[sidebarMixins],
   props: {},
   components: {menuList, configList, chatList, masterFilter, checkin, masterRecommendation, masterNotifications},
   watch: {},
