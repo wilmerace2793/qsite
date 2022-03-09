@@ -65,44 +65,38 @@ export const GET_SITE_SETTINGS = ({commit, dispatch, state, getters}, payload = 
 
 export const GET_PAGES = ({commit}) => {
   return new Promise(async resolve => {
-    //Instance base url
-    const endPoint = 'apiRoutes.qpage.pagesCms'
+    //Request params
+    let requestParams = {refresh: true}
     //Request data
-    await crud.index(endPoint).then (({ data }) => {
-      //Response
+    await crud.index('apiRoutes.qpage.pagesCms', requestParams).then(({data}) => {
       commit('SET_PAGES', data)
-      resolve(true)
+      resolve(data)
     }).catch(error => {
-        console.warn(">>Error",error)
-        resolve(false)
+      console.error("[store-qsite]::GetPage", error)
+      resolve(false)
     })
   })
 }
 
 export const GET_MENU_SIDEBAR = ({commit}) => {
   return new Promise(async resolve => {
-    //Instance base url
-    const endPoint = 'apiRoutes.qmenu.menus'
     //Instance criteria
-    const  criteria = config('app.mode') === 'iadmin' ? 'cms_admin' :  'cms_panel'
+    const criteria = (config('app.mode') == 'iadmin') ? 'cms_admin' : 'cms_panel'
     //Instance params
-    const  params = {
+    const params = {
       refresh: true,
       params: {
-        filter: {
-          field: 'name'
-        },
+        filter: {field: 'name'},
         include: 'menuitems'
       }
     }
-    //Request data
-    await crud.show(endPoint, criteria, params).then (({data}) => {
-      //Response
+    //Request
+    await crud.show('apiRoutes.qmenu.menus', criteria, params).then(({data}) => {
       commit('SET_MENU', data.menuitems)
-      resolve(true)
+      resolve(data)
     }).catch(error => {
-        console.warn(">>Error",error)
-        resolve(true)
+      console.error("[store-qsite]::GetMenu", error)
+      resolve(true)
     })
   })
 }
