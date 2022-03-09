@@ -7,7 +7,7 @@
       <!--Page Actions-->
       <div class="col-xs-12">
         <div class="box box-auto-height">
-          <page-actions :title="$tr($route.meta.title)" @refresh="getData"/>
+          <page-actions :title="$route.meta.title" @refresh="getData"/>
         </div>
       </div>
       <!--Menu settings-->

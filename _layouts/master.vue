@@ -64,7 +64,7 @@ export default {
     let iconHref = this.$store.getters['qsiteApp/getSettingMediaByName']('isite::favicon').path
 
     return {
-      title: `${this.$tr(routeTitle)} | ${siteName}`,
+      title: `${routeTitle} | ${siteName}`,
       meta: {
         description: {name: 'description', content: siteDescription || siteName},
       },
@@ -114,7 +114,7 @@ export default {
       pages.forEach(page => {
         if (page && page.activated && this.$auth.hasAccess(page.permission))
           response.push({
-            label: this.$tr(page.headerTitle || page.title),
+            label: page.title,
             icon: page.icon,
             to: page.name
           })

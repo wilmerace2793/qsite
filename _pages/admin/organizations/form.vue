@@ -4,7 +4,7 @@
     <div v-if="organizationId" id="pageContent">
       <!--page actions-->
       <div class="box box-auto-height q-mb-md">
-        <page-actions :title="$tr($route.meta.title)" @refresh="getData(true)"/>
+        <page-actions :title="$route.meta.title" @refresh="getData(true)"/>
       </div>
       <!--Form-->
       <div class="relative-position">

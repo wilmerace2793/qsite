@@ -42,7 +42,6 @@ class AutoLoadRoutes {
       let allowedModes = (appConfig.mode == 'iadmin') ? ['admin', 'main'] : ['panel', 'main']
       //Format pages
       if (allowedModes.includes(pageMode[2])) {
-        if(page.system_name.includes('_home')) console.warn(page)
         //Require crud component
         const crudFile = page.options.crud ? this.requireVueFile(page.options.crud, 'crud') : null
         //Require page component
