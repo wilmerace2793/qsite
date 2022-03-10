@@ -19,10 +19,7 @@ class AutoLoadSidebars {
           activated: itemPage ? itemPage.status : true
         })
       });
-<<<<<<< HEAD
-=======
       //Response
->>>>>>> e6635da01e6790cf1951b1da1d21c43797c1a13c
       return ArrayMethods.builTree(menu)
     }
   }
