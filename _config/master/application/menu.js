@@ -33,7 +33,8 @@ class AutoLoadSidebars {
           })
         } 
       });
-    return ArrayMethods.builTree(menu)
+      console.log('menu sin tree', menu)
+      return ArrayMethods.builTree(menu)
     }
   }
   
