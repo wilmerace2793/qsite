@@ -16,7 +16,7 @@ class AutoLoadSidebars {
           icon: menuItem.icon,
           name: itemPage ? itemPage.options.name : null,
           permission: itemPage ? itemPage.options.permission : null,
-          activated: itemPage ? itemPage.status : true
+          activated: !parseInt(menuItem.status) ? false : (itemPage ? itemPage.status : true)
         })
       });
       //Response
