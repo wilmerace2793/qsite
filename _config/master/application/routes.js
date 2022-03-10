@@ -1,10 +1,13 @@
 import Route from 'vue-routisan'
+import appConfig from 'src/config/app'
+
 class AutoLoadRoutes {
   constructor() {
     this.pages = []
   }
+
   //get and format paths
-  getRoutes (pages) {
+  getRoutes(pages) {
     //get and format paths
     this.pages = this.setFormat(pages)
     //Load main routes
@@ -14,6 +17,7 @@ class AutoLoadRoutes {
     //return all formatted paths
     return Route.all()
   }
+
   //Load main routes
   loadRoutes() {
     this.pages.forEach((page) => {
@@ -25,75 +29,66 @@ class AutoLoadRoutes {
       }
     })
   }
+
   //format the paths
   setFormat(pages) {
     //Instance pages data
     const vuePages = []
     //Map pages
     pages.forEach(page => {
-      for (const key in page.options) {
-        //check key crud
-        if (key === 'crud') {
-          //Require crud component
-          const crudFile = this.requireVueFile(page.options.crud, 'crud')
-          //Require page component
-          const pageFile = this.requireVueFile(page.options.page, 'page')
-         //Require layout component
-          const layoutFile = this.requireVueFile(page.options.layout, 'layout')
-          if (pageFile && layoutFile && crudFile) {
-            vuePages.push({
-              ...page.options, //Concat first all page options
-              activated: parseInt(page.status) ? true : false,
-              path: page.slug,
-              crud: crudFile,
-              page: pageFile,
-              layout: layoutFile,
-              title: page.title
-            })
-          }
+      //Get mode from system_name
+      let pageMode = page.system_name.split('_')
+      //Instance allowed modes
+      let allowedModes = (appConfig.mode == 'iadmin') ? ['admin', 'main'] : ['panel', 'main']
+      //Format pages
+      if (allowedModes.includes(pageMode[2])) {
+        //Require crud component
+        const crudFile = page.options.crud ? this.requireVueFile(page.options.crud, 'crud') : null
+        //Require page component
+        const pageFile = this.requireVueFile(page.options.page, 'page')
+        //Require layout component
+        const layoutFile = this.requireVueFile(page.options.layout, 'layout')
+        //Add page config if found the page and layout components
+        if (pageFile && layoutFile) {
+          vuePages.push({
+            ...page.options, //Concat first all page options
+            activated: parseInt(page.status) ? true : false,
+            path: page.slug,
+            crud: crudFile,
+            page: pageFile,
+            layout: layoutFile,
+            title: page.title
+          })
         }
       }
-      //Require page component
-      const pageFile = this.requireVueFile(page.options.page, 'page')
-      //Require layout component
-      const layoutFile = this.requireVueFile(page.options.layout, 'layout')
-      //Add page config if found the page and layout components
-      if (pageFile && layoutFile) {
-        vuePages.push({
-          ...page.options, //Concat first all page options
-          activated: parseInt(page.status) ? true : false,
-          path: page.slug,
-          page: pageFile,
-          layout: layoutFile,
-          title: page.title
-        })
-      }
     })
-  //Response mapped pages
-  return vuePages
-}
+    //Response mapped pages
+    return vuePages
+  }
 
-requireVueFile(path, type) {
-  //Instance vueFile
-  let vueFile = false
-  //Parse file path
-  let pathExplode = path.split('/')
-  let packageName = pathExplode[0]
-  let filePath = pathExplode.slice(2, pathExplode.length).join('/')
-  if (!filePath.includes('.vue')) filePath += ".vue"
-  //Try to get the vue file by type parameter page/layput/crud
-  try {
-    if (type == 'page') {
-      vueFile = require(`@imagina/${packageName}/_pages/${filePath}`)
-    } else if (type == 'layout') {
-      vueFile = require(`@imagina/${packageName}/_layouts/${filePath}`)
-    } else if (type == 'crud') {
-      vueFile = import(`@imagina/${packageName}/_crud/${filePath}`)
+  requireVueFile(path, type) {
+    //Instance vueFile
+    let vueFile = false
+    //Parse file path
+    let pathExplode = path.split('/')
+    let packageName = pathExplode[0]
+    let filePath = pathExplode.slice(2, pathExplode.length).join('/')
+    if (!filePath.includes('.vue')) filePath += ".vue"
+    //Try to get the vue file by type parameter page/layput/crud
+    try {
+      if (type == 'page') {
+        vueFile = require(`@imagina/${packageName}/_pages/${filePath}`)
+      } else if (type == 'layout') {
+        vueFile = require(`@imagina/${packageName}/_layouts/${filePath}`)
+      } else if (type == 'crud') {
+        vueFile = import(`@imagina/${packageName}/_crud/${filePath}`)
+      }
+    } catch (e) {
     }
-  } catch (e) {}
-  //Return vueFile
-  return vueFile ? vueFile.default ? vueFile.default : vueFile : false
-}
+    //Return vueFile
+    return vueFile ? vueFile.default ? vueFile.default : vueFile : false
+  }
+
   //Return meta data to route
   getOptionsPage(page, locale = false) {
     let middlewares = (page.middleware || [])
@@ -116,6 +111,7 @@ requireVueFile(path, type) {
       beforeEnter: middlewares,
     }
   }
+
   //Add extra routes
   addExtraRoutes() {
     //Add not found page

@@ -15,7 +15,7 @@
                  v-html="$tr('isite.cms.messages.newExportItemHelpText', {id: paramsItem.item.id})"></div>
             <!--Text help-->
             <div class="text-caption q-mb-xs" v-else
-                 v-html="$tr('isite.cms.messages.newExportHelpText', {pageTitle: $tr($route.meta.title)})"></div>
+                 v-html="$tr('isite.cms.messages.newExportHelpText', {pageTitle: $route.meta.title})"></div>
             <!--Actions-->
             <div class="text-right q-mt-md">
               <!--Extra filter fields-->
@@ -123,7 +123,7 @@ export default {
       if (this.exportItem)
         response += `${this.$tr('isite.cms.label.record')} ID: ${this.paramsItem.item ? this.paramsItem.item.id : ''}`
       else
-        response += `${this.$tr(this.$route.meta.title)}`
+        response += `${this.$route.meta.title}`
       //Response
       return response
     }

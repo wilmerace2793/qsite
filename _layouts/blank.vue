@@ -16,7 +16,7 @@
       let iconHref = this.$store.getters['qsiteApp/getSettingMediaByName']('isite::favicon').path
 
       return {
-        title: `${this.$tr(routetitle)} | ${siteName}`,
+        title: `${routetitle} | ${siteName}`,
         meta : {
           description: { name: 'description', content: (siteDescription || siteName) },
         },
