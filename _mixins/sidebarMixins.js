@@ -1,5 +1,6 @@
 //class
 import AutoLoadSidebars from '@imagina/qsite/_config/master/application/menu'
+
 export default {
   data() {
     return {
@@ -8,8 +9,8 @@ export default {
   },
   created() {
     this.menu = AutoLoadSidebars.getMenu(
-      this.$store.getters['qsiteApp/getMenu'], 
-      this.$store.state.qsiteApp.pages
+      this.$clone(this.$store.getters['qsiteApp/getMenu']),
+      this.$clone(this.$store.state.qsiteApp.pages)
     )
   },
 }

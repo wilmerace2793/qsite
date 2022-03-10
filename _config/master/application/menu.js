@@ -1,52 +1,31 @@
 import appConfig from 'src/config/app'
-//class
 import ArrayMethods from '@imagina/qsite/_plugins/array'
-//import pagesConfig from 'src/config/pages'
 
 class AutoLoadSidebars {
-  /* constructor() {
-    this.sidebar = {}
-    this.modules = appConfig.modules
-  } */
-  
-  getMenu (menuItems, pages) {
+  getMenu(menuItems, pages) {
     const menu = []
     if (menuItems && pages) {
-      menuItems.map((items) => {
-        let item = pages.find(({id}) => id === items.pageId)
-        if(item) {
-          menu.push({
-            id: items.id,
-            parentId: items.parentId,
-            title: items.title,
-            icon: items.icon,
-            name: item.options.name,
-            permission: item.options.permission,
-            activated: item.options.activated
-          })
-        } else {
-          menu.push({
-            id: items.id,
-            parentId: items.parentId,
-            title: items.title,
-            icon: items.icon,
-          })
-        } 
+      menuItems.map((menuItem) => {
+        //Search menu item page
+        let itemPage = pages.find(({id}) => id == menuItem.pageId)
+        //Add menuItem to response
+        menu.push({
+          id: menuItem.id,
+          parentId: menuItem.parentId,
+          title: menuItem.title,
+          icon: menuItem.icon,
+          name: itemPage ? itemPage.options.name : null,
+          permission: itemPage ? itemPage.options.permission : null,
+          activated: itemPage ? itemPage.status : true
+        })
       });
+<<<<<<< HEAD
+=======
+      //Response
+>>>>>>> e6635da01e6790cf1951b1da1d21c43797c1a13c
       return ArrayMethods.builTree(menu)
     }
   }
-  
- /* //Add perzonalization/settings page
-  loadPerzonalizationSidebar(pagesConfig) {
-    this.modules.forEach(moduleName => {
-      if (pagesConfig[moduleName].personalization) {
-        if (this.sidebar[moduleName] && this.sidebar[moduleName].children) {
-          this.sidebar[moduleName].children.push(pagesConfig[moduleName].personalization)
-        }
-      }
-    })
-  } */
 }
 
 //Create Class
