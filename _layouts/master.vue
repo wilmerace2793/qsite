@@ -91,35 +91,41 @@ export default {
   data() {
     return {
       appConfig: config('app'),
+      homePage: 'isite_cms_main_home'
     }
   },
   computed: {
     appState() {
       return this.$store.state.qsiteApp
     },
+    pagesConfig() {
+      return this.$store.state.qsiteApp.pages
+    },
     //Return data breadcrumd
     breadcrumbs() {
       let response = []
       //Get breadcrumbs from params
       let breadcrumbs = (this.$route.meta?.subHeader?.breadcrumb || []).reverse()
-
+      //find Homepage
+      const page = this.pagesConfig.find(item => item.system_name.toLowerCase() === this.homePage)
       //Set Home page and current page
-      let pages = (this.$route.name.indexOf('app.home') == -1) ?
-          [config(`pages.mainqsite.home`), this.$route.meta] : [config(`pages.mainqsite.home`)]
-
+      const pages = (this.$route.name.indexOf('app.home') == -1) ? [page, this.$route.meta] : [page]
       //Get page from breadcrum
-      breadcrumbs.forEach(pageName => pages.splice(1, 0, config(`pages.${pageName}`)))
-
+      breadcrumbs.forEach((pageName) => {
+        const base = this.pagesConfig.find(item => item.system_name.toLowerCase() == pageName.toLowerCase())
+        pages.splice(1,0,base)
+      })
       //Format all routes to breadcrum
       pages.forEach(page => {
-        if (page && page.activated && this.$auth.hasAccess(page.permission))
+        const isActive = page.options ? page.options.activated : page.activated
+        if (page && isActive && this.$auth.hasAccess(page.permission)) {
           response.push({
             label: page.title,
-            icon: page.icon,
-            to: page.name
+            icon: page.options ? page.options.icon : page.icon,
+            to: page.options? page.options.name : page.name
           })
+        }
       })
-
       //Response
       return response
     }
