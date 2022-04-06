@@ -15,7 +15,7 @@
       <!--List iadmin-->
       <q-scroll-area :style="`height: calc(100vh - 146px`">
         <!--Menu-->
-        <menu-list ref="menuList" group :translatable="false" :menu="menu"/>
+        <menu-list ref="menuList" group :translatable="translatable" :menu="menuSelect"/>
       </q-scroll-area>
     </q-drawer>
 
@@ -78,6 +78,7 @@ export default {
     return {
       windowHeight: window.innerHeight,
       windowWith: window.innerWidth,
+      translatable:true,
       projectName: this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name'),
       logo: this.$store.state.qsiteApp.logo,
       miniState: this.windowSize == 'mobile' ? false : true,
@@ -91,12 +92,19 @@ export default {
         notification: false
 
       },
+      menuLocal: config('sidebar'),
+      appConfig: config('app'),
       filter: this.$filter
     }
   },
   computed: {
     windowSize() {
       return this.windowWith >= '992' ? 'desktop' : 'mobile'
+    },
+    menuSelect() {
+      // switch between new menuList or old menuList
+      this.translatable =this.$store.getters['qsiteApp/getSettingValueByName']('isite::legacyStructureCMS') == 0 ? false : true
+      return this.translatable ? this.menuLocal : this.menu
     },
     routeSubHeader() {
       this.drawer.recommendation = false
