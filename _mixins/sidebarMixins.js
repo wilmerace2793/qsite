@@ -11,14 +11,15 @@ export default {
   data() {
     return {
       menu: [],
-      menuTranslatable:true,
+      menuTranslatable: true,
       menuLocal: config('sidebar'),
     }
   },
-  computed:{
+  computed: {
     menuSelect() {
       // switch between new menuList or old menuList
-      this.menuTranslatable = this.$store.getters['qsiteApp/getSettingValueByName']('isite::legacyStructureCMS') === 1 ? true : false 
+      const useLegacyStructure = parseInt(this.$store.getters['qsiteApp/getSettingValueByName']('isite::legacyStructureCMS') || 0)
+      this.menuTranslatable = useLegacyStructure ? true : false
       return this.menuTranslatable ? this.menuLocal : this.menu
     },
   }
