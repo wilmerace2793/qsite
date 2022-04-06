@@ -2,13 +2,18 @@ import Route from 'vue-routisan'
 import appConfig from 'src/config/app'
 import pagesConfig from 'src/config/pages'
 
-class AutoLoadRoutes {
+class LocalRoutes {
   constructor() {
     this.availablesLanguages = appConfig.languages.availables
     this.defaultLanguage = appConfig.languages.default
     this.pages = pagesConfig
+  }
+
+  //Return object of routes
+  getRoutes() {
     this.loadRoutes()
     this.addExtraRoutes()
+    return Route.all()
   }
 
   //Load main routes
@@ -100,16 +105,11 @@ class AutoLoadRoutes {
       })
     }
   }
-
-  //Return object of routes
-  get() {
-    return Route.all()
-  }
 }
 
 
 //Create new clase
-const routes = new AutoLoadRoutes()
+const localRoutes = new LocalRoutes()
 
 //Response
-export default routes.get()
+export default localRoutes

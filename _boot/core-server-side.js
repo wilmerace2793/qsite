@@ -1,5 +1,7 @@
-import AutoLoadRoutes from '@imagina/qsite/_config/master/application/routes'
+import serverRoutes from '@imagina/qsite/_config/master/application/serverRoutes'
+import localRoutes from '@imagina/qsite/_config/master/application/localRoutes'
 import lodash from 'lodash'
+
 export default async ({app, router, store, Vue}) => {
   await Promise.all([
     store.dispatch('qsiteApp/GET_PAGES'),
@@ -9,8 +11,9 @@ export default async ({app, router, store, Vue}) => {
     store.dispatch('qsiteApp/GET_SITE_HOOKS'),
   ])
   //Switch between new page config or old page config
-  const menuConfig = store.getters['qsiteApp/getSettingValueByName']('isite::legacyStructureCMS') == 0 ? false : true
+  const legacyStructure = parseInt(store.getters['qsiteApp/getSettingValueByName']('isite::legacyStructureCMS') || 0)
   //add all route from backend in router method later resolve all promise
-  let routesLocal = menuConfig ? config('routes') : AutoLoadRoutes.getRoutes(lodash.cloneDeep(store.state.qsiteApp.pages || []))
+  let routesLocal = legacyStructure ? localRoutes.getRoutes() : serverRoutes.getRoutes(lodash.cloneDeep(store.state.qsiteApp.pages || []))
+  //Add Routes
   router.addRoutes(routesLocal)
 }

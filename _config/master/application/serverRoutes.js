@@ -1,7 +1,7 @@
 import Route from 'vue-routisan'
 import appConfig from 'src/config/app'
 
-class AutoLoadRoutes {
+class ServerRoutes {
   constructor() {
     this.pages = []
   }
@@ -141,7 +141,7 @@ class AutoLoadRoutes {
 
 
 //Create new clase
-const routes = new AutoLoadRoutes()
+const serverRoutes = new ServerRoutes()
 
 //Response
-export default routes
+export default serverRoutes
