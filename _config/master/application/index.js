@@ -14,7 +14,7 @@ function getConfigs() {
   let apiRoutes = require('src/config/apiRoutes').default
   let pages = require('src/config/pages').default
   let sidebar = require('src/config/sidebar').default
-  let routes = require('@imagina/qsite/_config/master/application/routes').default
+  let routes = require('@imagina/qsite/_config/master/application/routesLocal').default
   let stores = require('@imagina/qsite/_config/master/application/stores').default
   let main = require('@imagina/qsite/_config/master/application/main').default
 

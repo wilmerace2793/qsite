@@ -117,6 +117,7 @@ export default {
       })
       //Format all routes to breadcrum
       pages.forEach(page => {
+        if(!page) return;
         const isActive = page.options ? page.options.activated : page.activated
         if (page && isActive && this.$auth.hasAccess(page.permission)) {
           response.push({
