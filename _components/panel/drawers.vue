@@ -11,7 +11,7 @@
       <q-scroll-area
           :style="`height: calc(100vh - ${(miniState ? '50' : '202')}px`">
         <!--Menu-->
-        <menu-list ref="menuList" group :translatable="false" :menu="menu" :with-tooltip="miniState"/>
+        <menu-list ref="menuList" group :translatable="menuTranslatable" :menu="menuSelect" :with-tooltip="miniState"/>
       </q-scroll-area>
       <!--== Button User ==-->
       <q-no-ssr>
