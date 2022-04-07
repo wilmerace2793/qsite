@@ -64,7 +64,7 @@ export default {
     let iconHref = this.$store.getters['qsiteApp/getSettingMediaByName']('isite::favicon').path
 
     return {
-      title: `${routeTitle} | ${siteName}`,
+      title: `${this.useLegacyStructure ? this.$tr(routeTitle) : routeTitle} | ${siteName}`,
       meta: {
         description: {name: 'description', content: siteDescription || siteName},
       },
@@ -98,6 +98,11 @@ export default {
     appState() {
       return this.$store.state.qsiteApp
     },
+    useLegacyStructure() {
+      const legacyStructure = parseInt(this.$store.getters["qsiteApp/getSettingValueByName"]("isite::legacyStructureCMS") || 0)
+      return legacyStructure === 1 || false
+      
+    },
     pagesConfig() {
       return this.$store.state.qsiteApp.pages
     },
@@ -109,21 +114,28 @@ export default {
       //find Homepage
       const page = this.pagesConfig.find(item => item.system_name.toLowerCase() === this.homePage)
       //Set Home page and current page
-      const pages = (this.$route.name.indexOf('app.home') == -1) ? [page, this.$route.meta] : [page]
+      const pages = this.useLegacyStructure ? this.$route.name.indexOf("app.home") == -1 ? [config(`pages.mainqsite.home`), this.$route.meta] : [config(`pages.mainqsite.home`)] 
+        : this.$route.name.indexOf("app.home") == -1 ? [page, this.$route.meta] : [page]
       //Get page from breadcrum
-      breadcrumbs.forEach((pageName) => {
-        const base = this.pagesConfig.find(item => item.system_name.toLowerCase() == pageName.toLowerCase())
-        pages.splice(1,0,base)
-      })
+      breadcrumbs.forEach((pageName) =>{
+        if (this.useLegacyStructure) {
+          pages.splice(1, 0, config(`pages.${pageName}`))
+        } else {
+          const base = this.pagesConfig.find(
+            (item) => item.system_name.toLowerCase() == pageName.toLowerCase()
+          );
+          pages.splice(1, 0, base)
+        }
+      });
       //Format all routes to breadcrum
-      pages.forEach(page => {
-        if(!page) return;
-        const isActive = page.options ? page.options.activated : page.activated
+      pages.forEach((page) => {
+        if (!page) return;
+        const isActive = page.options ? page.options.activated : page.activated;
         if (page && isActive && this.$auth.hasAccess(page.permission)) {
           response.push({
-            label: page.title,
-            icon: page.options ? page.options.icon : page.icon,
-            to: page.options? page.options.name : page.name
+            label: this.useLegacyStructure ? this.$tr(page.title) : page.title,
+            icon: this.useLegacyStructure ? page.icon : (page.options ? page.options.icon : page.icon),
+            to: this.useLegacyStructure ? page.name : (page.options ? page.options.name : page.name),
           })
         }
       })
@@ -132,28 +144,31 @@ export default {
     }
   },
   methods: {
-    init() {
-    }
+    init() {}
   }
 }
 </script>
 
 <style lang="stylus">
-#layoutMaster
-  background-color $custom-accent-color
+#layoutMaster {
+  background-color: $custom-accent-color;
 
-  #routeInformationContent
-    width 100%
-    background-color $primary
-    position fixed
-    z-index 2
+  #routeInformationContent {
+    width: 100%;
+    background-color: $primary;
+    position: fixed;
+    z-index: 2;
 
-    #subContent
-      padding 8px 10px 8px 16px
-      border-radius $custom-radius 0 0 0
-      background-color $custom-accent-color
+    #subContent {
+      padding: 8px 10px 8px 16px;
+      border-radius: $custom-radius 0 0 0;
+      background-color: $custom-accent-color;
+    }
+  }
 
-  #fakeRouteInformationContent
-    height 35px
-    width 100%
+  #fakeRouteInformationContent {
+    height: 35px;
+    width: 100%;
+  }
+}
 </style>
