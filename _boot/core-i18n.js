@@ -9,14 +9,17 @@ import helper from '@imagina/qsite/_plugins/helper'
 import customFormats from '@imagina/qsite/_i18n/master/formats/customFormats'
 import numberFormats from '@imagina/qsite/_i18n/master/formats/currencyFormats'
 import dateTimeFormats from '@imagina/qsite/_i18n/master/formats/dateTimeFormats'
-//import messages from '@imagina/qsite/_i18n/master/index'
+import messagesLocal from '@imagina/qsite/_i18n/JsonLocal/i18n.json'
 
 Vue.use(VueI18n)
 
-export default async ({router, app, Vue, store, ssrContext}) => {
+export default async ({ router, app, Vue, store, ssrContext }) => {
   //Request messages
-  let messages = await store.dispatch('qtranslationMaster/GET_TRANSLATIONS')
-
+  const useLegacyStructure = parseInt(store.getters['qsiteApp/getSettingValueByName']('isite::legacyStructureCMS') || 0)
+  const legacyStructure = useLegacyStructure === 1  || false
+  const messagesServer = await store.dispatch('qtranslationMaster/GET_TRANSLATIONS')
+  console.log("message >>>>>",messagesServer )
+  let messages = legacyStructure ? messagesLocal : messagesServer
   //===== Get default language
   //From URL
   let defaultLanguage = helper.getLocaleRoutePath(ssrContext ? ssrContext.url : window.location.hash)
@@ -62,7 +65,7 @@ export default async ({router, app, Vue, store, ssrContext}) => {
     return app.i18n.tc(key, 2, params)
   }
   //Date translate
-  Vue.prototype.$trd = (date, params = {type: 'short', fromUTC: false}) => {
+  Vue.prototype.$trd = (date, params = { type: 'short', fromUTC: false }) => {
     //Transform date from UTC
     if (params.fromUTC) date = moment(date).local().format('YYYY-MM-DD HH:mm:ss')
     //Repsonse
