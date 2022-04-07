@@ -18,7 +18,6 @@ export default async ({ router, app, Vue, store, ssrContext }) => {
   const useLegacyStructure = parseInt(store.getters['qsiteApp/getSettingValueByName']('isite::legacyStructureCMS') || 0)
   const legacyStructure = useLegacyStructure === 1  || false
   const messagesServer = await store.dispatch('qtranslationMaster/GET_TRANSLATIONS')
-  console.log("message >>>>>",messagesServer )
   let messages = legacyStructure ? messagesLocal : messagesServer
   //===== Get default language
   //From URL
