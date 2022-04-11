@@ -13,6 +13,9 @@ export const getState = (state) => (name) => {
 export const getMenu = (state) => {
   return state.menu 
 }
+export const ipAddress = (state) => {
+  return state.ipAddress 
+}
 
 export const getSettings = (state) => {
   return state.settings;

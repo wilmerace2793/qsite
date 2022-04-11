@@ -4,6 +4,7 @@ export default {
   originURL: false,
   currentRoute: {},
   extra: {},
+  ipAddress:'---.---.---',
   settings: [],
   pages: [],
   menu: [],

@@ -9,6 +9,7 @@ export default async ({app, router, store, Vue}) => {
     store.dispatch('qsiteApp/GET_SITE_SETTINGS'),
     store.dispatch('qsiteApp/GET_MODULE_CONFIGS'),
     store.dispatch('qsiteApp/GET_SITE_HOOKS'),
+    store.dispatch('qsiteApp/GET_IP_ADDRESS')
   ])
   //Switch between new page config or old page config
   const legacyStructure = parseInt(store.getters['qsiteApp/getSettingValueByName']('isite::legacyStructureCMS') || 0)
