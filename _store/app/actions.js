@@ -32,11 +32,15 @@ export const REFRESH_PAGE = ({state, commit, dispatch, getters}) => {
 // get ip addresss 
 export const GET_IP_ADDRESS = ({commit}) => {
   return new Promise(async (resolve, reject)=>{
-    const res = await fetch('https://api.ipify.org?format=json')
-    const data = await res.json()
-    commit('SET_IP_ADDRESS', data.ip)
-    resolve(true),
-    reject(false)
+    try{
+      const res = await fetch('https://api.ipify.org?format=json')
+      const data = await res.json()
+      commit('SET_IP_ADDRESS', data.ip)
+      resolve(true)
+    } catch(err) {
+      console.error('[store-qsite]Error:: Store getting site settings - disable adbloks')
+      reject(err)
+    }
 })
 }
 //Get site settings
