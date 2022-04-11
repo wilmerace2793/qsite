@@ -24,7 +24,9 @@ export function SET_AVAILABLE_THEMES(state, data) {
 export function SET_PAGES(state, data) {
   state.pages = data;
 }
-
+export function SET_IP_ADDRESS(state, data) {
+  state.ipAddress = data;
+}
 export function SET_MENU(state, data) {
   state.menu = data;
 }
