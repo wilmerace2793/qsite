@@ -249,7 +249,7 @@
         </q-field>
         <!--captcha-->
         <q-field v-model="responseValue" v-if="loadField('captcha')" v-bind="fieldProps.fieldComponent">
-          <captcha v-model="responseValue"/>
+          <captcha v-model="responseValue" @input="responseValue = $event"/>
         </q-field>
         <!--Schedulable-->
         <div class="round bg-white" v-if="loadField('schedulable')">
