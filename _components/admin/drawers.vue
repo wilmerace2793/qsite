@@ -2,7 +2,7 @@
   <div id="masterDrawers">
     <!-- MENU -->
     <q-drawer id="menuMaster" class="no-shadow" v-model="drawer.menu" ref="menuMaster"
-              :mini="miniState" @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
+              @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
       <!--Logo-->
       <div id="logoSite" class="relative-position">
         <q-img contain :src="logo" style="height: 80px; min-height: 80px"/>
@@ -13,7 +13,7 @@
         </div>
       </div>
       <!--List iadmin-->
-      <q-scroll-area class="bg-primary" :style="`height: calc(100vh - 146px`">
+      <q-scroll-area :style="`height: calc(100vh - 146px`">
         <!--Menu-->
         <menu-list ref="menuList" group :translatable="menuTranslatable" :menu="menuSelect"/>
       </q-scroll-area>
@@ -165,7 +165,7 @@ export default {
     #logoSite
       padding 20px 25px 26px 25px
       height 120px
-      background-color #FFFFFF
+      background-color $primary
 
     #versionContent
       padding 3px 15px
@@ -176,29 +176,27 @@ export default {
 
     .q-expansion-item__container
       .q-expansion-item__content
-        padding 0 0 0 3px
-        border-left 21px solid $primary
+        padding 0 0 0 2px
+        border-left 15px solid white
 
     .q-item
       padding-left 0
       min-height 40px
-      color #FFFFFF
-      background $primary
-      .q-item__section--side
-        color #FFFFFF
+      color $blue-grey
+
       .q-item__section--avatar
         padding 0 18px !important
 
         .q-icon
           font-size 20px
-          color #FFFFFF
+          color $blue-grey
 
       &:hover
-        background-color $secondary
-        color #FFFFFF
+        background-color $grey-4
+        color $primary
 
         .q-icon
-          color #FFFFFF
+          color $primary
           font-size 22px
 
       &.item-is-active
