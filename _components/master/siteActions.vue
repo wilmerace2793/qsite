@@ -76,6 +76,10 @@ export default {
     quserState() {
       return this.$store.state.quserAuth
     },
+    //Current Theme 
+    theme(){
+      return parseInt(this.$store.getters['qsiteApp/getSettingValueByName']('isite::iadminTheme'))
+    },
     //Return params of subHeader
     params() {
       return this.$clone(this.$route.meta.subHeader || {})
@@ -117,7 +121,7 @@ export default {
             vIf: (config('app.mode') == 'iadmin') && this.$auth.hasAccess('ichat.conversations.index'),
             props: {
               ...defaultButtonProps,
-              icon: 'fas fa-comment-alt',
+              icon: this.theme === 1 ? 'fas fa-comment-alt' : 'far fa-comment-alt',
               class: `btn-small ${this.badge.chat ? 'active-badge' : ''}`
             },
             action: () => this.$eventBus.$emit('toggleMasterDrawer', 'chat')
@@ -129,7 +133,7 @@ export default {
             vIf: this.$auth.hasAccess('notification.notifications.manage'),
             props: {
               ...defaultButtonProps,
-              icon: 'fas fa-bell',
+              icon: this.theme === 1 ? 'fas fa-bell' : 'far fa-bell',
               class: `btn-small ${this.badge.notification ? 'active-badge' : ''}`
             },
             action: () => this.$eventBus.$emit('toggleMasterDrawer', 'notification')

@@ -1,18 +1,21 @@
 <template>
   <q-layout id="layoutMaster" :view="(appConfig.mode == 'iadmin') ? 'lHh LpR lFf' : 'lHr LpR lFf'">
     <!-- HEADER -->
-    <header-admin v-if="appState.loadPage && (appConfig.mode == 'iadmin')"/>
+    <header-admin-main-theme v-if="theme === 1"/>
+    <header-admin-second-theme v-if="theme === 2"/>
     <header-panel v-if="appState.loadPage && (appConfig.mode == 'ipanel')"/>
 
     <!-- Drawers -->
-    <drawers-admin v-if="appState.loadPage && (appConfig.mode == 'iadmin')"/>
+    <drawers-admin-main-theme v-if="theme === 1"/>
+    <drawers-admin-second-theme v-if="theme === 2"/>
     <drawers-panel v-if="appState.loadPage && (appConfig.mode == 'ipanel')"/>
 
 
     <!-- ROUTER VIEW -->
     <q-page-container>
       <!--Page route-->
-      <div id="routeInformationContent" v-if="appConfig.mode == 'iadmin'" class="q-hide q-md-show">
+      <div id="routeInformationContent" v-if="appConfig.mode == 'iadmin'" :style="`${backColorContent}`" 
+      class="q-hide q-md-show">
         <div id="subContent" class="row items-center">
           <!-- Back Button -->
           <q-btn icon="fas fa-arrow-left" unelevated round color="primary" class="btn-small q-mr-md"
@@ -37,7 +40,8 @@
     <cropper-component ref="cropperComponent"/>
 
     <!-- FOOTER -->
-    <footer-admin v-if="appState.loadPage && (appConfig.mode == 'iadmin')"/>
+    <footer-admin-main-theme v-if="appState.loadPage && (appConfig.mode == 'iadmin')"/>
+    <footer-admin-second-theme v-if="appState.loadPage && (appConfig.mode == 'iadmin')"/>
     <footer-panel v-if="appState.loadPage && (appConfig.mode == 'ipanel')"/>
   </q-layout>
 </template>
@@ -45,9 +49,12 @@
 <script>
 import chat from '@imagina/qchat/_components/advancedChat'
 //Components Admin
-import headerAdmin from '@imagina/qsite/_components/admin/header'
-import drawersAdmin from '@imagina/qsite/_components/admin/drawers'
-import footerAdmin from '@imagina/qsite/_components/admin/footer'
+import headerAdminMainTheme from '@imagina/qsite/_components/admin/theme1/header1'
+import headerAdminSecondTheme from '@imagina/qsite/_components/admin/theme2/header2'
+import drawersAdminMainTheme from '@imagina/qsite/_components/admin/theme1/drawers1'
+import drawersAdminSecondTheme from '@imagina/qsite/_components/admin/theme2/drawers2'
+import footerAdminMainTheme from '@imagina/qsite/_components/admin/theme1/footer1'
+import footerAdminSecondTheme from '@imagina/qsite/_components/admin/theme2/footer2'
 //Components Panel
 import headerPanel from '@imagina/qsite/_components/panel/header'
 import drawersPanel from '@imagina/qsite/_components/panel/drawers'
@@ -56,6 +63,7 @@ import footerPanel from '@imagina/qsite/_components/panel/footer'
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
 
 export default {
+  name:"MasterLayout",
   meta() {
     let routeTitle = ((this.$route.meta && this.$route.meta.title) ? this.$route.meta.title : '')
     if (this.$route.meta && this.$route.meta.headerTitle) routeTitle = this.$route.meta.headerTitle
@@ -75,9 +83,12 @@ export default {
     chat,
     cropperComponent,
     //Admin
-    headerAdmin,
-    drawersAdmin,
-    footerAdmin,
+    headerAdminMainTheme,
+    headerAdminSecondTheme,
+    drawersAdminMainTheme,
+    drawersAdminSecondTheme,
+    footerAdminMainTheme,
+    footerAdminSecondTheme,
     //Panel
     headerPanel,
     drawersPanel,
@@ -102,6 +113,25 @@ export default {
       const legacyStructure = parseInt(this.$store.getters["qsiteApp/getSettingValueByName"]("isite::legacyStructureCMS") || 0)
       return legacyStructure === 1 || false
       
+    },
+    backColorContent (){
+      switch (this.theme) {
+        case 1:
+          return 'background-color: var(--q-color-primary)'
+          break;
+      
+        case 2:
+          return 'background-color: #fff'
+          break;
+      
+        default:
+          return 'background-color: var(--q-color-primary)'
+          break;
+      }
+    },
+    //get Theme
+    theme () {
+      return this.appState.loadPage && (this.appConfig.mode == 'iadmin') && (this.$store.getters['qsiteApp/getSettingValueByName']('isite::iadminTheme') == 1) ? 1 : 2
     },
     pagesConfig() {
       return this.$store.state.qsiteApp.pages
@@ -155,7 +185,6 @@ export default {
 
   #routeInformationContent {
     width: 100%;
-    background-color: $primary;
     position: fixed;
     z-index: 2;
 
