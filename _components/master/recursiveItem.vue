@@ -77,9 +77,6 @@ export default {
 
       //Response
       return menu
-    }, //Current Theme 
-    theme(){
-      return parseInt(this.$store.getters['qsiteApp/getSettingValueByName']('isite::iadminTheme'))
     }
   },
   methods: {
@@ -168,7 +165,7 @@ export default {
 
   .q-item
     cursor pointer
-    background-color $primary
+    background-color white
     color $grey-9
 
     .q-item__section--avatar
