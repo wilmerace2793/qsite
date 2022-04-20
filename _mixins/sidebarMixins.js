@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       menu: [],
-      menuTranslatable: true,
+      menuTranslatable: false,
       menuLocal: config('sidebar'),
     }
   },

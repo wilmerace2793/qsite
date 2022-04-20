@@ -36,7 +36,6 @@ export default async ({ router, app, Vue, store, ssrContext }) => {
     dateTimeFormats,
     messages
   })
-
   //===== Change language to quasar components
   await store.dispatch('qsiteApp/SET_LOCALE', {
     locale: defaultLanguage,
