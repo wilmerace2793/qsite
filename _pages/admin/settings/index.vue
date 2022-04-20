@@ -178,6 +178,7 @@ export default {
     //get color contrast
     getColorContrast() {
       const master = document.querySelector('#masterDrawers')
+      if(!master) return false;
       const bgColor = getComputedStyle(master).getPropertyValue('--q-color-primary')
       const contrast = this.$helper.pickTextColor(bgColor)
       master.style.setProperty('--q-color-contrast',contrast)

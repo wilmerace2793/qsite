@@ -131,6 +131,7 @@ export default {
     },
     //get Theme
     theme () {
+      if (!this.$store.getters['qsiteApp/getSettingValueByName']('isite::iadminTheme')) return 1;
       return this.appState.loadPage && (this.appConfig.mode == 'iadmin') && (this.$store.getters['qsiteApp/getSettingValueByName']('isite::iadminTheme') == 1) ? 1 : 2
     },
     pagesConfig() {

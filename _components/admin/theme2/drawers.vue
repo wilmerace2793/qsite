@@ -1,8 +1,8 @@
 <template>
   <div id="masterDrawers2">
     <!-- btn menu -->
-    <q-btn v-if="appConfig.mode === 'iadmin'" id="buttonToogleMenu2" icon="fas fa-bars" unelevated
-      :class="`${contrast() ? 'text-white' : 'text-black'} q-hide q-md-show`" @click="$eventBus.$emit('toggleMasterDrawer','menu')"/>
+    <q-btn v-if="appConfig.mode === 'iadmin'" id="buttonToogleMenu2" icon="fas fa-bars" unelevated :style="`color: ${contrast()}`"
+      :class="`q-hide q-md-show`" @click="$eventBus.$emit('toggleMasterDrawer','menu')"/>
     <!-- MENU -->
     <q-drawer id="menuMaster2" class="no-shadow" v-model="drawer.menu" ref="menuMaster"
               :mini="miniState" @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
@@ -101,6 +101,12 @@ export default {
     windowSize() {
       return this.windowWith >= '992' ? 'desktop' : 'mobile'
     },
+    primaryContrast() {
+      return  this.$store.getters['qsiteApp/getSettingValueByName']('isite::primaryContrast')
+    },
+    secondaryContrast() {
+      return  this.$store.getters['qsiteApp/getSettingValueByName']('isite::secondaryContrast')
+    },
     routeSubHeader() {
       this.drawer.recommendation = false
       return this.$route.meta.subHeader || {}
@@ -127,8 +133,11 @@ export default {
       if(!master) return '#000000';
       const bgColor = getComputedStyle(master).getPropertyValue('--q-color-primary')
       const contrast = this.$helper.pickTextColor(bgColor)
-      master.style.setProperty('--q-color-contrast',contrast)
-      return contrast === '#FFFFFF' ? true : false
+      const bgColor2 = getComputedStyle(master).getPropertyValue('--q-color-secondary')
+      const contrast2 = this.$helper.pickTextColor(bgColor2)
+      this.primaryContrast ? master.style.setProperty('--q-color-contrast',this.primaryContrast) : master.style.setProperty('--q-color-contrast',contrast)
+      this.secondaryContrast ? master.style.setProperty('--q-color-contrast-two',this.secondaryContrast) : master.style.setProperty('--q-color-contrast-two',contrast2)
+      return this.primaryContrast ? this.primaryContrast : contrast
     },
     handlerEvent() {
       //handler toggleMasterDrawer
@@ -171,7 +180,8 @@ export default {
     background var(--q-color-primary)
     position fixed
     z-index 9991
-    border-radius 8px 8px 0px 0px
+    padding-top 1px
+    border-radius 0%
     top 104px
     width 57px
   #drawerRecomendationMaster
@@ -220,16 +230,17 @@ export default {
 
       &:hover
         background-color $secondary
-        color var(--q-color-contrast)
+        color var(--q-color-contrast-two)
+        border-radius 0%
         .q-icon
-          color var(--q-color-contrast)
+          color var(--q-color-contrast-two)
           font-size 22px
 
       &.item-is-active
         background-color $secondary
-        border-radius 0px 18px 18px 0px
+        border-radius 0%
         .q-item__section, .q-icon
-          color var(--q-color-contrast)
+          color var(--q-color-contrast-two)
 
     .expansion-selected
       background-color $primary
