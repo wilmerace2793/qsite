@@ -922,7 +922,8 @@
           "privacyData": "I declare that I have read and accept {concatData} of {siteName}",
           "termsAndConditions": "Terms and Conditions",
           "privacyPolicy": "Privacy Policy",
-          "changend": "La contraseña ha sido restablecida. Ahora ya puede iniciar sesión con su nueva contraseña."
+          "changend": "La contraseña ha sido restablecida. Ahora ya puede iniciar sesión con su nueva contraseña.",
+          "resetPasswordRequested": "check your email to restore your password please"
         },
         "quickCard": {
           "lastUsers": "Users - Last registered users"
@@ -1448,7 +1449,7 @@
           "icon": "Icon | Icons",
           "masterRecord": "Master record",
           "birthday": "Birthday",
-          "createdFromIp":"Created from IP",
+          "createdFromIp": "Created from IP",
           "identification": "Identification",
           "identificationType": "Documentation Type",
           "city": "City | cities",
@@ -2430,7 +2431,8 @@
           "privacyData": "Declaro que he leído y acepto {concatData} de <b>{siteName}</b>",
           "termsAndConditions": "Terminos y Condiciones",
           "privacyPolicy": "Politica de Privacidad",
-          "changend": "La contraseña ha sido restablecida. Ahora ya puede iniciar sesión con su nueva contraseña."
+          "changend": "La contraseña ha sido restablecida. Ahora ya puede iniciar sesión con su nueva contraseña.",
+          "resetPasswordRequested": "Revisa tu email para recuperar tu contraseña"
         },
         "quickCard": {
           "lastUsers": "Usuarios - Ultimos usuarios registrados"

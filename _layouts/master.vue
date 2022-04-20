@@ -49,12 +49,12 @@
 <script>
 import chat from '@imagina/qchat/_components/advancedChat'
 //Components Admin
-import headerAdminMainTheme from '@imagina/qsite/_components/admin/theme1/header1'
-import headerAdminSecondTheme from '@imagina/qsite/_components/admin/theme2/header2'
-import drawersAdminMainTheme from '@imagina/qsite/_components/admin/theme1/drawers1'
-import drawersAdminSecondTheme from '@imagina/qsite/_components/admin/theme2/drawers2'
-import footerAdminMainTheme from '@imagina/qsite/_components/admin/theme1/footer1'
-import footerAdminSecondTheme from '@imagina/qsite/_components/admin/theme2/footer2'
+import headerAdminMainTheme from '@imagina/qsite/_components/admin/theme1/header'
+import headerAdminSecondTheme from '@imagina/qsite/_components/admin/theme2/header'
+import drawersAdminMainTheme from '@imagina/qsite/_components/admin/theme1/drawers'
+import drawersAdminSecondTheme from '@imagina/qsite/_components/admin/theme2/drawers'
+import footerAdminMainTheme from '@imagina/qsite/_components/admin/theme1/footer'
+import footerAdminSecondTheme from '@imagina/qsite/_components/admin/theme2/footer'
 //Components Panel
 import headerPanel from '@imagina/qsite/_components/panel/header'
 import drawersPanel from '@imagina/qsite/_components/panel/drawers'

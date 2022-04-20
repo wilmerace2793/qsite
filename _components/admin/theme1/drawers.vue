@@ -1,11 +1,8 @@
 <template>
   <div id="masterDrawers">
-    <!-- btn menu -->
-    <q-btn v-if="appConfig.mode === 'iadmin'" id="buttonToogleMenu" icon="fas fa-bars" unelevated
-      :class="`${contrast() ? 'text-white' : 'text-black'} q-hide q-md-show`" @click="$eventBus.$emit('toggleMasterDrawer','menu')"/>
     <!-- MENU -->
     <q-drawer id="menuMaster" class="no-shadow" v-model="drawer.menu" ref="menuMaster"
-              :mini="miniState" @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
+              @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
       <!--Logo-->
       <div id="logoSite" class="relative-position">
         <q-img contain :src="logo" style="height: 80px; min-height: 80px"/>
@@ -16,7 +13,7 @@
         </div>
       </div>
       <!--List iadmin-->
-      <q-scroll-area class="bg-primary" :style="`height: calc(100vh - 146px`">
+      <q-scroll-area :style="`height: calc(100vh - 146px`">
         <!--Menu-->
         <menu-list ref="menuList" group :translatable="menuTranslatable" :menu="menuSelect"/>
       </q-scroll-area>
@@ -114,21 +111,11 @@ export default {
     //init
     init() {
       this.handlerEvent()
-      this.contrast()
       //Watch window size
       window.addEventListener('resize', () => {
         this.windowHeight = window.innerHeight
         this.windowWith = window.innerWidth
       })
-    },
-    //contrast color alter
-    contrast() {
-      const master = document.querySelector('#masterDrawers')
-      if(!master) return '#000000';
-      const bgColor = getComputedStyle(master).getPropertyValue('--q-color-primary')
-      const contrast = this.$helper.pickTextColor(bgColor)
-      master.style.setProperty('--q-color-contrast',contrast)
-      return contrast === '#FFFFFF' ? true : false
     },
     handlerEvent() {
       //handler toggleMasterDrawer
@@ -158,7 +145,7 @@ export default {
           this.miniState = !this.miniState
         }
       } else {
-        this.drawer[drawerName] = !!this.drawer[drawerName]
+        this.drawer[drawerName] = !this.drawer[drawerName]
       }
     }
   }
@@ -166,14 +153,7 @@ export default {
 </script>
 <style lang="stylus">
 #masterDrawers
-  background-color $primary
-  #buttonToogleMenu
-    background var(--q-color-primary)
-    position fixed
-    z-index 9991
-    border-radius 8px 8px 0px 0px
-    top 104px
-    width 57px
+
   #drawerRecomendationMaster
     .q-drawer
       max-height max-content
@@ -182,53 +162,46 @@ export default {
       background white
 
   #menuMaster
-    
-    aside
-      background $primary
     #logoSite
       padding 20px 25px 26px 25px
-      height 140px
-      background-color #FFFFFF
+      height 120px
+      background-color $primary
 
     #versionContent
       padding 3px 15px
       font-size 13px
 
     .q-expansion-item
-      background-color $grey-3
+      background-color #fff
 
     .q-expansion-item__container
       .q-expansion-item__content
-        padding 0px
-        border-left 21px solid $primary
-        #listMenu
-          .content-item
-            border-left 3px solid $secondary
+        padding 0 0 0 2px
+        border-left 15px solid white
 
     .q-item
       padding-left 0
       min-height 40px
-      color var(--q-color-contrast)
-      background $primary
-      .q-item__section--side
-        color var(--q-color-contrast)
+      color $blue-grey
+
       .q-item__section--avatar
         padding 0 18px !important
 
         .q-icon
           font-size 20px
-          color var(--q-color-contrast)
+          color $blue-grey
 
       &:hover
-        background-color $secondary
-        color var(--q-color-contrast)
+        background-color $grey-4
+        color $primary
+
         .q-icon
-          color var(--q-color-contrast)
+          color $primary
           font-size 22px
 
       &.item-is-active
-        background-color $secondary
-        border-radius 0px 18px 18px 0px
+        background-color white
+
         .q-item__section, .q-icon
           color $primary
 

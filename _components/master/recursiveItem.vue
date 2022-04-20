@@ -77,9 +77,6 @@ export default {
 
       //Response
       return menu
-    }, //Current Theme 
-    theme(){
-      return parseInt(this.$store.getters['qsiteApp/getSettingValueByName']('isite::iadminTheme'))
     }
   },
   methods: {
