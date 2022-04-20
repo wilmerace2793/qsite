@@ -1,10 +1,13 @@
 <template>
-  <div id="masterDrawers">
+  <div id="masterDrawers2">
+    <!-- btn menu -->
+    <q-btn v-if="appConfig.mode === 'iadmin'" id="buttonToogleMenu2" icon="fas fa-bars" unelevated
+      :class="`${contrast() ? 'text-white' : 'text-black'} q-hide q-md-show`" @click="$eventBus.$emit('toggleMasterDrawer','menu')"/>
     <!-- MENU -->
-    <q-drawer id="menuMaster" class="no-shadow" v-model="drawer.menu" ref="menuMaster"
-              @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
+    <q-drawer id="menuMaster2" class="no-shadow" v-model="drawer.menu" ref="menuMaster"
+              :mini="miniState" @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
       <!--Logo-->
-      <div id="logoSite" class="relative-position">
+      <div id="logoSite2" class="relative-position">
         <q-img contain :src="logo" style="height: 80px; min-height: 80px"/>
         <!--Version-->
         <div id="versionContent" class="absolute absolute-bottom-right text-white">
@@ -13,7 +16,7 @@
         </div>
       </div>
       <!--List iadmin-->
-      <q-scroll-area :style="`height: calc(100vh - 146px`">
+      <q-scroll-area class="bg-primary" :style="`height: calc(100vh - 146px`">
         <!--Menu-->
         <menu-list ref="menuList" group :translatable="menuTranslatable" :menu="menuSelect"/>
       </q-scroll-area>
@@ -111,11 +114,21 @@ export default {
     //init
     init() {
       this.handlerEvent()
+      this.contrast()
       //Watch window size
       window.addEventListener('resize', () => {
         this.windowHeight = window.innerHeight
         this.windowWith = window.innerWidth
       })
+    },
+    //contrast color alter
+    contrast() {
+      const master = document.querySelector('#masterDrawers2')
+      if(!master) return '#000000';
+      const bgColor = getComputedStyle(master).getPropertyValue('--q-color-primary')
+      const contrast = this.$helper.pickTextColor(bgColor)
+      master.style.setProperty('--q-color-contrast',contrast)
+      return contrast === '#FFFFFF' ? true : false
     },
     handlerEvent() {
       //handler toggleMasterDrawer
@@ -145,15 +158,22 @@ export default {
           this.miniState = !this.miniState
         }
       } else {
-        this.drawer[drawerName] = !this.drawer[drawerName]
+        this.drawer[drawerName] = !!this.drawer[drawerName]
       }
     }
   }
 }
 </script>
 <style lang="stylus">
-#masterDrawers
-
+#masterDrawers2
+  background-color $primary
+  #buttonToogleMenu2
+    background var(--q-color-primary)
+    position fixed
+    z-index 9991
+    border-radius 8px 8px 0px 0px
+    top 104px
+    width 57px
   #drawerRecomendationMaster
     .q-drawer
       max-height max-content
@@ -161,11 +181,13 @@ export default {
     .q-drawer__content
       background white
 
-  #menuMaster
-    #logoSite
+  #menuMaster2
+    aside
+      background $primary
+    #logoSite2
       padding 20px 25px 26px 25px
-      height 120px
-      background-color $primary
+      height 140px
+      background-color #FFFFFF
 
     #versionContent
       padding 3px 15px
@@ -176,34 +198,38 @@ export default {
 
     .q-expansion-item__container
       .q-expansion-item__content
-        padding 0 0 0 2px
-        border-left 15px solid white
+        padding 0px
+        border-left 21px solid $primary
+        #listMenu
+          .content-item
+            border-left 3px solid $secondary
 
     .q-item
       padding-left 0
       min-height 40px
-      color $blue-grey
-
+      color var(--q-color-contrast)
+      background $primary
+      .q-item__section--side
+        color var(--q-color-contrast)
       .q-item__section--avatar
         padding 0 18px !important
 
         .q-icon
           font-size 20px
-          color $blue-grey
+          color var(--q-color-contrast)
 
       &:hover
-        background-color $grey-4
-        color $primary
-
+        background-color $secondary
+        color var(--q-color-contrast)
         .q-icon
-          color $primary
+          color var(--q-color-contrast)
           font-size 22px
 
       &.item-is-active
-        background-color white
-
+        background-color $secondary
+        border-radius 0px 18px 18px 0px
         .q-item__section, .q-icon
-          color $primary
+          color var(--q-color-contrast)
 
     .expansion-selected
       background-color $primary

@@ -165,7 +165,6 @@ export default {
 
   .q-item
     cursor pointer
-    background-color white
     color $grey-9
 
     .q-item__section--avatar
