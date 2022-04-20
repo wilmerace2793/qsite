@@ -1,5 +1,8 @@
 <template>
   <div id="masterDrawers">
+    <!-- btn menu -->
+    <q-btn v-if="appConfig.mode === 'iadmin'" id="buttonToogleMenu" icon="fas fa-bars" unelevated
+      :class="`${contrast() ? 'text-white' : 'text-black'} q-hide q-md-show`" @click="$eventBus.$emit('toggleMasterDrawer','menu')"/>
     <!-- MENU -->
     <q-drawer id="menuMaster" class="no-shadow" v-model="drawer.menu" ref="menuMaster"
               :mini="miniState" @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
@@ -111,11 +114,21 @@ export default {
     //init
     init() {
       this.handlerEvent()
+      this.contrast()
       //Watch window size
       window.addEventListener('resize', () => {
         this.windowHeight = window.innerHeight
         this.windowWith = window.innerWidth
       })
+    },
+    //contrast color alter
+    contrast() {
+      const master = document.querySelector('#masterDrawers')
+      if(!master) return '#000000';
+      const bgColor = getComputedStyle(master).getPropertyValue('--q-color-primary')
+      const contrast = this.$helper.pickTextColor(bgColor)
+      master.style.setProperty('--q-color-contrast',contrast)
+      return contrast === '#FFFFFF' ? true : false
     },
     handlerEvent() {
       //handler toggleMasterDrawer
@@ -145,7 +158,7 @@ export default {
           this.miniState = !this.miniState
         }
       } else {
-        this.drawer[drawerName] = !this.drawer[drawerName]
+        this.drawer[drawerName] = !!this.drawer[drawerName]
       }
     }
   }
@@ -153,7 +166,14 @@ export default {
 </script>
 <style lang="stylus">
 #masterDrawers
-
+  background-color $primary
+  #buttonToogleMenu
+    background var(--q-color-primary)
+    position fixed
+    z-index 9991
+    border-radius 8px 8px 0px 0px
+    top 104px
+    width 57px
   #drawerRecomendationMaster
     .q-drawer
       max-height max-content
@@ -162,9 +182,12 @@ export default {
       background white
 
   #menuMaster
+    
+    aside
+      background $primary
     #logoSite
       padding 20px 25px 26px 25px
-      height 120px
+      height 140px
       background-color #FFFFFF
 
     #versionContent
@@ -176,34 +199,36 @@ export default {
 
     .q-expansion-item__container
       .q-expansion-item__content
-        padding 0 0 0 3px
+        padding 0px
         border-left 21px solid $primary
+        #listMenu
+          .content-item
+            border-left 3px solid $secondary
 
     .q-item
       padding-left 0
       min-height 40px
-      color #FFFFFF
+      color var(--q-color-contrast)
       background $primary
       .q-item__section--side
-        color #FFFFFF
+        color var(--q-color-contrast)
       .q-item__section--avatar
         padding 0 18px !important
 
         .q-icon
           font-size 20px
-          color #FFFFFF
+          color var(--q-color-contrast)
 
       &:hover
         background-color $secondary
-        color #FFFFFF
-
+        color var(--q-color-contrast)
         .q-icon
-          color #FFFFFF
+          color var(--q-color-contrast)
           font-size 22px
 
       &.item-is-active
-        background-color white
-
+        background-color $secondary
+        border-radius 0px 18px 18px 0px
         .q-item__section, .q-icon
           color $primary
 

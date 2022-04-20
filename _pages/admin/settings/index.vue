@@ -155,6 +155,7 @@ export default {
     },
     //Get Data
     getData() {
+      this.getColorContrast()
       return new Promise(async resolve => {
         this.loading = true
         await Promise.all([
@@ -173,6 +174,13 @@ export default {
         this.loading = false
         resolve(true)
       })
+    },
+    //get color contrast
+    getColorContrast() {
+      const master = document.querySelector('#masterDrawers')
+      const bgColor = getComputedStyle(master).getPropertyValue('--q-color-primary')
+      const contrast = this.$helper.pickTextColor(bgColor)
+      master.style.setProperty('--q-color-contrast',contrast)
     },
     //Get settings Fields
     getSettingFields() {
@@ -288,6 +296,7 @@ export default {
       //Request
       this.$crud.post('apiRoutes.qsite.settings', {attributes: this.getDataForm()}).then(async response => {
         this.$alert.info(this.$tr('isite.cms.message.recordUpdated'))
+        this.getColorContrast()
         this.getData()
       }).catch(error => {
         this.$alert.error(this.$tr('isite.cms.message.recordNoUpdated'))

@@ -40,8 +40,8 @@
     <cropper-component ref="cropperComponent"/>
 
     <!-- FOOTER -->
-    <footer-admin-main-theme v-if="appState.loadPage && (appConfig.mode == 'iadmin')"/>
-    <footer-admin-second-theme v-if="appState.loadPage && (appConfig.mode == 'iadmin')"/>
+    <footer-admin-main-theme v-if="theme === 1"/>
+    <footer-admin-second-theme v-if="theme === 2"/>
     <footer-panel v-if="appState.loadPage && (appConfig.mode == 'ipanel')"/>
   </q-layout>
 </template>

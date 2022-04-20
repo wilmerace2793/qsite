@@ -3,10 +3,8 @@
     <!-- HEADER -->
     <q-header>
       <!-- Toolbar  -->
-      <div :class="'q-hide q-md-show bg-white'">
-        <q-toolbar id="toolbarTop" color="dark">
-          <q-btn id="buttonToogleMenu" icon="fas fa-bars" unelevated color="bg-white"
-            :style="`${btnPosition}`" @click="handlerBtn()"/>
+      <div :class="'q-hide q-md-show'">
+        <q-toolbar id="toolbarTop">
           <q-toolbar-title/>
           <!--Site Actions-->
           <site-actions/>
@@ -33,27 +31,19 @@ export default {
       projectName: this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name'),
       logo: this.$store.state.qsiteApp.logo,
       appConfig: config('app'),
-      loadHeaderIpanel: false,
-      position: false
+      loadHeaderIpanel: false
     }
   },
   computed: {
     //Quser state
     quserState() {
       return this.$store.state.quserAuth
-    },
-    btnPosition () {
-      return this.position ? 'left: -280px' : 'left: -45px'
     }
   },
   methods: {
     init() {
       //Get header ipanel
       //this.getHeaderIpanel()
-    },
-    handlerBtn(){
-      this.$eventBus.$emit('toggleMasterDrawer','menu')
-      this.position = !this.position
     },
     //Get html header ipanel
     getHeaderIpanel() {
@@ -104,25 +94,4 @@ export default {
 
   #toolbarTop
     position relative
-    padding-left 0
-    padding-right 10px
-
-    #buttonToogleMenu
-      position absolute
-      top 45px
-      height 36px
-      width 36px
-      border-radius 50%
-
-      .q-icon
-        font-size 16px
-        color #000 !important
-
-    .q-breadcrumbs
-      .q-breadcrumbs__el
-        font-size 14px
-
-      .q-breadcrumbs__separator
-        font-size 14px
-        padding 0 3px    
 </style>
