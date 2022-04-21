@@ -172,7 +172,7 @@ export default {
       font-size 13px
 
     .q-expansion-item
-      background-color #fff
+      background-color #fff !important
 
     .q-expansion-item__container
       .q-expansion-item__content
