@@ -152,6 +152,12 @@ export default {
 }
 </script>
 <style lang="stylus">
+my-menu-link(value)
+  if(value)
+    border-left 3px solid $primary
+  else
+    border-left 1px solid #dbdfe1
+  
 #masterDrawers
 
   #drawerRecomendationMaster
@@ -178,12 +184,14 @@ export default {
       .q-expansion-item__content
         padding 0 0 0 2px
         border-left 15px solid white
-
+        #listMenu
+          .content-item
+            my-menu-link
     .q-item
       padding-left 0
       min-height 40px
       color $blue-grey
-
+      my-menu-link(false)
       .q-item__section--avatar
         padding 0 18px !important
 
@@ -201,7 +209,7 @@ export default {
 
       &.item-is-active
         background-color white
-
+        my-menu-link(true)
         .q-item__section, .q-icon
           color $primary
 
