@@ -179,7 +179,7 @@ export default {
   #buttonToogleMenu2
     background var(--q-color-primary)
     position fixed
-    z-index 9991
+    z-index 1001
     padding-top 1px
     border-radius 0%
     top 104px
