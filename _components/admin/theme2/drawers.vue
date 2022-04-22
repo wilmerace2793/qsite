@@ -8,7 +8,7 @@
               :mini="miniState" @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
       <!--Logo-->
       <div id="logoSite2" class="relative-position">
-        <q-img contain :src="logo" style="height: 80px; min-height: 80px"/>
+        <q-img v-show="!miniState" contain :src="logo" style="height: 80px; min-height: 80px"/>
         <!--Version-->
         <div id="versionContent" class="absolute absolute-bottom-right text-white">
           <q-icon name="fas fa-code-branch" class="q-mr-xs"/>
@@ -167,7 +167,7 @@ export default {
           this.miniState = !this.miniState
         }
       } else {
-        this.drawer[drawerName] = !!this.drawer[drawerName]
+        this.drawer[drawerName] = !this.drawer[drawerName]
       }
     }
   }
@@ -179,7 +179,7 @@ export default {
   #buttonToogleMenu2
     background var(--q-color-primary)
     position fixed
-    z-index 9991
+    z-index 6
     padding-top 1px
     border-radius 0%
     top 104px
@@ -194,6 +194,7 @@ export default {
   #menuMaster2
     aside
       background $primary
+      z-index 5
     #logoSite2
       padding 20px 25px 26px 25px
       height 140px
