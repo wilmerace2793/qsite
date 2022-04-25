@@ -1026,6 +1026,9 @@
         "perzonalizationTitle": "Welcome to the editor of your website",
         "perzonalizationDescription": "Easily change the logo, colors and the main information of your website",
         "label": {
+          "showing": "Showing",
+          "entry": "Entry | Entries",
+          "of": "of",
           "delete": "Delete",
           "cancel": "Cancel",
           "cancelled": "Cancelled",
@@ -2535,6 +2538,9 @@
         "perzonalizationTitle": "Bienvenid@ al editor de tu sitio web",
         "perzonalizationDescription": "De manera fácil, cambia el logo, colores y la información principal de tu página web",
         "label": {
+          "showing": "Mostrando",
+          "entry": "Entrada | Entradas",
+          "of": "de",
           "delete": "Eliminar",
           "cancel": "Cancelar",
           "cancelled": "Cancelado",
