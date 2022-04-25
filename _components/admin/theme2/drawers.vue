@@ -1,8 +1,5 @@
 <template>
   <div id="masterDrawers2">
-    <!-- btn menu -->
-    <q-btn v-if="appConfig.mode === 'iadmin'" id="buttonToogleMenu2" icon="fas fa-bars" unelevated :style="`color: ${contrast()}`"
-      :class="`q-hide q-md-show`" @click="$eventBus.$emit('toggleMasterDrawer','menu')"/>
     <!-- MENU -->
     <q-drawer id="menuMaster2" class="no-shadow" v-model="drawer.menu" ref="menuMaster"
               :mini="miniState" @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
@@ -119,6 +116,7 @@ export default {
   methods: {
     //init
     init() {
+      console.log('miloglslfkjldfsd >>>>', this.$store.getters['qsiteApp/getSettingValueByName']('isite::logoIadminSM'))
       this.handlerEvent()
       this.contrast()
       //Watch window size
@@ -176,28 +174,13 @@ export default {
 <style lang="stylus">
 #masterDrawers2
   background-color $primary
-  #buttonToogleMenu2
-    background var(--q-color-primary)
-    position fixed
-    z-index 6
-    padding-top 1px
-    border-radius 0%
-    top 104px
-    width 57px
-  #drawerRecomendationMaster
-    .q-drawer
-      max-height max-content
-
-    .q-drawer__content
-      background white
-
   #menuMaster2
     aside
       background $primary
       z-index 5
     #logoSite2
       padding 20px 25px 26px 25px
-      height 140px
+      height 120px
       background-color #FFFFFF
 
     #versionContent

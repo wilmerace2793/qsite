@@ -1,7 +1,7 @@
 <template>
   <div id="pageActionscomponent" class="row q-col-gutter-y-sm full-width items-center justify-between">
     <!--Title-->
-    <div :class="`text-h6  text-primary text-weight-bold text-subtitle1 ellipsis title-content`">
+    <div :class="`text-h6  text-blue-grey text-weight-bold text-subtitle1 ellipsis title-content`">
       <q-icon v-if="icon" :name="icon" size="22px" class="q-mr-sm"/>
       <label id="titleCrudTable" v-if="title">{{ title }}</label>
     </div>
