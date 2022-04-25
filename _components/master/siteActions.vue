@@ -97,6 +97,14 @@ export default {
         noCaps: true
       }
 
+      let goToSiteUrl = this.$store.state.qsiteApp.baseUrl;
+
+      //define the organization url if there're someone selected
+      if(this.quserState.organizationId){
+        let organizationSelected = this.quserState.organizations.find(organization => organization.id == this.quserState.organizationId)
+        goToSiteUrl = organizationSelected.url
+      }
+
       return {
         bottons: [
           //Go To Site
@@ -107,7 +115,7 @@ export default {
               ...defaultButtonProps,
               label: this.$tr('isite.cms.showSite'),
               type: 'a',
-              href: this.$store.state.qsiteApp.baseUrl,
+              href: goToSiteUrl,
               target: '_blank',
               round: false,
               rounded: true,
