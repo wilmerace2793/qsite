@@ -117,8 +117,6 @@ export default {
   methods: {
     //init
     init() {
-      console.log('mini logo >>>>', this.$store.getters['qsiteApp/getSettingMediaByName']('isite::logoIadminSM'))
-      console.log('state >>>>', this.$store.state.qsiteApp)
       this.handlerEvent()
       this.contrast()
       //Watch window size

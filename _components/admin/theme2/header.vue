@@ -35,15 +35,6 @@ export default {
       appConfig: config('app'),
       loadHeaderIpanel: false,
       miniState: this.windowSize == 'mobile' ? false : true,
-      drawer: {
-        menu: this.windowSize == 'mobile' ? false : true,
-        config: false,
-        chat: false,
-        filter: false,
-        checkin: false,
-        recommendation: false,
-        notification: false
-      }
     }
   },
   computed: {
@@ -61,32 +52,10 @@ export default {
     handlerEvent() {
       //handler toggleMasterDrawer
       this.$eventBus.$on('toggleMasterDrawer', (drawerName) => this.toggleDrawer(drawerName))
-      //handler openMasterDrawer
-      this.$eventBus.$on('openMasterDrawer', (drawerName) => this.drawer[drawerName] = true)
     },
     toggleDrawer(drawerName) {
-      //Hidden all drawers
-      for (var drawer in this.drawer) {
-        if (drawer != drawerName) {
-          if ((drawer == 'menu') && (this.windowSize != 'mobile')) {
-            this.miniState = true
-          } else if (drawer == 'recommendation') {
-            this.drawer[drawer] = (this.windowSize == 'mobile') ? false : true
-          } else this.drawer[drawer] = false
-        }
-      }
       //Toogle drawer
-      if (drawerName == 'menu') {
-        if (this.windowSize == 'mobile') {
-          this.miniState = false
-          this.drawer.menu = !this.drawer.menu
-        } else {
-          this.drawer.menu = true
-          this.miniState = !this.miniState
-        }
-      } else {
-        this.drawer[drawerName] = !this.drawer[drawerName]
-      }
+      this.miniState = !this.miniState
     },
     //Get html header ipanel
     getHeaderIpanel() {
