@@ -1,19 +1,14 @@
 <template>
   <div id="masterDrawers2">
-    <!-- btn menu -->
-    <q-btn v-if="appConfig.mode === 'iadmin'" id="buttonToogleMenu2" icon="fas fa-bars" unelevated :style="`color: ${contrast()}`"
-      :class="`q-hide q-md-show`" @click="$eventBus.$emit('toggleMasterDrawer','menu')"/>
     <!-- MENU -->
     <q-drawer id="menuMaster2" class="no-shadow" v-model="drawer.menu" ref="menuMaster"
               :mini="miniState" @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
       <!--Logo-->
-      <div id="logoSite2" class="relative-position">
-        <q-img v-show="!miniState" contain :src="logo" style="height: 80px; min-height: 80px"/>
-        <!--Version-->
-        <div id="versionContent" class="absolute absolute-bottom-right text-white">
-          <q-icon name="fas fa-code-branch" class="q-mr-xs"/>
-          {{ versionText }}
-        </div>
+      <div v-show="!miniState"  id="logoSite2" class="relative-position">
+        <q-img contain :src="logo" style="height: 80px; min-height: 80px"/>
+      </div>
+      <div v-if="miniState" id="miniLogoSite">
+        <q-img contain :src="minilogo"/>
       </div>
       <!--List iadmin-->
       <q-scroll-area class="bg-primary" :style="`height: calc(100vh - 146px`">
@@ -107,6 +102,9 @@ export default {
     secondaryContrast() {
       return  this.$store.getters['qsiteApp/getSettingValueByName']('isite::secondaryContrast')
     },
+    minilogo() {
+      return this.$store.getters['qsiteApp/getSettingMediaByName']('isite::logoIadminSM')['path']
+    },
     routeSubHeader() {
       this.drawer.recommendation = false
       return this.$route.meta.subHeader || {}
@@ -176,28 +174,17 @@ export default {
 <style lang="stylus">
 #masterDrawers2
   background-color $primary
-  #buttonToogleMenu2
-    background var(--q-color-primary)
-    position fixed
-    z-index 6
-    padding-top 1px
-    border-radius 0%
-    top 104px
-    width 57px
-  #drawerRecomendationMaster
-    .q-drawer
-      max-height max-content
-
-    .q-drawer__content
-      background white
-
   #menuMaster2
     aside
       background $primary
       z-index 5
     #logoSite2
       padding 20px 25px 26px 25px
-      height 140px
+      height 120px
+      background-color #FFFFFF
+    #miniLogoSite
+      padding 30px 7px
+      height 120px
       background-color #FFFFFF
 
     #versionContent

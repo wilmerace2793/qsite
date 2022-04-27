@@ -1,5 +1,5 @@
 <template>
-  <q-layout id="layoutMaster" :view="(appConfig.mode == 'iadmin') ? 'lHh LpR lFf' : 'lHr LpR lFf'">
+  <q-layout :id="appConfig.mode == 'ipanel' ? 'layoutMasterPanel' : 'layoutMaster'" :view="(appConfig.mode == 'iadmin') ? 'lHh LpR lFf' : 'lHr LpR lFf'">
     <!-- HEADER -->
     <header-admin-main-theme v-if="theme === 1"/>
     <header-admin-second-theme v-if="theme === 2"/>
@@ -182,6 +182,25 @@ export default {
 
 <style lang="stylus">
 #layoutMaster {
+  background-color: #FFFFFF
+  #routeInformationContent {
+    width: 100%;
+    position: fixed;
+    z-index: 2;
+
+    #subContent {
+      padding: 8px 10px 8px 16px;
+      border-radius: $custom-radius 0 0 0;
+      background: linear-gradient(180deg, #F1F4FA 0%, #FFFFFF 100%)
+    }
+  }
+
+  #fakeRouteInformationContent {
+    height: 35px;
+    width: 100%;
+  }
+}
+#layoutMasterPanel {
   background-color: $custom-accent-color;
 
   #routeInformationContent {
@@ -192,7 +211,7 @@ export default {
     #subContent {
       padding: 8px 10px 8px 16px;
       border-radius: $custom-radius 0 0 0;
-      background-color: $custom-accent-color;
+      background: linear-gradient(180deg, #F1F4FA 0%, #FFFFFF 100%)
     }
   }
 

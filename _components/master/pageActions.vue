@@ -1,18 +1,18 @@
 <template>
   <div id="pageActionscomponent" class="row q-col-gutter-y-sm full-width items-center justify-between">
     <!--Title-->
-    <div class="text-h6 text-blue-grey text-weight-bold text-subtitle1 ellipsis title-content">
+    <div :class="`text-h6  text-blue-grey text-weight-bold text-subtitle1 ellipsis title-content`">
       <q-icon v-if="icon" :name="icon" size="22px" class="q-mr-sm"/>
-      <label v-if="title">{{ title }}</label>
+      <label id="titleCrudTable" v-if="title">{{ title }}</label>
     </div>
     <!--Actions-->
-    <div :class="`actions-content row q-gutter-${gutter} items-center justify-end`">
+    <div :class="`actions-content row q-gutter-${gutter} items-center justify-end items-start`">
       <!--Search-->
-      <q-input v-model="search" bg-color="white" debounce="800" outlined dense clearable
+      <q-input v-model="search" bg-color="white" rounded outlined dense clearable
                :placeholder="$tr('isite.cms.label.search')" class="page-input-search"
                v-if="extraActions && extraActions.includes('search')"
                @input="$emit('search', $clone(search))">
-        <template v-slot:append>
+        <template v-slot:prepend>
           <q-icon name="search"/>
         </template>
       </q-input>
@@ -81,13 +81,14 @@ export default {
     //Button default props
     buttonProps() {
       return {
-        round: true,
+        round: false,
+        rounded: true,
         dense: true,
         unelevated: true,
-        color: "blue-grey",
+        color: "primary",
         class: `btn-${this.size}`,
         outline: true,
-        noCaps: true
+        noCaps: true,
       }
     },
     //Page Actions
@@ -144,8 +145,8 @@ export default {
             vIf: this.params.create && this.params.hasPermission.create,
             props: {
               label: this.$tr(`isite.cms.label.new`),
-              icon: 'fas fa-plus-circle',
-              color: 'green',
+              icon: 'fas fa-plus',
+              color: "primary",
               round: false,
               rounded: true,
               padding: '3px 15px'
@@ -176,6 +177,7 @@ export default {
 </script>
 <style lang="stylus">
 #pageActionscomponent
+  #titleCrudTable
   .title-content
     @media screen and (max-width: $breakpoint-md)
       text-align center
