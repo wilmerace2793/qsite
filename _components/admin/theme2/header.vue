@@ -5,8 +5,8 @@
       <!-- Toolbar  -->
       <div :class="'q-hide q-md-show'">
         <q-toolbar id="toolbarTop">
-          <q-btn v-if="appConfig.mode === 'iadmin'" :class="this.miniState ? 'buttonToogleMenuClose' : 'buttonToogleMenuOpen'" icon="fas fa-bars" unelevated 
-            class="text-primary" @click="$eventBus.$emit('toggleMasterDrawer','menu')"/>
+          <q-btn v-if="appConfig.mode === 'iadmin'" icon="fas fa-bars" unelevated 
+            class="text-primary buttonToogleMenuClose" @click="$eventBus.$emit('toggleMasterDrawer','menu')"/>
           <q-toolbar-title/>
           <!--Site Actions-->
           <site-actions/>
@@ -34,7 +34,6 @@ export default {
       logo: this.$store.state.qsiteApp.logo,
       appConfig: config('app'),
       loadHeaderIpanel: false,
-      miniState: this.windowSize == 'mobile' ? false : true,
     }
   },
   computed: {
@@ -45,17 +44,8 @@ export default {
   },
   methods: {
     init() {
-      this.handlerEvent()
       //Get header ipanel
       //this.getHeaderIpanel()
-    },
-    handlerEvent() {
-      //handler toggleMasterDrawer
-      this.$eventBus.$on('toggleMasterDrawer', (drawerName) => this.toggleDrawer(drawerName))
-    },
-    toggleDrawer(drawerName) {
-      //Toogle drawer
-      this.miniState = !this.miniState
     },
     //Get html header ipanel
     getHeaderIpanel() {
@@ -107,10 +97,6 @@ export default {
       position absolute
       top 8px
       left 5px
-    .buttonToogleMenuOpen
-      position absolute
-      left -290px
-      top 40px
   #toolbarTop
     position relative
 </style>
