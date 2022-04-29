@@ -1,5 +1,6 @@
 <template>
-  <q-layout :id="appConfig.mode == 'ipanel' ? 'layoutMasterPanel' : 'layoutMaster'" :view="(appConfig.mode == 'iadmin') ? 'lHh LpR lFf' : 'lHr LpR lFf'">
+  <q-layout :id="appConfig.mode == 'ipanel' ? 'layoutMasterPanel' : 'layoutMaster'"
+            :view="(appConfig.mode == 'iadmin') ? 'lHh LpR lFf' : 'lHr LpR lFf'">
     <!-- HEADER -->
     <header-admin-main-theme v-if="theme === 1"/>
     <header-admin-second-theme v-if="theme === 2"/>
@@ -14,8 +15,8 @@
     <!-- ROUTER VIEW -->
     <q-page-container>
       <!--Page route-->
-      <div id="routeInformationContent" v-if="appConfig.mode == 'iadmin'" :style="`${backColorContent}`" 
-      class="q-hide q-md-show">
+      <div id="routeInformationContent" v-if="appConfig.mode == 'iadmin'" :style="`${backColorContent}`"
+           class="q-hide q-md-show">
         <div id="subContent" class="row items-center">
           <!-- Back Button -->
           <q-btn icon="fas fa-arrow-left" unelevated round color="primary" class="btn-small q-mr-md"
@@ -63,7 +64,7 @@ import footerPanel from '@imagina/qsite/_components/panel/footer'
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
 
 export default {
-  name:"MasterLayout",
+  name: "MasterLayout",
   meta() {
     let routeTitle = ((this.$route.meta && this.$route.meta.title) ? this.$route.meta.title : '')
     if (this.$route.meta && this.$route.meta.headerTitle) routeTitle = this.$route.meta.headerTitle
@@ -112,25 +113,25 @@ export default {
     useLegacyStructure() {
       const legacyStructure = parseInt(this.$store.getters["qsiteApp/getSettingValueByName"]("isite::legacyStructureCMS") || 0)
       return legacyStructure === 1 || false
-      
+
     },
-    backColorContent (){
+    backColorContent() {
       switch (this.theme) {
         case 1:
           return 'background-color: var(--q-color-primary)'
           break;
-      
+
         case 2:
           return 'background-color: #fff'
           break;
-      
+
         default:
           return 'background-color: var(--q-color-primary)'
           break;
       }
     },
     //get Theme
-    theme () {
+    theme() {
       if (!this.$store.getters['qsiteApp/getSettingValueByName']('isite::iadminTheme')) return 1;
       return this.appState.loadPage && (this.appConfig.mode == 'iadmin') && (this.$store.getters['qsiteApp/getSettingValueByName']('isite::iadminTheme') == 1) ? 1 : 2
     },
@@ -145,15 +146,15 @@ export default {
       //find Homepage
       const page = this.pagesConfig.find(item => item.system_name.toLowerCase() === this.homePage)
       //Set Home page and current page
-      const pages = this.useLegacyStructure ? this.$route.name.indexOf("app.home") == -1 ? [config(`pages.mainqsite.home`), this.$route.meta] : [config(`pages.mainqsite.home`)] 
-        : this.$route.name.indexOf("app.home") == -1 ? [page, this.$route.meta] : [page]
+      const pages = this.useLegacyStructure ? this.$route.name.indexOf("app.home") == -1 ? [config(`pages.mainqsite.home`), this.$route.meta] : [config(`pages.mainqsite.home`)]
+          : this.$route.name.indexOf("app.home") == -1 ? [page, this.$route.meta] : [page]
       //Get page from breadcrum
-      breadcrumbs.forEach((pageName) =>{
+      breadcrumbs.forEach((pageName) => {
         if (this.useLegacyStructure) {
           pages.splice(1, 0, config(`pages.${pageName}`))
         } else {
           const base = this.pagesConfig.find(
-            (item) => item.system_name.toLowerCase() == pageName.toLowerCase()
+              (item) => item.system_name.toLowerCase() == pageName.toLowerCase()
           );
           pages.splice(1, 0, base)
         }
@@ -175,7 +176,19 @@ export default {
     }
   },
   methods: {
-    init() {}
+    init() {
+      this.validateChangePassword()
+    },
+    /** Check should change password*/
+    validateChangePassword() {
+      const data = this.$store.state.quserAuth.shouldChangePassword
+      //Validate messages
+      if (data.shouldChangePassword) {
+        data.messages.forEach(item => {
+          this.$alert[item.type || 'info'](item)
+        })
+      }
+    }
   }
 }
 </script>
@@ -183,6 +196,7 @@ export default {
 <style lang="stylus">
 #layoutMaster {
   background-color: #FFFFFF
+
   #routeInformationContent {
     width: 100%;
     position: fixed;
@@ -200,6 +214,7 @@ export default {
     width: 100%;
   }
 }
+
 #layoutMasterPanel {
   background-color: $custom-accent-color;
 
