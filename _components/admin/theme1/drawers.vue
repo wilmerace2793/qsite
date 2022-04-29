@@ -159,15 +159,18 @@ my-menu-link(value)
     border-left 1px solid #dbdfe1
   
 #masterDrawers
-
+  background-color #F1F4FA !important
   #drawerRecomendationMaster
     .q-drawer
       max-height max-content
 
     .q-drawer__content
-      background white
+      background #F1F4FA
 
   #menuMaster
+    aside
+      background $primary
+      background-color #F1F4FA !important
     #logoSite
       padding 20px 25px 26px 25px
       height 120px
@@ -178,12 +181,12 @@ my-menu-link(value)
       font-size 13px
 
     .q-expansion-item
-      background-color #fff !important
+      background-color #F1F4FA !important
 
     .q-expansion-item__container
       .q-expansion-item__content
         padding 0 0 0 2px
-        border-left 15px solid white
+        border-left 15px solid #F1F4FA
         #listMenu
           .content-item
             my-menu-link
@@ -208,7 +211,7 @@ my-menu-link(value)
           font-size 22px
 
       &.item-is-active
-        background-color white
+        background-color #F1F4FA
         my-menu-link(true)
         .q-item__section, .q-icon
           color $primary
