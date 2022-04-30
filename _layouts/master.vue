@@ -178,6 +178,7 @@ export default {
   methods: {
     init() {
       this.validateChangePassword()
+      this.idlTime()
     },
     /** Check should change password*/
     validateChangePassword() {
@@ -187,6 +188,45 @@ export default {
         data.messages.forEach(item => {
           this.$alert[item.type || 'info'](item)
         })
+      }
+    },
+    /** idl Time */
+    idlTime() {
+      const idlTime = parseInt(this.$store.getters['qsiteApp/getSettingValueByName']('iprofile::logoutIdlTime') || 0)
+      if (idlTime) {
+        var time;
+
+        const resetTimer = () => {
+          clearTimeout(time);
+          const isAuthenticated = this.$store.state.quserAuth.authenticated
+          if (this.$store.state.quserAuth.authenticated) {
+            time = setTimeout(async () => {
+              //Logout
+              this.$store.dispatch("quserAuth/AUTH_LOGOUT")
+              //Show message
+              this.$alert.warning({
+                mode: 'modal',
+                title: this.$tr('iprofile.cms.message.logout'),
+                message: this.$tr('iprofile.cms.message.logoutIdlTime'),
+                actions: [
+                  {
+                    label: this.$tr('iprofile.cms.label.login'),
+                    handler: async () => {
+                      clearTimeout(time);
+                      this.$router.push({name: "auth.login", query: this.$route.query})
+                    }
+                  }
+                ]
+              })
+            }, ((idlTime * 60) * 1000))
+          }
+        }
+
+        //Start Timer
+        resetTimer();
+        // DOM Events
+        document.onmousemove = resetTimer;
+        document.onkeydown = resetTimer;
       }
     }
   }

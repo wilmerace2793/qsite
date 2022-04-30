@@ -923,7 +923,8 @@
           "termsAndConditions": "Terms and Conditions",
           "privacyPolicy": "Privacy Policy",
           "changend": "La contraseña ha sido restablecida. Ahora ya puede iniciar sesión con su nueva contraseña.",
-          "resetPasswordRequested": "check your email to restore your password please"
+          "resetPasswordRequested": "check your email to restore your password please",
+          "logoutIdlTime": "Your session has been logged out due to inactivity. Please log in again"
         },
         "quickCard": {
           "lastUsers": "Users - Last registered users"
@@ -2435,7 +2436,8 @@
           "termsAndConditions": "Terminos y Condiciones",
           "privacyPolicy": "Politica de Privacidad",
           "changend": "La contraseña ha sido restablecida. Ahora ya puede iniciar sesión con su nueva contraseña.",
-          "resetPasswordRequested": "Revisa tu email para recuperar tu contraseña"
+          "resetPasswordRequested": "Revisa tu email para recuperar tu contraseña",
+          "logoutIdlTime": "La sesión se ha cerrado por inactividad. Por favor inicia sesión de nuevo"
         },
         "quickCard": {
           "lastUsers": "Usuarios - Ultimos usuarios registrados"
