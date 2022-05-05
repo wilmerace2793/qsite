@@ -978,6 +978,84 @@
         "updatePage": "Update Page"
       }
     },
+    "ifly": {
+      "cms": {
+        "form":{
+          "aircraftModel": "Aircraft Model",
+          "airlineName":"Airline Name",
+          "airportName":"Airport Name",
+          "airlineShortName":"Airline Short Name",
+          "airlineIataCode": "Airline IATA Code",
+          "airlineIcaoCode": "Airline ICAO Code",
+          "airportIataCode": "Airline IATA Code",
+          "airportIcaoCode": "Airline ICAO Code",
+          "timezone": "Timezone",
+          "tailNumber": "TailNumber",
+          "fligthStatus": "Fligth status",
+          "estimatedDepartureTime": "Estimated Departure Time",
+          "estimatedArrivalTime": "Estimated Arrival Time",
+          "actualDepartureTime": "Actual Departure Time",
+          "departureTime": "Departure Time",
+          "actualArrivalTime": "Actual Arrival Time",
+          "estimatedBlockOutTime": "estimated Block OutTime",
+          "actualBlockInTime": "Actual Block in Time",
+          "actualBlockOutTime": "ActualBlockOutTime",
+          "airportOriginId": "Airport Origin",
+          "airportDestinationId": "Airport Destination",
+          "flightNumber": "Flight Number",
+          "flightNumberIATA": "Flight Number IATA",
+          "flightNumberICAO": "Flight Number ICAO",
+          "activeFlight": "Active Flight",
+          "flightType": "Flight Type",
+          "legNumber": "leg Number",
+          "arrivalTime": "arrival Time",
+          "newAircraftType": "New Aircraft Type",
+          "newAirline":"New Airline",
+          "updateAircraftType": "Update Aircraft Type",
+          "updateAirport": "Update Airport",
+          "newAirport":"New Airport",
+          "newflight":"New Flight",
+          "newflightSchedule":"New flight schedule",
+          "updateflightSchedule":"Update flight schedule",
+          "newflightScheduleLeg":"New flight schedule Leg",
+          "updateflightScheduleLeg":"Update flight schedule Leg"
+        },
+        "label":{
+          "scheduled": "scheduled",
+          "scheduledDelayed": "scheduled Delayed",
+          "active": "active",
+          "unknown": "unknown",
+          "redirected": "redirected",
+          "landed": "landed",
+          "landedTaxing": "landed Taxing",
+          "arrived": "arrived",
+          "arrivedGateArrival": "arrived Gate Arrival",
+          "arrivedDelayed": "arrived Delayed",
+          "taxiingLeftGate": "taxiing Left Gate",
+          "enRouteOnTime": "enRoute On Time",
+          "enRouteDelayed": "enRoute Delayed",
+          "diverted": "diverted",
+          "cancelled": "cancelled",
+          "notOperational": "not Operational",
+          "resultunknown": "result unknown",
+          "delayed": "delayed",
+          "isActive":"Is Active",
+          "unknow": "Unknow",
+          "passenger": "Passenger",
+          "freighter": "Freighter",
+          "truc": "Truc"
+        },
+        "sidebar":{
+          "aircraftType": "Aircraft type",
+          "airline": "Airline",
+          "airport": "Airport",
+          "flightSchedule": "Flight Schedule",
+          "flightScheduleLeg": "Flight Schedule Leg | Flight Schedule Legs",
+          "flight": "Flight | Flights",
+          "flightInfo": "Flight Info"
+        }
+      }
+    },
     "isite": {
       "cms": {
         "sidebar": {
@@ -1395,12 +1473,14 @@
           "firstName": "First Name | First Name",
           "lastName": "Last Name | Last Name",
           "password": "Pasword | Paswords",
+          "newPassword": "New pasword | New paswords",
           "checkPassword": "Check Pasword | Check Paswords",
           "name": "Name | Names",
           "email": "Email | Emails",
           "slug": "Slug",
           "summary": "Summary | Summaries",
           "description": "Description | Descriptions",
+          "descriptionForceChangePassword": "You must change the password since it is expired",
           "category": "Category | Categories",
           "parent": "Parent | Parents",
           "status": "Status | Statuses",
@@ -2490,6 +2570,22 @@
         "updatePage": "Actualizar pagina"
       }
     },
+    "ifly": {
+      "cms":{
+        "form":{
+          "aircraftModel": "modelo de avión"
+        },
+        "sidebar":{
+          "aircraftType": "Tipo de aeronave",
+          "airline": "Aerolínea",
+          "airport": "Aeropuerto",
+          "flightSchedule": "Horario de vuelo",
+          "flightScheduleLeg": "Tramo de horario de vuelo",
+          "flight": "Vuelo",
+          "flightInfo": "información de vuelo"
+        }
+      }
+    },
     "isite": {
       "cms": {
         "sidebar": {
@@ -2907,6 +3003,7 @@
           "firstName": "Nombre | Nombres",
           "lastName": "Apellido | Apellidos",
           "password": "Contraseña | Contraseñas",
+          "newPassword": "Nueva contraseña | Nuevas contraseñas",
           "checkPassword": "Confirmar Contraseña | Confirmar Contraseñas",
           "name": "Nombre | Nombres",
           "email": "Email | Emails",
@@ -2914,6 +3011,7 @@
           "createdFromIp": "Creado desde la IP",
           "summary": "Resumen | Resumenes",
           "description": "Descripción | Descripciones",
+          "descriptionForceChangePassword": "Debes cambiar la contraseña ya que se encuentra vencida",
           "category": "Categoría | Categorías",
           "parent": "Padre | Padres",
           "status": "Estado | Estados",

@@ -102,7 +102,10 @@ export default {
   data() {
     return {
       appConfig: config('app'),
-      homePage: 'isite_cms_main_home'
+      homePage: 'isite_cms_main_home',
+      modalForce:{
+        shouldChangePassword:false
+      }
     }
   },
   computed: {
