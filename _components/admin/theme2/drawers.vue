@@ -177,7 +177,7 @@ export default {
   #menuMaster2
     aside
       background $primary
-      z-index 5
+      z-index 3000
     #logoSite2
       padding 20px 25px 26px 25px
       height 120px
