@@ -44,10 +44,9 @@ class Middleware {
       //try login
       if (!isAuthenticated) isAuthenticated = await this.store.dispatch('quserAuth/AUTH_TRYAUTOLOGIN')
       //Update user data
-      else {
-        this.store.dispatch('quserAuth/AUTH_UPDATE')
-        this.store.dispatch('quserAuth/AUTH_FORCE_PASSWORD')//force change password
-      }
+      else this.store.dispatch('quserAuth/AUTH_UPDATE')
+      //Check if should change password
+      await this.store.dispatch('quserAuth/AUTH_FORCE_PASSWORD')
       //Response
       resolve(isAuthenticated)
     })
