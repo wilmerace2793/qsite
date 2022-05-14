@@ -64,7 +64,7 @@ export default {
   },
   data() {
     return {
-      configMode : config('app.mode'),
+      configMode: config('app.mode'),
       badge: {
         chat: false,
         notification: false
@@ -76,8 +76,8 @@ export default {
     quserState() {
       return this.$store.state.quserAuth
     },
-    //Current Theme 
-    theme(){
+    //Current Theme
+    theme() {
       return parseInt(this.$store.getters['qsiteApp/getSettingValueByName']('isite::iadminTheme'))
     },
     //Return params of subHeader
@@ -100,7 +100,7 @@ export default {
       let goToSiteUrl = this.$store.state.qsiteApp.baseUrl;
 
       //define the organization url if there're someone selected
-      if(this.quserState.organizationId){
+      if (this.quserState.organizationId) {
         let organizationSelected = this.quserState.organizations.find(organization => organization.id == this.quserState.organizationId)
         goToSiteUrl = organizationSelected.url
       }
@@ -121,6 +121,18 @@ export default {
               rounded: true,
               padding: 'xs md'
             }
+          },
+          //checking
+          {
+            name: 'checking',
+            vIf: (config('app.mode') == 'ipanel') && this.$auth.hasAccess('icheckin.shifts.create'),
+            label: this.$tr('icheckin.cms.sidebar.checkin'),
+            props: {
+              ...defaultButtonProps,
+              icon: 'fas fa-stopwatch',
+              round: true
+            },
+            action: () => this.$eventBus.$emit('toggleMasterDrawer', 'checkin')
           },
           //Chat
           {
@@ -145,7 +157,7 @@ export default {
               class: `btn-small ${this.badge.notification ? 'active-badge' : ''}`
             },
             action: () => this.$eventBus.$emit('toggleMasterDrawer', 'notification')
-          },
+          }
         ],
         menu: [
           //Profile
@@ -174,20 +186,6 @@ export default {
               align: "left"
             },
             action: () => this.$eventBus.$emit('toggleMasterDrawer', 'config')
-          },
-          //checking
-          {
-            name: 'checking',
-            vIf: (config('app.mode') == 'ipanel') && this.$auth.hasAccess('icheckin.shifts.create'),
-            props: {
-              ...defaultButtonProps,
-              label: this.$tr('icheckin.cms.sidebar.checkin'),
-              icon: 'fas fa-stopwatch',
-              round: false,
-              rounded: true,
-              align: "left"
-            },
-            action: () => this.$eventBus.$emit('toggleMasterDrawer', 'checkin')
           },
           //logout
           {
