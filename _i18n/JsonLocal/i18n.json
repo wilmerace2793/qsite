@@ -269,7 +269,8 @@
       "cms": {
         "sidebar": {
           "adminGroup": "Media",
-          "adminIndex": "File List"
+          "adminIndex": "File List",
+          "adminZones": "Media Zones"
         },
         "title": "Multimedia List/Search",
         "newFile": "New File",
@@ -294,7 +295,9 @@
           "addYourImages": "Add your images here",
           "limitFiles": "Limit Files",
           "messageLimitFiles": "The file limit is <b>{quantity}</b>. to select another file you must first remove some of the selected ones"
-        }
+        },
+        "newZone": "New Zone",
+        "updateZone": "Update Zone"
       }
     },
     "igamification": {
@@ -981,11 +984,11 @@
     },
     "ifly": {
       "cms": {
-        "form":{
+        "form": {
           "aircraftModel": "Aircraft Model",
-          "airlineName":"Airline Name",
-          "airportName":"Airport Name",
-          "airlineShortName":"Airline Short Name",
+          "airlineName": "Airline Name",
+          "airportName": "Airport Name",
+          "airlineShortName": "Airline Short Name",
           "airlineIataCode": "Airline IATA Code",
           "airlineIcaoCode": "Airline ICAO Code",
           "airportIataCode": "Airline IATA Code",
@@ -1011,17 +1014,17 @@
           "legNumber": "leg Number",
           "arrivalTime": "arrival Time",
           "newAircraftType": "New Aircraft Type",
-          "newAirline":"New Airline",
+          "newAirline": "New Airline",
           "updateAircraftType": "Update Aircraft Type",
           "updateAirport": "Update Airport",
-          "newAirport":"New Airport",
-          "newflight":"New Flight",
-          "newflightSchedule":"New flight schedule",
-          "updateflightSchedule":"Update flight schedule",
-          "newflightScheduleLeg":"New flight schedule Leg",
-          "updateflightScheduleLeg":"Update flight schedule Leg"
+          "newAirport": "New Airport",
+          "newflight": "New Flight",
+          "newflightSchedule": "New flight schedule",
+          "updateflightSchedule": "Update flight schedule",
+          "newflightScheduleLeg": "New flight schedule Leg",
+          "updateflightScheduleLeg": "Update flight schedule Leg"
         },
-        "label":{
+        "label": {
           "scheduled": "scheduled",
           "scheduledDelayed": "scheduled Delayed",
           "active": "active",
@@ -1040,13 +1043,13 @@
           "notOperational": "not Operational",
           "resultunknown": "result unknown",
           "delayed": "delayed",
-          "isActive":"Is Active",
+          "isActive": "Is Active",
           "unknow": "Unknow",
           "passenger": "Passenger",
           "freighter": "Freighter",
           "truc": "Truc"
         },
-        "sidebar":{
+        "sidebar": {
           "aircraftType": "Aircraft type",
           "airline": "Airline",
           "airport": "Airport",
@@ -1399,10 +1402,12 @@
           "item": "Item | Items",
           "contact": "Contacto | Contactos",
           "request": "Solicitud | Solicitudes",
-          "accept": "Aceptar",
-          "reject": "Rechazar",
-          "rejected": "Rechazado",
-          "beverage": "Bebida | Bebidas"
+          "accept": "Accept",
+          "reject": "Reject",
+          "rejected": "Rejected",
+          "beverage": "Bebida | Bebidas",
+          "zone": "Zone | Zones",
+          "waterMark": "Water Mark"
         },
         "message": {
           "notFound": "Sorry, nothing here",
@@ -1862,7 +1867,8 @@
       "cms": {
         "sidebar": {
           "adminGroup": "Media",
-          "adminIndex": "Lista de Archivos"
+          "adminIndex": "Lista de Archivos",
+          "adminZones": "Zonas de Archivos"
         },
         "title": "Multimedia Listar/Buscar",
         "newFile": "Nuevo Archivo",
@@ -1887,7 +1893,9 @@
           "addYourImages": "Agrega tus imagenes aquí",
           "limitFiles": "Limite de Archivos",
           "messageLimitFiles": "El limite de archivos es de <b>{quantity}</b>. para seleccionar otro archivo primero debes quitar algunos de los seleccionados"
-        }
+        },
+        "newZone": "Nueva Zona",
+        "updateZone": "Actualizar Zona"
       }
     },
     "igamification": {
@@ -2573,11 +2581,11 @@
       }
     },
     "ifly": {
-      "cms":{
-        "form":{
+      "cms": {
+        "form": {
           "aircraftModel": "modelo de avión"
         },
-        "sidebar":{
+        "sidebar": {
           "aircraftType": "Tipo de aeronave",
           "airline": "Aerolínea",
           "airport": "Aeropuerto",
@@ -2933,7 +2941,9 @@
           "accept": "Aceptar",
           "reject": "Rechazar",
           "rejected": "Rechazado",
-          "beverage": "Bebida | Bebidas"
+          "beverage": "Bebida | Bebidas",
+          "zone": "Zona | Zonas",
+          "waterMark": "Marca de Agua"
         },
         "message": {
           "notFound": "Lo sentimos, no hay nada aquí",
