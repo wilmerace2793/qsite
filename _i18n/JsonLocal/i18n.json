@@ -1407,7 +1407,9 @@
           "rejected": "Rejected",
           "beverage": "Bebida | Bebidas",
           "zone": "Zone | Zones",
-          "waterMark": "Water Mark"
+          "waterMark": "Water Mark",
+          "position": "Position | Positions",
+          "axis": "Axis | Axes"
         },
         "message": {
           "notFound": "Sorry, nothing here",
@@ -1593,7 +1595,16 @@
           "leaveImpersonating": "Leave impersonating",
           "clearCache": "Clear cache",
           "goToSite": "Go to site"
-        }
+        },
+        "topLeft": "Top-Left",
+        "top": "Top",
+        "topRight": "Top-Right",
+        "left": "Left",
+        "center": "Center",
+        "right": "Right",
+        "bottomLeft": "Bottom-Left",
+        "bottom": "Bottom",
+        "bottomRight": "Bottom-Right"
       }
     }
   },
@@ -2943,7 +2954,9 @@
           "rejected": "Rechazado",
           "beverage": "Bebida | Bebidas",
           "zone": "Zona | Zonas",
-          "waterMark": "Marca de Agua"
+          "waterMark": "Marca de Agua",
+          "position": "Posición | Posiciones",
+          "axis": "Eje | Ejes"
         },
         "message": {
           "notFound": "Lo sentimos, no hay nada aquí",
@@ -3129,7 +3142,16 @@
           "leaveImpersonating": "Dejar de suplantar",
           "clearCache": "Limpiar cache",
           "goToSite": "Ver el sitio"
-        }
+        },
+        "topLeft": "Arriba-Izquierda",
+        "top": "Arriba",
+        "topRight": "Arriba-Derecha",
+        "left": "Izquierda",
+        "center": "Centro",
+        "right": "Derecha",
+        "bottomLeft": "Abajo-Izquierda",
+        "bottom": "Abajo",
+        "bottomRight": "Abajo-Derecha"
       }
     }
   }
