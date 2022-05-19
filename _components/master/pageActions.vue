@@ -37,6 +37,8 @@
           <q-tooltip v-if="btn.label">{{ btn.label }}</q-tooltip>
         </q-btn>
       </div>
+
+
     </div>
     <!--Description-->
     <div v-if="description" class="ellipsis-2-lines col-12 description-content">{{ description }}</div>
