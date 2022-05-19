@@ -2657,7 +2657,9 @@
           "flightSchedule": "Horario de vuelo",
           "flightScheduleLeg": "Tramo de horario de vuelo",
           "flight": "Vuelo",
-          "flightInfo": "información de vuelo"
+          "flightInfo": "Información de vuelo",
+          "workOrders": "Órdenes de trabajo",
+          "rampInfo": "Rampa"
         }
       }
     },
