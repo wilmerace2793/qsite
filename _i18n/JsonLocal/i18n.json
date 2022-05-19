@@ -301,7 +301,8 @@
         "newZone": "New Zone",
         "updateZone": "Update Zone",
         "maxFileSize": "Max File size (MB)",
-        "maxFiles": "Max files selected"
+        "maxFiles": "Max files selected",
+        "directUpload": "Direct Upload"
       }
     },
     "igamification": {
@@ -1916,7 +1917,8 @@
         "newZone": "Nueva Zona",
         "updateZone": "Actualizar Zona",
         "maxFileSize": "Tamaño maximo por archivo (MB)",
-        "maxFiles": "Cantidad maxima de archivos seleccionados"
+        "maxFiles": "Cantidad maxima de archivos seleccionados",
+        "directUpload": "Subida directa"
       }
     },
     "igamification": {
