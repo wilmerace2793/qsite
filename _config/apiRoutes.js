@@ -17,4 +17,5 @@ export default {
   organizations: `${urlBase}/organizations`,
   domains: `${urlBase}/domains`,
   categories: `${urlBase}/categories`,
+  modulesInfo: `${urlBase}/configs/modules-info`,
 }

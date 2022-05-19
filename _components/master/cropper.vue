@@ -31,6 +31,8 @@
   </q-dialog>
 </template>
 <script>
+//Mixins
+import zoneConfigMixing from "@imagina/qmedia/_mixins/zoneConfigMixins"
 // Local
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
@@ -39,6 +41,7 @@ export default {
   beforeDestroy() {
     this.$eventBus.$off('master.cropper.image')
   },
+  mixins: [zoneConfigMixing],
   props: {
     props: {type: Object}
   },
@@ -58,7 +61,8 @@ export default {
       cropperSize: {width: 100, height: 100},
       imgSrc: false,
       imgType: false,
-      callBack: false
+      callBack: false,
+      aspectRatio: NaN
     }
   },
   computed: {
@@ -73,6 +77,7 @@ export default {
         src: this.imgSrc,
         viewMode: 1,
         containerStyle: {'height': '92%', 'width': '96%', 'max-height': '92%', 'max-width': '96%'},
+        aspectRatio: this.aspectRatio,
         ...(this.props || {})
       }
     },
@@ -174,6 +179,7 @@ export default {
         if (params.src) this.loadFile(params.src)
         if (params.type) this.imgType = this.$clone(params.type)
         if (params.callBack) this.callBack = params.callBack
+        if (params.ratio) this.aspectRatio = this.parseRatio(params.ratio)
       })
     },
     //Open crop
