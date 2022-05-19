@@ -233,7 +233,7 @@ export default {
         title: this.$tr('media.cms.messages.failedUploadFiles'),
         message: "<b>" +
             this.$tr('media.cms.messages.errorMaxFileSize', {size: this.zoneConfig.maxFileSizeMB}) +
-            "</b><br> - " + maxfileZise.join(" - ")
+            "</b> <br> - " + maxfileZise.join(" - ")
       })
     }
   }
