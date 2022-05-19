@@ -34,6 +34,7 @@ export default {
     gridColClass: {default: 'col-6 col-md-3 col-lg-2'},
     hideFileList: {type: Boolean, default: false},
     maxFileSize: {type: Number, default: 0},
+    ratio: {type: String, default: "free"}
   },
   components: {fileList},
   watch: {
@@ -148,6 +149,7 @@ export default {
                 this.$eventBus.$emit('master.cropper.image', {
                   src: base64,
                   type: fileData.type,
+                  ratio: this.ratio,
                   callBack: async (fileCropped) => {
                     if (fileCropped) {
                       //Merge data
