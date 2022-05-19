@@ -1,15 +1,17 @@
 <template>
-  <div id="signatureComponent" class="q-py-sm full-width">
+  <div id="signatureComponent" class="q-py-sm q-pt-sm full-width">
+    <!--Actions-->
+    <div id="btn-actions" class="row">
+      <!--Clear-->
+      <q-btn icon="delete"  size="sm" flat round color="blue-grey-3" @click="clear()"/>
+      <!--Undo-->
+      <q-btn icon="undo"  size="sm" flat round color="blue-grey-3" @click="undo()"/>
+      <!--fullscreen-->
+      <q-btn v-if="btnFullscreen" :icon="btnFullscreenIcon"  size="sm" flat round color="blue-grey-3" @click="$emit('fullscreenActionComponent')"/>
+    </div>
     <!--Signature component-->
     <div id="vueSiganture">
       <VueSignaturePad ref="signature" :options="options" :width="width" :height="height"/>
-    </div>
-    <!--Actions-->
-    <div class="row justify-between q-mt-sm">
-      <!--Clear-->
-      <q-btn color="grey-7" :label="$tr('isite.cms.label.clear')" rounded unelevated size="sm" @click="clear()"/>
-      <!--Undo-->
-      <q-btn color="grey-7" :label="$tr('isite.cms.label.back')" rounded unelevated size="sm" @click="undo()"/>
     </div>
   </div>
 </template>
@@ -21,7 +23,9 @@
       value: null,
       width : {default : '100%'},
       height : {default : '150px'},
-    emitFile: {type: Boolean, default: false}
+      emitFile: {type: Boolean, default: false},
+      btnFullscreenIcon: null,
+      btnFullscreen: false
     },
     watch: {
       value() {
@@ -65,6 +69,9 @@
 </script>
 
 <style lang="stylus">
-  #vueSiganture
-    border 1px solid $grey-5
+  #signatureComponent
+    #vueSiganture
+      border 1px solid $grey-5
+    #btn-actions
+      float right
 </style>

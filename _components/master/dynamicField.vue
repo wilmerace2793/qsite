@@ -43,7 +43,7 @@
               :class="`q-mb-xs ${(field.props && field.props.crudType == 'button-create') ? 'absolute-right' : ''}`"/>
         <!--Input-->
         <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('input')"
-                 :label="fieldLabel" v-bind="fieldProps" style="padding-bottom: 20px">
+                 :label="fieldLabel" v-bind="fieldProps" style="margin-bottom: 20px">
           <template v-slot:prepend v-if="fieldProps.icon">
             <q-icon :name="fieldProps.icon" size="18px"/>
           </template>
@@ -52,6 +52,23 @@
                     @click="showPassword = !showPassword"/>
           </template>
         </q-input>
+        <!--Input Standard-->
+        <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('inputStandard')"
+                 v-bind="fieldProps" style="margin-bottom: 20px">
+          <template v-slot:prepend v-if="fieldProps.icon">
+            <q-icon :name="fieldProps.icon" size="18px"/>
+          </template>
+          <template v-slot:append v-if="isFieldPassword">
+            <q-icon :name="showPassword ? 'visibility' : 'visibility_off'" class="cursor-pointer"
+                    @click="showPassword = !showPassword"/>
+          </template>
+        </q-input>
+        <!-- Input quantity -->
+        <div v-if="loadField('quantity')" class="row">
+          <q-btn class="col-2" size="md" flat round color="primary" icon="remove"/>
+          <q-input v-bind="fieldProps" v-model="responseValue" class="bg-white col-8"></q-input>
+          <q-btn class="col-2" size="md" flat round color="primary" icon="add"/>
+        </div>
         <!--Search-->
         <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('search')"
                  v-bind="fieldProps">
@@ -231,7 +248,7 @@
         <!--Signature-->
         <q-field v-model="responseValue" v-if="loadField('signature')"
                  v-bind="fieldProps.fieldComponent" stack-label>
-          <signature v-model="responseValue" v-bind="fieldProps.field"/>
+          <signature v-model="responseValue" v-bind="fieldProps.field" @fullscreenActionComponent="$emit('fullscreenAction')"/>
         </q-field>
         <!--Uploader-->
         <q-field v-model="responseValue" v-if="loadField('uploader')" v-bind="fieldProps.fieldComponent" stack-label>
@@ -454,6 +471,32 @@ export default {
           //Extra logic to input type password
           if (this.isFieldPassword) props.type = this.showPassword ? 'text' : 'password'
 
+          break;
+        case'inputStandard':
+          props = {
+            bgColor: 'white',
+            outlined: true,
+            dense: true,
+            ...props
+          }
+
+          //Add rule to validate field
+          if (this.field.validateField && this.field.validateField.apiRoute) {
+            if (!props.debounce) props.debounce = '800' //Add debounce
+            props.rules = [...(props.rules || []), this.validateField]//Add rule to validate field
+          }
+
+          //Extra logic to input type password
+          if (this.isFieldPassword) props.type = this.showPassword ? 'text' : 'password'
+
+          break;
+        case'quantity':
+          props = {
+            bgColor: 'white',
+            outlined: true,
+            dense: true,
+            ...props
+          }
           break;
         case'search':
           props = {
@@ -941,6 +984,16 @@ export default {
           margin: '1em',
           load: true
         },
+        inputStandard: {
+          class: 'absolute-right',
+          margin: '1em',
+          load: true
+        },
+        quantity: {
+          class: 'absolute-right',
+          margin: '1em',
+          load: true
+        },
         search: {
           class: 'absolute-right',
           margin: '1em 5em',
@@ -1075,6 +1128,12 @@ export default {
           } else this.responseValue = (propValue && propValue.id) ? propValue.id : propValue
           break;
         case 'input':
+          this.responseValue = (propValue != undefined) ? propValue : null
+          break
+        case 'inputStandard':
+          this.responseValue = (propValue != undefined) ? propValue : null
+          break
+        case 'quantity':
           this.responseValue = (propValue != undefined) ? propValue : null
           break
         case 'html':
