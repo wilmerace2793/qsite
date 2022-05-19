@@ -55,7 +55,9 @@
           "addYourFiles": "Add your files here",
           "addYourImages": "Add your images here",
           "limitFiles": "Limit Files",
-          "messageLimitFiles": "The file limit is <b>{quantity}</b>. to select another file you must first remove some of the selected ones"
+          "messageLimitFiles": "The file limit is <b>{quantity}</b>. to select another file you must first remove some of the selected ones",
+          "failedUploadFiles": "Error uploading files",
+          "errorMaxFileSize": "Files exceed the allowed size of {size}MB"
         }
       }
     },
@@ -297,7 +299,9 @@
           "messageLimitFiles": "The file limit is <b>{quantity}</b>. to select another file you must first remove some of the selected ones"
         },
         "newZone": "New Zone",
-        "updateZone": "Update Zone"
+        "updateZone": "Update Zone",
+        "maxFileSize": "Max File size (MB)",
+        "maxFiles": "Max files selected"
       }
     },
     "igamification": {
@@ -1409,7 +1413,9 @@
           "zone": "Zone | Zones",
           "waterMark": "Water Mark",
           "position": "Position | Positions",
-          "axis": "Axis | Axes"
+          "axis": "Axis | Axes",
+          "audio": "Audio | Audios",
+          "ratio": "Ratio | Ratios"
         },
         "message": {
           "notFound": "Sorry, nothing here",
@@ -1903,10 +1909,14 @@
           "addYourFiles": "Agrega tus archivos aquí",
           "addYourImages": "Agrega tus imagenes aquí",
           "limitFiles": "Limite de Archivos",
-          "messageLimitFiles": "El limite de archivos es de <b>{quantity}</b>. para seleccionar otro archivo primero debes quitar algunos de los seleccionados"
+          "messageLimitFiles": "El limite de archivos es de <b>{quantity}</b>. para seleccionar otro archivo primero debes quitar algunos de los seleccionados",
+          "failedUploadFiles": "Error al cargar los archivos",
+          "errorMaxFileSize": "Los Archivos superan el tamaño permitido de {size}MB"
         },
         "newZone": "Nueva Zona",
-        "updateZone": "Actualizar Zona"
+        "updateZone": "Actualizar Zona",
+        "maxFileSize": "Tamaño maximo por archivo (MB)",
+        "maxFiles": "Cantidad maxima de archivos seleccionados"
       }
     },
     "igamification": {
@@ -2956,7 +2966,9 @@
           "zone": "Zona | Zonas",
           "waterMark": "Marca de Agua",
           "position": "Posición | Posiciones",
-          "axis": "Eje | Ejes"
+          "axis": "Eje | Ejes",
+          "audio": "Audio | Audios",
+          "ratio": "Proporción | Proporciones"
         },
         "message": {
           "notFound": "Lo sentimos, no hay nada aquí",
