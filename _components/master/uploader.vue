@@ -3,16 +3,27 @@
     <!--File List-->
     <file-list v-model="filesData" v-bind="fileListParams" v-if="!hideFileList"/>
     <!--Uploader image-->
-    <q-uploader ref="qUploaderComponent" v-show="false" :accept="acceptFiles" @added="setFiles"
-                :max-files="maxFiles - filesData.length" :multiple="maxFiles >= 2 ? true : false"/>
+    <q-uploader
+        ref="qUploaderComponent"
+        v-show="false"
+        :accept="acceptExtensions.withDot.join(',')"
+        @added="setFiles"
+        :max-files="maxFiles - filesData.length"
+        :multiple="maxFiles >= 2 ? true : false"
+        :max-file-size="zoneConfig.maxFileSizeMB * 1000000"
+        @rejected="rejectedCheck"
+    />
   </div>
 </template>
 <script>
+//Mixins
+import zoneConfigMixing from "@imagina/qmedia/_mixins/zoneConfigMixins"
 //components
 import fileList from '@imagina/qsite/_components/master/fileList'
 
 export default {
   name: 'uploaderComponentMaster',
+  mixins: [zoneConfigMixing],
   props: {
     value: {default: false},
     accept: {default: false},
@@ -21,7 +32,9 @@ export default {
     emitBase64: {type: Boolean, default: false},
     emitFile: {type: Boolean, default: false},
     gridColClass: {default: 'col-6 col-md-3 col-lg-2'},
-    hideFileList: {type: Boolean, default: false}
+    hideFileList: {type: Boolean, default: false},
+    maxFileSize: {type: Number, default: 0},
+    ratio: {type: String, default: "free"}
   },
   components: {fileList},
   watch: {
@@ -75,34 +88,6 @@ export default {
           }
         ]
       }
-    },
-    //Return accept files
-    acceptFiles() {
-      //instance response
-      let accept = this.$clone(this.accept ? this.accept.split(',') : ['images', 'videos', 'audio', 'files'])
-      let response = []
-
-      //Get extensions settings
-      let extensions = {
-        images: this.$store.getters['qsiteApp/getSettingValueByName']('media::allowedImageTypes'),
-        videos: this.$store.getters['qsiteApp/getSettingValueByName']('media::allowedVideoTypes'),
-        audio: this.$store.getters['qsiteApp/getSettingValueByName']('media::allowedAudioTypes'),
-        files: this.$store.getters['qsiteApp/getSettingValueByName']('media::allowedFileTypes')
-      }
-
-      //Parse extensions
-      accept.forEach(extensionName => {
-        if (extensions[extensionName]) response = [...response, ...extensions[extensionName]]
-        else response = [...response, extensionName]
-      })
-
-      //validate point by extension
-      response.forEach((extensionName, key) => {
-        if (!extensionName.includes('.')) response[key] = `.${response[key]}`
-      })
-
-      //response
-      return response.join(',')
     }
   },
   methods: {
@@ -164,6 +149,7 @@ export default {
                 this.$eventBus.$emit('master.cropper.image', {
                   src: base64,
                   type: fileData.type,
+                  ratio: this.ratio,
                   callBack: async (fileCropped) => {
                     if (fileCropped) {
                       //Merge data
@@ -229,6 +215,28 @@ export default {
     //Reset
     reset() {
       this.filesData = []
+    },
+    //Validate rejected files
+    rejectedCheck(entries) {
+      let maxfileZise = []
+      //Validate types of reject
+      entries.forEach(item => {
+        if (item.failedPropValidation) {
+          switch (item.failedPropValidation) {
+            case 'max-file-size':
+              maxfileZise.push(item.file.name)
+              break
+          }
+        }
+      })
+      //Show message error
+      this.$alert.warning({
+        mode: 'modal',
+        title: this.$tr('media.cms.messages.failedUploadFiles'),
+        message: "<b>" +
+            this.$tr('media.cms.messages.errorMaxFileSize', {size: this.zoneConfig.maxFileSizeMB}) +
+            "</b> <br> - " + maxfileZise.join(" - ")
+      })
     }
   }
 }

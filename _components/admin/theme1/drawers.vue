@@ -1,5 +1,5 @@
 <template>
-  <div id="masterDrawers">
+  <div id="masterDrawers1">
     <!-- MENU -->
     <q-drawer id="menuMaster" class="no-shadow" v-model="drawer.menu" ref="menuMaster"
               @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
@@ -152,25 +152,20 @@ export default {
 }
 </script>
 <style lang="stylus">
-my-menu-link(value)
-  if(value)
-    border-left 3px solid $primary
-  else
-    border-left 1px solid #dbdfe1
-  
-#masterDrawers
-  background-color #F1F4FA !important
+
+#masterDrawers1
+  background-color $custom-accent-color !important
   #drawerRecomendationMaster
     .q-drawer
       max-height max-content
 
     .q-drawer__content
-      background #F1F4FA
+      background $custom-accent-color
 
   #menuMaster
     aside
       background $primary
-      background-color #F1F4FA !important
+      background-color $custom-accent-color !important
     #logoSite
       padding 20px 25px 26px 25px
       height 120px
@@ -181,20 +176,16 @@ my-menu-link(value)
       font-size 13px
 
     .q-expansion-item
-      background-color #F1F4FA !important
+      background-color $custom-accent-color !important
 
     .q-expansion-item__container
       .q-expansion-item__content
         padding 0 0 0 2px
-        border-left 15px solid #F1F4FA
-        #listMenu
-          .content-item
-            my-menu-link
+        border-left 15px solid $custom-accent-color
     .q-item
       padding-left 0
       min-height 40px
       color $blue-grey
-      my-menu-link(false)
       .q-item__section--avatar
         padding 0 18px !important
 
@@ -211,8 +202,7 @@ my-menu-link(value)
           font-size 22px
 
       &.item-is-active
-        background-color #F1F4FA
-        my-menu-link(true)
+        background-color $custom-accent-color
         .q-item__section, .q-icon
           color $primary
 

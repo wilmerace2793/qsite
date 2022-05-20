@@ -1,27 +1,24 @@
 <template>
   <div id="masterPanelHeader">
     <!-- HEADER -->
-    <q-header class="bg-custom-accent-color">
-      <!-- Toolbar header -->
-      <div class="bg-custom-accent-color">
-        <!--Toolbar panel-->
-        <q-toolbar id="toolbarTop">
-          <!--== Menu Button ==-->
-          <q-btn id="buttonToogleMenu" icon="fas fa-bars" unelevated color="primary"
-                 @click="$eventBus.$emit('toggleMasterDrawer','menu')"/>
-          <!--Breadcrumb-->
-          <q-toolbar-title>
-            <div id="breadCrumbContent" class="q-hide q-md-show">
-              <q-breadcrumbs class="text-blue-grey" gutter="none">
-                <q-breadcrumbs-el v-for="(item, key) in breadcrumbs" :key="key" :label="item.label"
-                                  :to="item.to ? {name : item.to} : false"/>
-              </q-breadcrumbs>
-            </div>
-          </q-toolbar-title>
-          <!--Site Actions-->
-          <site-actions/>
-        </q-toolbar>
-      </div>
+    <q-header>
+      <!--Toolbar panel-->
+      <q-toolbar id="toolbarTop">
+        <!--== Menu Button ==-->
+        <q-btn id="buttonToogleMenu" icon="fas fa-bars" unelevated color="primary"
+               @click="$eventBus.$emit('toggleMasterDrawer','menu')"/>
+        <!--Breadcrumb-->
+        <q-toolbar-title>
+          <div id="breadCrumbContent" class="q-hide q-md-show">
+            <q-breadcrumbs class="text-blue-grey" gutter="none">
+              <q-breadcrumbs-el v-for="(item, key) in breadcrumbs" :key="key" :label="item.label"
+                                :to="item.to ? {name : item.to} : false"/>
+            </q-breadcrumbs>
+          </div>
+        </q-toolbar-title>
+        <!--Site Actions-->
+        <site-actions/>
+      </q-toolbar>
     </q-header>
   </div>
 </template>
@@ -102,6 +99,10 @@ export default {
 </script>
 <style lang="stylus">
 #masterPanelHeader
+  .q-header {
+    background: linear-gradient(180deg, #F1F4FA 0%, #FFFFFF 100%)
+  }
+
   #toolbarTop
     padding-left 0
     padding-right 10px

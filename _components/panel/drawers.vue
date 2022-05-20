@@ -123,7 +123,7 @@ export default {
     this.$eventBus.$off('toggleMasterDrawer')
     this.$eventBus.$off('openMasterDrawer')
   },
-  mixins: [ sidebarMixins ],
+  mixins: [sidebarMixins],
   props: {},
   components: {menuList, configList, chatList, masterFilter, checkin, masterRecommendation, masterNotifications},
   watch: {},
@@ -225,12 +225,15 @@ export default {
     background-color $grey-3
 
   .q-expansion-item
-    background-color $grey-3
+    background-color $custom-accent-color
+
+    .content-item
+      background-color $custom-accent-color
 
   .q-expansion-item__container
     .q-expansion-item__content
       padding 0 0 0 1px
-      border-left 15px solid white
+      border-left 15px solid $custom-accent-color
 
   .q-item
     padding-left 0
@@ -253,7 +256,7 @@ export default {
         font-size 22px
 
     &.item-is-active
-      background-color white
+      background-color $custom-accent-color
 
       .q-item__section, .q-icon
         color $primary
@@ -279,9 +282,12 @@ export default {
       border-radius 50%
 
 #masterDrawers
+  .q-drawer
+    background $custom-accent-color
   #drawerRecomendationMaster
     .q-drawer
       max-height max-content
+      background $bg-custom-accent-color
 
     .q-drawer__content
       background #ebf1fa

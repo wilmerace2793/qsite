@@ -3,9 +3,14 @@
     <!-- Header -->
     <div id="masterFilterContent">
       <!--Title-->
-      <div class="text-subtitle1 row items-center q-pa-md">
-        <q-icon name="fas fa-filter" color="primary" size="20px" class="q-mr-sm"/>
-        <label>{{ $trp('isite.cms.label.filter', {capitalize: true}) }}</label>
+      <div class="row justify-between items-center q-pa-md">
+        <div class="text-subtitle1 row items-center">
+          <q-icon name="fas fa-filter" color="primary" size="20px" class="q-mr-sm"/>
+          <label>{{ $trp('isite.cms.label.filter', {capitalize: true}) }}</label>
+        </div>
+        <!-- Close icon -->
+        <q-icon name="fas fa-times" color="blue-grey" size="20px" class="cursor-pointer"
+                @click="$eventBus.$emit('toggleMasterDrawer', 'filter')"/>
       </div>
 
       <!--Tabs-->

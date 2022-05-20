@@ -55,7 +55,9 @@
           "addYourFiles": "Add your files here",
           "addYourImages": "Add your images here",
           "limitFiles": "Limit Files",
-          "messageLimitFiles": "The file limit is <b>{quantity}</b>. to select another file you must first remove some of the selected ones"
+          "messageLimitFiles": "The file limit is <b>{quantity}</b>. to select another file you must first remove some of the selected ones",
+          "failedUploadFiles": "Error uploading files",
+          "errorMaxFileSize": "Files exceed the allowed size of {size}MB"
         }
       }
     },
@@ -269,7 +271,8 @@
       "cms": {
         "sidebar": {
           "adminGroup": "Media",
-          "adminIndex": "File List"
+          "adminIndex": "File List",
+          "adminZones": "Media Zones"
         },
         "title": "Multimedia List/Search",
         "newFile": "New File",
@@ -294,7 +297,12 @@
           "addYourImages": "Add your images here",
           "limitFiles": "Limit Files",
           "messageLimitFiles": "The file limit is <b>{quantity}</b>. to select another file you must first remove some of the selected ones"
-        }
+        },
+        "newZone": "New Zone",
+        "updateZone": "Update Zone",
+        "maxFileSize": "Max File size (MB)",
+        "maxFiles": "Max files selected",
+        "directUpload": "Direct Upload"
       }
     },
     "igamification": {
@@ -981,11 +989,11 @@
     },
     "ifly": {
       "cms": {
-        "form":{
+        "form": {
           "aircraftModel": "Aircraft Model",
-          "airlineName":"Airline Name",
-          "airportName":"Airport Name",
-          "airlineShortName":"Airline Short Name",
+          "airlineName": "Airline Name",
+          "airportName": "Airport Name",
+          "airlineShortName": "Airline Short Name",
           "airlineIataCode": "Airline IATA Code",
           "airlineIcaoCode": "Airline ICAO Code",
           "airportIataCode": "Airline IATA Code",
@@ -993,6 +1001,7 @@
           "timezone": "Timezone",
           "tailNumber": "TailNumber",
           "fligthStatus": "Fligth status",
+          "flightDate": "Fligth date",
           "estimatedDepartureTime": "Estimated Departure Time",
           "estimatedArrivalTime": "Estimated Arrival Time",
           "actualDepartureTime": "Actual Departure Time",
@@ -1008,20 +1017,54 @@
           "flightNumberICAO": "Flight Number ICAO",
           "activeFlight": "Active Flight",
           "flightType": "Flight Type",
-          "legNumber": "leg Number",
-          "arrivalTime": "arrival Time",
+          "legNumber": "Leg Number",
+          "arrivalTime": "Arrival Time",
           "newAircraftType": "New Aircraft Type",
-          "newAirline":"New Airline",
+          "newAirline": "New Airline",
           "updateAircraftType": "Update Aircraft Type",
           "updateAirport": "Update Airport",
-          "newAirport":"New Airport",
-          "newflight":"New Flight",
-          "newflightSchedule":"New flight schedule",
-          "updateflightSchedule":"Update flight schedule",
-          "newflightScheduleLeg":"New flight schedule Leg",
-          "updateflightScheduleLeg":"Update flight schedule Leg"
+          "newAirport": "New Airport",
+          "newflight": "New Flight",
+          "newflightSchedule": "New flight schedule",
+          "updateflightSchedule": "Update flight schedule",
+          "newflightScheduleLeg": "New flight schedule Leg",
+          "updateflightScheduleLeg": "Update flight schedule Leg",
+          "carrier": "Carrier",
+          "customer": "Customer",
+          "acType": "A/C Type",
+          "operation": "Operation",
+          "station": "Station",
+          "gate": "Gate",
+          "date": "Date",
+          "status": "Status",
+          "origin": "Origin",
+          "schuduledArrival": "Schuduled Arrival",
+          "blockIn": "Block-In",
+          "fligth": "Fligth",
+          "destination": "Destination",
+          "tail": "Tail N°",
+          "schuduledDeparture": "Schuduled Departure",
+          "blockOut": "Block-Out",
+          "TotalUldsUnloaded": "Total ULDS Unloaded",
+          "BulkUnloaded": "Bulk Unloaded (Pieces)",
+          "TotalUldsLoaded": "Total ULDS Loaded",
+          "BulkLoaded": "Bulk Loaded (Pieces)",
+          "gpu": "Gpu",
+          "start": "Start",
+          "end": "End",
+          "mainLoader": "Main Loader",
+          "connectedTime": "Connected Time",
+          "lowerLoader": "Lower Loader",
+          "addLoader": "Add Loader",
+          "transport": "Transport",
+          "remark": "Remark",
+          "safetyMessage": "Safety Message",
+          "customerRepresentativeSignature": "Customer Representative Signature",
+          "AgiRepresentativeSignature": "AGI Representative Signature",
+          "updateWorkOrder": "Update Work Order",
+          "newWorkOrder": "New Work Order"
         },
-        "label":{
+        "label": {
           "scheduled": "scheduled",
           "scheduledDelayed": "scheduled Delayed",
           "active": "active",
@@ -1040,20 +1083,24 @@
           "notOperational": "not Operational",
           "resultunknown": "result unknown",
           "delayed": "delayed",
-          "isActive":"Is Active",
+          "isActive": "Is Active",
           "unknow": "Unknow",
           "passenger": "Passenger",
           "freighter": "Freighter",
-          "truc": "Truc"
+          "truc": "Truc",
+          "search": "What service are you looking for?",
+          "signature": "Signature"
         },
-        "sidebar":{
+        "sidebar": {
           "aircraftType": "Aircraft type",
           "airline": "Airline",
           "airport": "Airport",
           "flightSchedule": "Flight Schedule",
           "flightScheduleLeg": "Flight Schedule Leg | Flight Schedule Legs",
           "flight": "Flight | Flights",
-          "flightInfo": "Flight Info"
+          "flightInfo": "Flight Info",
+          "workOrders": "Work Orders",
+          "rampInfo": "Ramp"
         }
       }
     },
@@ -1108,6 +1155,7 @@
           "showing": "Showing",
           "entry": "Entry | Entries",
           "of": "of",
+          "done": "Done",
           "delete": "Delete",
           "cancel": "Cancel",
           "cancelled": "Cancelled",
@@ -1399,10 +1447,16 @@
           "item": "Item | Items",
           "contact": "Contacto | Contactos",
           "request": "Solicitud | Solicitudes",
-          "accept": "Aceptar",
-          "reject": "Rechazar",
-          "rejected": "Rechazado",
-          "beverage": "Bebida | Bebidas"
+          "accept": "Accept",
+          "reject": "Reject",
+          "rejected": "Rejected",
+          "beverage": "Bebida | Bebidas",
+          "zone": "Zone | Zones",
+          "waterMark": "Water Mark",
+          "position": "Position | Positions",
+          "axis": "Axis | Axes",
+          "audio": "Audio | Audios",
+          "ratio": "Ratio | Ratios"
         },
         "message": {
           "notFound": "Sorry, nothing here",
@@ -1464,8 +1518,9 @@
           "mustContainAlphanumeric": "Must contain only alphanumeric",
           "hintUseChips": "Ingrese el valor y presione enter",
           "finishRegister": "There is little left to finish your registration...",
-          "ready": "Todo está listo",
-          "noRegistered": "You are not registered yet"
+          "ready": "Ready",
+          "noRegistered": "You are not registered yet",
+          "hintFilterByQuery": "Type 3 or more characters to search for options"
         },
         "form": {
           "id": "ID",
@@ -1579,7 +1634,8 @@
           "showInMenu": "Show in Menu",
           "featured": "Featured",
           "sortOrder": "Sort Order",
-          "availableDate": "Available Date"
+          "availableDate": "Available Date",
+          "printName": "Print Name"
         },
         "configList": {
           "loggedAs": "logged as",
@@ -1588,7 +1644,16 @@
           "leaveImpersonating": "Leave impersonating",
           "clearCache": "Clear cache",
           "goToSite": "Go to site"
-        }
+        },
+        "topLeft": "Top-Left",
+        "top": "Top",
+        "topRight": "Top-Right",
+        "left": "Left",
+        "center": "Center",
+        "right": "Right",
+        "bottomLeft": "Bottom-Left",
+        "bottom": "Bottom",
+        "bottomRight": "Bottom-Right"
       }
     }
   },
@@ -1862,7 +1927,8 @@
       "cms": {
         "sidebar": {
           "adminGroup": "Media",
-          "adminIndex": "Lista de Archivos"
+          "adminIndex": "Lista de Archivos",
+          "adminZones": "Zonas de Archivos"
         },
         "title": "Multimedia Listar/Buscar",
         "newFile": "Nuevo Archivo",
@@ -1886,8 +1952,15 @@
           "addYourFiles": "Agrega tus archivos aquí",
           "addYourImages": "Agrega tus imagenes aquí",
           "limitFiles": "Limite de Archivos",
-          "messageLimitFiles": "El limite de archivos es de <b>{quantity}</b>. para seleccionar otro archivo primero debes quitar algunos de los seleccionados"
-        }
+          "messageLimitFiles": "El limite de archivos es de <b>{quantity}</b>. para seleccionar otro archivo primero debes quitar algunos de los seleccionados",
+          "failedUploadFiles": "Error al cargar los archivos",
+          "errorMaxFileSize": "Los Archivos superan el tamaño permitido de {size}MB"
+        },
+        "newZone": "Nueva Zona",
+        "updateZone": "Actualizar Zona",
+        "maxFileSize": "Tamaño maximo por archivo (MB)",
+        "maxFiles": "Cantidad maxima de archivos seleccionados",
+        "directUpload": "Subida directa"
       }
     },
     "igamification": {
@@ -2573,18 +2646,20 @@
       }
     },
     "ifly": {
-      "cms":{
-        "form":{
+      "cms": {
+        "form": {
           "aircraftModel": "modelo de avión"
         },
-        "sidebar":{
+        "sidebar": {
           "aircraftType": "Tipo de aeronave",
           "airline": "Aerolínea",
           "airport": "Aeropuerto",
           "flightSchedule": "Horario de vuelo",
           "flightScheduleLeg": "Tramo de horario de vuelo",
           "flight": "Vuelo",
-          "flightInfo": "información de vuelo"
+          "flightInfo": "Información de vuelo",
+          "workOrders": "Órdenes de trabajo",
+          "rampInfo": "Rampa"
         }
       }
     },
@@ -2933,7 +3008,13 @@
           "accept": "Aceptar",
           "reject": "Rechazar",
           "rejected": "Rechazado",
-          "beverage": "Bebida | Bebidas"
+          "beverage": "Bebida | Bebidas",
+          "zone": "Zona | Zonas",
+          "waterMark": "Marca de Agua",
+          "position": "Posición | Posiciones",
+          "axis": "Eje | Ejes",
+          "audio": "Audio | Audios",
+          "ratio": "Proporción | Proporciones"
         },
         "message": {
           "notFound": "Lo sentimos, no hay nada aquí",
@@ -2996,7 +3077,8 @@
           "hintUseChips": "Ingrese el valor y presione Enter",
           "finishRegister": "Falta poco para terminar tu registro",
           "ready": "Todo está listo",
-          "noRegistered": "Aún no estás registrado"
+          "noRegistered": "Aún no estás registrado",
+          "hintFilterByQuery": "Escribe 3 o más caracteres para buscar opciones"
         },
         "form": {
           "id": "ID",
@@ -3119,7 +3201,16 @@
           "leaveImpersonating": "Dejar de suplantar",
           "clearCache": "Limpiar cache",
           "goToSite": "Ver el sitio"
-        }
+        },
+        "topLeft": "Arriba-Izquierda",
+        "top": "Arriba",
+        "topRight": "Arriba-Derecha",
+        "left": "Izquierda",
+        "center": "Centro",
+        "right": "Derecha",
+        "bottomLeft": "Abajo-Izquierda",
+        "bottom": "Abajo",
+        "bottomRight": "Abajo-Derecha"
       }
     }
   }
