@@ -72,6 +72,7 @@
   #signatureComponent
     #vueSiganture
       border 1px solid $grey-5
+      padding-bottom 30px
     #btn-actions
       float right
 </style>
