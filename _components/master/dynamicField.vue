@@ -248,7 +248,8 @@
         <!--Signature-->
         <q-field v-model="responseValue" v-if="loadField('signature')"
                  v-bind="fieldProps.fieldComponent" stack-label>
-          <signature v-model="responseValue" v-bind="fieldProps.field" @fullscreenActionComponent="$emit('fullscreenAction')"/>
+          <signature v-model="responseValue" v-bind="fieldProps.field"
+                     @fullscreenActionComponent="$emit('fullscreenAction')"/>
         </q-field>
         <!--Uploader-->
         <q-field v-model="responseValue" v-if="loadField('uploader')" v-bind="fieldProps.fieldComponent" stack-label>
@@ -574,13 +575,21 @@ export default {
             bgColor: 'white',
             style: 'width: 100%',
             behavior: "menu",
+            class: "q-pb-md",
             ...props
           }
           props.loading = props.loading || this.loading
 
+          //add default hints
+          let hintValue = props.hint ? [props.hint] : []
           //add hint to UX when use chips
-          if (props.multiple && props.useChips && props.hideDropdownIcon && !props.hint)
-            props.hint = this.$tr('isite.cms.message.hintUseChips')
+          if (props.multiple && props.useChips && props.hideDropdownIcon)
+            hintValue.push(this.$tr('isite.cms.message.hintUseChips'))
+          //add hint to UX when filterBySearch
+          if (this.field.loadOptions?.filterByQuery)
+            hintValue.push(this.$tr('isite.cms.message.hintFilterByQuery'))
+          //Set hint
+          props.hint = hintValue.join(" - ")
 
           break;
         case'treeSelect':
@@ -1225,6 +1234,7 @@ export default {
         //==== Request options
         if (loadOptions.apiRoute) {
           this.rootOptions = []//Reset options
+          let defaultOptions = this.field.props?.options || []//Instance default options
           let fieldSelect = {label: 'title', id: 'id'}
 
           let params = {//Params to request
@@ -1243,6 +1253,7 @@ export default {
               params.params.take = 25
             } else {
               this.loading = false
+              this.rootOptions = defaultOptions
               return resolve(false)
             }
           }
@@ -1257,8 +1268,7 @@ export default {
                 this.$array.tree(response.data, loadOptions.select || fieldSelect)
 
             //Assign options
-            this.rootOptions = (this.field.props && this.field.props.options) ?
-                this.$clone((this.field.props.options || []).concat(formatedOptions)) : formatedOptions
+            this.rootOptions = this.$clone(defaultOptions.concat(formatedOptions))
             this.loading = false
             resolve(true)
           }).catch(error => {
