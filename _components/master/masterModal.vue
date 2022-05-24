@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="show" :content-class="`master-dialog${customPosition ? '-custom' : ''}`"
-            v-on="$listeners" :position="customPosition ? 'right' : 'standard'">
+            v-on="$listeners" :maximized="maximized" :position="customPosition ? 'right' : 'standard'">
     <!--Content-->
     <div :id="id || 'masterModalContent'" :style="customPosition ? '' : `min-width: ${width}`"
          v-if="show" class="master-dialog__content round relative-position">
@@ -43,8 +43,9 @@ export default {
     icon: {type: String},
     actions: {type: Array},
     id: {type: String},
+    maximized: {type: Boolean, default: false},
     hideCloseAction: {type: Boolean, default: false},
-    customPosition: {type: Boolean, default: false}
+    customPosition: {type: Boolean, default: false},
   },
   components: {},
   watch: {
@@ -126,5 +127,4 @@ export default {
 
     &__body
       height calc(100vh - 207px)
-
 </style>
