@@ -1,6 +1,6 @@
 <template>
-  <q-dialog v-model="show" :content-class="`master-dialog${customPosition ? '-custom' : ''} master-dialog${vw80 ? '-vw80' : ''}`"
-            v-on="$listeners" :position="customPosition ? 'right' : 'standard'">
+  <q-dialog v-model="show" :content-class="`master-dialog${customPosition ? '-custom' : ''}`"
+            v-on="$listeners" :maximized="maximized" :position="customPosition ? 'right' : 'standard'">
     <!--Content-->
     <div :id="id || 'masterModalContent'" :style="customPosition ? '' : `min-width: ${width}`"
          v-if="show" class="master-dialog__content round relative-position">
@@ -43,9 +43,9 @@ export default {
     icon: {type: String},
     actions: {type: Array},
     id: {type: String},
+    maximized: {type: Boolean, default: false},
     hideCloseAction: {type: Boolean, default: false},
     customPosition: {type: Boolean, default: false},
-    vw80: {type: Boolean, default: false}
   },
   components: {},
   watch: {
@@ -127,11 +127,4 @@ export default {
 
     &__body
       height calc(100vh - 207px)
-.master-dialog-vw80
-  .q-dialog__inner
-    width 80vw
-    @media screen and (max-width: $breakpoint-md)
-      width 90vw
-    @media screen and (max-width: $breakpoint-xs)
-      width 100vw
 </style>
