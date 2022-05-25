@@ -83,12 +83,12 @@
     </q-drawer>
 
     <!--Master filter-->
-    <q-drawer id="drawerFilterMaster" v-model="drawer.filter" side="right" v-if="filter.load">
+    <q-drawer id="drawerFilterMaster" v-model="drawer.filter" bordered side="right" v-if="filter.load">
       <master-filter/>
     </q-drawer>
 
     <!--checking-->
-    <q-drawer id="drawerCheckinMaster" v-model="drawer.checkin" side="right"
+    <q-drawer id="drawerCheckinMaster" v-model="drawer.checkin" side="right" bordered
               v-if="(appConfig.mode == 'ipanel') && $auth.hasAccess('icheckin.shifts.create')">
       <checkin/>
     </q-drawer>
@@ -101,7 +101,7 @@
 
     <!--Notification-->
     <q-drawer id="dawerNotificatiosMaster" v-model="drawer.notification" side="right"
-              v-if="$auth.hasAccess('notification.notifications.manage')">
+              v-if="$auth.hasAccess('notification.notifications.manage')" bordered>
       <master-notifications/>
     </q-drawer>
   </div>
@@ -218,6 +218,9 @@ export default {
     padding 0px 20px !important
 
 #menuMaster
+  .q-drawer
+    background $custom-accent-color
+
   .q-scrollarea
     padding-top 5px
 
@@ -282,8 +285,6 @@ export default {
       border-radius 50%
 
 #masterDrawers
-  .q-drawer
-    background $custom-accent-color
   #drawerRecomendationMaster
     .q-drawer
       max-height max-content
