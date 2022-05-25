@@ -1635,7 +1635,8 @@
           "featured": "Featured",
           "sortOrder": "Sort Order",
           "availableDate": "Available Date",
-          "printName": "Print Name"
+          "printName": "Print Name",
+          "requestedBy": "Requested By"
         },
         "configList": {
           "loggedAs": "logged as",
@@ -3192,7 +3193,8 @@
           "showInMenu": "Mostrar en menu",
           "featured": "Destacado",
           "sortOrder": "Orden de prioridad",
-          "availableDate": "Disponible desde"
+          "availableDate": "Disponible desde",
+          "requestedBy": "Solicitado Por"
         },
         "configList": {
           "loggedAs": "Registrado como",
