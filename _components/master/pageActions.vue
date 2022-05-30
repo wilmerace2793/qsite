@@ -18,10 +18,27 @@
       </q-input>
       <!--Button Actions-->
       <div v-for="(btn, keyAction) in actions" :key="keyAction" v-if="btn.vIf != undefined ? btn.vIf : true">
-        <q-btn v-bind="{...buttonProps, ...btn.props}" @click="btn.action != undefined ? btn.action() : null">
+        <!-- if the button is dropdown -->
+        <q-btn-dropdown split v-bind="{...buttonProps}" :dropdown-icon="btn.props.icon"
+            v-if="btn.type == 'btn-dropdown'" outline
+        >
+          <q-list>
+            <q-item v-for="(item) in btn.items" clickable v-close-popup @click="btn.action != undefined ? btn.action(item.type) : null">
+              <q-item-section avatar>
+                <q-avatar :icon="item.icon" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ item.label }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
+        <q-btn v-else v-bind="{...buttonProps, ...btn.props}" @click="btn.action != undefined ? btn.action() : null">
           <q-tooltip v-if="btn.label">{{ btn.label }}</q-tooltip>
         </q-btn>
       </div>
+
+
     </div>
     <!--Description-->
     <div v-if="description" class="ellipsis-2-lines col-12 description-content">{{ description }}</div>
@@ -199,4 +216,27 @@ export default {
     .q-field__control, .q-field__control:after, .q-field__control-container, .q-field__append
       min-height 34px
       max-height 34px
+
+  .actions-content
+    .q-btn-dropdown
+      .q-btn-dropdown--current
+        display none
+      .q-btn-dropdown__arrow-container
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+        &[aria-expanded=true]
+          .q-icon
+            &::before
+              content "\f106"
+
+.q-menu
+  .q-list
+    .q-item
+      padding: 3px 10px 3px 3px;
+      .q-item__section--avatar
+        min-width: 50px;
+        padding-right 10px
+        color $primary
+        i
+          font-size 16px
 </style>
