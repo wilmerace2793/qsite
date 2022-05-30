@@ -65,9 +65,9 @@
         </q-input>
         <!-- Input quantity -->
         <div v-if="loadField('quantity')" class="row">
-          <q-btn class="col-2" size="md" flat round color="primary" icon="remove"/>
+          <q-btn class="col-2" size="md" flat round color="primary" icon="remove" @click="field.value = responseValue > 0  ? --responseValue: 0"/>
           <q-input v-bind="fieldProps" v-model="responseValue" class="bg-white col-8"></q-input>
-          <q-btn class="col-2" size="md" flat round color="primary" icon="add"/>
+          <q-btn class="col-2" size="md" flat round color="primary" icon="add" @click="field.value = ++responseValue"/>
         </div>
         <!--Search-->
         <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('search')"
