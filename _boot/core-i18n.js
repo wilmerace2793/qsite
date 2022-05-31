@@ -34,6 +34,7 @@ export default async ({ router, app, Vue, store, ssrContext }) => {
     formatter: new customFormats(),
     numberFormats,
     dateTimeFormats,
+    silentTranslationWarn: true,
     messages
   })
   //===== Change language to quasar components

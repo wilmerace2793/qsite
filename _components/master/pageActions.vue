@@ -23,7 +23,7 @@
             v-if="btn.type == 'btn-dropdown'" outline
         >
           <q-list>
-            <q-item v-for="(item) in btn.items" clickable v-close-popup @click="btn.action != undefined ? btn.action(item.type) : null">
+            <q-item v-for="(item, index) in btn.items" :key="index" clickable v-close-popup @click="btn.action != undefined ? btn.action(item.type) : null">
               <q-item-section avatar>
                 <q-avatar :icon="item.icon" />
               </q-item-section>
