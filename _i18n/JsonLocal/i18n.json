@@ -1089,7 +1089,10 @@
           "freighter": "Freighter",
           "truc": "Truc",
           "search": "What service are you looking for?",
-          "signature": "Signature"
+          "signature": "Signature",
+          "flightMessageInBound": "Does the inbound data belong to the outbound?",
+          "flightMessageOutBound":"Does the outbound data belong to the inbound?",
+          "flightMessage": "Are you sure this is a correct flight number?"
         },
         "sidebar": {
           "aircraftType": "Aircraft type",
