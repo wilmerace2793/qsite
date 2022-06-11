@@ -21,7 +21,10 @@
         </div>
         <!-- Help btn -->
         <div v-if="helpLoad.load && field.help && field.help.description" :class="helpLoad.class">
-          <q-btn size="xs" class="after-field" :style="'margin:'+helpLoad.margin" round color="info" icon="fas fa-info"
+          <q-btn size="xs" class="after-field"
+                 :style="'margin:'+helpLoad.margin"
+                 round color="info"
+                 icon="fas fa-info"
                  unelevated>
             <q-menu id="dynamicFieldMenuHelp" anchor="top right" self="top right">
               <!--actions-->
@@ -255,9 +258,8 @@
         </q-field>
         <!--Signature-->
         <q-field v-model="responseValue" v-if="loadField('signature')"
-                 v-bind="fieldProps.fieldComponent" stack-label>
-          <signature v-model="responseValue" v-bind="fieldProps.field"
-                     @fullscreenActionComponent="$emit('fullscreenAction')"/>
+                 v-bind="fieldProps.fieldComponent" stack-label label="">
+          <signature v-model="responseValue" v-bind="fieldProps.field"/>
         </q-field>
         <!--Uploader-->
         <q-field v-model="responseValue" v-if="loadField('uploader')" v-bind="fieldProps.fieldComponent" stack-label>
@@ -1081,8 +1083,8 @@ export default {
           load: true
         },
         signature: {
-          class: 'absolute-right',
-          margin: '4em 1em',
+          class: 'absolute-bottom-right',
+          margin: '1.5em 1em',
           load: true
         },
         rating: {
