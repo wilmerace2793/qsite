@@ -1091,7 +1091,7 @@
           "search": "What service are you looking for?",
           "signature": "Signature",
           "flightMessageInBound": "Does the inbound data belong to the outbound?",
-          "flightMessageOutBound":"Does the outbound data belong to the inbound?",
+          "flightMessageOutBound": "Does the outbound data belong to the inbound?",
           "flightMessage": "Are you sure this is a correct flight number?",
           "errorFlightSelected": "You must select a flight"
         },
@@ -1460,7 +1460,8 @@
           "position": "Position | Positions",
           "axis": "Axis | Axes",
           "audio": "Audio | Audios",
-          "ratio": "Ratio | Ratios"
+          "ratio": "Ratio | Ratios",
+          "format": "Format | Formats"
         },
         "message": {
           "notFound": "Sorry, nothing here",
@@ -1524,7 +1525,8 @@
           "finishRegister": "There is little left to finish your registration...",
           "ready": "Ready",
           "noRegistered": "You are not registered yet",
-          "hintFilterByQuery": "Type 3 or more characters to search for options"
+          "hintFilterByQuery": "Type 3 or more characters to search for options",
+          "invalidFormat": "Invalid format"
         },
         "form": {
           "id": "ID",
@@ -3019,7 +3021,8 @@
           "position": "Posición | Posiciones",
           "axis": "Eje | Ejes",
           "audio": "Audio | Audios",
-          "ratio": "Proporción | Proporciones"
+          "ratio": "Proporción | Proporciones",
+          "format": "Formato | Formatos"
         },
         "message": {
           "notFound": "Lo sentimos, no hay nada aquí",
@@ -3083,7 +3086,8 @@
           "finishRegister": "Falta poco para terminar tu registro",
           "ready": "Todo está listo",
           "noRegistered": "Aún no estás registrado",
-          "hintFilterByQuery": "Escribe 3 o más caracteres para buscar opciones"
+          "hintFilterByQuery": "Escribe 3 o más caracteres para buscar opciones",
+          "invalidFormat": "Formato invalido"
         },
         "form": {
           "id": "ID",

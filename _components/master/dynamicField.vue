@@ -20,8 +20,11 @@
           {{ fieldLabel }}
         </div>
         <!-- Help btn -->
-        <div v-if="helpLoad.load && field.help" :class="helpLoad.class">
-          <q-btn size="xs" class="after-field" :style="'margin:'+helpLoad.margin" round color="info" icon="fas fa-info"
+        <div v-if="helpLoad.load && field.help && field.help.description" :class="helpLoad.class">
+          <q-btn size="xs" class="after-field"
+                 :style="'margin:'+helpLoad.margin"
+                 round color="info"
+                 icon="fas fa-info"
                  unelevated>
             <q-menu id="dynamicFieldMenuHelp" anchor="top right" self="top right">
               <!--actions-->
@@ -65,7 +68,8 @@
         </q-input>
         <!-- Input quantity -->
         <div v-if="loadField('quantity')" class="row">
-          <q-btn class="col-2" size="md" flat round color="primary" icon="remove" @click="field.value = responseValue > 0  ? --responseValue: 0"/>
+          <q-btn class="col-2" size="md" flat round color="primary" icon="remove"
+                 @click="field.value = responseValue > 0  ? --responseValue: 0"/>
           <q-input v-bind="fieldProps" v-model="responseValue" class="bg-white col-8"></q-input>
           <q-btn class="col-2" size="md" flat round color="primary" icon="add" @click="field.value = ++responseValue"/>
         </div>
@@ -77,42 +81,49 @@
           </template>
         </q-input>
         <!--Date-->
-        <q-input v-model="customValue" :label="fieldLabel" v-if="loadField('date')" v-bind="fieldProps.field"
-                 @click="$refs.qDateProxy.show()">
+        <q-input v-if="loadField('date')"
+                 v-model="responseValue"
+                 :label="fieldLabel"
+                 v-bind="fieldProps.field">
           <template v-slot:prepend>
-            <!--icon-->
-            <q-icon v-if="fieldProps.field.icon" :name="fieldProps.field.icon" size="18px"/>
             <!--Float calendar-->
-            <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-              <q-date v-model="responseValue" @input="() => $refs.qDateProxy.hide()"
-                      v-bind="fieldProps.slot"/>
-            </q-popup-proxy>
-          </template>
-          <template v-slot:append>
-            <q-btn icon="fas fa-times" round size="xs" unelevated color="grey-8"
-                   v-if="fieldProps.field.clearable && responseValue" @click="responseValue = null"/>
+            <q-icon v-if="fieldProps.field.icon"
+                    :name="fieldProps.field.icon"
+                    size="18px"
+                    class="cursor-pointer"
+                    color="blue-grey">
+              <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                <q-date v-model="responseValue" @input="() => $refs.qDateProxy.hide()"
+                        v-bind="fieldProps.slot"/>
+              </q-popup-proxy>
+            </q-icon>
           </template>
         </q-input>
         <!--Hour-->
-        <q-input v-model="customValue" :label="fieldLabel" v-if="loadField('hour')" v-bind="fieldProps.field"
-                 @click="$refs.qTimeProxy.show()">
+        <q-input v-if="loadField('hour')"
+                 v-model="responseValue"
+                 :label="fieldLabel"
+                 v-bind="fieldProps.field">
           <template v-slot:prepend>
-            <!--icon-->
-            <q-icon v-if="fieldProps.field.icon" :name="fieldProps.field.icon" size="18px"/>
             <!--Float Time-->
-            <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
-              <q-time v-model="responseValue" @input="() => $refs.qTimeProxy.hide()" v-bind="fieldProps.slot"/>
-            </q-popup-proxy>
-          </template>
-          <template v-slot:append>
-            <q-btn icon="fas fa-times" round size="xs" unelevated color="grey-8"
-                   v-if="fieldProps.field.clearable && responseValue" @click="responseValue = null"/>
+            <q-icon v-if="fieldProps.field.icon"
+                    :name="fieldProps.field.icon"
+                    size="18px"
+                    class="cursor-pointer"
+                    color="blue-grey">
+              <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
+                <q-time v-model="responseValue" @input="() => $refs.qTimeProxy.hide()" v-bind="fieldProps.slot"/>
+              </q-popup-proxy>
+            </q-icon>
           </template>
         </q-input>
         <!--Full date-->
-        <q-input v-model="customValue" :label="fieldLabel" v-if="loadField('fullDate')" v-bind="fieldProps.field">
+        <q-input v-if="loadField('fullDate')"
+                 v-model="responseValue"
+                 :label="fieldLabel"
+                 v-bind="fieldProps.field">
           <template v-slot:prepend>
-            <q-icon name="fas fa-calendar-day" class="cursor-pointer">
+            <q-icon name="fas fa-calendar-day" class="cursor-pointer" color="blue-grey">
               <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                 <q-date v-model="responseValue" @input="() => $refs.qDateProxy.hide()"
                         v-bind="fieldProps.slot"/>
@@ -120,7 +131,7 @@
             </q-icon>
           </template>
           <template v-slot:append>
-            <q-icon name="fas fa-clock" class="cursor-pointer">
+            <q-icon name="fas fa-clock" class="cursor-pointer" color="blue-grey">
               <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
                 <q-time v-model="responseValue" :format24h="false" @input="() => $refs.qTimeProxy.hide()"
                         v-bind="fieldProps.slot"/>
@@ -247,9 +258,8 @@
         </q-field>
         <!--Signature-->
         <q-field v-model="responseValue" v-if="loadField('signature')"
-                 v-bind="fieldProps.fieldComponent" stack-label>
-          <signature v-model="responseValue" v-bind="fieldProps.field"
-                     @fullscreenActionComponent="$emit('fullscreenAction')"/>
+                 v-bind="fieldProps.fieldComponent" stack-label label="">
+          <signature v-model="responseValue" v-bind="fieldProps.field"/>
         </q-field>
         <!--Uploader-->
         <q-field v-model="responseValue" v-if="loadField('uploader')" v-bind="fieldProps.fieldComponent" stack-label>
@@ -511,36 +521,56 @@ export default {
           }
           break;
         case'date':
+          //Instance the mask
+          const maskDate = props.mask || "MM/DD/YYYY"
+
           props = {
             field: {
               bgColor: 'white',
               color: 'primary',
               outlined: true,
               dense: true,
-              readonly: true,
               icon: 'fas fa-calendar-alt',
+              placeHolder: maskDate,
+              hint: `${this.$tr("isite.cms.label.format")}: ${maskDate}`,
               ...props,
-              type: 'input',
-              mask: ''
+              mask: maskDate.replace(/[a-z,A-Z]/g, "#"),
+              rules: [
+                ...(props.rules || []),
+                val => {
+                  if (!val) return true
+                  return this.$moment(val, maskDate, true).isValid() || `${this.$tr('isite.cms.message.invalidFormat')} (${maskDate})`
+                }
+              ]
             },
             slot: {
-              ...props
+              ...props,
+              mask: maskDate,
             }
           }
-          //Remove mask from prop field
-          delete props.field.mask
           break;
         case'hour':
+          //Instance the mask
+          const maskHour = "HH:mm"
+
           props = {
             field: {
               bgColor: 'white',
               color: 'primary',
               outlined: true,
               dense: true,
-              readonly: true,
               icon: 'fas fa-clock',
+              placeHolder: maskHour,
+              hint: `${this.$tr("isite.cms.label.format")}: ${maskHour}`,
               ...props,
-              mask: ''
+              mask: maskHour.replace(/[a-z,A-Z]/g, "#"),
+              rules: [
+                ...(props.rules || []),
+                val => {
+                  if (!val) return true
+                  return this.$moment(val, maskHour, true).isValid() || `${this.$tr('isite.cms.message.invalidFormat')} (${maskHour})`
+                }
+              ]
             },
             slot: {
               format24h: false,
@@ -549,22 +579,32 @@ export default {
           }
           break;
         case'fullDate':
+          //Instance the mask
+          const maskFullDate = props.mask || "MM/DD/YYYY HH:mm"
+
           props = {
             field: {
               bgColor: 'white',
               color: 'primary',
               outlined: true,
               dense: true,
-              readonly: true,
-              ...props
+              placeHolder: maskFullDate,
+              hint: `${this.$tr("isite.cms.label.format")}: ${maskFullDate}`,
+              ...props,
+              mask: maskFullDate.replace(/[a-z,A-Z]/g, "#"),
+              rules: [
+                ...(props.rules || []),
+                val => {
+                  if (!val) return true
+                  return this.$moment(val, maskFullDate, true).isValid() || `${this.$tr('isite.cms.message.invalidFormat')} (${maskFullDate})`
+                }
+              ]
             },
             slot: {
-              mask: "YYYY-MM-DD HH:mm:ss",
+              mask: maskFullDate,
               ...props
             }
           }
-          //Remove mask from prop field
-          delete props.field.mask
           break;
         case'select':
           props = {
@@ -857,8 +897,13 @@ export default {
 
       //Add ruler to required field
       if (this.field.required) {
-        if (!props.rules) props.rules = []
-        props.rules.push(val => !!val || this.$tr('isite.cms.message.fieldRequired'))
+        if (props.field) {
+          if (!props.field.rules) props.field.rules = []
+          props.field.rules.push(val => !!val || this.$tr('isite.cms.message.fieldRequired'))
+        } else {
+          if (!props.rules) props.rules = []
+          props.rules.push(val => !!val || this.$tr('isite.cms.message.fieldRequired'))
+        }
       }
 
       //Response
@@ -921,20 +966,22 @@ export default {
       }
 
       //Swith type response
-      switch (this.field.type) {
-        case 'select':
-          valueFromSelect()
-          break;
-        case 'treeSelect':
-          valueFromSelect()
-          break;
-        case 'date':
-          response = response ? this.$trd(response) : false
-          break;
-        case 'hour':
-          let date = this.field.withFullDate ? '' : this.$moment().format('Y-MM-DD')
-          response = response ? this.$trd(`${date} ${response}`, {type: 'time'}) : ''
-          break;
+      if (this.readOnly) {
+        switch (this.field.type) {
+          case 'select':
+            valueFromSelect()
+            break;
+          case 'treeSelect':
+            valueFromSelect()
+            break;
+          case 'date':
+            response = response ? this.$trd(response) : false
+            break;
+          case 'hour':
+            let date = this.field.withFullDate ? '' : this.$moment().format('Y-MM-DD')
+            response = response ? this.$trd(`${date} ${response}`, {type: 'time'}) : ''
+            break;
+        }
       }
 
       return response//Response
@@ -950,29 +997,6 @@ export default {
 
       //Response
       return response
-    },
-    //Custom value to response value
-    customValue: {
-      get() {
-        let response = ''//Defualt response
-        let currentValue = this.$clone(this.responseValue)
-
-        switch (this.field.type) {
-          case 'date':
-            response = currentValue ? this.$trd(currentValue) : ''
-            break;
-          case 'hour':
-            let date = this.field.withFullDate ? '' : this.$moment().format('Y-MM-DD')
-            response = currentValue ? this.$trd(`${date} ${currentValue}`, {type: 'time'}) : ''
-            break;
-          case 'fullDate':
-            response = currentValue ? this.$trd(currentValue, {type: 'long'}) : ''
-            break;
-        }
-
-        //Response
-        return response
-      }
     },
     //Validate if field is password
     isFieldPassword() {
@@ -1059,8 +1083,8 @@ export default {
           load: true
         },
         signature: {
-          class: 'absolute-right',
-          margin: '4em 1em',
+          class: 'absolute-bottom-right',
+          margin: '1.5em 1em',
           load: true
         },
         rating: {
