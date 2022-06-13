@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="show" :content-class="`master-dialog${customPosition ? '-custom' : ''}`"
-            v-on="$listeners" :maximized="maximized" :position="customPosition ? 'right' : 'standard'">
+            v-on="$listeners" :maximized="maximized" :persistent="persistent" :position="customPosition ? 'right' : 'standard'">
     <!--Content-->
     <div :id="id || 'masterModalContent'" :style="customPosition ? '' : `min-width: ${width}`"
          v-if="show" class="master-dialog__content round relative-position">
@@ -37,6 +37,7 @@ export default {
   props: {
     value: {type: Boolean, default: false},
     loading: {type: Boolean, default: false},
+    persistent: {type: Boolean, default: false},
     color: {type: String, default: 'blue-grey'},
     width: {type: String, default: '400px'},
     title: {type: String},
