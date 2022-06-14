@@ -968,6 +968,7 @@
         "sidebar": {
           "adminGroup": "Request",
           "status": "Status",
+          "categories": "Categories",
           "mainRequestable": "Request",
           "mainRequestableCreate": "New Request"
         },
@@ -975,7 +976,8 @@
         "updateRequest": "Update Request",
         "newStatus": "New Status",
         "updateStatus": "Update Status",
-        "selectRequestCategoryToForm": "Select a request category"
+        "selectRequestCategoryToForm": "Select a request category",
+        "timeElapsedToCancel": "Cancel after at"
       }
     },
     "page": {
@@ -2633,6 +2635,7 @@
         "sidebar": {
           "adminGroup": "Peticiones",
           "status": "Estados",
+          "categories": "Categorias",
           "mainRequestable": "Peticiones",
           "mainRequestableCreate": "Nueva Petición"
         },
@@ -2640,7 +2643,8 @@
         "updateRequest": "Actualizar Petición",
         "newStatus": "Nuevo Estado",
         "updateStatus": "Actualizar Estado",
-        "selectRequestCategoryToForm": "Selecciona una categoría para crear tu petición"
+        "selectRequestCategoryToForm": "Selecciona una categoría para crear tu petición",
+        "timeElapsedToCancel": "Cancelar despues de"
       }
     },
     "page": {
