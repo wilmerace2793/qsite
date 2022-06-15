@@ -141,7 +141,8 @@
         </q-input>
         <!--Select-->
         <q-select v-model="responseValue" :options="formatOptions" :label="fieldLabel" use-input v-bind="fieldProps"
-                  @input="matchTags(field)" v-if="loadField('select')" @filter="filterSelectOptions">
+                  @input="matchTags(field)" v-if="loadField('select')" @filter="filterSelectOptions"
+                  @clear="val => field.props.multiple ? responseValue = [] : ''">
           <!--No options slot-->
           <template v-slot:no-option v-if="!fieldProps.hideDropdownIcon">
             <q-item>
