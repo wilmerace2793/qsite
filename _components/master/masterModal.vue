@@ -1,11 +1,12 @@
 <template>
   <q-dialog v-model="show" :content-class="`master-dialog${customPosition ? '-custom' : ''}`"
-            v-on="$listeners" :maximized="maximized" :persistent="persistent" :position="customPosition ? 'right' : 'standard'">
+            v-on="$listeners" :maximized="maximized" :persistent="persistent"
+            :position="customPosition ? 'right' : 'standard'">
     <!--Content-->
     <div :id="id || 'masterModalContent'" :style="customPosition ? '' : `min-width: ${width}`"
          v-if="show" class="master-dialog__content round relative-position">
       <!--Header-->
-      <div :class="`master-dialog__header text-${color} row justify-between items-center box box-auto-height`">
+      <div :class="`master-dialog__header text-${color} row justify-between items-center`">
         <!--Title-->
         <div class="master-dialog__header-title row items-center">
           <q-icon v-if="icon" :name="icon" class="q-mr-sm" size="20px"/>
@@ -15,12 +16,13 @@
         <q-btn v-close-popup icon="fas fa-times" round color="blue-grey" unelevated class="btn-small" outline
                v-if="!hideCloseAction"/>
       </div>
+      <q-separator inset/>
       <!--Slot content-->
       <div class="master-dialog__body">
         <slot/>
       </div>
       <!--Actions Content-->
-      <div class="master-dialog__actions box box-auto-height" v-if="actions && actions.length">
+      <div class="master-dialog__actions" v-if="actions && actions.length">
         <div class="row justify-end q-gutter-sm">
           <q-btn v-for="(btn, keyBtn) in actions" :key="keyBtn" v-bind="{...actionBtnProps, ...(btn.props || {})}"
                  @click="btn.action ? btn.action() : null"/>
@@ -87,19 +89,20 @@ export default {
 <style lang="stylus">
 .master-dialog
   &__content
-    background-color $custom-accent-color
+    background white
 
   &__header
-    margin 16px 16px 0 16px
+    padding 16px
+    font-size 16px
+    background white
 
   &__body
-    margin 16px
+    padding 0 6px 0 16px
+    margin 16px 0
     overflow-y scroll
-    @media screen and (min-width: $breakpoint-md)
-      margin 16px 0 16px 16px
 
   &__actions
-    margin 0 16px 16px 16px
+    padding 0 16px 8px 16px
 
     .q-btn
       .q-icon
@@ -127,5 +130,5 @@ export default {
       border-radius $custom-radius 0 0 0 !important
 
     &__body
-      height calc(100vh - 207px)
+      height calc(100vh - 157px)
 </style>
