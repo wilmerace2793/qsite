@@ -46,7 +46,7 @@
               :class="`q-mb-xs ${(field.props && field.props.crudType == 'button-create') ? 'absolute-right' : ''}`"/>
         <!--Input-->
         <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('input')"
-                 :label="fieldLabel" v-bind="fieldProps" style="margin-bottom: 20px">
+                 :label="fieldLabel" v-bind="fieldProps">
           <template v-slot:prepend v-if="fieldProps.icon">
             <q-icon :name="fieldProps.icon" size="18px"/>
           </template>
@@ -381,6 +381,13 @@ export default {
     },
     rootOptions(newValue) {
       this.options = this.rootOptions
+      //Select by default
+      if (!this.field.loadOptions?.filterByQuery && this.field.props?.selectByDefault && this.rootOptions.length) {
+        if (Array.isArray(this.responseValue) && !this.responseValue.length)
+          this.responseValue = [this.rootOptions[0].value]
+        else if (!Array.isArray(this.responseValue) && !this.responseValue)
+          this.responseValue = this.rootOptions[0].value
+      }
       setTimeout(() => this.watchValue(), 500)
     },
     'field.props.options'(newValue, oldValue) {
@@ -1130,12 +1137,7 @@ export default {
         this.listenEventCrud()//config dynamic component
         this.success = true//sucess
         //Set options if is type select
-        if (['treeSelect', 'select', 'multiSelect'].indexOf(this.field.type) != -1) {
-          if (this.field.loadOptions) {
-            await this.getOptions()
-          }//Get options
-          else if (this.field.props && this.field.props.options) this.rootOptions = this.field.props.options
-        }
+        this.setOptions()
       }
     },
     //Set default values by type
@@ -1315,6 +1317,15 @@ export default {
           resolve(true)
         }
       })
+    },
+    //Set options
+    async setOptions() {
+      if (['treeSelect', 'select', 'multiSelect'].indexOf(this.field.type) != -1) {
+        if (this.field.loadOptions) {
+          await this.getOptions()
+        }//Get options
+        else if (this.field.props && this.field.props.options) this.rootOptions = this.field.props.options
+      }
     },
     //Regex to tags
     matchTags(field) {
