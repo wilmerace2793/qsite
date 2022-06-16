@@ -46,7 +46,7 @@ class Middleware {
       //Update user data
       else this.store.dispatch('quserAuth/AUTH_UPDATE')
       //Check if should change password
-      await this.store.dispatch('quserAuth/AUTH_FORCE_PASSWORD')
+      this.store.dispatch('quserAuth/AUTH_FORCE_PASSWORD')
       //Response
       resolve(isAuthenticated)
     })
@@ -110,7 +110,13 @@ class Middleware {
 
           //Validate mode access permission
           if (appConfig.validateModeAccess && !this.store.getters['quserAuth/hasAccess'](`profile.access.${appConfig.mode}`)) {
-            this.redirectTo = {name: 'app.not.authorized'}
+            const otherWorkSpace = appConfig.mode == 'iadmin' ? 'ipanel' : 'iadmin'
+            //Validate if redirect to other workSpace
+            if (this.store.getters['quserAuth/hasAccess'](`profile.access.${otherWorkSpace}`)) {
+              helper.openExternalURL(`${this.store.state.qsiteApp.baseUrl}/${otherWorkSpace}`, false)
+            } else {
+              this.redirectTo = {name: 'app.not.authorized'}
+            }
             //this.store.dispatch('quserAuth/AUTH_LOGOUT')
           } else if (to.name == 'app.not.authorized') {//Back to home if is authorized
             this.redirectTo = {name: 'app.home'}
