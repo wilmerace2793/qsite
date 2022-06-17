@@ -530,7 +530,7 @@ export default {
           break;
         case'date':
           //Instance the mask
-          const maskDate = props.mask || "MM/DD/YYYY"
+          const maskDate = props.mask || "YYYY/MM/DD"
 
           props = {
             field: {
@@ -588,7 +588,7 @@ export default {
           break;
         case'fullDate':
           //Instance the mask
-          const maskFullDate = props.mask || "MM/DD/YYYY HH:mm"
+          const maskFullDate = props.mask || "YYYY/MM/DD HH:mm"
 
           props = {
             field: {
