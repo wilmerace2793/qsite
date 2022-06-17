@@ -977,7 +977,10 @@
         "newStatus": "New Status",
         "updateStatus": "Update Status",
         "selectRequestCategoryToForm": "Select a request category",
-        "timeElapsedToCancel": "Cancel after at"
+        "timeElapsedToCancel": "Cancel after at",
+        "newCategory": "New Category",
+        "updateCategory": "Update Category",
+        "requestableType": "Requestable Type"
       }
     },
     "page": {
@@ -2644,7 +2647,10 @@
         "newStatus": "Nuevo Estado",
         "updateStatus": "Actualizar Estado",
         "selectRequestCategoryToForm": "Selecciona una categoría para crear tu petición",
-        "timeElapsedToCancel": "Cancelar despues de"
+        "timeElapsedToCancel": "Cancelar despues de",
+        "newCategory": "Nueva Categoría",
+        "updateCategory": "Actualizar Categoría",
+        "requestableType": "Tipo de petición"
       }
     },
     "page": {
