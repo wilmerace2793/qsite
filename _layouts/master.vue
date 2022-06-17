@@ -87,6 +87,16 @@ export default {
     drawersPanel,
     footerPanel
   },
+  watch: {
+    shouldChangePassword(data) {
+      //Validate messages
+      if (data && data.shouldChangePassword) {
+        data.messages.forEach(item => {
+          this.$alert[item.type || 'info'](item)
+        })
+      }
+    }
+  },
   mounted() {
     this.$nextTick(async function () {
       this.init()
@@ -179,22 +189,15 @@ export default {
       })
       //Response
       return response
+    },
+    //Should change password state
+    shouldChangePassword() {
+      return this.$store.state.quserAuth.shouldChangePassword
     }
   },
   methods: {
     init() {
-      this.validateChangePassword()
       this.idlTime()
-    },
-    /** Check should change password*/
-    validateChangePassword() {
-      const data = this.$store.state.quserAuth.shouldChangePassword
-      //Validate messages
-      if (data.shouldChangePassword) {
-        data.messages.forEach(item => {
-          this.$alert[item.type || 'info'](item)
-        })
-      }
     },
     /** idl Time */
     idlTime() {
