@@ -8,7 +8,7 @@
     <!--Actions-->
     <div :class="`actions-content row q-gutter-${gutter} items-center justify-end items-start`">
       <!--Search-->
-      <q-input v-model="search" bg-color="white" rounded outlined dense clearable
+      <q-input v-model="search" bg-color="white" debounce="800" rounded outlined dense clearable
                :placeholder="$tr('isite.cms.label.search')" class="page-input-search"
                v-if="extraActions && extraActions.includes('search')"
                @input="$emit('search', $clone(search))">
@@ -20,12 +20,13 @@
       <div v-for="(btn, keyAction) in actions" :key="keyAction" v-if="btn.vIf != undefined ? btn.vIf : true">
         <!-- if the button is dropdown -->
         <q-btn-dropdown split v-bind="{...buttonProps}" :dropdown-icon="btn.props.icon"
-            v-if="btn.type == 'btn-dropdown'" outline
+                        v-if="btn.type == 'btn-dropdown'" outline
         >
           <q-list>
-            <q-item v-for="(item, index) in btn.items" :key="index" clickable v-close-popup @click="btn.action != undefined ? btn.action(item.type) : null">
+            <q-item v-for="(item, index) in btn.items" :key="index" clickable v-close-popup
+                    @click="btn.action != undefined ? btn.action(item.type) : null">
               <q-item-section avatar>
-                <q-avatar :icon="item.icon" />
+                <q-avatar :icon="item.icon"/>
               </q-item-section>
               <q-item-section>
                 <q-item-label>{{ item.label }}</q-item-label>
@@ -221,9 +222,11 @@ export default {
     .q-btn-dropdown
       .q-btn-dropdown--current
         display none
+
       .q-btn-dropdown__arrow-container
         border-top-left-radius: 10px;
         border-bottom-left-radius: 10px;
+
         &[aria-expanded=true]
           .q-icon
             &::before
@@ -233,10 +236,12 @@ export default {
   .q-list
     .q-item
       padding: 3px 10px 3px 3px;
+
       .q-item__section--avatar
         min-width: 50px;
         padding-right 10px
         color $primary
+
         i
           font-size 16px
 </style>
