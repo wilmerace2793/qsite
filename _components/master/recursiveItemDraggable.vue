@@ -13,9 +13,16 @@
         <!-- list -->
         <div class="row justify-between items-center q-mb-xs q-mt-xs">
           <!-- name -->
-          <div class="col-6 q-py-xs blue-green">
-            <q-icon class="cursor-pointer q-px-sm" color="blue-grey" name="fas fa-arrows-alt"/>
-            {{ item.title }}
+          <div class="col-6 row q-py-xs blue-green items-center">
+            <div class="q-px-xs" :class="{'q-py-md': item.subTitle }">
+              <q-icon class="cursor-pointer q-px-sm" color="blue-grey" name="fas fa-grip-vertical"/>
+            </div>
+            <div class="text-subtitle2 text-weight-light" :class="{'q-py-xs': item.subTitle}">
+              {{ item.title }}
+              <span v-if="!!item.subTitle" class="block text-caption">
+                {{ item.subTitle }}
+              </span>
+            </div>
           </div>
           <!-- menu actions -->
           <div class="col-6 text-right q-py-xs relative-position">
@@ -29,7 +36,9 @@
         <!-- recursive dragabble -->
         <nestedDraggable
             :class="`${item.children.length} ?: q-mb-xs`"
-            :items="item.children"/>
+            :items="item.children"
+            v-if="nested"
+        />
       </div>
     </draggable>
   </div>
@@ -51,14 +60,20 @@ export default {
     },
     deleteApi: {
       type: String
-    }
+    },
+    disabled: {
+      required: false,
+      type: Boolean,
+      default: () => false,
+    },
+    nested: {type: Boolean, default: true}
   },
   computed: {
     dragOptions() {
       return {
         animation: 200,
         group: "description",
-        disabled: false,
+        disabled: this.disabled,
         ghostClass: "ghost"
       };
     },
@@ -69,10 +84,12 @@ export default {
 <style lang="stylus">
 #recurisveItemDraggable
   .drag-group
-    margin 5px
+    margin-top 5px
+    margin-bottom 5px
     cursor move
     display block
-    padding 5px
+    padding 0 5px
     border lightgray 1px solid
     border-radius $custom-radius
+
 </style>
