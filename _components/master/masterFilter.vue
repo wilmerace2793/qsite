@@ -113,7 +113,6 @@ export default {
   },
   data() {
     return {
-      filter: this.$filter,
       tabName: 'tabForm',
       filterValues: {},
       pagination: {},
@@ -121,6 +120,11 @@ export default {
     }
   },
   computed: {
+    filter() {
+      if (this.$filter.values) this.filterValues = this.$clone(this.$filter.values)
+      if (this.$filter.pagination) this.pagination = this.$clone(this.$filter.pagination)
+      return this.$filter
+    },
     dateFields() {
       let filterDate = this.$clone(this.filterValues.date)
       let filterFields = this.$clone(this.filter.fields)
@@ -227,8 +231,6 @@ export default {
   },
   methods: {
     init() {
-      if (this.filter && this.filter.values) this.filterValues = this.$clone(this.filter.values)
-      if (this.filter && this.filter.pagination) this.pagination = this.$clone(this.filter.pagination)
       this.emitFilter()
     },
     //Emit filter

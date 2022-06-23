@@ -38,13 +38,11 @@
           <q-tooltip v-if="btn.label">{{ btn.label }}</q-tooltip>
         </q-btn>
       </div>
-
-
     </div>
     <!--Description-->
     <div v-if="description" class="ellipsis-2-lines col-12 description-content">{{ description }}</div>
     <!--Filter data-->
-    <div class="col-12" v-if="filter.hasValues">
+    <div class="col-12" v-if="filter.hasValues || Object.keys(quickFilters).length">
       <q-separator class="q-mb-sm"/>
       <div class="text-blue-grey ellipsis text-caption">
         <q-icon name="fas fa-exclamation-circle" class="q-mr-xs" color="amber" size="14px"/>
@@ -53,6 +51,11 @@
                class="q-ml-xs text-grey-7">
           {{ item.label }} {{ item.value }},
         </label>
+      </div>
+      <!-- Quick Filters-->
+      <div v-if="Object.keys(quickFilters).length" class="row q-col-gutter-md q-pt-sm">
+        <dynamic-field v-for="(field, keyField) in quickFilters" :key="keyField" :field="field"
+                       v-model="filterData[keyField]" :class="field.colClass" @input="emitFilter"/>
       </div>
     </div>
     <!-- Export Component -->
@@ -85,13 +88,17 @@ export default {
   },
   data() {
     return {
-      filter: this.$filter,
       exportParams: false,
       search: null,
-      filterReadData: {}
+      filterData: {}
     }
   },
   computed: {
+    //Return filter data
+    filter() {
+      this.filterData = this.$clone(this.$filter.values)
+      return this.$filter
+    },
     //Return params of subHeader
     params() {
       return this.$clone(this.$route.meta.subHeader || {})
@@ -176,6 +183,25 @@ export default {
       //Response
       return response
     },
+    //Quick filters
+    quickFilters() {
+      var response = {}
+      //Get quick filters
+      if (this.$q.platform.is.desktop) {
+        Object.keys(this.filter.fields).forEach(fieldName => {
+          var fieldfilter = this.filter.fields[fieldName]
+          if (fieldfilter.quickFilter) {
+            response[fieldName] = {
+              ...fieldfilter,
+              colClass: "col-12 col-md-4 col-xl-3"
+            }
+            if (!this.filterData[fieldName]) this.$set(this.filterData, fieldName, fieldfilter.value || null)
+          }
+        })
+      }
+      //Response
+      return response
+    }
   },
   methods: {
     init() {
@@ -189,6 +215,13 @@ export default {
       this.$root.$emit('page.data.refresh')
       this.$root.$emit('crud.data.refresh')
       this.$root.$emit('export.data.refresh')
+    },
+    //Emit filter
+    emitFilter() {
+      //Add Values
+      this.$filter.addValues(this.filterData)
+      //Call back
+      if (this.filter && this.filter.callBack) this.filter.callBack(this.filter)
     }
   }
 }
@@ -196,6 +229,8 @@ export default {
 <style lang="stylus">
 #pageActionscomponent
   #titleCrudTable
+    font-size 18px
+
   .title-content
     @media screen and (max-width: $breakpoint-md)
       text-align center
