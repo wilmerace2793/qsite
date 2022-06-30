@@ -1069,7 +1069,9 @@
           "customerRepresentativeSignature": "Customer Representative Signature",
           "AgiRepresentativeSignature": "AGI Representative Signature",
           "updateWorkOrder": "Update Work Order",
-          "newWorkOrder": "New Work Order"
+          "newWorkOrder": "New Work Order",
+          "cargoTotalKilosUnloaded": "Kilos Unloaded",
+          "cargoTotalKilosLoaded": "Kilos Loaded"
         },
         "label": {
           "scheduled": "scheduled",

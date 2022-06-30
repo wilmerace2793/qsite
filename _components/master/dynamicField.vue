@@ -145,6 +145,7 @@
                   @clear="val => field.props.multiple ? responseValue = [] : ''">
           <!--No options slot-->
           <template v-slot:no-option v-if="!fieldProps.hideDropdownIcon">
+            <slot name="before-options" />
             <q-item>
               <q-item-section class="text-grey">
                 {{ $tr('isite.cms.message.notFound') }}
