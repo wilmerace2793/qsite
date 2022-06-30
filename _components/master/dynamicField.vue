@@ -1425,6 +1425,9 @@ export default {
           this.options = this.$helper.filterOptions(val, this.rootOptions, this.responseValue)
         })
       }
+
+      //Emit filter Value
+      this.$emit("filter", val)
     }
   }
 }
