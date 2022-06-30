@@ -1536,7 +1536,8 @@
           "ready": "Ready",
           "noRegistered": "You are not registered yet",
           "hintFilterByQuery": "Type 3 or more characters to search for options",
-          "invalidFormat": "Invalid format"
+          "invalidFormat": "Invalid format",
+          "specialCharactersAreNotAllowed": "Special characters are not allowed"
         },
         "form": {
           "id": "ID",
@@ -3102,7 +3103,8 @@
           "ready": "Todo está listo",
           "noRegistered": "Aún no estás registrado",
           "hintFilterByQuery": "Escribe 3 o más caracteres para buscar opciones",
-          "invalidFormat": "Formato invalido"
+          "invalidFormat": "Formato invalido",
+          "specialCharactersAreNotAllowed": "No se permiten caracteres especiales"
         },
         "form": {
           "id": "ID",
