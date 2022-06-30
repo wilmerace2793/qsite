@@ -175,6 +175,14 @@
           <template v-slot:prepend v-if="fieldProps.icon">
             <q-icon :name="fieldProps.icon" size="18px" :color="fieldProps.color"/>
           </template>
+          <!-- Before Options -->
+          <template slot="before-options">
+            <slot name="before-options"></slot>
+          </template>
+          <!-- After Options -->
+          <template slot="after-options">
+            <slot name="after-options"></slot>
+          </template>
         </q-select>
         <!--tree select-->
         <q-field v-model="responseValue" v-if="loadField('treeSelect')" :label="fieldLabel"
@@ -393,7 +401,7 @@ export default {
     },
     'field.props.options'(newValue, oldValue) {
       if (JSON.stringify(newValue) != JSON.stringify(oldValue))
-        if (typeof newValue == 'object') this.rootOptions = newValue
+        this.getOptions()
     },
     'field.loadOptions': {
       deep: true,
@@ -1261,11 +1269,11 @@ export default {
     getOptions(query = false) {
       return new Promise((resolve, reject) => {
         let loadOptions = this.$clone(this.field.loadOptions || {})
+        let defaultOptions = this.field.props?.options || []//Instance default options
         this.loading = true//Open loading
         //==== Request options
         if (loadOptions.apiRoute) {
           this.rootOptions = []//Reset options
-          let defaultOptions = this.field.props?.options || []//Instance default options
           let fieldSelect = {label: 'title', id: 'id'}
 
           let params = {//Params to request
@@ -1309,8 +1317,8 @@ export default {
           })
           //==== Delayed loading options
         } else if (loadOptions.delayed) {
-          loadOptions.delayed.then(response => {
-            this.rootOptions = this.$clone(response)
+          loadOptions.delayed().then(response => {
+            this.rootOptions = this.$clone([...defaultOptions, ...response])
             this.loading = false
             resolve(true)
           }).catch(error => {
@@ -1318,6 +1326,7 @@ export default {
             resolve(true)
           })
         } else {
+          this.rootOptions = this.$clone(defaultOptions)
           this.loading = false
           resolve(true)
         }
