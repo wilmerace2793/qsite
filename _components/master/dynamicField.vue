@@ -1231,11 +1231,15 @@ export default {
         if (Array.isArray(propValue)) {
           this.responseValue = []
           propValue.forEach(item => {
-            let value = (typeof item == 'object') ? item.id : item
-            this.responseValue.push(value.toString())
+            if (this.fieldProps.emitValue) {
+              let value = (typeof item == 'object') ? item.id : item
+              this.responseValue.push(value.toString())
+            } else {
+              this.responseValue.push(item)
+            }
           })
         } else {
-          this.responseValue = propValue ? this.$clone(propValue.toString()) : propValue
+          this.responseValue = propValue ? this.$clone(this.fieldProps.emitValue ? propValue.toString() : propValue) : propValue
         }
       }
     },
