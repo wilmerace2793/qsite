@@ -298,7 +298,7 @@
                 <q-icon :name="fieldProps.icon" :color="fieldProps.color || 'info'" size="24px"/>
               </div>
               <!--Description-->
-              <div class="content__right">
+              <div class="content__right full-width">
                 <!--message-->
                 <div v-html="fieldProps.message" class="content__message text-blue-grey"/>
                 <!--separator-->

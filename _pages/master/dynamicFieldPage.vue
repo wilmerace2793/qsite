@@ -30,6 +30,24 @@ export default {
         }
       }
       return {
+        banner: {
+          type: 'banner',
+          props: {
+            color: 'info',
+            icon: 'fas fa-exclamation-triangle',
+            message: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab ad aperiam cupiditate deleniti dolore, dolores explicabo, impedit labore molestiae optio pariatur placeat quis similique soluta unde? Expedita nesciunt obcaecati quia!",
+            actions: [
+              {
+                props: {
+                  label: this.$tr('isite.cms.label.home')
+                },
+                action: () => {
+                  this.$helper.openExternalURL(this.$store.state.qsiteApp.baseUrl, true)
+                }
+              }
+            ]
+          }
+        },
         crud: {
           ...globalData,
           value: null,
@@ -75,7 +93,14 @@ export default {
         select: {
           ...globalData,
           type: 'select',
-          props: {label: 'type: select', options: []}
+          props: {
+            label: 'type: select',
+            options: []
+          },
+          loadOptions: {
+            apiRoute: 'apiRoutes.quser.users',
+            select: {label: 'fullName', id: 'id'}
+          }
         },
         treeSelect: {
           ...globalData,
