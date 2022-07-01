@@ -202,7 +202,7 @@ class Helper {
           && item !== 'settings'
           && item !== 'permissions') {
           //If value is object, also convert value
-          if ((typeof itemValue === 'object' && itemValue !== null)) {
+          if ((typeof itemValue === 'object' && !Array.isArray(itemValue) && itemValue !== null)) {
             itemValue = convertObject(dataObject[item])
           }
           //Add to response new Key with Value
