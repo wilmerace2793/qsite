@@ -1102,7 +1102,8 @@
           "flightMessageInBound": "Does the inbound data belong to the outbound?",
           "flightMessageOutBound": "Does the outbound data belong to the inbound?",
           "flightMessage": "Are you sure this is a correct flight number?",
-          "errorFlightSelected": "You must select a flight"
+          "errorFlightSelected": "You must select a flight",
+          "createNewCustomer": "Create new customer"
         },
         "sidebar": {
           "aircraftType": "Aircraft type",
@@ -1116,7 +1117,11 @@
           "rampInfo": "Ramp"
         },
         "message": {
-          "servicesMessage": "At least one service is required"
+          "servicesMessage": "At least one service is required",
+          "selectedCustomerWithContract": "You selected a customer with contract",
+          "selectedCustomerWithoutContract": "You selected a customer without a contract",
+          "requestNewCustomer": "You request a new customer, the Work Order will be created as a Ad Hoc",
+          "orderaddNewrecord": "In order to add a new record it is necessary to write in the customer field"
         }
       }
     },
