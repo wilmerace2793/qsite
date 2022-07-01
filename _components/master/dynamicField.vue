@@ -1270,8 +1270,9 @@ export default {
     getOptions(query = false) {
       return new Promise((resolve, reject) => {
         let loadOptions = this.$clone(this.field.loadOptions || {})
-        let defaultOptions = this.field.props?.options || []//Instance default options
+        let defaultOptions = this.$clone(this.field.props?.options || [])//Instance default options
         this.loading = true//Open loading
+
         //==== Request options
         if (loadOptions.apiRoute) {
           this.rootOptions = []//Reset options
@@ -1320,6 +1321,7 @@ export default {
         } else if (loadOptions.delayed) {
           loadOptions.delayed().then(response => {
             this.rootOptions = this.$clone([...defaultOptions, ...response])
+            
             this.loading = false
             resolve(true)
           }).catch(error => {
