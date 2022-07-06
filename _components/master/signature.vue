@@ -6,21 +6,25 @@
       <!--Actions-->
       <div id="btnActions">
         <!--Clear-->
-        <q-btn icon="delete" size="sm" flat round color="blue-grey" @click="clear()"/>
+        <q-btn icon="delete" size="sm" flat round color="blue-grey" @click="clear()" :disable="readonly"/>
         <!--Undo-->
-        <q-btn icon="undo" size="sm" flat round color="blue-grey" @click="undo()"/>
+        <q-btn icon="undo" size="sm" flat round color="blue-grey" @click="undo()" :disable="readonly"/>
         <!--fullscreen-->
         <q-btn :icon="isFullscreen ? 'fas fa-compress' : 'fas fa-expand'"
                size="sm"
                flat round
                color="blue-grey"
+               :disable="readonly"
                @click="toggleFullscreen"/>
       </div>
       <q-separator class="q-mb-sm"/>
       <!--Signature component-->
       <div id="vueSiganture" class="full-width">
         <!--Component-->
-        <VueSignaturePad class="bg-grey-2" ref="signature" :options="options" :width="width" :height="height"/>
+        <VueSignaturePad v-if="!readonly" class="bg-grey-2" ref="signature" :options="options" :width="width" :height="height"/>
+        <div v-else class="bg-grey-2">
+          <img :src="value" alt="" srcset="" :width="width" :height="height"></img>
+        </div>
       </div>
       <!---Close fullscreen-->
       <div v-if="isFullscreen" class="text-center">
@@ -41,7 +45,11 @@ export default {
     width: {default: '100%'},
     height: {default: '150px'},
     emitFile: {type: Boolean, default: false},
-    label: {type: String}
+    label: {type: String},
+    readonly: {
+      type: Boolean,
+      default: () => false,
+    }
   },
   watch: {
     value() {
@@ -62,6 +70,7 @@ export default {
   },
   methods: {
     init() {
+      console.log(this);
       this.model = this.value
       this.$refs.signature.fromDataURL(this.value);
       this.options.images = [{src: this.model, x: 0, y: 0}]
