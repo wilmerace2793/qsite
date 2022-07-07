@@ -47,7 +47,8 @@ export default {
     'qchat',
     'qcredit',
     'qfly',
-    'qramp'
+    'qramp',
+    'qsetupagione'
   ],
   //Cache
   saveCache: {
