@@ -133,7 +133,7 @@
           <template v-slot:append>
             <q-icon name="fas fa-clock" class="cursor-pointer" color="blue-grey">
               <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
-                <q-time v-model="responseValue" :format24h="false" @input="() => $refs.qTimeProxy.hide()"
+                <q-time v-model="responseValue" :format24h="fieldProps.field.format24h" @input="() => $refs.qTimeProxy.hide()"
                         v-bind="fieldProps.slot"/>
               </q-popup-proxy>
             </q-icon>
