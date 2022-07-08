@@ -1492,6 +1492,8 @@ export default {
   border 2px solid $info
   padding 10px 15px
   border-radius $custom-radius-items
+  position absolute !important
+  z-index 10 !important
 
   #contentHelp
     max-width 20em
