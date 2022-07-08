@@ -77,7 +77,7 @@
         <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('search')"
                  v-bind="fieldProps">
           <template v-slot:append>
-            <q-icon name="search"/>
+            <q-icon name="search" class="cursor-pointer"  @click="$emit('enter')" />
           </template>
         </q-input>
         <!--Date-->
