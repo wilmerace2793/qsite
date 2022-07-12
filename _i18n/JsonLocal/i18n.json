@@ -1125,6 +1125,19 @@
         }
       }
     },
+    "isetup": {
+      "cms": {
+        "form": {},
+        "label":{},
+        "sidebar":{
+          "setupInfo": "Setup",
+          "companies": "Companies",
+          "stations": "stations",
+          "buildings": "buildings"
+        },
+        "message":{}
+      }
+    },
     "isite": {
       "cms": {
         "sidebar": {
@@ -2693,6 +2706,19 @@
           "workOrders": "Órdenes de trabajo",
           "rampInfo": "Rampa"
         }
+      }
+    },
+    "isetup": {
+      "cms": {
+        "form": {},
+        "label":{},
+        "sidebar":{
+          "setupInfo": "Setup",
+          "companies": "Compañias",
+          "stations": "Estaciones",
+          "buildings": "Edificios"
+        },
+        "message":{}
       }
     },
     "isite": {

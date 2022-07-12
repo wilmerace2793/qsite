@@ -111,6 +111,9 @@ export default {
 .master-dialog
   .master-dialog__body
     max-height calc(100vh - 240px)
+    @media screen and (max-width: $breakpoint-md)
+      max-height calc(100vh - 150px)
+
 
 .master-dialog-custom
   .q-dialog__inner
