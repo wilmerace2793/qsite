@@ -1007,7 +1007,7 @@
           "tailNumber": "TailNumber",
           "fligthStatus": "Fligth status",
           "flightDate": "Fligth date",
-          "adHoc":"Ad-Hoc",
+          "adHoc": "Ad-Hoc",
           "estimatedDepartureTime": "Estimated Departure Time",
           "estimatedArrivalTime": "Estimated Arrival Time",
           "actualDepartureTime": "Actual Departure Time",
@@ -1693,7 +1693,17 @@
         "right": "Right",
         "bottomLeft": "Bottom-Left",
         "bottom": "Bottom",
-        "bottomRight": "Bottom-Right"
+        "bottomRight": "Bottom-Right",
+        "selectedRows": "{num} selected rows"
+      }
+    },
+    "setupagione": {
+      "cms": {
+        "newContractRule": "New contract rule",
+        "updateContractRule": "Update contract rule",
+        "sidebar": {
+          "contractRules": "Contract rules"
+        }
       }
     }
   },
@@ -3274,7 +3284,17 @@
         "right": "Derecha",
         "bottomLeft": "Abajo-Izquierda",
         "bottom": "Abajo",
-        "bottomRight": "Abajo-Derecha"
+        "bottomRight": "Abajo-Derecha",
+        "selectedRows": "{num} Filas seleccionadas"
+      }
+    },
+    "setupagione": {
+      "cms": {
+        "newContractRule": "Nueva regla de contrato",
+        "updateContractRule": "Actualizar regla de contrato",
+        "sidebar": {
+          "contractRules": "Reglas de contrato"
+        }
       }
     }
   }
