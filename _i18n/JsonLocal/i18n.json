@@ -1132,8 +1132,9 @@
         "sidebar":{
           "setupInfo": "Setup",
           "companies": "Companies",
-          "stations": "stations",
-          "buildings": "buildings"
+          "stations": "Stations",
+          "buildings": "Buildings",
+          "customers": "Customers"
         },
         "message":{}
       }
@@ -2726,7 +2727,8 @@
           "setupInfo": "Setup",
           "companies": "Compañias",
           "stations": "Estaciones",
-          "buildings": "Edificios"
+          "buildings": "Edificios",
+          "customers": "Clientes"
         },
         "message":{}
       }
