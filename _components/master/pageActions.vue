@@ -10,7 +10,7 @@
       <!--Search-->
       <q-input v-model="search" bg-color="white" debounce="800" rounded outlined dense clearable
                :placeholder="$tr('isite.cms.label.search')" class="page-input-search"
-               v-if="extraActions && extraActions.includes('search')"
+               v-if="extraActions && extraActions.includes('search') && searchAction"
                @input="$emit('search', $clone(search))">
         <template v-slot:prepend>
           <q-icon name="search"/>
@@ -77,7 +77,8 @@ export default {
     gutter: {type: String, default: 'sm'},
     size: {type: String, default: 'small'},
     extraActions: {type: Array},
-    excludeActions: {default: false}
+    excludeActions: {default: false},
+    searchAction: {default: true},
   },
   components: {masterExport},
   watch: {},
