@@ -254,8 +254,6 @@ export default {
           }
         }
 
-        return console.warn(requestParams)
-
         //Request
         this.$crud.post(apiRoute, requestParams).then(response => {
           this.$alert.info(this.$tr('isite.cms.messages.reportInProgress', {fileName: this.params.fileName}))
