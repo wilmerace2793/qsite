@@ -1,60 +1,58 @@
 <template>
   <master-modal v-model="showModal" icon="fas fa-file-download" width="380px" :loading="loading"
-                :title="modalTitle" @hide="reset()" @show="init()">
-    <div class="relative-position" style="max-width: 350px">
+                :title="modalTitle" @hide="reset()" @show="init()" custom-position>
+    <div class="relative-position">
       <div class="row q-col-gutter-md">
         <!--Generate new report-->
         <div id="newReportContent" class="col-12" v-if="!customExportData">
-          <div class="box box-auto-height">
-            <!--Title-->
-            <div class="text-blue-grey q-mb-sm">
-              <b>{{ $tr('isite.cms.messages.newReport') }}</b>
-            </div>
-            <!--Text help Item-->
-            <div class="text-caption q-mb-xs" v-if="exportItem && paramsItem.item"
-                 v-html="$tr('isite.cms.messages.newExportItemHelpText', {id: paramsItem.item.id})"></div>
-            <!--Text help-->
-            <div class="text-caption q-mb-xs" v-else
-                 v-html="$tr('isite.cms.messages.newExportHelpText', {pageTitle: $route.meta.title})"></div>
-            <!--Actions-->
-            <div class="text-right q-mt-md">
-              <!--Extra filter fields-->
-              <q-form autocorrect="off" autocomplete="off" ref="formContent"
-                      class="row full-width"
-                      @submit="newReport()" @validation-error="$alert.error($tr('isite.cms.message.formInvalid'))">
-                <!--Fields-->
-                <dynamic-field v-for="(field, keyField) in (params.exportFields || [])" :key="keyField"
-                               :field="field" class="col-12" v-model="filters[keyField]"/>
-                <!--Submit-->
-                <div class="text-right col-12">
-                  <q-btn :label="$tr('isite.cms.label.create')" color="green" rounded unelevated size="11px"
-                         padding="xs sm" type="submit"/>
-                </div>
-              </q-form>
-            </div>
+          <!--Title-->
+          <div class="text-blue-grey q-mb-sm">
+            <b>{{ $tr('isite.cms.messages.newReport') }}</b>
+          </div>
+          <!--Text help Item-->
+          <div class="text-caption q-mb-xs" v-if="exportItem && paramsItem.item"
+               v-html="$tr('isite.cms.messages.newExportItemHelpText', {id: paramsItem.item.id})"></div>
+          <!--Text help-->
+          <div class="text-caption q-mb-xs" v-else
+               v-html="$tr('isite.cms.messages.newExportHelpText', {pageTitle: pageTitle})"></div>
+          <!--Actions-->
+          <div class="text-right q-mt-md">
+            <!--Extra filter fields-->
+            <q-form autocorrect="off" autocomplete="off" ref="formContent" class="row full-width"
+                    @submit="newReport()" @validation-error="$alert.error($tr('isite.cms.message.formInvalid'))">
+              <!--Fields-->
+              <dynamic-field v-for="(field, keyField) in filterFields" :key="keyField"
+                             :field="field" class="col-12" v-model="filters[keyField]"/>
+              <!--Submit-->
+              <div class="text-right col-12">
+                <q-btn :label="$tr('isite.cms.label.create')" color="green" rounded unelevated size="13px"
+                       padding="xs sm" type="submit"/>
+              </div>
+            </q-form>
           </div>
         </div>
         <!--Last Report information-->
-        <div id="lastReportContent" v-if="fileExport && fileExport.path" class="q-mb-md col-12">
-          <div class="box box-auto-height">
+        <div id="lastReportContent" v-if="fileExport.length" class="q-mb-md col-12">
+          <div v-for="(file, keyFile) in fileExport" :key="keyFile">
+            <q-separator class="q-my-md"/>
             <!--Title-->
             <div class="text-blue-grey q-mb-sm">
-              <b>{{ $tr('isite.cms.messages.lastReport') }}</b>
+              <b>{{ $tr('isite.cms.messages.lastReport') }}{{ file.fileFormat ? ` (${file.fileFormat})` : '' }}</b>
             </div>
             <!--Date-->
             <div class="text-caption">
               <label class="text-blue-grey">{{ $tr('isite.cms.label.date') }}:</label>
-              {{ $trd(fileExport.lastModified, {type: 'long'}) }}
+              {{ $trd(file.lastModified, {type: 'long'}) }}
             </div>
             <!--Size-->
             <div class="text-caption">
               <label class="text-blue-grey">{{ $tr('isite.cms.label.size') }}:</label>
-              {{ $helper.formatBytes(fileExport.size) }}
+              {{ $helper.formatBytes(file.size) }}
             </div>
             <!--Action-->
             <div class="text-right q-mt-md">
-              <q-btn :label="$tr('isite.cms.label.download')" color="green" rounded unelevated size="11px" padding="xs sm"
-                     @click="$helper.downloadFromURL(fileExport.path)"/>
+              <q-btn :label="$tr('isite.cms.label.download')" color="green" rounded unelevated size="13px"
+                     padding="xs sm" @click="$helper.downloadFromURL(file.path)"/>
             </div>
           </div>
         </div>
@@ -92,11 +90,16 @@ export default {
       paramsItem: {},
       customExportData: false,
       showModal: false,
-      fileExport: false,
+      fileExport: [],
       filters: {}
     }
   },
   computed: {
+    //Page title
+    pageTitle() {
+      const useLegacyStructure = parseInt(this.$store.getters['qsiteApp/getSettingValueByName']('isite::legacyStructureCMS') || 0)
+      return useLegacyStructure ? this.$tr(this.$route.meta.title) : this.$route.meta.title
+    },
     //Return params of subHeader
     routeParams() {
       let response = false
@@ -123,9 +126,32 @@ export default {
       if (this.exportItem)
         response += `${this.$tr('isite.cms.label.record')} ID: ${this.paramsItem.item ? this.paramsItem.item.id : ''}`
       else
-        response += `${this.$route.meta.title}`
+        response += this.pageTitle
       //Response
       return response
+    },
+    //filter fields
+    filterFields() {
+      //Instance default filter fields
+      var fields = (this.params.exportFields || {})
+
+      //Add format fields
+      if (this.params.formats && Array.isArray(this.params.formats)) {
+        fields.fileFormat = {
+          value: this.params.formats[0],
+          type: 'select',
+          props: {
+            label: this.$tr('isite.cms.label.format'),
+            readonly: this.params.formats.length >= 2 ? false : true,
+            options: this.params.formats.map(format => {
+              return {label: format, value: format}
+            })
+          }
+        }
+      }
+
+      //Response
+      return fields
     }
   },
   methods: {
@@ -202,7 +228,7 @@ export default {
 
         //Request
         this.$crud.index('apiRoutes.qsite.export', requestParams).then(response => {
-          this.fileExport = response.data
+          this.fileExport = Array.isArray(response.data) ? response.data : [response.data]
           resolve(response.data)
         }).catch(error => {
           resolve(error)
@@ -212,19 +238,26 @@ export default {
     //Request new report
     newReport() {
       return new Promise((resolve, reject) => {
-        this.loading = true
+        //this.loading = true
+        //Instance de apiRoute
+        const apiRoute = this.params.apiRoute || 'apiRoutes.qsite.export'
 
         //Request params
         let requestParams = {
-          exportParams: this.exportItem ? {...this.params, ...(this.paramsItem.exportParams || {})} : this.params,
+          exportParams: {
+            ...(this.exportItem ? {...this.params, ...(this.paramsItem.exportParams || {})} : this.params),
+            fileFormat: this.filters.fileFormat
+          },
           filter: {
             ...(this.exportItem ? (this.paramsItem.filter || {}) : (this.$filter ? this.$filter.values : {})),
             ...this.filters
           }
         }
 
+        return console.warn(requestParams)
+
         //Request
-        this.$crud.post('apiRoutes.qsite.export', requestParams).then(response => {
+        this.$crud.post(apiRoute, requestParams).then(response => {
           this.$alert.info(this.$tr('isite.cms.messages.reportInProgress', {fileName: this.params.fileName}))
           this.showModal = false
         }).catch(error => {
@@ -246,7 +279,7 @@ export default {
     reset() {
       this.loading = false
       this.customExportData = false
-      this.fileExport = false
+      this.fileExport = []
       this.filters = {}
     }
   }
