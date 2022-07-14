@@ -1125,6 +1125,20 @@
         }
       }
     },
+    "isetup": {
+      "cms": {
+        "form": {},
+        "label":{},
+        "sidebar":{
+          "setupInfo": "Setup",
+          "companies": "Companies",
+          "stations": "Stations",
+          "buildings": "Buildings",
+          "customers": "Customers"
+        },
+        "message":{}
+      }
+    },
     "isite": {
       "cms": {
         "sidebar": {
@@ -2703,6 +2717,20 @@
           "workOrders": "Órdenes de trabajo",
           "rampInfo": "Rampa"
         }
+      }
+    },
+    "isetup": {
+      "cms": {
+        "form": {},
+        "label":{},
+        "sidebar":{
+          "setupInfo": "Setup",
+          "companies": "Compañias",
+          "stations": "Estaciones",
+          "buildings": "Edificios",
+          "customers": "Clientes"
+        },
+        "message":{}
       }
     },
     "isite": {

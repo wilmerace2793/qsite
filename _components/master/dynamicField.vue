@@ -25,8 +25,9 @@
                  :style="'margin:'+helpLoad.margin"
                  round color="info"
                  icon="fas fa-info"
-                 unelevated>
-            <q-menu id="dynamicFieldMenuHelp" anchor="top right" self="top right">
+                 unelevated
+            >
+            <q-menu id="dynamicFieldMenuHelp" v-model="tooltip" anchor="top right" self="top right">
               <!--actions-->
               <div class="row justify-between items-center">
                 <q-icon name="fas fa-info" color="info"/>
@@ -424,7 +425,8 @@ export default {
       loading: false,
       fieldKey: this.$uid(),
       responseValue: null,//value to response
-      showPassword: false,//to show password
+      showPassword: false,//to show password,
+      tooltip: false,
       options: [],//Options
       rootOptions: [],//Options
       rootOptionsData: [],//Options
