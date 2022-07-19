@@ -1134,7 +1134,8 @@
           "companies": "Companies",
           "stations": "Stations",
           "buildings": "Buildings",
-          "customers": "Customers"
+          "customers": "Customers",
+          "costCenters": "Cost Centers"
         },
         "message":{}
       }
@@ -2728,7 +2729,8 @@
           "companies": "Compañias",
           "stations": "Estaciones",
           "buildings": "Edificios",
-          "customers": "Clientes"
+          "customers": "Clientes",
+          "costCenters": "Centros de costo"
         },
         "message":{}
       }
