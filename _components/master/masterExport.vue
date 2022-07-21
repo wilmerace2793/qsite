@@ -4,7 +4,7 @@
     <div class="relative-position">
       <div class="row q-col-gutter-md">
         <!--Generate new report-->
-        <div id="newReportContent" class="col-12" v-if="!customExportData">
+        <div id="newReportContent" class="col-12" v-if="!customExportData && allowCreation">
           <!--Title-->
           <div class="text-blue-grey q-mb-sm">
             <b>{{ $tr('isite.cms.messages.newReport') }}</b>
@@ -152,6 +152,10 @@ export default {
 
       //Response
       return fields
+    },
+    //Allow Downloads from custom config
+    allowCreation(){
+      return this.params.allowCreation !== undefined ? this.params.allowCreation : true
     }
   },
   methods: {
