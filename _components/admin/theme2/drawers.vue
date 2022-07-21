@@ -80,7 +80,7 @@ export default {
       logo: this.$store.state.qsiteApp.logo,
       miniState: this.windowSize == 'mobile' ? false : true,
       drawer: {
-        menu: this.windowSize == 'mobile' ? false : true,
+        menu: false,
         config: false,
         chat: false,
         filter: false,
@@ -113,6 +113,14 @@ export default {
     versionText() {
       return 'v' + config('app.version')
     },
+    openMenu: {
+      get() {
+        return this.drawer.menu
+      },
+      set(value) {
+        this.drawer.menu = value;
+      }
+    },    
   },
   methods: {
     //init
@@ -124,6 +132,7 @@ export default {
         this.windowHeight = window.innerHeight
         this.windowWith = window.innerWidth
       })
+      this.openMenu = this.windowSize == 'mobile' ? false : true;
     },
     //contrast color alter
     contrast() {
@@ -158,6 +167,7 @@ export default {
       //Toogle drawer
       if (drawerName == 'menu') {
         if (this.windowSize == 'mobile') {
+          console.log('ingreso');
           this.miniState = false
           this.drawer.menu = !this.drawer.menu
         } else {
