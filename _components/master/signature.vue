@@ -70,7 +70,6 @@ export default {
   },
   methods: {
     init() {
-      console.log(this);
       this.model = this.value
       this.$refs.signature.fromDataURL(this.value);
       this.options.images = [{src: this.model, x: 0, y: 0}]
