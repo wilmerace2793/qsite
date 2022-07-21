@@ -60,7 +60,7 @@
         <q-card-section class="row items-center no-wrap q-pa-none">
           <q-list separator class="full-width" v-close-popup>
             <!--Go to site action-->
-            <q-item clickable v-ripple @click.native="$helper.openExternalURL($store.state.qsiteApp.baseUrl)">
+            <q-item v-if="showGoToSiteButton" clickable v-ripple @click.native="$helper.openExternalURL($store.state.qsiteApp.baseUrl)">
               <q-item-section avatar>
                 <q-icon color="primary" name="far fa-eye"/>
               </q-item-section>
@@ -136,6 +136,9 @@ export default {
     }
   },
   computed: {
+    showGoToSiteButton() {
+      return this.$store.getters['qsiteApp/getSettingValueByName']('isite::showGoToSiteButton') || false;
+    },
     quserState() {
       return this.$store.state.quserAuth
     },

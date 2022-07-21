@@ -84,6 +84,9 @@ export default {
     params() {
       return this.$clone(this.$route.meta.subHeader || {})
     },
+    showGoToSiteButton() {
+      return this.$store.getters['qsiteApp/getSettingValueByName']('isite::showGoToSiteButton') || false;
+    },
     //Site Actions
     actions() {
       //Default buttons props
@@ -108,20 +111,21 @@ export default {
       return {
         bottons: [
           //Go To Site
-          // {
-          //   name: 'goToSite',
-          //   label: this.$tr('isite.cms.configList.goToSite'),
-          //   props: {
-          //     ...defaultButtonProps,
-          //     label: this.$tr('isite.cms.showSite'),
-          //     type: 'a',
-          //     href: goToSiteUrl,
-          //     target: '_blank',
-          //     round: false,
-          //     rounded: true,
-          //     padding: 'xs md'
-          //   }
-          // },
+          {
+             vIf: this.showGoToSiteButton,
+             name: 'goToSite',
+             label: this.$tr('isite.cms.configList.goToSite'),
+             props: {
+               ...defaultButtonProps,
+               label: this.$tr('isite.cms.showSite'),
+               type: 'a',
+               href: goToSiteUrl,
+               target: '_blank',
+               round: false,
+               rounded: true,
+               padding: 'xs md'
+             }
+          },
           //checking
           {
             name: 'checking',
