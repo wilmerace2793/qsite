@@ -189,7 +189,6 @@ class Helper {
 
   //Convert object keys to snake_case
   toSnakeCase(object) {
-    console.warn(object)
     //function recursive to loop all items from object
     let convertObject = (dataObject) => {
       let response = {}//Object to save fields vonverted
