@@ -189,6 +189,7 @@ class Helper {
 
   //Convert object keys to snake_case
   toSnakeCase(object) {
+    console.warn(object)
     //function recursive to loop all items from object
     let convertObject = (dataObject) => {
       let response = {}//Object to save fields vonverted
@@ -202,8 +203,12 @@ class Helper {
           && item !== 'settings'
           && item !== 'permissions') {
           //If value is object, also convert value
-          if ((typeof itemValue === 'object' && !Array.isArray(itemValue) && itemValue !== null)) {
-            itemValue = convertObject(dataObject[item])
+          if ((typeof itemValue === 'object' && itemValue !== null)) {
+            if (Array.isArray(itemValue)) {
+              itemValue = itemValue.map(item => (typeof item == 'object') ? convertObject(item) : item)
+            } else itemValue = convertObject(dataObject[item])
+
+            //itemValue = convertObject(dataObject[item])
           }
           //Add to response new Key with Value
           response[this.convertStringToSnakeCase(item)] = (itemValue !== undefined) ? itemValue : null
@@ -517,7 +522,7 @@ class Helper {
   }
 
   //Return local baseUrl
-  getBaseURl(baseUrl = false){
+  getBaseURl(baseUrl = false) {
     let tagsToParceHost = ['http://', 'https://', ':8080', ':3000', 'www.']
     //Get base url
     let rootHost = baseUrl || window.location.host
