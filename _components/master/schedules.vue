@@ -104,7 +104,7 @@ export default {
       modal: {
         show: false
       },
-      dayTest: false
+      dayTest: false,
     }
   },
   computed: {
@@ -120,7 +120,7 @@ export default {
             this.dayEdit = this.$clone(this.schedule.find(day => day.iso == item.iso))
             //Change schedule to array
             if (!Array.isArray(this.dayEdit.schedules)) this.dayEdit.schedules = [
-              {from: this.currentDate + ' 08:00', to: this.currentDate + ' 10:00'}
+              {from: '08:00', to: '10:00'}
             ]
             //Open dialog
             this.modal.show = true
@@ -162,7 +162,7 @@ export default {
               outline : true
             },
             action: () => {
-              this.dayEdit.schedules.push({from: this.currentDate + ' 08:00', to: this.currentDate + ' 10:00'})
+              this.dayEdit.schedules.push({from: '08:00', to: '10:00'})
             }
           },
           {
@@ -187,7 +187,6 @@ export default {
           withFullDate: true,
           props: {
             label: this.$tr('isite.cms.label.since'),
-            mask: "YYYY-MM-DD HH:mm"
           }
         },
         toHour: {
@@ -195,7 +194,6 @@ export default {
           withFullDate: true,
           props: {
             label: this.$tr('isite.cms.label.until'),
-            mask: "YYYY-MM-DD HH:mm"
           }
         }
       }
@@ -210,17 +208,18 @@ export default {
     emitResponse() {
       let transformedSchedule = []
       let schedule = this.$clone(this.schedule)
-
       //Transform data to schedules
       Object.values(this.schedule).forEach((day, dayKey) => {
         if (Array.isArray(day.schedules)) {
           day.schedules.forEach((item, keyItem) => {
             //Transformed
+            const from = this.parserDate(item.from);
+            const to = this.parserDate(item.to);
             transformedSchedule.push({
               iso: day.iso,
               name: day.name,
-              startTime: this.$moment(item.from).format('HH:mm:00'),
-              endTime: this.$moment(item.to).format('HH:mm:00'),
+              startTime: from.format('HH:mm:00'),
+              endTime: to.format('HH:mm:00'),
             })
           })
         } else {
@@ -234,9 +233,28 @@ export default {
           }
         }
       })
-
       this.$emit('converted', this.$clone(transformedSchedule))//Emit response
-      this.$emit('input', this.$clone(schedule))//Emit response
+      const scheduleClone = this.mapSchedule(schedule);
+      this.$emit('input', scheduleClone)//Emit response
+    },
+    parserDate(date) {
+       return this.$moment(date).isValid() ? this.$moment(date) : this.$moment(this.currentDate + ' ' + date);
+    },
+    mapSchedule(data) {
+      let schedule = this.$clone(data);
+      schedule.forEach(item => {
+        if(item.schedules != 1) {
+          item.schedules = item.schedules.map((item) => {
+             const from = this.parserDate(item.from).format('YYYY-MM-DD HH:mm');
+             const to = this.parserDate(item.to).format('YYYY-MM-DD HH:mm');
+             return {
+              from,
+              to,
+             }
+          })
+        }
+      });
+      return schedule;
     }
   }
 }
