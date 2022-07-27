@@ -45,10 +45,7 @@ export default {
     'qauction',
     'qsite',
     'qchat',
-    'qcredit',
-    'qfly',
-    'qramp',
-    'qsetupagione'
+    'qcredit'
   ],
   //Cache
   saveCache: {
