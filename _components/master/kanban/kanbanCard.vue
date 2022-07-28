@@ -10,6 +10,7 @@
       tw-border
       tw-border-white
       tw-my-2
+      tw-mx-2
     "
   >
     <div class="tw-flex tw-justify-between">
