@@ -43,27 +43,32 @@
                   <div v-for="(field, key) in block.fields" :key="key" v-if="field.type != 'hidden'"
                        :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)">
                     <!--fake field-->
-                    <dynamic-field v-if="field.fakeFieldName" :field="field" :key="key" :language="locale.language"
-                                   v-model="locale.formTemplate[field.fakeFieldName][field.name || key]"
-                                   :item-id="field.fieldItemId"/>
-                    <!--Sample field-->
-                    <dynamic-field v-else :field="field" :key="key" :item-id="field.fieldItemId"
-                                   v-model="locale.formTemplate[field.name || key]" :language="locale.language"/>
-                    <!--Child fields-->
-                    <div v-if="field.children">
-                      <!--Title-->
-                      <div class="text-blue-grey q-mb-xs">
-                        <b>{{ field.label }} <label v-if="field.isTranslatable">({{ locale.language }})</label></b>
-                      </div>
-                      <!---Child fields-->
-                      <div class="row q-col-gutter-x-md">
-                        <div v-for="(childField, childKey) in getParsedFields(field.children)" :key="childKey"
-                             :class="childField.colClass || childField.columns || defaultColClass"
-                             v-if="childField.type != 'hidden'">
-                          <!--Child field-->
-                          <dynamic-field :field="childField" :key="childKey" :language="locale.language"
-                                         v-model="locale.formTemplate[field.name || key][childField.name || childKey]"
-                                         :item-id="childField.fieldItemId"/>
+                    <div v-if="field.type === 'fileList'">
+                      <fileListComponent v-bind="field.files" />
+                    </div>
+                    <div v-else>
+                      <dynamic-field v-if="field.fakeFieldName" :field="field" :key="key" :language="locale.language"
+                                    v-model="locale.formTemplate[field.fakeFieldName][field.name || key]"
+                                    :item-id="field.fieldItemId"/>
+                      <!--Sample field-->
+                      <dynamic-field v-else :field="field" :key="key" :item-id="field.fieldItemId"
+                                    v-model="locale.formTemplate[field.name || key]" :language="locale.language"/>
+                      <!--Child fields-->
+                      <div v-if="field.children">
+                        <!--Title-->
+                        <div class="text-blue-grey q-mb-xs">
+                          <b>{{ field.label }} <label v-if="field.isTranslatable">({{ locale.language }})</label></b>
+                        </div>
+                        <!---Child fields-->
+                        <div class="row q-col-gutter-x-md">
+                          <div v-for="(childField, childKey) in getParsedFields(field.children)" :key="childKey"
+                              :class="childField.colClass || childField.columns || defaultColClass"
+                              v-if="childField.type != 'hidden'">
+                            <!--Child field-->
+                            <dynamic-field :field="childField" :key="childKey" :language="locale.language"
+                                          v-model="locale.formTemplate[field.name || key][childField.name || childKey]"
+                                          :item-id="childField.fieldItemId"/>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -95,7 +100,11 @@
 </template>
 
 <script>
+import fileListComponent from '@imagina/qsite/_components/master/fileList';
 export default {
+  components: {
+    fileListComponent
+  },
   props: {
     value: {
       default: () => {
