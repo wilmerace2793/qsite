@@ -36,7 +36,7 @@ export default function layoutStore() {
         //Request
         baseService.index('apiRoutes.qsite.layouts', requestParams).then(response => {
             setSelectedFile();
-            state.layoutList.fields.layaout.files.value = response.data.map((item) => ({ ...item.mediaFiles.mainimage }));
+            state.layoutList.fields.layaout.files.value = mapLayoutsList(response.data);
         }).catch(error => {
             state.layoutList.fields.layaout.files.value = [];
             console.log(error);
@@ -53,6 +53,23 @@ export default function layoutStore() {
     }
     function getSelectedLayout() {
         return state.selectedlayoutId;
+    }
+    function mapLayoutsList(data) {
+        return data.map((item) => { 
+            return {
+                id: item.id,
+                filename: item.title,
+                createdAt: item.createdAt,
+                path: item.mediaFiles.mainimage.path,
+                isFolder: item.mediaFiles.mainimage.isFolder,
+                isImage: item.mediaFiles.mainimage.isImage,
+                isVideo: item.mediaFiles.mainimage.isVideo,
+                largeThumb: item.mediaFiles.mainimage.largeThumb,
+                mediaType: item.mediaFiles.mainimage.mediaType,
+                mediumThumb: item.mediaFiles.mainimage.mediumThumb,
+                mimeType: item.mediaFiles.mainimage.mimeType,
+            }
+       });
     }
     return {
         getLayouts,
