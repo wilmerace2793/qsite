@@ -44,7 +44,7 @@
                        :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)">
                     <!--fake field-->
                     <div v-if="field.type === 'fileList'">
-                      <fileListComponent v-bind="field.files" />
+                      <fileListComponent v-bind="field.files" @selected="files => selectedFile(files)" />
                     </div>
                     <div v-else>
                       <dynamic-field v-if="field.fakeFieldName" :field="field" :key="key" :language="locale.language"
@@ -101,6 +101,7 @@
 
 <script>
 import fileListComponent from '@imagina/qsite/_components/master/fileList';
+import layoutStore from '@imagina/qsite/_store/layoutStore.js'
 export default {
   components: {
     fileListComponent
@@ -759,6 +760,10 @@ export default {
       this.componentId = this.$uid()
       this.$refs.formContent.resetValidation()
       this.step = 0
+    },
+    selectedFile(file) {
+      const fileId = file.length === 0 ? null : file[0].id;
+      layoutStore().setSelectedLayout(fileId);
     },
   }
 }

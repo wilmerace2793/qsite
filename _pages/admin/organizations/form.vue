@@ -25,6 +25,8 @@
   </div>
 </template>
 <script>
+import layout from "src/modules/app/_i18n/en-us/layout"
+import layoutStore from '@imagina/qsite/_store/layoutStore.js'
 export default {
   props: {},
   components: {},
@@ -43,7 +45,7 @@ export default {
       loading: false,
       organization: false,
       crudData: false,
-      form: {}
+      form: {},
     }
   },
   computed: {
@@ -55,7 +57,9 @@ export default {
     //Parse crud data
     parseCrudData() {
       let crudData = this.$clone(this.crudData)
-
+      layoutStore().getLayouts();
+      const layoutList = layoutStore().getLayoutsList();
+      crudData.form.blocks.push({...layoutList});
       //Parse blocks
       crudData.form.blocks.forEach((block, blockKey) => {
         //Parse block fields
@@ -126,6 +130,11 @@ export default {
     //Syn organization data
     syncOrganization() {
       return new Promise((resolve, reject) => {
+        const layoutId = layoutStore().getSelectedLayout();
+        if(layoutId) {
+          this.form.layoutId = layoutId;
+        }
+
         this.loading = true
         //Request
         this.$crud.update('apiRoutes.qsite.organizations', this.organization.id, this.form).then(response => {
@@ -136,7 +145,7 @@ export default {
           this.loading = false
         })
       })
-    }
+    },
   }
 }
 </script>
