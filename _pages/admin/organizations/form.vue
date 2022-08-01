@@ -105,6 +105,7 @@ export default {
           setTimeout(() => {
             this.organization = this.$clone(response.data)
             this.form = this.$clone(response.data)
+            layoutStore().setSelectedLayout(response.data.layoutId);
             resolve(response.data)
           }, 800)
         }).catch(error => reject(error))
@@ -133,13 +134,14 @@ export default {
         const layoutId = layoutStore().getSelectedLayout();
         if(layoutId) {
           this.form.layoutId = layoutId;
+          layoutStore().setSelectedLayout(layoutId);
         }
-
         this.loading = true
         //Request
         this.$crud.update('apiRoutes.qsite.organizations', this.organization.id, this.form).then(response => {
           this.$alert.info({message: this.$tr('isite.cms.message.recordUpdated')})
           this.loading = false
+          layoutStore().setSelectedFile();
         }).catch(error => {
           this.$alert.error({message: this.$tr('isite.cms.message.recordNoUpdated')})
           this.loading = false

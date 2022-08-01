@@ -209,7 +209,8 @@ export default {
     draggable: {type: Boolean, default: false},
     quantity: {default: 0},
     hideHeader: {type: Boolean, default: false},
-    readonly: {type: Boolean, default: false}
+    readonly: {type: Boolean, default: false},
+    selectedFile: {default: null}
   },
   watch: {
     value: {
@@ -319,7 +320,10 @@ export default {
     tableData() {
       //Get data table
       let items = this.table.data || []
-
+      if(this.selectedFile) {
+        const fileName = this.table.data.filter(item => item.id === this.selectedFile).map(item => item.filename);
+        this.table.selected = fileName;
+      }
       //Icons by extensions
       let iconByExtension = {
         mp3: 'fas fa-file-audio',
@@ -353,7 +357,7 @@ export default {
     emptyQuantityFiles() {
       let quantityEmpty = (this.quantity - this.tableData.length)
       return (quantityEmpty >= 1) ? (quantityEmpty > 3 ? 3 : quantityEmpty) : 0
-    }
+    },
   },
   methods: {
     init() {

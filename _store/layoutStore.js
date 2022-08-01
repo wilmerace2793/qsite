@@ -38,12 +38,16 @@ export default function layoutStore() {
         }
         //Request
         baseService.index('apiRoutes.qsite.layouts', requestParams).then(response => {
+            setSelectedFile();
             state.layoutList.fields.layaout.files.title = getPrototype().$trp('isite.cms.label.file');
             state.layoutList.fields.layaout.files.value = response.data.map((item) => ({ ...item.mediaFiles.mainimage }));
         }).catch(error => {
             state.layoutList.fields.layaout.files.value = [];
             console.log(error);
         })
+    }
+    function setSelectedFile() {
+        state.layoutList.fields.layaout.files.selectedFile = getSelectedLayout();
     }
     function getLayoutsList() {
         return state.layoutList;
@@ -59,5 +63,6 @@ export default function layoutStore() {
         getLayoutsList,
         getSelectedLayout,
         setSelectedLayout,
+        setSelectedFile
     }
 }
