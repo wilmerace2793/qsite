@@ -7,7 +7,7 @@ const data = {
     description: null,
     name: "Layouts",
     fields: {
-        layaout: {
+        layoutId: {
             type: 'fileList',
             colClass: "col-12",
             files: {
@@ -36,14 +36,14 @@ export default function layoutStore() {
         //Request
         baseService.index('apiRoutes.qsite.layouts', requestParams).then(response => {
             setSelectedFile();
-            state.layoutList.fields.layaout.files.value = mapLayoutsList(response.data);
+            state.layoutList.fields.layoutId.files.value = mapLayoutsList(response.data);
         }).catch(error => {
-            state.layoutList.fields.layaout.files.value = [];
+            state.layoutList.fields.layoutId.files.value = [];
             console.log(error);
         })
     }
     function setSelectedFile() {
-        state.layoutList.fields.layaout.files.selectedFile = getSelectedLayout();
+        state.layoutList.fields.layoutId.files.selectedFile = getSelectedLayout();
     }
     function getLayoutsList() {
         return state.layoutList;
