@@ -13,9 +13,6 @@ const data = {
             files: {
                 ref: 'otherFilesComponent',
                 key: 'otherFiles',
-                title: null,
-                allowPagination: true,
-                allowChangeView: true,
                 allowSelect: 1,
                 gridColClass: 'col-6 col-md-3 col-lg-4',
                 value: [],
@@ -39,7 +36,6 @@ export default function layoutStore() {
         //Request
         baseService.index('apiRoutes.qsite.layouts', requestParams).then(response => {
             setSelectedFile();
-            state.layoutList.fields.layaout.files.title = getPrototype().$trp('isite.cms.label.file');
             state.layoutList.fields.layaout.files.value = response.data.map((item) => ({ ...item.mediaFiles.mainimage }));
         }).catch(error => {
             state.layoutList.fields.layaout.files.value = [];
