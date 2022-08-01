@@ -4,7 +4,7 @@ import baseService from '@imagina/qcrud/_services/baseService.js';
 
 const data = {
     title: "Layouts",
-    description: "Layouts",
+    description: null,
     name: "Layouts",
     fields: {
         layaout: {
