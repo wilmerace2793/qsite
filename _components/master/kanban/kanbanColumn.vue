@@ -19,7 +19,8 @@
                 tw-w-1/2 
                 tw-py-1 
                 tw-text-red-500 
-                tw-cursor-pointer"
+                tw-cursor-pointer 
+                tw-hidden"
                 @click="deleteColumn(columnData.id)"
             >
             <i class="fas fa-trash-alt"></i>
