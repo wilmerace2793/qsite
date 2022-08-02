@@ -41,7 +41,6 @@ export default {
   mounted() {
     this.$nextTick(function () {
       kanbanStore().getColumns();
-      kanbanStore().getFunnel();
     })
   },
   computed: {

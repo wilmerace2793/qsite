@@ -49,8 +49,8 @@
       </span>
     </div>
     <div class="tw-text-right">
-      <q-btn flat round color="primary" size="xs" icon="fas fa-info-circle" >
-        <q-tooltip class="bg-indigo" :offset="[10, 10]">
+      <q-btn flat round color="primary" size="xs" icon="fas fa-info-circle" @click="openModal">
+        <q-tooltip class="bg-indigo" :offset="[10, 10]" >
           {{ $tr('isite.cms.label.information') }}
         </q-tooltip>
       </q-btn>
@@ -65,11 +65,18 @@
 
 <script>
 export default {
+    inject: ['showRequestData'],
     props: {
         cardData:{
             type: Object,
             default: () => {},
         }
+    },
+    methods: {
+      openModal() {
+        console.log(this.cardData);
+        this.showRequestData(this.cardData);
+      }
     }
 }
 </script>
