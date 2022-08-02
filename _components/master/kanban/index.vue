@@ -1,6 +1,6 @@
 <template>
-<div>
-  <div class="tw-w-2/5">
+<div class="tw-py-2">
+  <div class="tw-w-2/5 tw-px-3">
     <dynamic-field :field="funnel" v-model="funnelSelected" />
   </div>
   <div id="kanbanCtn" class="
@@ -15,6 +15,7 @@
        w-h-auto
        tw-bg-gray-100" :ref="`kanbanColumn-${column.id}`" />
        <q-skeleton
+         animation="blink"
          height="500px" 
          width="450px" 
          v-if="loading"
