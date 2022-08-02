@@ -1,14 +1,29 @@
 <template>
-  <div class="columnCtn tw-border tw-relative tw-rounded-lg tw-shadow">
+  <div class="columnCtn tw-relative tw-rounded-lg tw-shadow">
     <div
       class="
-         tw-h-auto tw-px-2
+         tw-h-auto
       "
       :class="`cardItemsCtn-${columnData.id}`"
     >
-      <div class="tw-flex tw-w-full tw-pt-2">
+      <div 
+        class="
+          tw-flex 
+          tw-w-full 
+          tw-pt-4
+          tw-px-4
+          tw-rounded-lg"
+        :style="{background: columnData.color}"  
+        >
         <div class="tw-w-full kanbanName">
-            <p class="tw-mx-1 tw-text-xs tw-whitespace-nowrap tw-font-bold">
+            <p 
+              class="
+                tw-mx-1 
+                tw-text-xs 
+                tw-whitespace-nowrap 
+                tw-font-bold"
+                :class="{'tw-text-white': columnData.color}"
+              >
                 {{ columnData.name }}
             </p>
         </div>
@@ -26,7 +41,7 @@
             <i class="fas fa-trash-alt"></i>
         </div>
       </div>
-      <div class="tw-overflow-y-auto tw-overflow-x-hidden tw-mb-4">
+      <div class="tw-overflow-y-auto tw-overflow-x-hidden tw-mb-4 tw-px-2">
         <draggable
           :id="columnData.id"
           :list="columnData.data"

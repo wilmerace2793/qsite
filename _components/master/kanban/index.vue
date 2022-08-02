@@ -31,10 +31,8 @@
       class="
        tw-flex-none 
        tw-space-y-0 
-       w-h-auto" 
-       :ref="`kanbanColumn-${column.id}`"
-       :style="{background: bgColumn(column.color)}"
-       />
+       w-h-auto
+       tw-bg-gray-100" :ref="`kanbanColumn-${column.id}`" />
        <q-skeleton
          animation="blink"
          height="500px" 
@@ -68,9 +66,6 @@ export default {
     })
   },
   computed: {
-    bgColumn() {
-      return color => color ? `${color} !important;'`: '#f3f4f6 !important'
-    },
     kanbanColumns() {
       return kanbanStore().getKanbanColumn();
     },
