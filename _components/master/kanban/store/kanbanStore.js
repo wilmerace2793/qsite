@@ -39,6 +39,7 @@ export default function kanbanStore() {
         showLoading();
         let parameters = {
             params: {
+              include: 'category',
               filter: {categoryId: state.funnelSelected},
             },
             refresh: true,
@@ -66,7 +67,9 @@ export default function kanbanStore() {
                 return {
                     id: card.id,
                     title: card.title,
-                    date: card.createdAt
+                    type: card.type,
+                    date: card.createdAt,
+                    fields: card.fields
                 }
             }
         }) || [];
