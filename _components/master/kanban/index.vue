@@ -9,7 +9,12 @@
         tw-flex 
         tw-space-x-4 
         tw-overflow-x-auto">
-    <kanbanColumn v-if="!loading" v-for="(column, index) in kanbanColumns" :key="index" :column-data="column" class="
+    <kanbanColumn 
+      v-if="!loading" 
+      v-for="(column, index) in kanbanColumns" 
+      :key="index" 
+      :column-data="column" 
+      class="
        tw-flex-none 
        tw-space-y-0 
        w-h-auto
