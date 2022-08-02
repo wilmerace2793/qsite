@@ -35,7 +35,7 @@
           ghost-class="ghostCard"
           drag-class="dragCard"
           filter=".ignoreItem"
-          :style="{ height: '480px' }"
+          :style="{ height: computedHeight }"
           :force-fallback="true"
         >
           <kanbanCard 
@@ -62,12 +62,35 @@ export default {
       required: true,
     },
   },
+  mounted() {
+    const parent = document.querySelector('#kanbanCtn');
+    this.initialheight = `${window.innerHeight - parent.offsetTop - 120}px`;
+    window.addEventListener('resize', () => {
+      setTimeout(() => {
+        this.computedHeight = `${
+          window.innerHeight - parent.offsetTop - 100
+        }px`;
+      }, 100);
+    });
+  },
   data() {
-    return {};
+    return {
+      initialheight: null,
+    };
   },
   components: {
     draggable,
     kanbanCard,
+  },
+  computed: {
+    computedHeight: {
+      get() {
+        return this.initialheight;
+      },
+      set(value) {
+        this.initialheight = value;
+      },
+    },
   },
   methods: {
     deleteColumn(columnId) {
