@@ -12,7 +12,8 @@
           tw-w-full 
           tw-pt-4
           tw-px-4
-          tw-rounded-lg"
+          tw-rounded-lg
+          arrowKanbanName"
         :style="{background: columnData.color}"  
         >
         <div class="tw-w-full kanbanName">
@@ -135,5 +136,8 @@ export default {
 }
 .kanbanName p::first-letter {
   text-transform: uppercase;
+}
+.arrowKanbanName {
+  clip-path: polygon(93% 0, 100% 49%, 93% 100%, 0% 100%, 0 100%, 0% 0%);
 }
 </style>
