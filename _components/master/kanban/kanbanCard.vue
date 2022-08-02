@@ -54,7 +54,7 @@
           {{ $tr('isite.cms.label.information') }}
         </q-tooltip>
       </q-btn>
-      <q-btn flat round color="primary" size="xs" icon="far fa-edit" >
+      <q-btn flat round color="primary" size="xs" icon="far fa-edit" @click="openEdit">
         <q-tooltip class="bg-indigo" :offset="[10, 10]">
           {{ $tr('isite.cms.label.edit') }}
         </q-tooltip>
@@ -69,7 +69,11 @@ export default {
       showRequestData: {
         type: Function,
         default: () => false
-      }
+      },
+      updateRequest: {
+         type: Function,
+         default: () => false
+      },
     },
     props: {
         cardData:{
@@ -80,6 +84,10 @@ export default {
     methods: {
       openModal() {
         if(this.showRequestData)this.showRequestData(this.cardData);
+      },
+      openEdit() {
+        if(this.updateRequest)this.updateRequest(this.cardData.id);
+        
       }
     }
 }

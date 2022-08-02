@@ -48,7 +48,7 @@ export default function kanbanStore() {
             .then((item) => {
                 const kanbanColumn = item.data.map(item => {
                     const data = getKanbanCard(item)
-                    return { id: item.id, name: item.title, data }
+                    return { id: item.id, name: item.title, color:item.color, data }
                 })
                 setKanbanColumn(kanbanColumn);
                 hideLoading();
