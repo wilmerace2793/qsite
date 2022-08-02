@@ -69,7 +69,8 @@ export default function kanbanStore() {
                     title: card.title,
                     type: card.type,
                     date: card.createdAt,
-                    fields: card.fields
+                    fields: card.fields,
+                    category: column.category
                 }
             }
         }) || [];
