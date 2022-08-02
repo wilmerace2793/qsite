@@ -65,7 +65,12 @@
 
 <script>
 export default {
-    inject: ['showRequestData'],
+    inject: {
+      showRequestData: {
+        type: Function,
+        default: () => false
+      }
+    },
     props: {
         cardData:{
             type: Object,
@@ -74,8 +79,7 @@ export default {
     },
     methods: {
       openModal() {
-        console.log(this.cardData);
-        this.showRequestData(this.cardData);
+        if(this.showRequestData)this.showRequestData(this.cardData);
       }
     }
 }
