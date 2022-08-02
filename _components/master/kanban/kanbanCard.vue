@@ -38,7 +38,7 @@
       <span 
         class="tw-text-xs tw-text-gray-600" v-if="field.label"
       >
-        <b>{{ field.label }}</b> {{ field.value }}
+        <b>{{ field.label }}</b> <span class="tw-lowercase">{{ field.value }}</span>
       </span>
     </div>
     
