@@ -1,7 +1,21 @@
 <template>
 <div class="tw-py-2">
-  <div class="tw-w-2/5 tw-px-3">
-    <dynamic-field :field="funnel" v-model="funnelSelected" />
+  <div class="tw-px-3">
+    <div class="tw-grid tw-grid-cols-2 tw-gap-4">
+      <div class="tw-w-1/2">
+        <dynamic-field :field="funnel" v-model="funnelSelected" />
+      </div>
+      <div class="tw-text-right kanbanBtnCtn">
+          <q-btn color="primary" outline @click="$router.push(routeCreate)">
+            <div class="row items-center no-wrap">
+              <i class="fas fa-plus"></i>
+              <div class="tw-text-center tw-px-1">
+                {{ $tr(`isite.cms.label.new`) }}
+              </div>
+            </div>
+          </q-btn>
+      </div>
+    </div>
   </div>
   <div id="kanbanCtn" class="
         tw-p-3 
@@ -37,6 +51,13 @@ import kanbanStore from '@imagina/qsite/_components/master/kanban/store/kanbanSt
 export default {
   components: {
     kanbanColumn,
+  },
+  data() {
+    return {
+      routeCreate:{
+        name: "qrequestable.main.requestables.create"
+      },
+    }
   },
   mounted() {
     this.$nextTick(function () {
@@ -81,4 +102,7 @@ export default {
 </script>
 
 <style>
+.kanbanBtnCtn .q-btn {
+  border-radius: 10px;
+}
 </style>
