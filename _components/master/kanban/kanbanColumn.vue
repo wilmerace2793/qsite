@@ -12,7 +12,6 @@
           tw-w-full 
           tw-pt-4
           tw-px-4
-          tw-rounded-lg
           arrowKanbanName"
         :style="{background: columnData.color}"  
         >
