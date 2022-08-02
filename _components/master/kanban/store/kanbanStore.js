@@ -1,84 +1,10 @@
 import { reactive } from '@vue/composition-api';
-
+import baseService from '@imagina/qcrud/_services/baseService.js'
 const state = reactive({
-    kanbanColumn: [
-        {
-            id: 1,
-            name: 'column1',
-            icon: null,
-            data: [
-                {
-                    id: 1,
-                    title: "Card 1",
-                    date: "2022-04-01",
-                },
-                {
-                    id: 2,
-                    title: "Card 2",
-                    date: "2022-04-04"
-                },
-                {
-                    id: 3,
-                    title: "Card 3",
-                    date: "2022-04-04"
-                },
-                {
-                    id: 4,
-                    title: "Card 4",
-                    date: "2022-04-04"
-                },
-                {
-                    id: 5,
-                    title: "Card 5",
-                    date: "2022-04-04"
-                },
-                {
-                    id: 6,
-                    title: "Card 6",
-                    date: "2022-04-04"
-                },
-                {
-                    id: 7,
-                    title: "Card 7",
-                    date: "2022-04-04"
-                },
-                {
-                    id: 8,
-                    title: "Card 8",
-                    date: "2022-04-04"
-                },
-                {
-                    id: 9,
-                    title: "card 9",
-                    date: "2022-04-04"
-                },
-            ],
-        },
-        {
-            id: 2,
-            name: 'column2',
-            icon: null,
-            data: [],
-        },
-        {
-            id: 3,
-            name: 'column3',
-            icon: null,
-            data: [],
-        },
-        {
-            id: 4,
-            name: 'column4',
-            icon: null,
-            data: [],
-        },
-        {
-            id: 5,
-            name: 'column5',
-            icon: null,
-            data: [],
-        },
-    ],
+    kanbanColumn: [],
+    funnelList: [],
+    funnelSelected: '1',
+    loading: false,
 });
 
 export default function kanbanStore() {
@@ -99,21 +25,86 @@ export default function kanbanStore() {
     }
     function addKanbanCard(columnId, data) {
         const column = state.kanbanColumn.find(item => item.id === columnId);
-        if(column) {
-            column.data.push({...data});
+        if (column) {
+            column.data.push({ ...data });
         }
     }
     function deleteKanbanCard(columnId, cardId) {
         const column = state.kanbanColumn.find(item => item.id === columnId);
-        if(column) {
+        if (column) {
             column.data = column.data.filter(item => item.id !== cardId);
-        }   
+        }
     }
+    function getColumns() {
+        showLoading();
+        let parameters = {
+            params: {
+              filter: {categoryId: state.funnelSelected},
+            },
+            refresh: true,
+        }
+        baseService.index('apiRoutes.qrequestable.statuses',parameters)
+            .then((item) => {
+                const kanbanColumn = item.data.map(item => {
+                    const data = getKanbanCard(item)
+                    return { id: item.id, name: item.title, data }
+                })
+                setKanbanColumn(kanbanColumn);
+                hideLoading();
+            }).catch((err) => {
+                hideLoading();
+                console.log(err);
+            });
+
+    }
+    function setKanbanColumn(data) {
+        state.kanbanColumn = data;
+    }
+    function getKanbanCard(column) {
+        return column.data.map(card => {
+            if (card.statusId === column.id) {
+                return {
+                    id: card.id,
+                    title: card.title,
+                    date: card.createdAt
+                }
+            }
+        }) || [];
+    }
+    function setFunnelList(data) {
+        state.funnelList = data;
+    }
+    function getFunnelList() {
+        return state.funnelList;
+    }
+    function getFunnelSelected() {
+        return state.funnelSelected;
+    }
+    function setFunnelSelected(value) {
+        state.funnelSelected = value;
+    }
+    function getLoading() {
+        return state.loading;
+    }
+    function hideLoading() {
+        state.loading = false;
+    }
+    function showLoading() {
+        state.loading = true;
+    } 
     return {
         getKanbanColumn,
         addColumn,
         deleteColumn,
         addKanbanCard,
         deleteKanbanCard,
+        getColumns,
+        getFunnelList,
+        setFunnelList,
+        setFunnelSelected,
+        getFunnelSelected,
+        getLoading,
+        hideLoading,
+        showLoading,
     }
 }

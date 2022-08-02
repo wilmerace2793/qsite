@@ -7,12 +7,10 @@
       :class="`cardItemsCtn-${columnData.id}`"
     >
       <div class="tw-flex tw-w-full tw-pt-2">
-        <div class="tw-w-1/2">
-            <span class="tw-mx-1 tw-text-lg tw-whitespace-nowrap">
-                {{
-                  columnData.name
-                }}
-            </span>
+        <div class="tw-w-full kanbanName">
+            <p class="tw-mx-1 tw-text-xs tw-whitespace-nowrap tw-font-bold">
+                {{ columnData.name }}
+            </p>
         </div>
         <div
             v-if="columnData.data.length === 0"
@@ -92,5 +90,11 @@ export default {
 .ghostCard {
   opacity: 0.5;
   background: #f7fafc;
+}
+.kanbanName p {
+    text-transform: lowercase;
+}
+.kanbanName p::first-letter {
+  text-transform: uppercase;
 }
 </style>
