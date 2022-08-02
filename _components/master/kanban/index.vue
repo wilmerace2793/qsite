@@ -31,14 +31,17 @@
       class="
        tw-flex-none 
        tw-space-y-0 
-       w-h-auto
-       tw-bg-gray-100" :ref="`kanbanColumn-${column.id}`" />
+       w-h-auto" 
+       :ref="`kanbanColumn-${column.id}`"
+       :style="{background: bgColumn(column.color)}"
+       />
        <q-skeleton
          animation="blink"
          height="500px" 
          width="450px" 
          v-if="loading"
-         v-for="item in 5"
+         v-for="(item, index) in 5"
+         :key="index"
        />
   </div>
 </div>
@@ -65,6 +68,9 @@ export default {
     })
   },
   computed: {
+    bgColumn() {
+      return color => color ? `${color} !important;'`: '#f3f4f6 !important'
+    },
     kanbanColumns() {
       return kanbanStore().getKanbanColumn();
     },
