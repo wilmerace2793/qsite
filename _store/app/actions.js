@@ -18,7 +18,7 @@ export const REFRESH_PAGE = ({state, commit, dispatch, getters}) => {
     Loading.show()
     commit('LOAD_PAGE', false)
     await cache.restore(config('app.saveCache.refresh'))//Reset cache
-    await dispatch('RESET_STORE')//Reset Vuex
+    //await dispatch('RESET_STORE')//Reset Vuex
     await dispatch('quserAuth/AUTH_UPDATE', null, {root: true}).catch(error => {
     })//Update user data
     await dispatch('qsiteApp/GET_SITE_SETTINGS', null, {root: true}).catch(error => {
@@ -29,7 +29,7 @@ export const REFRESH_PAGE = ({state, commit, dispatch, getters}) => {
     resolve(true)
   })
 }
-// get ip addresss 
+// get ip addresss
 export const GET_IP_ADDRESS = ({commit}) => {
   return new Promise(async (resolve, reject)=>{
     try{
