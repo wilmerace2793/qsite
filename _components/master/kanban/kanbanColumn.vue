@@ -10,7 +10,7 @@
         class="
           tw-flex 
           tw-w-full 
-          tw-pt-4
+          tw-py-3
           tw-px-4
           arrowKanbanName"
         :style="{background: columnData.color}"  
@@ -21,7 +21,8 @@
                 tw-mx-1 
                 tw-text-xs 
                 tw-whitespace-nowrap 
-                tw-font-bold"
+                tw-font-bold
+                tw-m-0"
                 :class="{'tw-text-white': columnData.color}"
               >
                 {{ columnData.name }}
@@ -137,6 +138,6 @@ export default {
   text-transform: uppercase;
 }
 .arrowKanbanName {
-  clip-path: polygon(93% 0, 100% 49%, 93% 100%, 0% 100%, 0 100%, 0% 0%);
+  clip-path: polygon(97% 0, 100% 49%, 97% 100%, 0% 100%, 0 100%, 0% 0%);
 }
 </style>
