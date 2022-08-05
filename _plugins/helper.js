@@ -362,12 +362,12 @@ class Helper {
   }
 
   //Copy to clipboard
-  copyToClipboard(text = '') {
+  copyToClipboard(text = '', message = 'isite.cms.messages.copyToClipboard') {
     try {
       navigator.clipboard.writeText(text).then(function () {
         alert.info({
           icon: 'fas fa-copy',
-          message: Vue.prototype.$tr('isite.cms.messages.copyToClipboard')
+          message: Vue.prototype.$tr(message)
         });
       }, function (err) {
         alert.error({
