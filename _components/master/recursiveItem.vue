@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-show="showMenu">
     <div id="listMenu">
       <q-no-ssr v-for="(item,key) in menuData" :key="key" :class="`content-item ${inLine ? 'inline-block' : ''}`">
         <!--ToolTip-->
@@ -51,6 +51,7 @@ export default {
   },
   data() {
     return {
+      showMenu : false,
       listUid: this.$uid().toString(),
       props: {}
     }
@@ -85,6 +86,7 @@ export default {
       this.props = this.$clone(this.$props)
       setTimeout(() => {
         this.checkCollapsibles()
+        this.showMenu = true
       }, 300)
     },
     //Validate if should load single-item
