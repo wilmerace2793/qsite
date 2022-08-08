@@ -1188,6 +1188,10 @@
         "perzonalizationTitle": "Welcome to the editor of your website",
         "perzonalizationDescription": "Easily change the logo, colors and the main information of your website",
         "label": {
+          "continueWith": "Continue with",
+          "facebook": "Facebook",
+          "google": "Google",
+          "microsoft": "Microsoft",
           "showing": "Showing",
           "entry": "Entry | Entries",
           "of": "of",
@@ -2783,6 +2787,10 @@
         "perzonalizationTitle": "Bienvenid@ al editor de tu sitio web",
         "perzonalizationDescription": "De manera fácil, cambia el logo, colores y la información principal de tu página web",
         "label": {
+          "continueWith": "Continuar con",
+          "facebook": "Facebook",
+          "google": "Google",
+          "microsoft": "Microsoft",
           "showing": "Mostrando",
           "entry": "Entrada | Entradas",
           "of": "de",
