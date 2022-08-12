@@ -103,7 +103,12 @@
               && !loading 
               && !columnData.loading"
             >
-                Ya te dimos todo
+                <div>
+                  <i class="far fa-grin-beam-sweat tw-text-base"></i>
+                </div>
+                <div class="tw-font-semibold">
+                  Ya te dimos todo
+                </div>
             </q-banner>
           </div>
           <div
