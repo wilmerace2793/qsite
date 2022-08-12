@@ -9,22 +9,19 @@
       <div
         v-if="columnData.loading"
         class="
-          tw-absolute 
-          tw-text-center 
+          tw-flex
+          tw-justify-center
+          tw-absolute  
           tw-inset-0 
           tw-pt-48 
           tw-bg-white 
           tw-bg-opacity-75 
           tw-z-20"
       >
-        <i 
-          class="
-            fas 
-            fa-spinner 
-            fa-spin 
-            tw-text-4xl 
-            tw-text-gray-500" 
-          />
+        <q-spinner
+            color="primary"
+            size="2em"
+        />
       </div>
       <div 
         class="
@@ -90,13 +87,38 @@
               :cardData="item"
               class="tw-cursor-pointer"
           />
+          <div 
+            class="
+              tw-text-center 
+              tw-h-5 
+              tw-px-2"
+          >
+            <q-banner 
+              inline-actions 
+              rounded 
+              class="primary"
+              v-if="
+              columnData.total !== 0 
+              && isTotalNumberOfRecords 
+              && !loading 
+              && !columnData.loading"
+            >
+                Ya te dimos todo
+            </q-banner>
+          </div>
           <div
             :class="`trigger-${columnData.id}`"
-            class="tw-text-center tw-h-5"
-          >
-            <span v-if="columnLoading" class="tw-text-center tw-py-5">
-              <i class="fas fa-spinner fa-pulse tw-text-lg tw-text-gray-600"></i>
-            </span>
+            class="
+              tw-text-center 
+              tw-h-5  
+              tw-flex
+              tw-justify-center"
+          >  
+            <q-spinner
+                v-if="loading"
+                color="primary"
+                size="1.3em"
+              />
           </div>
         </draggable>
       </div>
@@ -140,8 +162,7 @@ export default {
   data() {
     return {
       initialheight: null,
-      columnLoading: false,
-      page: 1,
+      loading: false,
     };
   },
   components: {
@@ -157,6 +178,9 @@ export default {
         this.initialheight = value;
       },
     },
+    isTotalNumberOfRecords() {
+      return this.columnData.total === this.columnData.data.length;
+    }
   },
   methods: {
     deleteColumn(columnId) {
@@ -170,10 +194,12 @@ export default {
       });
     },
     async infiniteHandler() {
-      this.columnLoading = true;
-      this.page = this.page + 1;
-      kanbanStore().addKanbanCard(this.columnData, this.page);
-      this.columnLoading = false;
+      if(!this.columnData.loading) {
+        this.loading = true;
+        this.columnData.page = this.columnData.page + 1;
+        await kanbanStore().addKanbanCard(this.columnData, this.columnData.page);
+        this.loading = false;
+      }
     },
   }
 };

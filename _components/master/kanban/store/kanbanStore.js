@@ -41,11 +41,13 @@ export default function kanbanStore() {
             }
             const response = await baseService.index('apiRoutes.qrequestable.statuses', parameters)
             const kanbanColumn = response.data.map((item) => {
-                return { id: item.id, name: item.title, color: item.color, data: [] }
+                return { id: item.id, name: item.title, color: item.color, data: [], page: 1, total: 0 }
             })
             kanbanColumn.forEach(async (column) => {
-                column.data = await getKanbanCard(column)
+                const kanbanCard = await getKanbanCard(column);
+                column.data = kanbanCard.data;
                 column.loading = false;
+                column.total = kanbanCard.total;
             });
             setKanbanColumn(kanbanColumn);
             hideLoading();
@@ -59,37 +61,22 @@ export default function kanbanStore() {
     function setKanbanColumn(data) {
         state.kanbanColumn = data;
     }
-    async function getKanbanCard(column, page = 1, scroll = true) {
+    async function getKanbanCard(column, page = 1) {
         try {
-            column.loading = scroll;
-            let parameters = {
-                params: {
-                    include: 'category,status,fields,files,comments,creator,requestedBy',
-                    filter: { statusId: column.id },
-                    page,
-                    take: 10
-                },
-                refresh: true,
-            }
-            const response = await baseService.index('apiRoutes.qrequestable.requestables', parameters)
-            return response.data.map(card => ({
-                id: card.id,
-                title: `${card.creator.firstName} ${card.creator.lastName}`,
-                type: card.type,
-                createdAt: card.createdAt,
-                fields: card.fields,
-                category: card.category
-            }));
+            column.loading = true;
+            return getKanbanCardList(column, page);
         } catch (error) {
             column.loading = false;
             console.log(error);
         }
     }
-    function addKanbanCard(column, page) {
+    async function addKanbanCard(column, page) {
         const kanbancolumn = state.kanbanColumn.find(item => item.id === column.id);
-        if(kanbancolumn) {
-            const kanabanCard = getKanbanCard(column, page, false);
-            kanbancolumn.data.push({...kanabanCard});
+        if (kanbancolumn) {
+            const kanbanCard = await getKanbanCardList(column, page);
+            if (kanbanCard.data.length > 0) {
+                kanbancolumn.data.push(...kanbanCard.data);
+            }
         }
     }
     function setFunnelList(data) {
@@ -113,6 +100,38 @@ export default function kanbanStore() {
     function showLoading() {
         state.loading = true;
     }
+    async function getKanbanCardList(column, page) {
+        try {
+            let parameters = {
+                params: {
+                    include: 'category,status,fields,files,comments,creator,requestedBy',
+                    filter: { statusId: column.id },
+                    page,
+                    take: 10
+                },
+                refresh: true,
+            }
+            const response = await baseService.index('apiRoutes.qrequestable.requestables', parameters)
+            return {
+                total: response.meta.page.total,
+                data: response.data.map(card => ({
+                    id: card.id,
+                    title: `${card.creator.firstName} ${card.creator.lastName}`,
+                    type: card.type,
+                    createdAt: card.createdAt,
+                    fields: card.fields,
+                    category: card.category
+                }))
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    function setResetPage() {
+        state.kanbanColumn.forEach((item) => {
+            item.page = 1;
+        })
+    }
     return {
         getKanbanColumn,
         addColumn,
@@ -127,5 +146,7 @@ export default function kanbanStore() {
         getLoading,
         hideLoading,
         showLoading,
+        getKanbanCardList,
+        setResetPage,
     }
 }

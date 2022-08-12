@@ -86,6 +86,7 @@ export default {
         return kanbanStore().getFunnelSelected();
       },
       set(value) {
+        kanbanStore().setResetPage();
         kanbanStore().setFunnelSelected(value)
         kanbanStore().getColumns();
       }
