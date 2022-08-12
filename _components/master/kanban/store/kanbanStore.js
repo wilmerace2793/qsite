@@ -84,7 +84,7 @@ export default function kanbanStore() {
                 type: card.type,
                 createdAt: card.createdAt,
                 fields: card.fields,
-                category: column.category
+                category: card.category
             }));
         } catch (error) {
             column.loading = false;
