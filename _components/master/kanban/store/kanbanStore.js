@@ -3,7 +3,7 @@ import baseService from '@imagina/qcrud/_services/baseService.js'
 const state = reactive({
     kanbanColumn: [],
     funnelList: [],
-    funnelSelected: '1',
+    funnelSelected: '4',
     loading: false,
 });
 
@@ -22,12 +22,6 @@ export default function kanbanStore() {
     }
     function deleteColumn(columnId) {
         state.kanbanColumn = state.kanbanColumn.filter((item) => item.id !== columnId);
-    }
-    function addKanbanCard(columnId, data) {
-        const column = state.kanbanColumn.find(item => item.id === columnId);
-        if (column) {
-            column.data.push({ ...data });
-        }
     }
     function deleteKanbanCard(columnId, cardId) {
         const column = state.kanbanColumn.find(item => item.id === columnId);
@@ -65,14 +59,14 @@ export default function kanbanStore() {
     function setKanbanColumn(data) {
         state.kanbanColumn = data;
     }
-    async function getKanbanCard(column) {
+    async function getKanbanCard(column, page = 1, scroll = true) {
         try {
-            column.loading = true;
+            column.loading = scroll;
             let parameters = {
                 params: {
                     include: 'category,status,fields,files,comments,creator,requestedBy',
                     filter: { statusId: column.id },
-                    page: 1,
+                    page,
                     take: 10
                 },
                 refresh: true,
@@ -89,6 +83,13 @@ export default function kanbanStore() {
         } catch (error) {
             column.loading = false;
             console.log(error);
+        }
+    }
+    function addKanbanCard(column, page) {
+        const kanbancolumn = state.kanbanColumn.find(item => item.id === column.id);
+        if(kanbancolumn) {
+            const kanabanCard = getKanbanCard(column, page, false);
+            kanbancolumn.data.push({...kanabanCard});
         }
     }
     function setFunnelList(data) {

@@ -3,7 +3,7 @@
   <div class="tw-px-3">
     <div class="tw-grid tw-grid-cols-2 tw-gap-4">
       <div class="tw-w-1/2">
-        <dynamic-field :field="funnel" v-model="funnelSelected" />
+        <dynamic-field :field="funnel" v-model="funnelSelected"/>
       </div>
       <div class="tw-text-right kanbanBtnCtn">
           <q-btn color="primary" outline @click="$router.push(routeCreate)">

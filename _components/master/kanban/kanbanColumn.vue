@@ -90,6 +90,14 @@
               :cardData="item"
               class="tw-cursor-pointer"
           />
+          <div
+            :class="`trigger-${columnData.id}`"
+            class="tw-text-center tw-h-5"
+          >
+            <span v-if="columnLoading" class="tw-text-center tw-py-5">
+              <i class="fas fa-spinner fa-pulse tw-text-lg tw-text-gray-600"></i>
+            </span>
+          </div>
         </draggable>
       </div>
     </div>
@@ -118,10 +126,22 @@ export default {
         }px`;
       }, 100);
     });
+    // infinite scroll
+    const observerOptions = {
+      root: document.querySelector(`.cardItemsCtn-${this.columnData.id}`),
+    };
+    const target = document.querySelector(`.trigger-${this.columnData.id}`);
+    const observer = new IntersectionObserver(
+      this.observerCallback,
+      observerOptions,
+    );
+    observer.observe(target);
   },
   data() {
     return {
       initialheight: null,
+      columnLoading: false,
+      page: 1,
     };
   },
   components: {
@@ -141,6 +161,19 @@ export default {
   methods: {
     deleteColumn(columnId) {
        kanbanStore().deleteColumn(columnId);
+    },
+     observerCallback(entries) {
+      entries.forEach(({ isIntersecting }) => {
+        if (isIntersecting) {
+          this.infiniteHandler();
+        }
+      });
+    },
+    async infiniteHandler() {
+      this.columnLoading = true;
+      this.page = this.page + 1;
+      kanbanStore().addKanbanCard(this.columnData, this.page);
+      this.columnLoading = false;
     },
   }
 };
