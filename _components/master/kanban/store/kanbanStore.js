@@ -35,48 +35,54 @@ export default function kanbanStore() {
             column.data = column.data.filter(item => item.id !== cardId);
         }
     }
-    function getColumns() {
-        showLoading();
-        let parameters = {
-            params: {
-              include: 'category',
-              filter: {categoryId: state.funnelSelected},
-            },
-            refresh: true,
-        }
-        baseService.index('apiRoutes.qrequestable.statuses',parameters)
-            .then((item) => {
-                const kanbanColumn = item.data.map(item => {
-                    const data = getKanbanCard(item)
-                    return { id: item.id, name: item.title, color:item.color, data }
-                })
-                setKanbanColumn(kanbanColumn);
-                hideLoading();
-            }).catch((err) => {
-                hideLoading();
-                console.log(err);
+    async function getColumns() {
+        try {
+            showLoading();
+            let parameters = {
+                params: {
+                    include: 'category',
+                    filter: { categoryId: state.funnelSelected },
+                },
+                refresh: true,
+            }
+            const response = await baseService.index('apiRoutes.qrequestable.statuses', parameters)
+            const kanbanColumn = response.data.map((item) => {
+                return { id: item.id, name: item.title, color: item.color, data: [] }
+            })
+            kanbanColumn.forEach(async (column) => {
+                column.data = await getKanbanCard(column)
+                column.loading = false;
             });
+            setKanbanColumn(kanbanColumn);
+            hideLoading();
+        } catch (error) {
+            hideLoading();
+            setKanbanColumn([]);
+            console.log(error);
+        }
 
     }
     function setKanbanColumn(data) {
         state.kanbanColumn = data;
     }
-    function getKanbanCard(column) {
-        if(column.data) {
-            return column.data.map(card => {
-                if (card.statusId === column.id) {
-                    return {
-                        id: card.id,
-                        title: card.title,
-                        type: card.type,
-                        date: card.createdAt,
-                        fields: card.fields,
-                        category: column.category
-                    }
-                }
-            })
+    async function getKanbanCard(column) {
+        column.loading = true;
+        let parameters = {
+            params: {
+                include: 'category,status,fields,files,comments,creator,requestedBy',
+                filter: { statusId: column.id },
+            },
+            refresh: true,
         }
-        return [];
+        const response = await baseService.index('apiRoutes.qrequestable.requestables', parameters)
+        return response.data.map(card => ({
+            id: card.id,
+            title: card.status.title,
+            type: card.type,
+            createdAt: card.createdAt,
+            fields: card.fields,
+            category: column.category
+        }));
     }
     function setFunnelList(data) {
         state.funnelList = data;
@@ -98,7 +104,7 @@ export default function kanbanStore() {
     }
     function showLoading() {
         state.loading = true;
-    } 
+    }
     return {
         getKanbanColumn,
         addColumn,

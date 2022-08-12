@@ -6,12 +6,55 @@
       "
       :class="`cardItemsCtn-${columnData.id}`"
     >
+      <div
+        v-if="columnData.loading"
+        class="
+          tw-absolute 
+          tw-text-center 
+          tw-inset-0 
+          tw-pt-48 
+          tw-bg-white 
+          tw-bg-opacity-75 
+          tw-z-20"
+      >
+        <i 
+          class="
+            fas 
+            fa-spinner 
+            fa-spin 
+            tw-text-4xl 
+            tw-text-gray-500" 
+          />
+      </div>
+      <div 
+        class="
+          tw-hidden
+          tw-absolute 
+          tw-right-0 
+          tw-z-20 
+          tw-mt-2 
+          tw--mr-2
+          tw-bg-white
+          tw-rounded-full 
+          tw-h-4 
+          tw-w-4"
+        >
+          <i 
+            class="
+              fas 
+              fa-plus-circle 
+              tw-text-xl 
+              tw-text-gray-200 
+              tw-drop-shadow-2xl" 
+          />
+      </div>
       <div 
         class="
           tw-flex 
           tw-w-full 
           tw-py-3
           tw-px-4
+          tw-rounded-t-lg
           arrowKanbanName"
         :style="{background: columnData.color}"  
         >
@@ -27,19 +70,6 @@
               >
                 {{ columnData.name }}
             </p>
-        </div>
-        <div
-            v-if="columnData.data.length === 0"
-            class="
-                tw-text-right 
-                tw-w-1/2 
-                tw-py-1 
-                tw-text-red-500 
-                tw-cursor-pointer 
-                tw-hidden"
-                @click="deleteColumn(columnData.id)"
-            >
-            <i class="fas fa-trash-alt"></i>
         </div>
       </div>
       <div class="tw-overflow-y-auto tw-overflow-x-hidden tw-mb-4 tw-px-2">

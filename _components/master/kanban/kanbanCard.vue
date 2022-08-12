@@ -36,16 +36,16 @@
       :key="field.id"
     >
       <span 
-        class="tw-text-xs tw-text-gray-600" v-if="field.label"
+        class="tw-text-xs tw-text-gray-600" v-if="(field.name && typeof field.value !== 'object')"
       >
-        <b>{{ field.label }}</b> <span class="tw-lowercase">{{ field.value }}</span>
+        <b>{{ field.name }} *</b> <span class="tw-lowercase">{{ field.value }}</span>
       </span>
     </div>
     
     <div class="tw-flex tw-mt-4 tw-justify-between tw-items-center">
       
       <span class="tw-text-xs tw-text-gray-600">
-        <b>Fecha *</b> {{ cardData.date }}
+        <b>Fecha *</b> {{ cardData.createdAt }}
       </span>
     </div>
     <div class="tw-text-right">
