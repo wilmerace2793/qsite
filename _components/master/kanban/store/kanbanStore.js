@@ -62,18 +62,21 @@ export default function kanbanStore() {
         state.kanbanColumn = data;
     }
     function getKanbanCard(column) {
-        return column.data.map(card => {
-            if (card.statusId === column.id) {
-                return {
-                    id: card.id,
-                    title: card.title,
-                    type: card.type,
-                    date: card.createdAt,
-                    fields: card.fields,
-                    category: column.category
+        if(column.data) {
+            return column.data.map(card => {
+                if (card.statusId === column.id) {
+                    return {
+                        id: card.id,
+                        title: card.title,
+                        type: card.type,
+                        date: card.createdAt,
+                        fields: card.fields,
+                        category: column.category
+                    }
                 }
-            }
-        }) || [];
+            })
+        }
+        return [];
     }
     function setFunnelList(data) {
         state.funnelList = data;
