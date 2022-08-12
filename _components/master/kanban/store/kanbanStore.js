@@ -80,7 +80,7 @@ export default function kanbanStore() {
             const response = await baseService.index('apiRoutes.qrequestable.requestables', parameters)
             return response.data.map(card => ({
                 id: card.id,
-                title: card.status.title,
+                title: `${card.creator.firstName} ${card.creator.lastName}`,
                 type: card.type,
                 createdAt: card.createdAt,
                 fields: card.fields,
