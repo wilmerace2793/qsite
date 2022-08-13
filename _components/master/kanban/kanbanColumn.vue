@@ -55,20 +55,36 @@
           arrowKanbanName"
         :style="{background: columnData.color}"  
         >
-        <div class="tw-w-full kanbanName">
+        <div class="tw-flex tw-w-full kanbanName">
+          <div class="tw-w-11/12">
             <p 
               class="
                 tw-mx-1 
                 tw-text-xs 
                 tw-whitespace-nowrap 
                 tw-font-bold
-                tw-m-0"
+                tw-m-0
+                tw-truncate"
                 :class="{'tw-text-white': columnData.color}"
               >
                 {{ columnData.name }}
+               
             </p>
+            </div>
+            <div class="tw-w-1/12" v-if="columnData.total !== 0"> 
+              <p 
+                class="
+                  tw-font-bold 
+                  tw-m-0 
+                  tw-text-xs 
+                  tw-text-rigth"
+                  :class="{'tw-text-white': columnData.color}"
+                >{{ columnData.total }}
+              </p> 
+            </div>
         </div>
       </div>
+      
       <div class="tw-overflow-y-auto tw-overflow-x-hidden tw-mb-4 tw-px-2">
         <draggable
           :id="columnData.id"
