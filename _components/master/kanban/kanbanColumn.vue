@@ -5,6 +5,8 @@
          tw-h-auto
       "
       :class="`cardItemsCtn-${columnData.id}`"
+      @mouseover="hover = true"
+      @mouseleave="hover = false"
     >
       <div
         v-if="columnData.loading"
@@ -23,28 +25,36 @@
             size="2em"
         />
       </div>
-      <div 
+      <button 
         class="
-          tw-hidden
           tw-absolute 
           tw-right-0 
           tw-z-20 
           tw-mt-2 
           tw--mr-2
           tw-bg-white
-          tw-rounded-full 
-          tw-h-4 
-          tw-w-4"
+          tw-rounded-full
+          tw-px-1
+          tw-text-center
+          tw-shadow-lg
+          tw-shadow-gray-500/40
+          tw-cursor-pointer
+          tw-transition 
+          tw-duration-150 
+          tw-ease-out 
+          hover:tw-ease-in
+          hover:tw--translate-y-1"
+          v-if="hover"
+          @click="addColumn"
         >
           <i 
             class="
               fas 
-              fa-plus-circle 
-              tw-text-xl 
-              tw-text-gray-200 
-              tw-drop-shadow-2xl" 
+              fa-plus
+              tw-text-gray-400
+              tw-drop-shadow-lg" 
           />
-      </div>
+      </button>
       <div 
         class="
           tw-flex 
@@ -53,7 +63,7 @@
           tw-px-4
           tw-rounded-t-lg
           arrowKanbanName"
-        :style="{background: columnData.color}"  
+        :style="{background: columnData.color}"
         >
         <div class="tw-flex tw-w-full kanbanName">
           <div class="tw-w-11/12">
@@ -68,7 +78,6 @@
                 :class="{'tw-text-white': columnData.color}"
               >
                 {{ columnData.name }}
-               
             </p>
             </div>
             <div class="tw-w-1/12" v-if="columnData.total !== 0"> 
@@ -80,7 +89,7 @@
                   tw-text-rigth"
                   :class="{'tw-text-white': columnData.color}"
                 >{{ columnData.total }}
-              </p> 
+              </p>
             </div>
         </div>
       </div>
@@ -158,6 +167,10 @@ export default {
       type: Object,
       required: true,
     },
+    columnIndex: {
+      type: Number,
+      required: true,
+    }
   },
   mounted() {
     const parent = document.querySelector('#kanbanCtn');
@@ -184,6 +197,7 @@ export default {
     return {
       initialheight: null,
       loading: false,
+      hover: false,
     };
   },
   components: {
@@ -204,6 +218,9 @@ export default {
     }
   },
   methods: {
+    addColumn() {
+      kanbanStore().addColumn(this.columnIndex);
+    },
     deleteColumn(columnId) {
        kanbanStore().deleteColumn(columnId);
     },

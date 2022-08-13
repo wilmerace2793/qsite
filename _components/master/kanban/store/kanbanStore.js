@@ -11,13 +11,17 @@ export default function kanbanStore() {
     function getKanbanColumn() {
         return state.kanbanColumn;
     }
-    function addColumn(column) {
+    function addColumn(index) {
         const counter = state.kanbanColumn.length + 1;
-        state.kanbanColumn.push({
+        const randomColor = Math.floor(Math.random()*16777215).toString(16);
+        state.kanbanColumn.splice(index + 1 , 0, {
             id: counter,
-            name: column.name + counter,
-            icon: column.icon,
-            data: column.data,
+            name: 'demo',
+            color: `#${randomColor}`,
+            data: [],
+            loading: false,
+            page: 1, 
+            total: 0,
         })
     }
     function deleteColumn(columnId) {
@@ -41,7 +45,7 @@ export default function kanbanStore() {
             }
             const response = await baseService.index('apiRoutes.qrequestable.statuses', parameters)
             const kanbanColumn = response.data.map((item) => {
-                return { id: item.id, name: item.title, color: item.color, data: [], page: 1, total: 0 }
+                return { id: item.id, name: item.title, color: item.color, data: [], page: 1, total: 0, loading: false }
             })
             kanbanColumn.forEach(async (column) => {
                 const kanbanCard = await getKanbanCard(column);

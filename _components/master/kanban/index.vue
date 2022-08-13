@@ -27,7 +27,8 @@
       v-if="!loading" 
       v-for="(column, index) in kanbanColumns" 
       :key="index" 
-      :column-data="column" 
+      :column-data="column"
+      :columnIndex="index" 
       class="
        tw-flex-none 
        tw-space-y-0 
