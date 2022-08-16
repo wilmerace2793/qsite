@@ -204,13 +204,10 @@ export default {
               rounded: true,
               align: "left"
             },
-            action: this.goToLogout
+            action: () => this.$router.push({name: 'auth.logout'})
           }
         ]
       }
-    },
-    microsoftClient() {
-      return this.$store.getters['qsiteApp/getSettingValueByName']('isite::microsoftClientId')
     },
   },
   methods: {
@@ -220,16 +217,6 @@ export default {
         Object.keys(response).forEach(name => this.badge[name] = response[name])
       })
     },
-    goToLogout() {
-      if (this.microsoftClient && this.$store.state.quserAuth.authenticated) {
-        storeMicrosoft().signOut().then(async () => {
-          await this.$store.dispatch("quserAuth/AUTH_LOGOUT");
-          storeMicrosoft().setToken(null);
-        });
-        return;
-      }
-      this.$router.push({name: 'auth.logout'});
-    }
   }
 }
 </script>
