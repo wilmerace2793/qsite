@@ -47,6 +47,7 @@
   </div>
 </template>
 <script>
+import storeMicrosoft from '@imagina/quser/_store/storeMicrosoft.js'
 export default {
   beforeDestroy() {
     this.$eventBus.$off('header.badge.manage')
@@ -203,10 +204,13 @@ export default {
               rounded: true,
               align: "left"
             },
-            action: () => this.$router.push({name: 'auth.logout'})
+            action: this.goToLogout
           }
         ]
       }
+    },
+    microsoftClient() {
+      return this.$store.getters['qsiteApp/getSettingValueByName']('isite::microsoftClientId')
     },
   },
   methods: {
@@ -215,6 +219,16 @@ export default {
       this.$eventBus.$on('header.badge.manage', (response) => {
         Object.keys(response).forEach(name => this.badge[name] = response[name])
       })
+    },
+    goToLogout() {
+      if (this.microsoftClient && this.$store.state.quserAuth.authenticated) {
+        storeMicrosoft().signOut().then(async () => {
+          await this.$store.dispatch("quserAuth/AUTH_LOGOUT");
+          storeMicrosoft().setToken(null);
+        });
+        return;
+      }
+      this.$router.push({name: 'auth.logout'});
     }
   }
 }
