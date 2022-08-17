@@ -1140,6 +1140,16 @@
         "message":{}
       }
     },
+    "ireports": {
+      "cms": {
+        "form": {},
+        "label":{},
+        "sidebar":{
+          "reportsInfo": "Reports"
+        },
+        "message":{}
+      }
+    },
     "isite": {
       "cms": {
         "sidebar": {
@@ -2735,6 +2745,16 @@
           "buildings": "Edificios",
           "customers": "Clientes",
           "costCenters": "Centros de costo"
+        },
+        "message":{}
+      }
+    },
+    "ireports": {
+      "cms": {
+        "form": {},
+        "label":{},
+        "sidebar":{
+          "reportsInfo": "Reportes"
         },
         "message":{}
       }
