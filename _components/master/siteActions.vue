@@ -48,6 +48,8 @@
 </template>
 <script>
 import storeMicrosoft from '@imagina/quser/_store/storeMicrosoft.js'
+import axios from 'axios';
+
 export default {
   beforeDestroy() {
     this.$eventBus.$off('header.badge.manage')
@@ -204,7 +206,7 @@ export default {
               rounded: true,
               align: "left"
             },
-            action: () => this.$router.push({name: 'auth.logout'})
+            action: this.logout
           }
         ]
       }
@@ -216,6 +218,14 @@ export default {
       this.$eventBus.$on('header.badge.manage', (response) => {
         Object.keys(response).forEach(name => this.badge[name] = response[name])
       })
+    },
+    logout() {
+      const authProvider = axios.defaults.params.setting.authProvider;
+      if(authProvider !== 'local') {
+        storeMicrosoft().signOut();
+        return;
+      }
+      this.$router.push({name: 'auth.logout'});
     },
   }
 }
