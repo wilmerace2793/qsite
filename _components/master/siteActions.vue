@@ -221,7 +221,7 @@ export default {
     },
     logout() {
       const authProvider = axios.defaults.params.setting.authProvider;
-      if(authProvider !== 'local') {
+      if(authProvider === 'microsoft') {
         storeMicrosoft().signOut();
         return;
       }
