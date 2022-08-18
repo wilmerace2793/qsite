@@ -77,5 +77,20 @@ export default {
     subHeader: {
       refresh: true
     }
-  }
+  },
+  auditLog: {
+    permission: 'isite.logs.manage',
+    activated: true,
+    path: '/auditLog/index',
+    name: 'qsite.admin.auditLog.index',
+    crud: import('@imagina/qsite/_crud/auditLog'),
+    page: () => import('@imagina/qcrud/_pages/admin/crudPage'),
+    layout: () => import('@imagina/qsite/_layouts/master.vue'),
+    title: 'isite.cms.sidebar.adminAuditLog',
+    icon: 'fas fa-file-code',
+    authenticated: true,
+    subHeader: {
+      refresh: true
+    }
+  },
 }

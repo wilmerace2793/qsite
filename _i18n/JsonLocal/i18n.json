@@ -1162,6 +1162,7 @@
           "adminOrganization": "Organizations List",
           "adminCategories": "Categories",
           "adminIcruds": "Icruds",
+          "adminAuditLog": "Audit Log",
           "adminOrganizationForm": "Form"
         },
         "crud": {
@@ -2771,6 +2772,7 @@
           "adminOrganization": "Lista de Organizaciónes",
           "adminCategories": "Categorias",
           "adminIcruds": "Icruds",
+          "adminAuditLog": "Audit Log",
           "adminOrganizationForm": "Formulario"
         },
         "crud": {

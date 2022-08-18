@@ -12,4 +12,5 @@ export default [
     ]
   },
   pages.qsite.index,//setup
+  pages.qsite.auditLog,
 ]
