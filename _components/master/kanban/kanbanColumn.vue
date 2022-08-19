@@ -1,11 +1,13 @@
 <template>
   <div class="columnCtn tw-relative tw-rounded-lg tw-shadow">
-    <div class="
-         tw-h-auto
-      " :class="`cardItemsCtn-${columnData.id}`" 
+    <div 
+    class="tw-h-auto" 
+      :class="`cardItemsCtn-${columnData.id}`" 
       @mouseover="hover = true" 
       @mouseleave="hover = false">
-      <div v-if="columnData.loading" class="
+      <div 
+        v-if="columnData.loading" 
+        class="
           tw-flex
           tw-justify-center
           tw-absolute  
@@ -14,9 +16,13 @@
           tw-bg-white 
           tw-bg-opacity-75 
           tw-z-20">
-        <q-spinner color="primary" size="2em" />
+        <q-spinner 
+          color="primary" 
+          size="2em" 
+        />
       </div>
-      <button class="
+      <button 
+        class="
           tw-absolute 
           tw-right-0 
           tw-z-20 
@@ -33,14 +39,20 @@
           tw-duration-150 
           tw-ease-out 
           hover:tw-ease-in
-          hover:tw--translate-y-1" v-if="hover" @click="addColumn">
-        <i class="
+          hover:tw--translate-y-1" 
+          v-if="hover" 
+          @click="addColumn"
+        >
+        <i 
+          class="
               fas 
               fa-plus
               tw-text-gray-400
-              tw-drop-shadow-lg" />
+              tw-drop-shadow-lg" 
+        />
       </button>
-      <div class="
+      <div 
+        class="
           tw-flex 
           tw-w-full 
           tw-py-3
@@ -50,29 +62,60 @@
           @mouseover="arrowKanbanNameHover = true" 
           @mouseleave="arrowKanbanNameHover = false"
         :style="{ background: columnData.color }">
-        <div class="tw-flex tw-w-full kanbanName">
-          <div class="tw-w-11/12">
-            <p v-if="!columnData.new" class="
+        <div 
+          class="
+            tw-flex 
+            tw-w-full 
+            kanbanName"
+        >
+          <div 
+            class="tw-w-11/12"
+          >
+            <p 
+              v-if="!columnData.new" 
+              class="
                 tw-mx-1 
                 tw-text-xs 
                 tw-whitespace-nowrap 
                 tw-font-bold
                 tw-m-0
-                tw-truncate" :class="{ 'tw-text-white': columnData.color }">
+                tw-truncate" 
+                :class="{ 'tw-text-white': columnData.color }"
+              >
               {{ columnData.name }}
             </p>
-            <dynamic-field v-else :field="inputDynamicField" v-model="columnData.name" class="tw-pr-3"
-              @enter="columnData.new = false" />
+            <dynamic-field 
+              v-else :field="inputDynamicField" 
+              v-model="columnData.name" 
+              class="tw-pr-3"
+              @enter="addColumnName" 
+            />
           </div>
-          <div v-if="arrowKanbanNameHover && !columnData.new" class="tw-w-1/12 tw-text-xs tw-cursor-pointer"
-            :class="{ 'tw-text-white': columnData.color }">
-            <q-btn flat round icon="fas fa-pencil-alt" size="6px" @click="columnData.new = true">
+          <div 
+            v-if="arrowKanbanNameHover && !columnData.new" 
+            class="
+              tw-w-1/12 
+              tw-text-xs 
+              tw-cursor-pointer"
+            :class="{ 'tw-text-white': columnData.color }"
+          >
+            <q-btn 
+              flat 
+              round 
+              icon="fas fa-pencil-alt" 
+              size="6px" 
+              @click="columnData.new = true"
+            >
               <q-tooltip>
                 Editar Columna
               </q-tooltip>
             </q-btn>
           </div>
-          <div v-if="columnData.new" class="tw-flex" :class="{ 'tw-text-white': columnData.color }">
+          <div 
+            v-if="columnData.new" 
+            class="tw-flex" 
+            :class="{ 'tw-text-white': columnData.color }"
+          >
             <div>
               <q-btn flat round size="6px">
                 <template v-slot:default>
@@ -85,11 +128,16 @@
                     Asignar Color
                   </q-tooltip>
                 </template>
-
               </q-btn>
             </div>
             <div>
-              <q-btn flat round icon="fas fa-times" size="6px" @click="deleteColumn">
+              <q-btn 
+                flat 
+                round 
+                icon="fas fa-times" 
+                size="6px" 
+                @click="deleteColumn"
+              >
                 <q-tooltip>
                   Eliminar columnas
                 </q-tooltip>
@@ -99,34 +147,64 @@
         </div>
       </div>
 
-      <div class="tw-overflow-y-auto tw-overflow-x-hidden tw-mb-4 tw-px-2">
-        <draggable :id="columnData.id" :list="columnData.data" :animation="200" group="data" ghost-class="ghostCard"
-          drag-class="dragCard" filter=".ignoreItem" :style="{ height: computedHeight }" :force-fallback="true">
-          <kanbanCard v-for="(item, index) in columnData.data" :key="item.id" :cardData="item"
-            class="tw-cursor-pointer" />
-          <div class="
+      <div 
+        class="
+          tw-overflow-y-auto 
+          tw-overflow-x-hidden 
+          tw-mb-4 tw-px-2"
+        >
+        <draggable 
+          :id="columnData.id" 
+          :list="columnData.data" 
+          :animation="200" 
+          group="data" 
+          ghost-class="ghostCard"
+          drag-class="dragCard" 
+          filter=".ignoreItem" 
+          :style="{ height: computedHeight }" 
+          :force-fallback="true"
+        >
+          <kanbanCard 
+            v-for="(item, index) in columnData.data" 
+            :key="item.id" 
+            :cardData="item"
+            class="tw-cursor-pointer" 
+          />
+          <div 
+            class="
               tw-text-center 
               tw-h-5 
-              tw-px-2">
-            <q-banner inline-actions rounded class="primary" v-if="
-            columnData.total !== 0
-            && isTotalNumberOfRecords
-            && !loading
-            && !columnData.loading">
+              tw-px-2"
+          >
+            <q-banner 
+              inline-actions 
+              rounded 
+              class="primary" 
+              v-if="columnData.total !== 0 
+                && isTotalNumberOfRecords
+                && !loading
+                && !columnData.loading">
               <div>
-                <i class="far fa-grin-beam-sweat tw-text-base"></i>
+                <i class="far fa-grin-beam-sweat tw-text-base" />
               </div>
               <div class="tw-font-semibold">
                 Ya te dimos todo
               </div>
             </q-banner>
           </div>
-          <div :class="`trigger-${columnData.id}`" class="
+          <div 
+            :class="`trigger-${columnData.id}`" 
+            class="
               tw-text-center 
               tw-h-5  
               tw-flex
-              tw-justify-center">
-            <q-spinner v-if="loading" color="primary" size="1.3em" />
+              tw-justify-center"
+            >
+              <q-spinner 
+                v-if="loading" 
+                color="primary" 
+                size="1.3em" 
+              />
           </div>
         </draggable>
       </div>
@@ -204,6 +282,7 @@ export default {
     },
     deleteColumn() {
       kanbanStore().deleteColumn(this.columnData.id);
+      this.$alert.success({message: 'Se elimino el estado correctamente'})
     },
     observerCallback(entries) {
       entries.forEach(({ isIntersecting }) => {
@@ -218,6 +297,12 @@ export default {
         this.columnData.page = this.columnData.page + 1;
         await kanbanStore().addKanbanCard(this.columnData, this.columnData.page);
         this.loading = false;
+      }
+    },
+    addColumnName() {
+      if(this.columnData.name) {
+        this.columnData.new = false
+        this.$alert.success({message: 'Se creo un nuevo estado'})
       }
     },
   }
