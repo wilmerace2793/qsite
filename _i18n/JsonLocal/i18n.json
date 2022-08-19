@@ -1140,6 +1140,16 @@
         "message":{}
       }
     },
+    "ireports": {
+      "cms": {
+        "form": {},
+        "label":{},
+        "sidebar":{
+          "reportsInfo": "Reports"
+        },
+        "message":{}
+      }
+    },
     "isite": {
       "cms": {
         "sidebar": {
@@ -1152,6 +1162,7 @@
           "adminOrganization": "Organizations List",
           "adminCategories": "Categories",
           "adminIcruds": "Icruds",
+          "adminAuditLog": "Audit Log",
           "adminOrganizationForm": "Form"
         },
         "crud": {
@@ -2739,6 +2750,16 @@
         "message":{}
       }
     },
+    "ireports": {
+      "cms": {
+        "form": {},
+        "label":{},
+        "sidebar":{
+          "reportsInfo": "Reportes"
+        },
+        "message":{}
+      }
+    },
     "isite": {
       "cms": {
         "sidebar": {
@@ -2751,6 +2772,7 @@
           "adminOrganization": "Lista de Organizaciónes",
           "adminCategories": "Categorias",
           "adminIcruds": "Icruds",
+          "adminAuditLog": "Audit Log",
           "adminOrganizationForm": "Formulario"
         },
         "crud": {
