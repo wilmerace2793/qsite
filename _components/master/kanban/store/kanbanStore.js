@@ -5,6 +5,14 @@ const state = reactive({
     funnelList: [],
     funnelSelected: '4',
     loading: false,
+    inputDynamicField: {
+        value: null,
+        type: 'input',
+        isFakeField: true,
+        props: {
+            clearable: true,
+        },
+    },
 });
 
 export default function kanbanStore() {
@@ -16,12 +24,13 @@ export default function kanbanStore() {
         const randomColor = Math.floor(Math.random()*16777215).toString(16);
         state.kanbanColumn.splice(index + 1 , 0, {
             id: counter,
-            name: 'demo',
+            name: null,
             color: `#${randomColor}`,
             data: [],
             loading: false,
             page: 1, 
             total: 0,
+            new: true,
         })
     }
     function deleteColumn(columnId) {
@@ -45,7 +54,16 @@ export default function kanbanStore() {
             }
             const response = await baseService.index('apiRoutes.qrequestable.statuses', parameters)
             const kanbanColumn = response.data.map((item) => {
-                return { id: item.id, name: item.title, color: item.color, data: [], page: 1, total: 0, loading: false }
+                return { 
+                    id: item.id, 
+                    name: item.title, 
+                    color: item.color, 
+                    data: [], 
+                    page: 1, 
+                    total: 0, 
+                    loading: false,
+                    new: false,
+                }
             })
             kanbanColumn.forEach(async (column) => {
                 const kanbanCard = await getKanbanCard(column);
@@ -136,6 +154,9 @@ export default function kanbanStore() {
             item.page = 1;
         })
     }
+    function getInputDynamicField() {
+        return state.inputDynamicField;
+    }
     return {
         getKanbanColumn,
         addColumn,
@@ -152,5 +173,6 @@ export default function kanbanStore() {
         showLoading,
         getKanbanCardList,
         setResetPage,
+        getInputDynamicField,
     }
 }
