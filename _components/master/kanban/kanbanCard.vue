@@ -36,7 +36,7 @@
       :key="field.id"
     >
       <span 
-        class="tw-text-xs tw-text-gray-600" v-if="(field.name && typeof field.value !== 'object')"
+        class="tw-text-xs tw-text-gray-600 tw-truncate" v-if="(field.name && typeof field.value !== 'object')"
       >
         <b>{{ field.name }} *</b> <span class="tw-lowercase">{{ field.value }}</span>
       </span>
