@@ -310,7 +310,7 @@ export default {
 
 <style>
 .columnCtn {
-  width: 350px;
+  width: 280px;
 }
 
 .dragCard {
