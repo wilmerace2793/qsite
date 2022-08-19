@@ -302,7 +302,6 @@ export default {
     addColumnName() {
       if(this.columnData.name) {
         this.columnData.new = false
-        this.$alert.success({message: 'Se creo un nuevo estado'})
       }
     },
   }
@@ -336,24 +335,18 @@ export default {
 .arrowKanbanName {
   clip-path: polygon(97% 0, 100% 49%, 97% 100%, 0% 100%, 0 100%, 0% 0%);
 }
-
-.arrowKanbanName .q-field--dense .q-field__control,
-.q-field--dense .q-field__marginal {
+.arrowKanbanName .kanbanName .q-field__focusable-action {
+margin-top: -14px !important;
+}
+.arrowKanbanName .kanbanName .q-field--dense .q-field__control
+{
   height: 25px;
+  border-radius: 20px !important;
 }
 
-.arrowKanbanName .q-field--outlined .q-field__control {
-  border-radius: 0;
-}
-
-.arrowKanbanName .q-field--outlined .q-field__control:before,
-* .q-field--outlined .q-field__control:after {
-  border-radius: 0px !important;
-}
-
-.arrowKanbanName .q-field--labeled .q-field__native,
+.arrowKanbanName  .kanbanName .q-field--labeled .q-field__native,
 .q-field--labeled .q-field__prefix,
 .q-field--labeled .q-field__suffix {
-  padding: 0;
+  padding: 0 !important;
 }
 </style>
