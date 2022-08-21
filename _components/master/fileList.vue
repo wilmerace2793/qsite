@@ -20,7 +20,7 @@
           <div id="tableActions" class="row q-gutter-sm" v-if="!readonly">
             <!--customActions-->
             <q-btn v-for="(item, itemKey) in actions" :key="itemKey" class="btn-small" v-bind="item"
-                   v-if="item.vIf != undefined ? item.vIf : true" @click="item.action()">
+                   v-if="item.vIf != undefined ? item.vIf : true" @click="item.action()" no-caps>
               <q-tooltip v-if="item.tooltip">{{ item.tooltip }}.</q-tooltip>
             </q-btn>
             <!--Order-->
@@ -68,16 +68,18 @@
                 </div>
                 <!--Bottom content-->
                 <div class="file-card__bottom">
-                  <!--Name-->
-                  <div :class="`file-card__bottom_title ellipsis ${draggable ? 'drag-handle' : ''}`">
-                    {{ itemRow.filename }}
-                  </div>
                   <!--Actions-->
-                  <div class="file-card__bottom_actions" v-if="!readonly">
+                  <div v-if="!readonly" class="file-card__bottom_actions row items-center justify-between">
+                    <div v-if="true" :class="`file-card__bottom_title ellipsis ${draggable ? 'drag-handle' : ''}`">
+                      <div class="q-pa-sm ellipsis">{{ itemRow.filename }}</div>
+                      <q-separator inset/>
+                    </div>
                     <!--select file-->
                     <q-checkbox v-if="allowSelect" v-model="table.selected" :val="itemRow.filename" color="green"/>
+                    <!-- File id -->
+                    <div class="q-px-sm text-caption text-grey-9"><b>ID: {{ itemRow.id }}</b></div>
                     <!--button Actions-->
-                    <btn-menu class="" :actions="itemActions" :action-data="itemRow"/>
+                    <btn-menu class="float-right" :actions="itemActions" :action-data="itemRow"/>
                   </div>
                 </div>
               </div>
@@ -134,11 +136,13 @@
         <q-td v-else-if="props.col.name == 'actions'" :props="props">
           <!--Actions-->
           <div class="file-card__bottom_actions">
-            <!--select file-->
-            <q-checkbox v-if="allowSelect" v-model="table.selected" :val="props.row.filename" color="green"/>
             <!--button Actions-->
             <btn-menu class="" :actions="itemActions" :action-data="props.row"/>
           </div>
+        </q-td>
+        <!-- selector -->
+        <q-td v-else-if="props.col.name == 'selectColum'">
+          <q-checkbox v-model="table.selected" :val="props.row.filename" color="green"/>
         </q-td>
         <!--Default columns-->
         <q-td v-else :props="props" :title="props.value">
@@ -291,7 +295,7 @@ export default {
   computed: {
     //Table columns
     tableColumns() {
-      return [
+      const columns = [
         {
           name: 'id', label: 'Id', field: 'id', align: 'left',
           sortable: true
@@ -315,12 +319,18 @@ export default {
         },
         {name: 'actions', label: this.$trp('isite.cms.label.action')},
       ]
+      //Add selector column
+      if (this.allowSelect) columns.unshift({
+        name: 'selectColum', label: '', align: 'center'
+      },)
+      //Response
+      return columns
     },
     //Table data
     tableData() {
       //Get data table
       let items = this.table.data || []
-      if(this.selectedFile) {
+      if (this.selectedFile) {
         const fileName = this.table.data.filter(item => item.id === this.selectedFile).map(item => item.filename);
         this.table.selected = fileName;
       }
@@ -528,7 +538,7 @@ export default {
       position relative
 
       .file-card_img, .file-card_icon
-        height 150px
+        height 120px
         width 100%
 
       .file-card_icon
@@ -539,19 +549,11 @@ export default {
         width 100%
         background-color white
         position relative
-        height 36px
 
-        .file-card__bottom_title
+        &_title
           font-size 12px
-          padding 8px 13px 8px 5px
           color $grey-9
           text-transform lowercase
-          width calc(100% - 26px)
-
-        .file-card__bottom_actions
-          position absolute
-          right 2px
-          top 0
 
     .file-chip
       border 1px solid $grey-5
@@ -559,7 +561,7 @@ export default {
       border-radius 5px
       color $grey-8
       position: relative;
-      height 38px
+      min-height 38px
 
       .file-chip__img
         position absolute

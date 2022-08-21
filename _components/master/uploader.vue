@@ -120,7 +120,7 @@ export default {
         //default files data
         let filesData = this.$clone(this.filesData)
         //Transform file information
-        for (const file of files) {
+        for (const [index, file] of files.entries()) {
           //Default file data
           let fileData = file
           //If file isn't a string
@@ -186,11 +186,16 @@ export default {
               }
             }
           }
-
           //Set file data
-          if (fileData) filesData.push(fileData)
+          if (fileData) {
+            filesData.push(fileData)
+            //Emit event with file every time
+            this.$emit('added', {
+              file: fileData,
+              final: index == (files.length - 1)
+            })
+          }
         }
-
         //Set to files data
         this.filesData = this.$clone(filesData)
         //Reset uploader
