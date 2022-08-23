@@ -7,11 +7,10 @@
       tw-px-3
       tw-pt-3
       tw-pb-2
-      tw-border
-      tw-border-white
+      tw-border-l-2
       tw-my-2
-      tw-mx-2
     "
+    :style="{ borderLeftColor: colorColumn }"
   >
     <div class="tw-flex tw-justify-between">
       <p
@@ -79,6 +78,10 @@ export default {
         cardData:{
             type: Object,
             default: () => {},
+        },
+        colorColumn: {
+          type: String,
+          default: () => '#00000',
         }
     },
     methods: {

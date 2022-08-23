@@ -164,6 +164,7 @@
             v-for="(item, index) in columnData.data"
             :key="item.id"
             :cardData="item"
+            :colorColumn="columnData.color"
             class="tw-cursor-pointer"
           />
           <div class="tw-text-center tw-h-5 tw-px-2">
@@ -322,10 +323,10 @@ export default {
   clip-path: polygon(97% 0, 100% 49%, 97% 100%, 0% 100%, 0 100%, 0% 0%);
 }
 .arrowKanbanName .kanbanName .q-field__focusable-action {
-  @apply tw-m-3.5;
+  @apply tw--mt-3.5;
 }
 .arrowKanbanName .kanbanName .q-field--dense .q-field__control {
-  @apply tw-h-6 tw-rounded-3xl;
+  @apply tw-h-6 tw-rounded-3xl !important;
 }
 
 .arrowKanbanName .kanbanName .q-field--labeled .q-field__native,
