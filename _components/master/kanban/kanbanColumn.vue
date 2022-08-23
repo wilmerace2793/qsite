@@ -323,7 +323,7 @@ export default {
   clip-path: polygon(97% 0, 100% 49%, 97% 100%, 0% 100%, 0 100%, 0% 0%);
 }
 .arrowKanbanName .kanbanName .q-field__focusable-action {
-  @apply tw--mt-3.5;
+  @apply tw--mt-4;
 }
 .arrowKanbanName .kanbanName .q-field--dense .q-field__control {
   @apply tw-h-6 tw-rounded-3xl !important;
