@@ -286,7 +286,7 @@ export default {
 }
 
 .dragCard {
-  background: white;
+  @apply tw-bg-white;
   opacity: 1 !important;
   cursor: grabbing;
 }
@@ -297,11 +297,11 @@ export default {
 }
 
 .kanbanName p {
-  text-transform: lowercase;
+  @apply tw-lowercase;
 }
 
 .kanbanName p::first-letter {
-  text-transform: uppercase;
+  @apply tw-uppercase;
 }
 
 .arrowKanbanName {
@@ -318,6 +318,6 @@ export default {
 .arrowKanbanName .kanbanName .q-field--labeled .q-field__native,
 .q-field--labeled .q-field__prefix,
 .q-field--labeled .q-field__suffix {
-  padding: 0 !important;
+  @apply tw-p-0;
 }
 </style>
