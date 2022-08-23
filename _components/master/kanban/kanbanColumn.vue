@@ -16,7 +16,7 @@
           tw-pt-48
           tw-bg-white
           tw-bg-opacity-75
-          tw-z-20
+          tw-z-20 
         "
       >
         <q-spinner color="primary" size="2em" />
@@ -38,23 +38,36 @@
           tw-transition
           tw-duration-150
           tw-ease-out
-          hover:tw-ease-in hover:tw--translate-y-1
+          hover:tw-ease-in 
+          hover:tw--translate-y-1
         "
         v-if="hover"
         @click="addColumn"
       >
-        <i class="fas fa-plus tw-text-gray-400 tw-drop-shadow-lg" />
+        <i 
+          class="
+            fas 
+            fa-plus 
+            tw-text-gray-400 
+            tw-drop-shadow-lg" 
+        />
       </button>
       <div
         class="
-          tw-flex tw-w-full tw-py-3 tw-px-4 tw-rounded-t-lg
+          tw-flex 
+          tw-w-full 
+          tw-py-3 
+          tw-px-4 
+          tw-rounded-t-lg
           arrowKanbanName
         "
         @mouseover="arrowKanbanNameHover = true"
         @mouseleave="arrowKanbanNameHover = false"
         :style="{ background: columnData.color }"
       >
-        <div class="tw-flex tw-w-full kanbanName">
+        <div 
+          class="tw-flex tw-w-full kanbanName"
+        >
           <div class="tw-w-11/12">
             <p
               v-if="!columnData.new"
@@ -80,7 +93,10 @@
           </div>
           <div
             v-if="arrowKanbanNameHover && !columnData.new"
-            class="tw-w-1/12 tw-text-xs tw-cursor-pointer"
+            class="
+              tw-w-1/12 
+              tw-text-xs 
+              tw-cursor-pointer"
             :class="{ 'tw-text-white': columnData.color }"
           >
             <q-btn
@@ -282,18 +298,16 @@ export default {
 
 <style>
 .columnCtn {
-  width: 280px;
+  @apply tw-w-64;
 }
 
 .dragCard {
-  @apply tw-bg-white;
-  opacity: 1 !important;
+  @apply tw-bg-white tw-opacity-100;
   cursor: grabbing;
 }
 
 .ghostCard {
-  opacity: 0.5;
-  background: #f7fafc;
+  @apply tw-opacity-50 tw-bg-gray-100;
 }
 
 .kanbanName p {
@@ -308,11 +322,10 @@ export default {
   clip-path: polygon(97% 0, 100% 49%, 97% 100%, 0% 100%, 0 100%, 0% 0%);
 }
 .arrowKanbanName .kanbanName .q-field__focusable-action {
-  margin-top: -14px !important;
+  @apply tw-m-3.5;
 }
 .arrowKanbanName .kanbanName .q-field--dense .q-field__control {
-  height: 25px;
-  border-radius: 20px !important;
+  @apply tw-h-6 tw-rounded-3xl;
 }
 
 .arrowKanbanName .kanbanName .q-field--labeled .q-field__native,
