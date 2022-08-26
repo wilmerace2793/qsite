@@ -44,7 +44,9 @@ export default function kanbanStore() {
     async function deleteColumn(columnId) {
         try {
             state.kanbanColumn = state.kanbanColumn.filter((item) => item.id !== columnId);
-            await baseService.delete('apiRoutes.qrequestable.statuses', columnId)
+            if(!isNaN(columnId)) {
+                await baseService.delete('apiRoutes.qrequestable.statuses', columnId)
+            }
         } catch (error) {
             console.log(error);
         }
