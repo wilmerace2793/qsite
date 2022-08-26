@@ -5,7 +5,9 @@ import getColumns from './actions/getColumns.js';
 import deleteColumn from './actions/deleteColumn.js';
 import updateColumn from './actions/updateColumn.js';
 import saveColumn from './actions/saveColumn.js';
-import saveStatusOrdering from './actions/saveStatusOrdering.js'
+import saveStatusOrdering from './actions/saveStatusOrdering.js';
+import getFunnel from './actions/getFunnel.js';
+
 
 const modelPayload = {
     id: null,
@@ -157,5 +159,6 @@ export default function kanbanStore() {
         setPayloadStatus,
         setKanbanColumn,
         getPayloadStatus,
+        getFunnel,
     }
 }
