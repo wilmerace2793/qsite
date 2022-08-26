@@ -29,7 +29,7 @@ const modelColumn = {
 const state = reactive({
     kanbanColumn: [],
     funnelList: [],
-    funnelSelected: '4',
+    funnelSelected: null,
     loading: false,
     inputDynamicField: {
         value: null,
