@@ -267,9 +267,16 @@ export default {
       kanbanStore().addColumn(this.columnIndex);
     },
     async deleteColumn() {
-      await kanbanStore().deleteColumn(this.columnData.id);
-      this.$alert.success({ message: "Se elimino el estado correctamente" });
-      await kanbanStore().saveStatusOrdering();
+      this.$q.dialog({
+          ok: this.$tr('isite.cms.label.delete'),
+          message: this.$tr('isite.cms.message.deleteRecord'),
+          cancel: true,
+          persistent: true
+        }).onOk(async() => {
+          await kanbanStore().deleteColumn(this.columnData.id);
+          this.$alert.info({ message: this.$tr('isite.cms.message.recordDeleted') });
+          await kanbanStore().saveStatusOrdering();
+        }).onCancel(() => {})
     },
     observerCallback(entries) {
       entries.forEach(({ isIntersecting }) => {
