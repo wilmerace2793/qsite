@@ -1,5 +1,12 @@
 import { reactive } from '@vue/composition-api';
 import baseService from '@imagina/qcrud/_services/baseService.js'
+const modelPayload = {
+    id: null,
+    title: null,
+    color: null,
+    value: 1,
+    categoryId: null,
+}
 const state = reactive({
     kanbanColumn: [],
     funnelList: [],
@@ -13,6 +20,7 @@ const state = reactive({
             clearable: true,
         },
     },
+    payloadStatus: { ...modelPayload },
 });
 
 export default function kanbanStore() {
@@ -20,21 +28,26 @@ export default function kanbanStore() {
         return state.kanbanColumn;
     }
     function addColumn(index) {
-        const counter = state.kanbanColumn.length + 1;
-        const randomColor = Math.floor(Math.random()*16777215).toString(16);
-        state.kanbanColumn.splice(index + 1 , 0, {
+        const counter = `kanban-${state.kanbanColumn.length + 1}`;
+        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+        state.kanbanColumn.splice(index + 1, 0, {
             id: counter,
-            name: null,
+            title: null,
             color: `#${randomColor}`,
             data: [],
             loading: false,
-            page: 1, 
+            page: 1,
             total: 0,
             new: true,
         })
     }
-    function deleteColumn(columnId) {
-        state.kanbanColumn = state.kanbanColumn.filter((item) => item.id !== columnId);
+    async function deleteColumn(columnId) {
+        try {
+            state.kanbanColumn = state.kanbanColumn.filter((item) => item.id !== columnId);
+            await baseService.delete('apiRoutes.qrequestable.statuses', columnId)
+        } catch (error) {
+            console.log(error);
+        }
     }
     function deleteKanbanCard(columnId, cardId) {
         const column = state.kanbanColumn.find(item => item.id === columnId);
@@ -53,16 +66,17 @@ export default function kanbanStore() {
                 refresh: true,
             }
             const response = await baseService.index('apiRoutes.qrequestable.statuses', parameters)
-            const kanbanColumn = response.data.map((item) => {
-                return { 
-                    id: item.id, 
-                    name: item.title, 
-                    color: item.color, 
-                    data: [], 
-                    page: 1, 
-                    total: 0, 
+            const kanbanColumn = response.data.map((item, index) => {
+                return {
+                    id: item.id,
+                    title: item.title,
+                    color: item.color,
+                    data: [],
+                    page: 1,
+                    total: 0,
                     loading: false,
                     new: false,
+                    position: index
                 }
             })
             kanbanColumn.forEach(async (column) => {
@@ -157,6 +171,45 @@ export default function kanbanStore() {
     function getInputDynamicField() {
         return state.inputDynamicField;
     }
+    function reorder(type) {
+        state[type].forEach((item, index) => {
+            item.position = index;
+        });
+    }
+    async function saveStatusOrdering() {
+        try {
+            const statusId = state.kanbanColumn.map(item => ({ id: item.id }));
+            await baseService.create('apiRoutes.qrequestable.orderStatus', { category: statusId })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    async function saveColumn(data) {
+        try {
+            state.payloadStatus.title = data.title;
+            state.payloadStatus.color = data.color;
+            state.payloadStatus.categoryId = state.funnelSelected;
+            return await baseService.create('apiRoutes.qrequestable.statuses', state.payloadStatus)
+        } catch (error) {
+            console.log(error);
+            setPayloadStatus();
+        }
+    }
+    async function updateColumn(data) {
+        try {
+            state.payloadStatus.id = data.id;
+            state.payloadStatus.title = data.title;
+            state.payloadStatus.color = data.color;
+            state.payloadStatus.categoryId = state.funnelSelected;
+            await baseService.update('apiRoutes.qrequestable.statuses', data.id, state.payloadStatus)
+        } catch (error) {
+            console.log(error);
+            setPayloadStatus();
+        }
+    }
+    function setPayloadStatus() {
+        state.payloadStatus = { ...modelPayload };
+    }
     return {
         getKanbanColumn,
         addColumn,
@@ -174,5 +227,10 @@ export default function kanbanStore() {
         getKanbanCardList,
         setResetPage,
         getInputDynamicField,
+        reorder,
+        saveStatusOrdering,
+        saveColumn,
+        updateColumn,
+        setPayloadStatus,
     }
 }

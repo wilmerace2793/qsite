@@ -28,6 +28,7 @@
         filter=".ignoreItem"
         :disabled="loading"
         class="tw-p-3 tw-h-auto tw-flex tw-space-x-4 tw-overflow-x-auto"
+        @change="reorderColumns"
       >
         <div v-if="!loading" v-for="(column, index) in kanbanColumns">
           <kanbanColumn
@@ -112,6 +113,10 @@ export default {
   methods: {
     addColumn() {
       kanbanStore().addColumn();
+    },
+    async reorderColumns() {
+      kanbanStore().reorder('kanbanColumn');
+      await kanbanStore().saveStatusOrdering();
     },
   },
 };

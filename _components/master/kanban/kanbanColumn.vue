@@ -81,12 +81,12 @@
               "
               :class="{ 'tw-text-white': columnData.color }"
             >
-              {{ columnData.name }}
+              {{ columnData.title }}
             </p>
             <dynamic-field
               v-else
               :field="inputDynamicField"
-              v-model="columnData.name"
+              v-model="columnData.title"
               class="tw-pr-3"
               @enter="addColumnName"
             />
@@ -266,9 +266,10 @@ export default {
     addColumn() {
       kanbanStore().addColumn(this.columnIndex);
     },
-    deleteColumn() {
-      kanbanStore().deleteColumn(this.columnData.id);
+    async deleteColumn() {
+      await kanbanStore().deleteColumn(this.columnData.id);
       this.$alert.success({ message: "Se elimino el estado correctamente" });
+      await kanbanStore().saveStatusOrdering();
     },
     observerCallback(entries) {
       entries.forEach(({ isIntersecting }) => {
@@ -288,9 +289,17 @@ export default {
         this.loading = false;
       }
     },
-    addColumnName() {
-      if (this.columnData.name) {
+    async addColumnName() {
+      if (this.columnData.title) {
         this.columnData.new = false;
+        if(isNaN(this.columnData.id)) {
+          const response = await kanbanStore().saveColumn(this.columnData)
+          this.columnData.id = response.data.id;
+        } else {
+          await kanbanStore().updateColumn(this.columnData);
+        }
+        await kanbanStore().saveStatusOrdering();
+        kanbanStore().setPayloadStatus();
       }
     },
   },
