@@ -14,7 +14,6 @@ export default function ({app, router, store, Vue, ssrContext}) {
     if (rootHost.indexOf('www') != -1) host = `www.${host}`//Set again WWW
     host = `https://${host}` //Add protocol
   }
-
   store.commit('qsiteApp/SET_BASE_URL', host) //Set base Url in store
   store.commit('qsiteApp/SET_ORIGIN_URL', (ssrContext ? ssrContext.req.get('origin') : window.location.origin)) //Set origin Url in store
   axios.defaults.baseURL = `${host}/api`// Set base url in axios
@@ -29,7 +28,15 @@ export default function ({app, router, store, Vue, ssrContext}) {
       alert[item.type || 'info'](item)
     })
   }
-
+  //========== Request interceptor
+  axios.interceptors.request.use(function (config) {
+    // Do something before request is sent
+    store.dispatch('quserAuth/REFRESH_TOKEN');
+    return config;
+  }, function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+  });
   //========== Response interceptor
   axios.interceptors.response.use((response) => {
     //Show messages
