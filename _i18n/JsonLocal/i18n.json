@@ -3,7 +3,8 @@
     "ichat": {
       "cms": {
         "sidebar": {
-          "adminMessages": "Chat"
+          "adminMessages": "Chat",
+          "conversations": "Chat"
         },
         "message": {
           "noMessages": "There isn't messages..."
@@ -1128,8 +1129,8 @@
     "isetup": {
       "cms": {
         "form": {},
-        "label":{},
-        "sidebar":{
+        "label": {},
+        "sidebar": {
           "setupInfo": "Setup",
           "companies": "Companies",
           "stations": "Stations",
@@ -1137,17 +1138,17 @@
           "customers": "Customers",
           "costCenters": "Cost Centers"
         },
-        "message":{}
+        "message": {}
       }
     },
     "ireports": {
       "cms": {
         "form": {},
-        "label":{},
-        "sidebar":{
+        "label": {},
+        "sidebar": {
           "reportsInfo": "Reports"
         },
-        "message":{}
+        "message": {}
       }
     },
     "isite": {
@@ -1728,7 +1729,8 @@
     "ichat": {
       "cms": {
         "sidebar": {
-          "adminMessages": "Chat"
+          "adminMessages": "Chat",
+          "conversations": "Chat"
         },
         "message": {
           "noMessages": "No tienes mensajes..."
@@ -2738,8 +2740,8 @@
     "isetup": {
       "cms": {
         "form": {},
-        "label":{},
-        "sidebar":{
+        "label": {},
+        "sidebar": {
           "setupInfo": "Setup",
           "companies": "Compañias",
           "stations": "Estaciones",
@@ -2747,17 +2749,17 @@
           "customers": "Clientes",
           "costCenters": "Centros de costo"
         },
-        "message":{}
+        "message": {}
       }
     },
     "ireports": {
       "cms": {
         "form": {},
-        "label":{},
-        "sidebar":{
+        "label": {},
+        "sidebar": {
           "reportsInfo": "Reportes"
         },
-        "message":{}
+        "message": {}
       }
     },
     "isite": {

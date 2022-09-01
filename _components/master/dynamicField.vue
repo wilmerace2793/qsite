@@ -653,6 +653,7 @@ export default {
           break;
         case'treeSelect':
           props = {
+            emitValue : true,
             field: {
               appendToBody: true,
               sortValueBy: 'INDEX',
@@ -661,7 +662,8 @@ export default {
             fieldComponent: {
               outlined: true,
               dense: true,
-              ...props
+              ...props,
+              clearable : false
             }
           }
           break;
@@ -1323,7 +1325,7 @@ export default {
         } else if (loadOptions.delayed) {
           loadOptions.delayed().then(response => {
             this.rootOptions = this.$clone([...defaultOptions, ...response])
-            
+
             this.loading = false
             resolve(true)
           }).catch(error => {

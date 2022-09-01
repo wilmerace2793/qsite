@@ -40,11 +40,11 @@ export default {
     'qmedia',
     'qslider',
     'qbanner',
+    'qchat',
     'qtranslation',
     'qrequestable',
     'qauction',
     'qsite',
-    'qchat',
     'qcredit'
   ],
   //Cache
