@@ -84,7 +84,7 @@ const modelFolderList = [
 ];
 const state = reactive({
     dragReports: false,
-    folderList: modelFolderList,
+    folderList: [],
 });
 
 export default function foldersStore() {
@@ -97,9 +97,46 @@ export default function foldersStore() {
     function getFolderList() {
         return state.folderList;
     }
+    function setFolderList(value) {
+        state.folderList = value;
+    }
+    function setRelationLoading(folderId, value) {
+        const folder = state.folderList.find(item => item.id === folderId);
+        folder.loading = value;
+    }
+    function transformDataToDragableForderList(data) {
+        try {
+            return data.map(item => ({
+                id: item.id,
+                title: item.title || item.id,
+                subTitle: item.name || null,
+                isCollapse: false,
+                loading: false,
+                reportList: [],
+            }));
+        } catch (error) {
+            console.error('[folderStore:transformDataToDragableForderList]');
+        }
+    }
+    function getListOfDragableRelations(folderId, relationList) {
+        try {
+            state.folderList.forEach((item) => {
+                if(item.id === folderId) {
+                    item.reportList = relationList;
+                } 
+            })
+        } catch (error) {
+            console.error(error);
+            console.error('[folderStore:getListOfDragableRelations]');
+        }
+    }
     return {
         getDragReports,
         setDragReports,
         getFolderList,
+        setFolderList,
+        transformDataToDragableForderList,
+        getListOfDragableRelations,
+        setRelationLoading,
     }
 }

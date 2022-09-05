@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div>
+    <div v-if="folderList.length > 0">
       <draggable
         :list="folderList"
-        :move="move"
         class="
             tw-grid tw-grid-cols-1
             md:tw-grid-cols-2
             xl:tw-grid-cols-3
             tw-overflow-hidden
             group-list-report
+            tw-pb-8
         "
         :animation="300"
         ghostClass="ghost"

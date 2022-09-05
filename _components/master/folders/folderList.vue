@@ -7,6 +7,7 @@
             bordered
             expand-icon-toggle
             class="tw-shadow-lg tw-bg-white tw-rounded-xl"
+            @show="getRelationData(folder)"
           >
             <template v-slot:header>
               <q-item-section>
@@ -77,6 +78,7 @@ export default {
       required: true,
     },
   },
+  inject: ['getRelationData'],
   computed: {
     dragReports() {
         return foldersStore().getDragReports();
@@ -84,7 +86,10 @@ export default {
   },
   methods: {
     showCollapse() {
-       if(this.dragReports) this.folder.isCollapse = true;
+       if(this.dragReports) {
+        this.getRelationData(this.folder);
+        this.folder.isCollapse = true;
+      };
     },
   }
 }
