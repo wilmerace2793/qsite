@@ -70,7 +70,8 @@
                 <div class="file-card__bottom">
                   <!--Actions-->
                   <div v-if="!readonly" class="file-card__bottom_actions row items-center justify-between">
-                    <div v-if="true" :class="`file-card__bottom_title ellipsis ${draggable ? 'drag-handle' : ''}`">
+                    <div v-if="true"
+                         :class="`full-width file-card__bottom_title ellipsis ${draggable ? 'drag-handle' : ''}`">
                       <div class="q-pa-sm ellipsis">{{ itemRow.filename }}</div>
                       <q-separator inset/>
                     </div>
