@@ -12,9 +12,9 @@
       @start="dragReports = true"
       @end="dragReports = false"
       :style="{ height: folder.reportList.length <= 5 ? 'auto' : '300px' }"
+      v-if="!folder.loading"
     >
-      <div v-if="!folder.loading">
-        <q-item
+      <q-item
         clickable
         v-ripple
         class="tw-py-3 tw-border-b tw-cursor-move"
@@ -90,19 +90,21 @@
           </q-btn>
         </q-item-section>
       </q-item>
-      </div>
-      <div 
+    </draggable>
+    <div 
         v-else
         class="
+          tw-bg-gray-100
+          tw-h-32
           tw-flex 
           tw-absolute
           tw-inset-0 
           tw-justify-center 
-          tw-py-8"
+          tw-py-8
+          tw-rounded-b-md"
         >
         <q-spinner color="primary" size="3em" />
       </div>
-    </draggable>
   </div>
 </template>
 
