@@ -3,7 +3,8 @@ import baseService from '@imagina/qcrud/_services/baseService.js';
 
 export default async function getFunnel() {
     try {
-        const response = await baseService.index('apiRoutes.qrequestable.categories');
+        const route = kanbanStore().getRoutes().funnel.apiRoute;
+        const response = await baseService.index(route);
         kanbanStore().setFunnelList(response.data);
         const funnel = response.data.sort((a, b)  => {
             const compare = a.title.toLocaleLowerCase().localeCompare(b.title.toLocaleLowerCase());

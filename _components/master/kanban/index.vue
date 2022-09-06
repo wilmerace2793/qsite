@@ -67,6 +67,12 @@ import kanbanStore from "@imagina/qsite/_components/master/kanban/store/kanbanSt
 import draggable from "vuedraggable";
 
 export default {
+  props: {
+    routes: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   components: {
     kanbanColumn,
     draggable,
@@ -80,6 +86,7 @@ export default {
   },
   mounted() {
     this.$nextTick(function () {
+      kanbanStore().setRoutes(this.routes);
       kanbanStore().getFunnel();
       kanbanStore().getColumns();
     });
@@ -96,7 +103,7 @@ export default {
           label: "Funnel",
         },
         loadOptions: {
-          apiRoute: "apiRoutes.qrequestable.categories",
+          apiRoute: this.routes.funnel.apiRoute,
         },
       };
     },
