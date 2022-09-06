@@ -7,7 +7,7 @@
           bordered
           expand-icon-toggle
           class="tw-shadow-lg tw-bg-white tw-rounded-xl"
-          @show="getRelationData(folder)"
+          @show="getRelation"
         >
           <template v-slot:header>
             <q-item-section>
@@ -79,8 +79,13 @@ computed: {
 methods: {
   showCollapse() {
      if(this.dragReports) {
-      if(this.folder.reportList.length === 0) this.getRelationData(this.folder);
+      this.getRelation();
       this.folder.isCollapse = true;
+    };
+  },
+  getRelation() {
+    if(this.folder.reportList.length === 0) {
+      this.getRelationData(this.folder);
     };
   },
 }
