@@ -121,7 +121,7 @@ export default function foldersStore() {
             state.folderList.forEach((item) => {
                 if(item.id === folderId) {
                     item.reportList = relationList;
-                } 
+                }         
             })
         } catch (error) {
             console.error(error);

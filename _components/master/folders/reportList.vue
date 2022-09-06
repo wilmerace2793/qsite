@@ -12,7 +12,6 @@
       @start="dragReports = true"
       @end="dragReports = false"
       :style="{ height: folder.reportList.length <= 5 ? 'auto' : '300px' }"
-      v-if="!folder.loading"
     >
       <q-item
         clickable
@@ -27,7 +26,7 @@
         <q-item-section>
           <q-item-label class="tw-font-bold">{{ report.title || report.id }}</q-item-label>
           <q-item-label caption lines="2">
-            Short description (Optional)
+            {{ report.name || report.description }}
           </q-item-label>
         </q-item-section>
         <q-item-section side>
@@ -91,20 +90,6 @@
         </q-item-section>
       </q-item>
     </draggable>
-    <div 
-        v-else
-        class="
-          tw-bg-gray-100
-          tw-h-32
-          tw-flex 
-          tw-absolute
-          tw-inset-0 
-          tw-justify-center 
-          tw-py-8
-          tw-rounded-b-md"
-        >
-        <q-spinner color="primary" size="3em" />
-      </div>
   </div>
 </template>
 
