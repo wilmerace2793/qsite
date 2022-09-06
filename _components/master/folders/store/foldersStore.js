@@ -107,9 +107,7 @@ export default function foldersStore() {
     function transformDataToDragableForderList(data) {
         try {
             return data.map(item => ({
-                id: item.id,
-                title: item.title || item.id,
-                subTitle: item.name || null,
+                ...item,
                 isCollapse: false,
                 loading: false,
                 reportList: [],
@@ -123,7 +121,7 @@ export default function foldersStore() {
             state.folderList.forEach((item) => {
                 if(item.id === folderId) {
                     item.reportList = relationList;
-                } 
+                }         
             })
         } catch (error) {
             console.error(error);
