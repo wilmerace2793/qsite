@@ -79,7 +79,7 @@ computed: {
 methods: {
   showCollapse() {
      if(this.dragReports) {
-      this.getRelationData(this.folder);
+      if(this.folder.reportList.length === 0) this.getRelationData(this.folder);
       this.folder.isCollapse = true;
     };
   },
