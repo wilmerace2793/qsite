@@ -55,7 +55,7 @@
         />
       </draggable>
     </div>
-    <automationRules />
+    <automationRules ref="automationRules" />
   </div>
 </template>
 
@@ -140,7 +140,7 @@ export default {
             label: "Automation rules",
             padding: "3px 15px",
           },
-          action: () => true,
+          action: this.openAutomationRulesModal,
         },
       ];
     },
@@ -363,6 +363,9 @@ export default {
         categoryId: null,
       };
     },
+    openAutomationRulesModal() {
+      this.$refs.automationRules.openModal();
+    }
   },
 };
 </script>

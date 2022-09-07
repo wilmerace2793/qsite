@@ -53,6 +53,9 @@ export default {
     hideModal() {
       this.show = false;
     },
+    openModal() {
+      this.show = true;
+    }
   }
 };
 </script>
