@@ -293,7 +293,7 @@ export default {
   },
   methods: {
     addColumnKanban() {
-      this.addColumn();
+      this.addColumn(this.columnIndex);
     },
     async columnDeleteMessages() {
       this.$q.dialog({
