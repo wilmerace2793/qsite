@@ -39,6 +39,20 @@ const state = reactive({
             clearable: true,
         },
     },
+    routes: {
+        funnel: {
+            apiRoute: null,
+        },
+        column: {
+            apiRoute: null,
+        },
+        card: {
+            apiRoute: null,
+        },
+        orderStatus: {
+            apiRoute: null,
+        },
+    },
     payloadStatus: { ...modelPayload },
 });
 
@@ -96,6 +110,12 @@ export default function kanbanStore() {
             value: 1,
             categoryId: null,
         };
+    }
+    function setRoutes(routes) {
+        state.routes = routes;
+    }
+    function getRoutes() {
+        return state.routes;
     }
     /* end of mutualization */
     function addColumn(index) {
@@ -160,5 +180,7 @@ export default function kanbanStore() {
         setKanbanColumn,
         getPayloadStatus,
         getFunnel,
+        setRoutes,
+        getRoutes,
     }
 }
