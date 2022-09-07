@@ -228,7 +228,8 @@ export default {
     }
   },
   inject: [
-    'saveStatusOrdering', 
+    'saveStatusOrdering',
+    'saveColumn', 
     'addKanbanCard',
     'deleteColumn',
     'updateColumn',
