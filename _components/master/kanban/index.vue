@@ -97,6 +97,7 @@ export default {
       saveColumn: this.saveColumn,
       updateColumn: this.updateColumn,
       setPayloadStatus: this.setPayloadStatus,
+      addColumn: this.addColumn,
     };
   },
   components: {
@@ -312,6 +313,18 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    addColumn() {
+      try {
+            const counter = `kanban-${this.totalColumns + 1}`;
+            const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+            const column = { ...modelColumn };
+            column.id = counter;
+            column.color = `#${randomColor}`;
+            this.kanbanColumns.splice(this.columnIndex + 1, 0, column);
+        } catch (error) {
+            console.log(error);
+        }
     },
     async deleteColumn(columnId) {
       try {

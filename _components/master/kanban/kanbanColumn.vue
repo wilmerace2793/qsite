@@ -42,7 +42,7 @@
           hover:tw--translate-y-1
         "
         v-if="hover"
-        @click="addColumn"
+        @click="addColumnKanban"
       >
         <i 
           class="
@@ -233,6 +233,7 @@ export default {
     'deleteColumn',
     'updateColumn',
     'setPayloadStatus',
+    'addColumn',
   ],
   mounted() {
     const parent = document.querySelector("#kanbanCtn");
@@ -291,17 +292,8 @@ export default {
     },
   },
   methods: {
-    addColumn() {
-      try {
-            const counter = `kanban-${this.totalColumns + 1}`;
-            const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-            const column = { ...modelColumn };
-            column.id = counter;
-            column.color = `#${randomColor}`;
-            state.kanbanColumn.splice(this.columnIndex + 1, 0, column);
-        } catch (error) {
-            console.log(error);
-        }
+    addColumnKanban() {
+      this.addColumn();
     },
     async columnDeleteMessages() {
       this.$q.dialog({
