@@ -83,7 +83,7 @@ export default {
   color: var(--q-color-primary);
 }
 .group-list-report .q-expansion-item__container > .q-item {
-  @apply tw-py-5 tw-rounded-xl;
+  @apply tw-pr-5 tw-py-0 tw-rounded-xl;
   box-shadow: 0px 16px 24px rgb(3 27 102 / 6%), 0px 2px 6px rgb(3 27 102 / 4%),
     0px 0px 1px rgb(3 27 102 / 4%);
 }

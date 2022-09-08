@@ -10,7 +10,7 @@
           @show="getRelation"
         >
           <template v-slot:header>
-            <q-item-section class="folder-title-drag">
+            <q-item-section class="folder-title-drag tw-py-5">
               <div class="tw-flex">
                 <div class="row items-center tw-w-11/12"  
                     @mouseover="showCollapse"
@@ -20,7 +20,7 @@
                     {{ folder.name || folder.id }}
                   </h5>
                 </div>
-                <div class="tw-w-1/12">
+                <div class="tw-w-1/12 tw-float-rigth">
                   <btn-menu
                     :actions="fieldActions(folder)"
                     :action-data="folder"
