@@ -13,6 +13,7 @@
         "
         :animation="300"
         ghostClass="ghost"
+        handle=".folder-title-drag"
       >
         <folder 
             v-for="folder in folderList"
@@ -30,16 +31,35 @@ import reportList from './reportList.vue';
 import actions from './actions.vue';
 import folder from './folderList.vue';
 import foldersStore from './store/foldersStore.js';
+import { computed } from '@vue/composition-api';
+
 export default {
+  props: {
+    folderList: {
+      type: Array,
+      default: () => [],
+    }
+  },
+  data() {
+    return {
+      dragReports: false,
+    };
+  },
+  provide() {
+    return {
+      dragReports: computed(() => this.dragReports).value,
+      setDragReports: this.setDragReports,
+    }
+  },
   components: {
     draggable,
     reportList,
     actions,
     folder,
   },
-  computed: {
-    folderList() {
-        return foldersStore().getFolderList();
+  methods: {
+    setDragReports(value) {
+        this.dragReports = value;
     },
   }
 };
