@@ -90,12 +90,24 @@
         </q-item-section>
       </q-item>
     </draggable>
+    <div
+      v-if="folder.reportList.length === 0"
+      class="
+        tw-py-8 
+        tw-text-center 
+        tw-text-5xl"
+      >
+        <div class="fa-light fa-folder-xmark" />
+        <div class="tw-text-base tw-py-2">
+         {{ $tr('isite.cms.message.searchNotFound') }}
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
 import draggable from "vuedraggable";
-import foldersStore from "./store/foldersStore.js";
+
 export default {
   components: {
     draggable,
@@ -106,13 +118,14 @@ export default {
       required: true,
     },
   },
+  inject: ['dragReports' , 'setDragReports'],
   computed: {
     dragReports: {
       get() {
-        return foldersStore().getDragReports();
+        return this.dragReports;
       },
       set(value) {
-        foldersStore().setDragReports(value);
+        this.setDragReports(value);
       },
     },
   },

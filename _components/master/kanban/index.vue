@@ -3,20 +3,18 @@
     <div class="tw-px-3">
       <div class="tw-grid tw-grid-cols-2 tw-gap-4">
         <div class="tw-w-1/2">
-          <dynamic-field 
-            :field="funnel" 
-            v-model="funnelSelected"
-          />
+          <dynamic-field :field="funnel" v-model="funnelSelectedComputed" />
         </div>
         <div class="tw-text-right kanbanBtnCtn">
-          <q-btn color="primary" outline @click="$router.push(routeCreate)">
+          <!--<q-btn color="primary" outline @click="$router.push(routeCreate)">
             <div class="row items-center no-wrap">
               <i class="fas fa-plus"></i>
               <div class="tw-text-center tw-px-1">
                 {{ $tr(`isite.cms.label.new`) }}
               </div>
             </div>
-          </q-btn>
+          </q-btn>-->
+          <page-actions :extra-actions="extraPageActions" />
         </div>
       </div>
     </div>
@@ -38,13 +36,12 @@
             :key="index"
             :column-data="column"
             :columnIndex="index"
+            :totalColumns="kanbanColumns.length"
             :ref="`kanbanColumn-${column.id}`"
             class="
               tw-flex-none tw-space-y-0
               w-h-auto
-              tw-bg-gray-100 
-              tw-rounded-lg 
-              tw-shadow
+              tw-bg-gray-100 tw-rounded-lg tw-shadow
             "
           />
         </div>
@@ -58,14 +55,33 @@
         />
       </draggable>
     </div>
+    <automationRules ref="automationRules" />
   </div>
 </template>
 
 <script>
 import kanbanColumn from "@imagina/qsite/_components/master/kanban/kanbanColumn.vue";
 import kanbanStore from "@imagina/qsite/_components/master/kanban/store/kanbanStore.js";
+import automationRules from "./automationRules/index.vue";
 import draggable from "vuedraggable";
 
+const modelPayload = {
+  id: null,
+  title: null,
+  color: null,
+  value: 1,
+  categoryId: null,
+};
+const modelColumn = {
+  id: null,
+  title: null,
+  color: null,
+  data: [],
+  loading: false,
+  page: 1,
+  total: 0,
+  new: true,
+};
 export default {
   props: {
     routes: {
@@ -73,27 +89,61 @@ export default {
       default: () => ({}),
     },
   },
+  provide() {
+    return {
+      saveStatusOrdering: this.saveStatusOrdering,
+      addKanbanCard: this.addKanbanCard,
+      deleteColumn: this.deleteColumn,
+      saveColumn: this.saveColumn,
+      updateColumn: this.updateColumn,
+      setPayloadStatus: this.setPayloadStatus,
+      addColumn: this.addColumn,
+    };
+  },
   components: {
     kanbanColumn,
     draggable,
+    automationRules,
   },
   data() {
     return {
       routeCreate: {
         name: "qrequestable.main.requestables.create",
       },
+      kanbanColumns: [],
+      funnelList: [],
+      funnelSelected: "4",
+      loading: false,
+      payloadStatus: { ...modelPayload },
     };
   },
   mounted() {
-    this.$nextTick(function () {
-      kanbanStore().setRoutes(this.routes);
-      kanbanStore().getFunnel();
-      kanbanStore().getColumns();
+    this.$nextTick(async function () {
+      await this.getFunnel();
+      await this.getColumns();
     });
   },
   computed: {
-    kanbanColumns() {
-      return kanbanStore().getKanbanColumn();
+    extraPageActions() {
+      return [
+        {
+          label: this.$tr(`isite.cms.label.new`),
+          props: {
+            label: this.$tr(`isite.cms.label.new`),
+            icon: "fas fa-plus",
+            padding: "3px 15px",
+          },
+          action: null,
+        },
+        {
+          label: "Automation rules",
+          props: {
+            label: "Automation rules",
+            padding: "3px 15px",
+          },
+          action: this.openAutomationRulesModal,
+        },
+      ];
     },
     funnel() {
       return {
@@ -107,28 +157,228 @@ export default {
         },
       };
     },
-    funnelSelected: {
+    funnelSelectedComputed: {
       get() {
-        return kanbanStore().getFunnelSelected();
+        return this.funnelSelected;
       },
       set(value) {
-        kanbanStore().setResetPage();
-        kanbanStore().setFunnelSelected(value);
-        kanbanStore().getColumns();
+        this.setResetPage();
+        this.funnelSelected = value;
+        this.getColumns();
       },
-    },
-    loading() {
-      return kanbanStore().getLoading();
     },
   },
   methods: {
+    async getFunnel() {
+      try {
+        const route = this.routes.funnel.apiRoute;
+        const response = await this.$crud.index(route);
+        const funnel = response.data
+          .sort((a, b) => {
+            const compare = a.title
+              .toLocaleLowerCase()
+              .localeCompare(b.title.toLocaleLowerCase());
+            return compare === 0 && a.title !== b.title
+              ? b.title.localeCompare(a.title)
+              : compare;
+          })
+          .shift();
+        this.funnelSelectedComputed = funnel.id;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    setResetPage() {
+      this.kanbanColumns.forEach((item) => {
+        item.page = 1;
+      });
+    },
     addColumn() {
-      kanbanStore().addColumn();
+      try {
+        const counter = `kanban-${state.kanbanColumn.length + 1}`;
+        const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+        const column = { ...modelColumn };
+        column.id = counter;
+        column.color = `#${randomColor}`;
+        state.kanbanColumn.splice(index + 1, 0, column);
+      } catch (error) {
+        console.log(error);
+      }
     },
     async reorderColumns() {
-      kanbanStore().reorder('kanbanColumn');
-      await kanbanStore().saveStatusOrdering();
+      this.reorder("kanbanColumns");
+      await this.saveStatusOrdering();
     },
+    reorder(type) {
+      this[type].forEach((item, index) => {
+        item.position = index;
+      });
+    },
+    async getColumns() {
+      try {
+        this.loading = true;
+        const route = this.routes.column;
+        const parameters = { params: {}, refresh: true };
+        parameters.params.include = route.include;
+        parameters.params.filter = {
+          [route.filter.name]: this.funnelSelected,
+        };
+        const response = await this.$crud.index(route.apiRoute, parameters);
+        const kanbanColumn = this.getKanbanColumns(response.data);
+        this.kanbanColumns = kanbanColumn;
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+        this.kanbanColumns = [];
+        console.log(error);
+      }
+    },
+    getKanbanColumns(data) {
+      const kanbanColumn = data.map((item, index) => {
+        return {
+          id: item.id,
+          title: item.title,
+          color: item.color,
+          data: [],
+          page: 1,
+          total: 0,
+          loading: false,
+          new: false,
+          position: index,
+        };
+      });
+      kanbanColumn.forEach(async (column) => {
+        const kanbanCard = await this.getKanbanCard(column);
+        column.data = kanbanCard.data;
+        column.loading = false;
+        column.total = kanbanCard.total;
+      });
+      return kanbanColumn;
+    },
+    async getKanbanCard(column, page = 1) {
+      try {
+        column.loading = true;
+        return await this.getKanbanCardList(column, page);
+      } catch (error) {
+        column.loading = false;
+        console.log(error);
+      }
+    },
+    async getKanbanCardList(column, page) {
+      try {
+        const route = this.routes.card;
+        const parameters = { params: {}, refresh: true };
+        parameters.params.include = route.include;
+        parameters.params.filter = { [route.filter.name]: column.id };
+        parameters.params.page = page;
+        parameters.params.take = 10;
+        const response = await this.$crud.index(route.apiRoute, parameters);
+        return this.getCardList(response);
+      } catch (error) {
+        column.loading = false;
+        console.log(error);
+      }
+    },
+    getCardList(response) {
+      return {
+        total: response.meta.page.total,
+        data: response.data.map((card) => ({
+          id: card.id,
+          title: `${card.creator.firstName} ${card.creator.lastName}`,
+          type: card.type,
+          createdAt: card.createdAt,
+          fields: card.fields,
+          category: card.category,
+        })),
+      };
+    },
+    async addKanbanCard(column, page) {
+      const kanbancolumn = this.kanbanColumns.find(
+        (item) => item.id === column.id
+      );
+      if (kanbancolumn) {
+        const kanbanCard = await this.getKanbanCardList(column, page);
+        if (kanbanCard.data.length > 0) {
+          kanbancolumn.data.push(...kanbanCard.data);
+        }
+      }
+    },
+    async saveStatusOrdering() {
+      try {
+        const route = this.routes.orderStatus;
+        const statusId = this.kanbanColumns.map((item) => ({ id: item.id }));
+        await this.$crud.create(route.apiRoute, {
+          [route.filter.name]: statusId,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    addColumn(index) {
+      try {
+            const counter = `kanban-${this.totalColumns + 1}`;
+            const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+            const column = { ...modelColumn };
+            column.id = counter;
+            column.color = `#${randomColor}`;
+            this.kanbanColumns.splice(index + 1, 0, column);
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    async deleteColumn(columnId) {
+      try {
+        const route = this.routes.column;
+        const kanbanColumn = this.kanbanColumns.filter(
+          (item) => item.id !== columnId
+        );
+        this.kanbanColumns = kanbanColumn;
+        if (!isNaN(columnId)) {
+          await this.$crud.delete(route.apiRoute, columnId);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async saveColumn(data) {
+      try {
+        const route = this.routes.column.apiRoute;
+        const payloadStatus = this.payloadStatus;
+        payloadStatus.title = data.title;
+        payloadStatus.color = data.color;
+        payloadStatus.categoryId = this.funnelSelected;
+        return await this.$crud.create(route, payloadStatus);
+      } catch (error) {
+        console.log(error);
+        this.setPayloadStatus();
+      }
+    },
+    async updateColumn(data) {
+      try {
+        const route = this.routes.column.apiRoute;
+        const payloadStatus = this.payloadStatus;
+        payloadStatus.id = data.id;
+        payloadStatus.title = data.title;
+        payloadStatus.color = data.color;
+        payloadStatus.categoryId = this.funnelSelected;
+        await this.$crud.update(route, data.id, payloadStatus);
+      } catch (error) {
+        console.log(error);
+        this.setPayloadStatus();
+      }
+    },
+    setPayloadStatus() {
+      this.payloadStatus = {
+        id: null,
+        title: null,
+        color: null,
+        value: 1,
+        categoryId: null,
+      };
+    },
+    openAutomationRulesModal() {
+      this.$refs.automationRules.openModal();
+    }
   },
 };
 </script>
