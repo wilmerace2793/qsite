@@ -1,20 +1,12 @@
 <template>
   <div class="tw-py-2">
     <div class="tw-px-3">
-      <div class="tw-grid tw-grid-cols-2 tw-gap-4">
-        <div class="tw-w-1/2">
+      <div class="tw-flex">
+        <div class="tw-w-3/12">
           <dynamic-field :field="funnel" v-model="funnelSelectedComputed" />
         </div>
-        <div class="tw-text-right kanbanBtnCtn">
-          <!--<q-btn color="primary" outline @click="$router.push(routeCreate)">
-            <div class="row items-center no-wrap">
-              <i class="fas fa-plus"></i>
-              <div class="tw-text-center tw-px-1">
-                {{ $tr(`isite.cms.label.new`) }}
-              </div>
-            </div>
-          </q-btn>-->
-          <page-actions :extra-actions="extraPageActions" />
+        <div class="tw-absolute tw-right-0 kanbanBtnCtn">
+          <slot name="pageAction" />
         </div>
       </div>
     </div>
@@ -125,25 +117,14 @@ export default {
   },
   computed: {
     extraPageActions() {
-      return [
-        {
-          label: this.$tr(`isite.cms.label.new`),
-          props: {
-            label: this.$tr(`isite.cms.label.new`),
-            icon: "fas fa-plus",
-            padding: "3px 15px",
-          },
-          action: null,
-        },
-        {
+      return {
           label: "Automation rules",
           props: {
             label: "Automation rules",
             padding: "3px 15px",
           },
           action: this.openAutomationRulesModal,
-        },
-      ];
+        };
     },
     funnel() {
       return {

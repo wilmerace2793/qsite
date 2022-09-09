@@ -1,7 +1,13 @@
 <template>
-  <q-dialog v-model="show" :content-class="`master-dialog${customPosition ? '-custom' : ''}`"
-            v-on="$listeners" :maximized="maximized" :persistent="persistent"
-            :position="customPosition ? 'right' : 'standard'">
+  <q-dialog 
+    v-model="show" 
+    :content-class="`master-dialog${customPosition ? '-custom' : ''}`"
+    v-on="$listeners" 
+    :maximized="maximized" 
+    :persistent="persistent"
+    :position="customPosition ? 'right' : 'standard'"
+    :content-style="masterModalWidthSize"
+  >
     <!--Content-->
     <div :id="id || 'masterModalContent'" :style="customPosition ? '' : `min-width: ${width}`"
          v-if="show" class="master-dialog__content round relative-position">
@@ -49,6 +55,7 @@ export default {
     maximized: {type: Boolean, default: false},
     hideCloseAction: {type: Boolean, default: false},
     customPosition: {type: Boolean, default: false},
+    modalWidthSize: {type: String, default: '65vw'}
   },
   components: {},
   watch: {
@@ -61,7 +68,7 @@ export default {
       if (newValue != oldValue) {
         this.$emit('input', this.$clone(newValue))
       }
-    }
+    },
   },
   mounted() {
     this.$nextTick(function () {
@@ -80,7 +87,12 @@ export default {
         noCaps: true,
         class: 'btn-small'
       }
-    }
+    },
+    masterModalWidthSize() {
+      return {
+        '--modal-width-size': this.modalWidthSize,
+      };
+    },
   },
   methods: {}
 }
@@ -118,7 +130,7 @@ export default {
 .master-dialog-custom
   .q-dialog__inner
     padding 15px 0 0 0
-    width 65vw
+    width var(--modal-width-size)
     @media screen and (max-width: $breakpoint-md)
       width 90vw
     @media screen and (max-width: $breakpoint-xs)
@@ -133,5 +145,5 @@ export default {
       border-radius $custom-radius 0 0 0 !important
 
     &__body
-      height calc(100vh - 157px)
+      height calc(100vh - 157px)     
 </style>
