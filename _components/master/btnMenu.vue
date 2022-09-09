@@ -20,61 +20,62 @@
 <script>
 export default {
   props: {
-    actions: {default: false},
-    actionData: {default: false}
+    actions: { default: false },
+    actionData: { default: false },
   },
   components: {},
   watch: {},
   mounted() {
-    this.$nextTick(function () {
-    })
+    this.$nextTick(function () {});
   },
   data() {
-    return {}
+    return {};
   },
   computed: {
     actionsData() {
-      return this.actions.map(item => {
+      return this.actions.map((item) => {
         //Instance item props
-        item.props = {tag: 'a', key: this.$uid(), clickable: true}
+        item.props = { tag: "a", key: this.$uid(), clickable: true };
 
         //Define external redirect
-        if (item.toRoute) item.props.href = item.toRoute
+        if (item.toRoute) item.props.href = item.toRoute;
 
         //Instance vue route redirect
-        if (item.route) item.props.to = {name: item.route, params: this.$clone(this.actionData || {})}
+        if (item.route)
+          item.props.to = {
+            name: item.route,
+            params: this.$clone(this.actionData || {}),
+          };
 
         // Formatting all instances
-        if (item.format) item = {...item, ...(item.format(this.actionData) || {})}
-        
+        if (item.format)
+          item = { ...item, ...(item.format(this.actionData) || {}) };
+
         //Return item
-        return item
-      })
-    }
+        return item;
+      });
+    },
   },
   methods: {
     //Call custom action
     async runAction(action) {
       //Define action params
-      let actionData = this.$clone(this.actionData || {})
+      let actionData = this.$clone(this.actionData || {});
       //Check if has action function
-      if (action.action) await action.action(actionData)
+      if (action.action) await action.action(actionData);
     },
-  }
-}
-</script>
+  },
+};
+</script >
 <style lang="stylus">
 .btn-menu-component__menu
   padding 8px
   min-width auto
   border-radius 5px
-
   .q-list
     min-width 150px
-
   .q-item
     padding 8px
-
     .q-icon
       margin-right 10px
 </style>

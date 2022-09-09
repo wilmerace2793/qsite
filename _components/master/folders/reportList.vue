@@ -13,8 +13,7 @@
       @end="dragReports = false"
       :style="{ height: folder.reportList.length <= 5 ? 'auto' : '300px' }"
     >
-      <div v-if="!folder.loading">
-        <q-item
+      <q-item
         clickable
         v-ripple
         class="tw-py-3 tw-border-b tw-cursor-move"
@@ -27,7 +26,7 @@
         <q-item-section>
           <q-item-label class="tw-font-bold" lines="1">{{ report.title || report.id }}</q-item-label>
           <q-item-label caption lines="1">
-            Short description (Optional)
+            {{ report.name || report.description }}
           </q-item-label>
         </q-item-section>
         <q-item-section side>
@@ -90,25 +89,25 @@
           </q-btn>
         </q-item-section>
       </q-item>
-      </div>
-      <div 
-        v-else
-        class="
-          tw-flex 
-          tw-absolute
-          tw-inset-0 
-          tw-justify-center 
-          tw-py-8"
-        >
-        <q-spinner color="primary" size="3em" />
-      </div>
     </draggable>
+    <div
+      v-if="folder.reportList.length === 0"
+      class="
+        tw-py-8 
+        tw-text-center 
+        tw-text-5xl"
+      >
+        <div class="fa-light fa-folder-xmark"></div>
+        <div class="tw-text-base tw-py-2">
+         {{ $tr('isite.cms.message.searchNotFound') }}
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
 import draggable from "vuedraggable";
-import foldersStore from "./store/foldersStore.js";
+
 export default {
   components: {
     draggable,
@@ -119,13 +118,14 @@ export default {
       required: true,
     },
   },
+  inject: ['dragReports' , 'setDragReports'],
   computed: {
     dragReports: {
       get() {
-        return foldersStore().getDragReports();
+        return this.dragReports;
       },
       set(value) {
-        foldersStore().setDragReports(value);
+        this.setDragReports(value);
       },
     },
   },

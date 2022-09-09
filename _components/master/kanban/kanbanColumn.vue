@@ -42,7 +42,7 @@
           hover:tw--translate-y-1
         "
         v-if="hover"
-        @click="addColumn"
+        @click="addColumnKanban"
       >
         <i 
           class="
@@ -139,7 +139,7 @@
                 round
                 icon="fas fa-times"
                 size="6px"
-                @click="deleteColumn"
+                @click="columnDeleteMessages"
               >
                 <q-tooltip> Eliminar columnas </q-tooltip>
               </q-btn>
@@ -201,6 +201,16 @@
 import draggable from "vuedraggable";
 import kanbanCard from "@imagina/qsite/_components/master/kanban/kanbanCard.vue";
 import kanbanStore from "@imagina/qsite/_components/master/kanban/store/kanbanStore.js";
+const modelColumn = {
+    id: null,
+    title: null,
+    color: null,
+    data: [],
+    loading: false,
+    page: 1,
+    total: 0,
+    new: true,
+}
 
 export default {
   props: {
@@ -212,10 +222,23 @@ export default {
       type: Number,
       required: true,
     },
+    totalColumns: {
+      type: Number,
+      default: () => 0,
+    }
   },
+  inject: [
+    'saveStatusOrdering',
+    'saveColumn', 
+    'addKanbanCard',
+    'deleteColumn',
+    'updateColumn',
+    'setPayloadStatus',
+    'addColumn',
+  ],
   mounted() {
     const parent = document.querySelector("#kanbanCtn");
-    this.initialheight = `${window.innerHeight - parent.offsetTop - 120}px`;
+    this.initialheight = `${window.innerHeight - parent.offsetTop - 235}px`;
     window.addEventListener("resize", () => {
       setTimeout(() => {
         this.computedHeight = `${
@@ -248,7 +271,14 @@ export default {
   },
   computed: {
     inputDynamicField() {
-      return kanbanStore().getInputDynamicField();
+      return {
+        value: null,
+        type: 'input',
+        isFakeField: true,
+        props: {
+            clearable: true,
+        },
+      }
     },
     computedHeight: {
       get() {
@@ -263,19 +293,19 @@ export default {
     },
   },
   methods: {
-    addColumn() {
-      kanbanStore().addColumn(this.columnIndex);
+    addColumnKanban() {
+      this.addColumn(this.columnIndex);
     },
-    async deleteColumn() {
+    async columnDeleteMessages() {
       this.$q.dialog({
           ok: this.$tr('isite.cms.label.delete'),
           message: this.$tr('isite.cms.message.deleteRecord'),
           cancel: true,
           persistent: true
         }).onOk(async() => {
-          await kanbanStore().deleteColumn(this.columnData.id);
+          await this.deleteColumn(this.columnData.id);
           this.$alert.info({ message: this.$tr('isite.cms.message.recordDeleted') });
-          await kanbanStore().saveStatusOrdering();
+          await this.saveStatusOrdering();
         }).onCancel(() => {})
     },
     observerCallback(entries) {
@@ -286,13 +316,18 @@ export default {
       });
     },
     async infiniteHandler() {
-      if (!this.columnData.loading) {
-        this.loading = true;
-        this.columnData.page = this.columnData.page + 1;
-        await kanbanStore().addKanbanCard(
-          this.columnData,
-          this.columnData.page
-        );
+      try {
+          if (!this.columnData.loading) {
+            this.loading = true;
+            this.columnData.page = this.columnData.page + 1;
+            await this.addKanbanCard(
+              this.columnData,
+              this.columnData.page
+            );
+            this.loading = false;
+        }
+      } catch (error) {
+        console.log(error);
         this.loading = false;
       }
     },
@@ -300,13 +335,13 @@ export default {
       if (this.columnData.title) {
         this.columnData.new = false;
         if(isNaN(this.columnData.id)) {
-          const response = await kanbanStore().saveColumn(this.columnData)
+          const response = await this.saveColumn(this.columnData)
           this.columnData.id = response.data.id;
         } else {
-          await kanbanStore().updateColumn(this.columnData);
+          await this.updateColumn(this.columnData);
         }
-        await kanbanStore().saveStatusOrdering();
-        kanbanStore().setPayloadStatus();
+        await this.saveStatusOrdering();
+        this.setPayloadStatus();
       }
     },
   },
@@ -315,7 +350,7 @@ export default {
 
 <style>
 .columnCtn {
-  @apply tw-w-64;
+  @apply tw-w-60;
 }
 
 .dragCard {

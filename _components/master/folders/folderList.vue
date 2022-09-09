@@ -1,73 +1,60 @@
 <template>
-    <div>
-      <q-card class="tw-shadow-none">
-        <q-card-section class="list-report">
-          <q-expansion-item
-            v-model="folder.isCollapse"
-            bordered
-            expand-icon-toggle
-            class="tw-shadow-lg tw-bg-white tw-rounded-xl"
-            @show="getRelationData(folder)"
-          >
-            <template v-slot:header>
-              <q-item-section avatar>
-                <q-icon name="folder" color="primary" size="2rem"/>
-              </q-item-section>
-              <q-item-section>
-                <q-item-label @mouseover="showCollapse" class="tw-text-xl tw-font-bold" lines="1">{{ folder.title }}</q-item-label>
-              </q-item-section>
-              <q-item-section side>
-                <div class="row items-center">
-                  <q-btn
-                    flat
-                    round
-                    color="tw-gray-300"
-                    size="sm"
-                    icon="more_vert"
-                  >
-                    <q-menu
-                      transition-show="jump-down"
-                      transition-hide="jump-up"
-                    >
-                      <q-list class="list-report-menu">
-                        <q-item clickable v-ripple>
-                          <q-item-section avatar>
-                            <q-icon name="edit" color="primary" />
-                          </q-item-section>
-
-                          <q-item-section>Rename 1</q-item-section>
-                        </q-item>
-                        <q-separator />
-                        <q-item clickable v-ripple>
-                          <q-item-section avatar>
-                            <q-icon name="delete" color="primary" />
-                          </q-item-section>
-
-                          <q-item-section>Delete</q-item-section>
-                        </q-item>
-                      </q-list>
-                    </q-menu>
-                  </q-btn>
+  <div>
+    <q-card class="tw-shadow-none">
+      <q-card-section class="list-report">
+        <q-expansion-item
+          v-model="folder.isCollapse"
+          bordered
+          expand-icon-toggle
+          class="tw-shadow-lg tw-bg-white tw-rounded-xl"
+          @show="getRelation"
+        >
+          <template v-slot:header>
+            <q-item-section class="folder-title-drag tw-py-5">
+              <div class="tw-flex">
+                <div class="row items-center tw-w-11/12"  
+                    @mouseover="showCollapse"
+                >
+                  <q-icon name="folder" color="primary" size="2rem" />
+                  <h5 class="tw-text-xl tw-ml-3 tw-font-bold">
+                    {{ folder.name || folder.id }}
+                  </h5>
                 </div>
-              </q-item-section>
-            </template>
+                <div class="tw-w-1/12 tw-float-rigth">
+                  <btn-menu
+                    :actions="fieldActions(folder)"
+                    :action-data="folder"
+                  />
+                </div>
+            </div>
+            </q-item-section>
+          </template>
 
-            <q-list separator class="tw-pt-2 tw-rounded-b-xl">
-              <q-item clickable v-ripple>
-                <q-item-section class="input-report">
-                  <q-input outlined dense type="search">
-                    <template v-slot:append>
-                      <q-icon name="search" />
-                    </template>
-                  </q-input>  
-                </q-item-section>
-              </q-item>
-              <reportList :folder="folder" />
-            </q-list>
-          </q-expansion-item>
-        </q-card-section>
-      </q-card>
-    </div>
+          <q-list 
+            separator 
+            class="tw-pt-2 tw-rounded-b-xl"
+            v-show="!folder.loading"
+          >
+             <reportList :folder="folder" />
+          </q-list>
+          <div
+            v-show="folder.loading"
+            class="
+              tw-bg-gray-100
+              tw-h-32
+              tw-flex 
+              tw-absolute
+              tw-inset-0 
+              tw-justify-center 
+              tw-py-8
+              tw-rounded-b-md"
+            >
+              <q-spinner color="primary" size="3em" />
+          </div>
+        </q-expansion-item>
+      </q-card-section>
+    </q-card>
+  </div>
 </template>
 
 <script>
@@ -75,28 +62,32 @@ import draggable from "vuedraggable"
 import reportList from './reportList';
 import foldersStore from "./store/foldersStore.js";
 export default {
-  components: {
-    reportList,
+components: {
+  reportList,
+},
+props: {
+  folder: {
+    type: Object,
+    required: true,
   },
-  props: {
-    folder: {
-      type: Object,
-      required: true,
-    },
+},
+inject: [
+  'getRelationData', 
+  'fieldActions', 
+  'dragReports',
+],
+methods: {
+  showCollapse() {
+     if(this.dragReports) {
+      this.getRelation();
+      this.folder.isCollapse = true;
+    };
   },
-  inject: ['getRelationData'],
-  computed: {
-    dragReports() {
-        return foldersStore().getDragReports();
-    },
+  getRelation() {
+    if(this.folder.reportList.length === 0) {
+      this.getRelationData(this.folder);
+    };
   },
-  methods: {
-    showCollapse() {
-       if(this.dragReports) {
-        this.getRelationData(this.folder);
-        this.folder.isCollapse = true;
-      };
-    },
-  }
+}
 }
 </script>
