@@ -23,6 +23,7 @@ export default {
       default:() => null,
     },
   },
+  inject:['init'],
   data() {
     return {
       TYPE_STORE_AUTOMATION_RULES,
@@ -61,6 +62,7 @@ export default {
   methods: {
     hideModal() {
       this.show = false;
+      this.init();
     },
     openModal() {
       this.show = true;

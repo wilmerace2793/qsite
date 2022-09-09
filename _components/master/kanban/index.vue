@@ -106,7 +106,8 @@ export default {
       setPayloadStatus: this.setPayloadStatus,
       addColumn: this.addColumn,
       heightColumn: this.heightColumn,
-      uId: this.uId
+      uId: this.uId,
+      init: this.init,
     };
   },
   components: {
@@ -129,8 +130,7 @@ export default {
   },
   mounted() {
     this.$nextTick(async function () {
-        await this.getFunnel();
-        await this.getColumns();
+        await this.init();
     });
   },
   computed: {
@@ -168,6 +168,10 @@ export default {
     },
   },
   methods: {
+    async init() {
+      await this.getFunnel();
+      await this.getColumns();
+    },
     async getFunnel() {
       try {
         if(this.funnelId) {
