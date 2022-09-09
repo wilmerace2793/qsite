@@ -10,26 +10,21 @@
           @show="getRelation"
         >
           <template v-slot:header>
-            <q-item-section class="folder-title-drag tw-py-5">
-              <div class="tw-flex">
-                <div class="row items-center tw-w-11/12"  
-                    @mouseover="showCollapse"
-                >
-                  <q-icon name="folder" color="primary" size="2rem" />
-                  <h5 class="tw-text-xl tw-ml-3 tw-font-bold">
-                    {{ folder.name || folder.id }}
-                  </h5>
-                </div>
-                <div class="tw-w-1/12 tw-float-rigth">
-                  <btn-menu
-                    :actions="fieldActions(folder)"
-                    :action-data="folder"
-                  />
-                </div>
-            </div>
+            <q-item-section avatar>
+              <q-icon name="folder" color="primary" size="2rem"/>
+            </q-item-section>
+            <q-item-section class="folder-title-drag tw-py-5 f-cursor-grab" @mouseover="showCollapse">
+              <q-item-label class="tw-text-xl tw-font-bold" lines="1">{{ folder.name || folder.id }}</q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <div class="row items-center">
+                <btn-menu
+                      :actions="fieldActions(folder)"
+                      :action-data="folder"
+                    />
+              </div>
             </q-item-section>
           </template>
-
           <q-list 
             separator 
             class="tw-pt-2 tw-rounded-b-xl"
@@ -95,3 +90,8 @@ methods: {
 }
 }
 </script>
+<style>
+.f-cursor-grab {
+  cursor: grab;
+}
+</style>
