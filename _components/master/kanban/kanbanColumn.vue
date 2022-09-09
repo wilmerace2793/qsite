@@ -238,7 +238,7 @@ export default {
   ],
   mounted() {
     const parent = document.querySelector("#kanbanCtn");
-    this.initialheight = `${window.innerHeight - parent.offsetTop - 120}px`;
+    this.initialheight = `${window.innerHeight - parent.offsetTop - 235}px`;
     window.addEventListener("resize", () => {
       setTimeout(() => {
         this.computedHeight = `${
