@@ -11,7 +11,7 @@
       :force-fallback="true"
       @start="dragReports = true"
       @end="dragReports = false"
-      :style="{ height: folder.reportList.length <= 5 ? 'auto' : '300px' }"
+      :style="{ height: heightDrag }"
     >
       <q-item
         clickable
@@ -91,7 +91,7 @@
       </q-item>
     </draggable>
     <div
-      v-if="folder.reportList.length === 0"
+      v-if="!dragReports && folder.reportList.length === 0"
       class="
         tw-py-8 
         tw-text-center 
@@ -107,6 +107,7 @@
 
 <script>
 import draggable from "vuedraggable";
+import foldersStore from './store/foldersStore.js';
 
 export default {
   components: {
@@ -118,15 +119,20 @@ export default {
       required: true,
     },
   },
-  inject: ['dragReports' , 'setDragReports'],
   computed: {
     dragReports: {
       get() {
-        return this.dragReports;
+        return foldersStore().getDragReports();
       },
       set(value) {
-        this.setDragReports(value);
+        foldersStore().setDragReports(value);
       },
+    },
+    heightDrag() {
+      if(this.dragReports && this.folder.reportList.length === 0) {
+        return '100px';
+      }
+      return this.folder.reportList.length <= 5 ? 'auto' : '300px';
     },
   },
 };

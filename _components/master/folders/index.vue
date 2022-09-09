@@ -42,14 +42,8 @@ export default {
   },
   data() {
     return {
-      dragReports: false,
+      dragReport: false,
     };
-  },
-  provide() {
-    return {
-      dragReports: computed(() => this.dragReports).value,
-      setDragReports: this.setDragReports,
-    }
   },
   components: {
     draggable,
@@ -57,11 +51,6 @@ export default {
     actions,
     folder,
   },
-  methods: {
-    setDragReports(value) {
-        this.dragReports = value;
-    },
-  }
 };
 </script>
 
