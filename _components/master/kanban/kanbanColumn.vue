@@ -2,7 +2,7 @@
   <div class="columnCtn tw-relative">
     <div
       class="tw-h-auto"
-      :class="`cardItemsCtn-${columnData.id}`"
+      :class="`cardItemsCtn-${this.uId}${columnData.id}`"
       @mouseover="hover = true"
       @mouseleave="hover = false"
     >
@@ -186,7 +186,7 @@
             </q-banner>
           </div>
           <div
-            :class="`trigger-${columnData.id}`"
+            :class="`trigger-${this.uId}${columnData.id}`"
             class="tw-text-center tw-h-5 tw-flex tw-justify-center"
           >
             <q-spinner v-if="loading" color="primary" size="1.3em" />
@@ -225,7 +225,7 @@ export default {
     totalColumns: {
       type: Number,
       default: () => 0,
-    }
+    },
   },
   inject: [
     'saveStatusOrdering',
@@ -235,10 +235,12 @@ export default {
     'updateColumn',
     'setPayloadStatus',
     'addColumn',
+    'heightColumn',
+    'uId'
   ],
   mounted() {
-    const parent = document.querySelector("#kanbanCtn");
-    this.initialheight = `${window.innerHeight - parent.offsetTop - 235}px`;
+    const parent = document.querySelector(`#kanbanCtn${this.uId}`);
+    this.initialheight = `${window.innerHeight - parent.offsetTop - this.heightColumn}px`;
     window.addEventListener("resize", () => {
       setTimeout(() => {
         this.computedHeight = `${
@@ -248,9 +250,9 @@ export default {
     });
     // infinite scroll
     const observerOptions = {
-      root: document.querySelector(`.cardItemsCtn-${this.columnData.id}`),
+      root: document.querySelector(`.cardItemsCtn-${this.uId}${this.columnData.id}`),
     };
-    const target = document.querySelector(`.trigger-${this.columnData.id}`);
+    const target = document.querySelector(`.trigger-${this.uId}${this.columnData.id}`);
     const observer = new IntersectionObserver(
       this.observerCallback,
       observerOptions

@@ -8,13 +8,21 @@
       modalWidthSize="98%"
     >
       <kanban
-        :routes="routeKanban" 
+        :routes="routeKanban"
+        :funnelId="funnelId"
+        :heightColumn="170"
       />
     </master-modal>
 </template>
 <script>
 import { TYPE_STORE_AUTOMATION_RULES } from '../constants/constants.js';
 export default {
+  props: {
+    funnelId: {
+      type: String,
+      default:() => null,
+    },
+  },
   data() {
     return {
       TYPE_STORE_AUTOMATION_RULES,
