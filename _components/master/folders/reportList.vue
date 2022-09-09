@@ -26,7 +26,7 @@
         <q-item-section>
           <q-item-label class="tw-font-bold" lines="1">{{ report.title || report.id }}</q-item-label>
           <q-item-label caption lines="1">
-            {{ report.name || report.description }}
+            {{ report.name || report.description }} 
           </q-item-label>
         </q-item-section>
         <q-item-section side>
