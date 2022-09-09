@@ -87,6 +87,12 @@ const state = reactive({
 });
 
 export default function foldersStore() {
+    function getDragReports() {
+        return state.dragReports;
+    }
+    function setDragReports(value) {
+        state.dragReports = value;
+    }
     function transformDataToDragableForderList(data) {
         try {
             return data.map(item => ({
@@ -101,5 +107,7 @@ export default function foldersStore() {
     }
     return {
         transformDataToDragableForderList,
+        getDragReports,
+        setDragReports,
     }
 }

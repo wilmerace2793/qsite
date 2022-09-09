@@ -73,9 +73,13 @@ props: {
 },
 inject: [
   'getRelationData', 
-  'fieldActions', 
-  'dragReports',
+  'fieldActions',
 ],
+computed: {
+  dragReports() {
+    return foldersStore().getDragReports();
+  },
+},
 methods: {
   showCollapse() {
      if(this.dragReports) {
