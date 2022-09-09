@@ -350,7 +350,7 @@ export default {
 
 <style>
 .columnCtn {
-  @apply tw-w-64;
+  @apply tw-w-60;
 }
 
 .dragCard {

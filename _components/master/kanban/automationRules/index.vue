@@ -2,9 +2,10 @@
     <master-modal
       v-model="show"
       :persistent="true"
-      width="380px"
-      custom-position
+      customPosition
+      maximized
       @hide="hideModal" 
+      modalWidthSize="98%"
     >
       <kanban
         :routes="routeKanban" 
