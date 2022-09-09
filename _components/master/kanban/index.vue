@@ -133,7 +133,7 @@ export default {
             icon: "fas fa-plus",
             padding: "3px 15px",
           },
-          action: null,
+          action: () => this.$router.push(this.routeCreate),
         },
         {
           label: "Automation rules",

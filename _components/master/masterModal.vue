@@ -6,7 +6,7 @@
     :maximized="maximized" 
     :persistent="persistent"
     :position="customPosition ? 'right' : 'standard'"
-    :content-style="modalWidthSize"
+    :content-style="masterModalWidthSize"
   >
     <!--Content-->
     <div :id="id || 'masterModalContent'" :style="customPosition ? '' : `min-width: ${width}`"
@@ -88,7 +88,7 @@ export default {
         class: 'btn-small'
       }
     },
-    modalWidthSize() {
+    masterModalWidthSize() {
       return {
         '--modal-width-size': this.modalWidthSize,
       };
