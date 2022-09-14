@@ -19,7 +19,7 @@
         ghost-class="ghostCard"
         drag-class="dragCard"
         filter=".ignoreItem"
-        :disabled="loading"
+        :disabled="loading || !dragColumn"
         class="tw-p-3 tw-h-auto tw-flex tw-space-x-4 tw-overflow-x-auto"
         @change="reorderColumns"
       >
@@ -95,6 +95,18 @@ export default {
       type: String,
       default: () => null,
     },
+    dragColumn: {
+      type: Boolean,
+      default: () => true,
+    },
+    disableCrud: {
+      type: Boolean,
+      default: () => false,
+    },
+    automation: {
+      type: Boolean,
+      default: () => false,
+    }
   },
   provide() {
     return {
@@ -108,6 +120,9 @@ export default {
       heightColumn: this.heightColumn,
       uId: this.uId,
       init: this.init,
+      disableCrud: this.disableCrud,
+      routes: this.routes,
+      automation: this.automation,
     };
   },
   components: {
@@ -136,9 +151,9 @@ export default {
   computed: {
     extraPageActions() {
       return {
-          label: "Automation rules",
+          label: "Reglas de automatización",
           props: {
-            label: "Automation rules",
+            label: "Reglas de automatización",
             padding: "3px 15px",
           },
           action: this.openAutomationRulesModal,
@@ -275,8 +290,11 @@ export default {
     },
     async getKanbanCardList(column, page) {
       try {
-        if(!this.routes.card) return;
-        const route = this.routes.card;
+        const nameRoute = this.automation ? 'automation' : 'card';
+        if(!this.routes[nameRoute]) {
+          return { total: 0, data: [] };
+        }
+        const route = this.routes[nameRoute];
         const parameters = { params: {}, refresh: true };
         parameters.params.include = route.include;
         parameters.params.filter = { [route.filter.name]: column.id };
@@ -294,11 +312,12 @@ export default {
         total: response.meta.page.total,
         data: response.data.map((card) => ({
           id: card.id,
-          title: `${card.creator.firstName} ${card.creator.lastName}`,
-          type: card.type,
+          title: card.name || `${card.creator.firstName} ${card.creator.lastName}`,
+          type: card.type || null,
           createdAt: card.createdAt,
-          fields: card.fields,
-          category: card.category,
+          fields: card.fields || [],
+          category: card.category || [],
+          statusId: card.statusId,
         })),
       };
     },
@@ -391,7 +410,7 @@ export default {
       };
     },
     openAutomationRulesModal() {
-      this.$refs.automationRules.openModal();
+      if(this.$refs.automationRules) this.$refs.automationRules.openModal();
     }
   },
 };
