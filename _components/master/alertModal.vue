@@ -1,10 +1,10 @@
 <template>
   <q-dialog id="alertModalComponent" ref="alertModalComponent" persistent
-            transition-show="slide-up" transition-hide="slide-down">
+            transition-show="slide-up" transition-hide="slide-down" :content-style="modalWidth">
     <div id="cardContent" class="box">
       <!--Header-->
       <q-toolbar :class="`bgg-${paramsModal.color} q-px-none`" style="min-height: auto">
-        <q-toolbar-title class="box-title row items-center">
+        <q-toolbar-title v-if="paramsModal.title" class="box-title row items-center">
           <q-icon size="25px" :name="paramsModal.icon" :color="paramsModal.color"/>
           {{ paramsModal.title }}
         </q-toolbar-title>
@@ -15,14 +15,16 @@
       </q-toolbar>
 
       <!--Separator-->
-      <q-separator class="q-mt-sm"/>
+      <q-separator v-if="paramsModal.title" class="q-mt-sm"/>
 
       <!--Content-->
       <q-card-section class="relative-position col-12 q-px-none q-pb-none">
         <!--Message-->
         <div v-html="paramsModal.message" class="q-mb-lg"></div>
         <!--button Actions-->
-        <div id="actions" class="row justify-end q-gutter-sm">
+        <div 
+          id="actions" 
+          class="row justify-end q-gutter-sm">
           <q-btn v-for="(actionProps, keyAction) in actionsModal" :key="keyAction" v-bind="actionProps" v-close-popup
                  @click="callBack(actionProps)"/>
         </div>
@@ -58,6 +60,9 @@ export default {
         actions: [{label: this.$tr('isite.cms.label.ok')}],
         ...this.params
       }
+    },
+    modalWidth() {
+      return { '--modalWidth': this.params.modalWidth ? this.params.modalWidth : '400px' }
     },
     //Return Actions modal as props to q-btn
     actionsModal() {
@@ -101,6 +106,6 @@ export default {
 <style lang="stylus">
 #alertModalComponent
   #cardContent
-    width 400px
+    width var(--modalWidth)
     max-width 99%
 </style>

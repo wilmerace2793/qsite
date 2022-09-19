@@ -1106,7 +1106,7 @@
           "signature": "Signature",
           "flightMessageInBound": "Does the inbound data belong to the outbound?",
           "flightMessageOutBound": "Does the outbound data belong to the inbound?",
-          "flightMessage": "Are you sure this is a correct flight number?",
+          "flightMessage": "Are you sure #file_number is a correct flight number?",
           "errorFlightSelected": "You must select a flight",
           "createNewCustomer": "Create new customer"
         },
