@@ -1,7 +1,7 @@
 <template>
   <div id="pageActionscomponent" class="row q-col-gutter-y-sm full-width items-center justify-between">
     <!--Title-->
-    <div :class="`text-h6  text-blue-grey text-weight-bold text-subtitle1 ellipsis title-content`">
+    <div :class="`text-primary text-weight-bold ellipsis title-content`">
       <q-icon v-if="icon" :name="icon" size="22px" class="q-mr-sm"/>
       <label id="titleCrudTable" v-if="title">{{ title }}</label>
     </div>
@@ -13,7 +13,7 @@
                v-if="extraActions && extraActions.includes('search') && searchAction"
                @input="$emit('search', $clone(search))">
         <template v-slot:prepend>
-          <q-icon name="search"/>
+          <q-icon color="tertiary" name="search"/>
         </template>
       </q-input>
       <!--Button Actions-->
@@ -42,8 +42,8 @@
     <!--Description-->
     <div v-if="description" class="ellipsis-2-lines col-12 description-content">{{ description }}</div>
     <!--Filter data-->
-    <div class="col-12" v-if="filter.hasValues || Object.keys(quickFilters).length">
-      <q-separator class="q-mb-sm"/>
+    <div class="col-12 tw-mt-3" v-if="filter.hasValues || Object.keys(quickFilters).length">
+      <!--<q-separator class="q-mb-sm"/>-->
       <div class="text-blue-grey ellipsis text-caption">
         <q-icon name="fas fa-exclamation-circle" class="q-mr-xs" color="amber" size="14px"/>
         <b>{{ $trp('isite.cms.label.filter') }}:</b>
@@ -230,7 +230,7 @@ export default {
 <style lang="stylus">
 #pageActionscomponent
   #titleCrudTable
-    font-size 18px
+    font-size 20px
 
   .title-content
     @media screen and (max-width: $breakpoint-md)
@@ -238,6 +238,8 @@ export default {
       width 100%
 
   .actions-content
+    .q-field__append .q-icon
+      color: $tertiary
     @media screen and (max-width: $breakpoint-md)
       width 100%
 
@@ -251,8 +253,19 @@ export default {
       width 100%
 
     .q-field__control, .q-field__control:after, .q-field__control-container, .q-field__append
-      min-height 34px
-      max-height 34px
+      //min-height 34px
+      //max-height 34px
+    .q-field__control, .q-field__prepend, .q-field__append
+      height: 34px
+    
+  #dynamicFieldComponent   
+    .q-field.q-field--float .q-field__label 
+      color: $primary
+    .q-field__control  
+      .q-field__append .q-icon
+        color: $tertiary 
+      .q-field__append:last-child .q-icon
+        color: $primary 
 
   .actions-content
     .q-btn-dropdown

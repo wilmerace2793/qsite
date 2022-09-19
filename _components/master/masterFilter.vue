@@ -5,8 +5,8 @@
       <!--Title-->
       <div class="row justify-between items-center q-pa-md">
         <div class="text-subtitle1 row items-center">
-          <q-icon name="fas fa-filter" color="primary" size="20px" class="q-mr-sm"/>
-          <label>{{ $trp('isite.cms.label.filter', {capitalize: true}) }}</label>
+          <q-icon name="fa-regular fa-filter" color="primary" size="20px" class="q-mr-sm"/>
+          <label class="text-primary text-weight-bold">{{ $trp('isite.cms.label.filter', {capitalize: true}) }}</label>
         </div>
         <!-- Close icon -->
         <q-icon name="fas fa-times" color="blue-grey" size="20px" class="cursor-pointer"
@@ -68,9 +68,9 @@
     </q-scroll-area>
 
     <!--footer -->
-    <div class="absolute-bottom text-center bg-white" ref="footerContent">
-      <q-separator/>
-      <q-btn :label="$tr('isite.cms.label.search')" unelevated color="primary" class="q-my-sm" rounded
+    <div class="absolute-bottom text-center bg-white tw-p-3" ref="footerContent">
+      <q-separator class="tw-mb-3"/>
+      <q-btn :label="$tr('isite.cms.label.search')" unelevated color="primary" no-caps class="tw-w-full" rounded
              @click="emitFilter(), $eventBus.$emit('toggleMasterDrawer','filter')"/>
     </div>
   </div>
@@ -347,4 +347,11 @@ export default {
   #tabsContent
     .q-tab__content
       min-width auto
+  .q-field.q-field--float .q-field__label 
+    color: $primary  
+  .q-field__control  
+    .q-field__append .q-icon
+      color: $tertiary 
+    .q-field__append:last-child .q-icon
+      color: $primary   
 </style>
