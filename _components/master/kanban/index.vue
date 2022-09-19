@@ -1,6 +1,6 @@
 <template>
   <div class="tw-py-2">
-    <div class="tw-px-3">
+    <div class="tw-px-3" v-if="showFunnel">
       <div class="tw-flex">
         <div class="tw-w-3/12">
           <dynamic-field :field="funnel" v-model="funnelSelectedComputed" />
@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-    <div id="kanbanCtn">
+    <div :id="`kanbanCtn${uId}`">
       <draggable
         id="columnKanban"
         :list="kanbanColumns"
@@ -19,7 +19,7 @@
         ghost-class="ghostCard"
         drag-class="dragCard"
         filter=".ignoreItem"
-        :disabled="loading"
+        :disabled="loading || !dragColumn"
         class="tw-p-3 tw-h-auto tw-flex tw-space-x-4 tw-overflow-x-auto"
         @change="reorderColumns"
       >
@@ -47,7 +47,10 @@
         />
       </draggable>
     </div>
-    <automationRules ref="automationRules" />
+    <automationRules 
+      ref="automationRules"
+      :funnelId="funnelSelectedComputed"
+    />
   </div>
 </template>
 
@@ -80,6 +83,30 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    heightColumn: {
+      type: Number,
+      default: () => 235,
+    },
+    showFunnel: {
+      type: Boolean,
+      default: () => false,
+    },
+    funnelId: {
+      type: String,
+      default: () => null,
+    },
+    dragColumn: {
+      type: Boolean,
+      default: () => true,
+    },
+    disableCrud: {
+      type: Boolean,
+      default: () => false,
+    },
+    automation: {
+      type: Boolean,
+      default: () => false,
+    }
   },
   provide() {
     return {
@@ -90,6 +117,12 @@ export default {
       updateColumn: this.updateColumn,
       setPayloadStatus: this.setPayloadStatus,
       addColumn: this.addColumn,
+      heightColumn: this.heightColumn,
+      uId: this.uId,
+      init: this.init,
+      disableCrud: this.disableCrud,
+      routes: this.routes,
+      automation: this.automation,
     };
   },
   components: {
@@ -104,23 +137,23 @@ export default {
       },
       kanbanColumns: [],
       funnelList: [],
-      funnelSelected: "4",
+      funnelSelected: null,
       loading: false,
       payloadStatus: { ...modelPayload },
+      uId: this.$uid(),
     };
   },
   mounted() {
     this.$nextTick(async function () {
-      await this.getFunnel();
-      await this.getColumns();
+        await this.init();
     });
   },
   computed: {
     extraPageActions() {
       return {
-          label: "Automation rules",
+          label: "Reglas de automatización",
           props: {
-            label: "Automation rules",
+            label: "Reglas de automatización",
             padding: "3px 15px",
           },
           action: this.openAutomationRulesModal,
@@ -134,7 +167,7 @@ export default {
           label: "Funnel",
         },
         loadOptions: {
-          apiRoute: this.routes.funnel.apiRoute,
+          apiRoute: this.routes.funnel ? this.routes.funnel.apiRoute : null,
         },
       };
     },
@@ -150,9 +183,18 @@ export default {
     },
   },
   methods: {
+    async init() {
+      await this.getFunnel();
+      await this.getColumns();
+    },
     async getFunnel() {
       try {
+        if(this.funnelId) {
+          this.funnelSelectedComputed = this.funnelId;
+          return;
+        }
         const route = this.routes.funnel.apiRoute;
+        if(!this.routes.funnel) return;
         const response = await this.$crud.index(route);
         const funnel = response.data
           .sort((a, b) => {
@@ -164,7 +206,7 @@ export default {
               : compare;
           })
           .shift();
-        this.funnelSelectedComputed = funnel.id;
+        this.funnelSelectedComputed = String(funnel.id);
       } catch (error) {
         console.log(error);
       }
@@ -197,6 +239,7 @@ export default {
     },
     async getColumns() {
       try {
+        if(!this.routes.column) return;
         this.loading = true;
         const route = this.routes.column;
         const parameters = { params: {}, refresh: true };
@@ -247,7 +290,11 @@ export default {
     },
     async getKanbanCardList(column, page) {
       try {
-        const route = this.routes.card;
+        const nameRoute = this.automation ? 'automation' : 'card';
+        if(!this.routes[nameRoute]) {
+          return { total: 0, data: [] };
+        }
+        const route = this.routes[nameRoute];
         const parameters = { params: {}, refresh: true };
         parameters.params.include = route.include;
         parameters.params.filter = { [route.filter.name]: column.id };
@@ -265,11 +312,12 @@ export default {
         total: response.meta.page.total,
         data: response.data.map((card) => ({
           id: card.id,
-          title: `${card.creator.firstName} ${card.creator.lastName}`,
-          type: card.type,
+          title: card.name || `${card.creator.firstName} ${card.creator.lastName}`,
+          type: card.type || null,
           createdAt: card.createdAt,
-          fields: card.fields,
-          category: card.category,
+          fields: card.fields || [],
+          category: card.category || [],
+          statusId: card.statusId,
         })),
       };
     },
@@ -286,6 +334,7 @@ export default {
     },
     async saveStatusOrdering() {
       try {
+        if(!this.routes.orderStatus) return;
         const route = this.routes.orderStatus;
         const statusId = this.kanbanColumns.map((item) => ({ id: item.id }));
         await this.$crud.create(route.apiRoute, {
@@ -309,6 +358,7 @@ export default {
     },
     async deleteColumn(columnId) {
       try {
+        if(!this.routes.column) return;
         const route = this.routes.column;
         const kanbanColumn = this.kanbanColumns.filter(
           (item) => item.id !== columnId
@@ -323,6 +373,7 @@ export default {
     },
     async saveColumn(data) {
       try {
+        if(!this.routes.column) return;
         const route = this.routes.column.apiRoute;
         const payloadStatus = this.payloadStatus;
         payloadStatus.title = data.title;
@@ -336,6 +387,7 @@ export default {
     },
     async updateColumn(data) {
       try {
+        if(!this.routes.column) return;
         const route = this.routes.column.apiRoute;
         const payloadStatus = this.payloadStatus;
         payloadStatus.id = data.id;
@@ -358,7 +410,7 @@ export default {
       };
     },
     openAutomationRulesModal() {
-      this.$refs.automationRules.openModal();
+      if(this.$refs.automationRules) this.$refs.automationRules.openModal();
     }
   },
 };

@@ -6,50 +6,35 @@
       maximized
       @hide="hideModal" 
       modalWidthSize="98%"
+      title="Reglas de automatización"
     >
       <kanban
-        :routes="routeKanban" 
+        :routes="routes"
+        :funnelId="funnelId"
+        :heightColumn="170"
+        :dragColumn="false"
+        :disableCrud="true"
+        :automation="true"
       />
     </master-modal>
 </template>
 <script>
 import { TYPE_STORE_AUTOMATION_RULES } from '../constants/constants.js';
 export default {
+  props: {
+    funnelId: {
+      type: String,
+      default:() => null,
+    },
+  },
+  inject:['init', 'routes'],
   data() {
     return {
       TYPE_STORE_AUTOMATION_RULES,
       show: false,
     }
   },
-  computed: {
-    routeKanban() {
-      return {
-        funnel: {
-          apiRoute: "apiRoutes.qrequestable.categories",
-        },
-        column: {
-          filter: {
-            name: "categoryId",
-          },
-          apiRoute: "apiRoutes.qrequestable.statuses",
-          include: "category",
-        },
-        card: {
-          filter: {
-            name: "statusId",
-          },
-          apiRoute: "apiRoutes.qrequestable.requestables",
-          include: "category,status,fields,files,comments,creator,requestedBy",
-        },
-        orderStatus: {
-          filter: {
-            name: "category",
-          },
-          apiRoute: "apiRoutes.qrequestable.orderStatus",
-        },
-      };
-    },
-  },
+  computed: {},
   methods: {
     hideModal() {
       this.show = false;
