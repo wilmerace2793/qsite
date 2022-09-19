@@ -1155,6 +1155,16 @@
         "message": {}
       }
     },
+    "icargo": {
+      "cms": {
+        "form": {},
+        "label": {},
+        "sidebar": {
+          "cargoInfo": "Cargo"
+        },
+        "message": {}
+      }
+    },
     "isite": {
       "cms": {
         "sidebar": {
@@ -2768,6 +2778,16 @@
         "label": {},
         "sidebar": {
           "reportsInfo": "Reportes"
+        },
+        "message": {}
+      }
+    },
+    "icargo": {
+      "cms": {
+        "form": {},
+        "label": {},
+        "sidebar": {
+          "cargoInfo": "Cargo"
         },
         "message": {}
       }
