@@ -11,7 +11,7 @@ export default {
     page: (appConfig.mode == 'iadmin') ? () => import('@imagina/qsite/_pages/admin/index.vue') :
       () => import('@imagina/qsite/_pages/panel/index.vue'),
     title: 'isite.cms.sidebar.pageHome',
-    icon: 'fas fa-home',
+    icon: 'fal fa-home',
     authenticated: true,
     subHeader: {
       refresh: true
@@ -38,7 +38,7 @@ export default {
     layout: () => import('@imagina/qsite/_layouts/master'),
     page: () => import('@imagina/qsite/_pages/master/testPage'),
     title: 'isite.cms.sidebar.pageHome',
-    icon: 'fas fa-flask',
+    icon: 'fal fa-flask',
     authenticated: true,
   },
   //Dynamic Fields Page

@@ -8,7 +8,7 @@ export default {
     page: () => import('@imagina/qsite/_pages/admin/settings/index'),
     layout: () => import('@imagina/qsite/_layouts/master.vue'),
     title: 'isite.cms.sidebar.adminIndex',
-    icon: 'fas fa-cog',
+    icon: 'fal fa-cog',
     authenticated: true,
     subHeader: {
       refresh: true,
@@ -24,7 +24,7 @@ export default {
     page: () => import('@imagina/qcrud/_pages/admin/crudPage'),
     layout: () => import('@imagina/qsite/_layouts/master.vue'),
     title: 'isite.cms.sidebar.adminOrganization',
-    icon: 'fas fa-crown',
+    icon: 'fal fa-crown',
     authenticated: true,
     subHeader: {
       refresh: true,
@@ -39,7 +39,7 @@ export default {
     page: () => import('@imagina/qsite/_pages/admin/organizations/form'),
     layout: () => import('@imagina/qsite/_layouts/master.vue'),
     title: 'isite.cms.sidebar.adminOrganizationForm',
-    icon: 'fas fa-pen',
+    icon: 'fal fa-pen',
     authenticated: true,
     subHeader: {
       refresh: true,
@@ -56,7 +56,7 @@ export default {
     page: () => import('@imagina/qcrud/_pages/admin/crudPage'),
     layout: () => import('@imagina/qsite/_layouts/master.vue'),
     title: 'isite.cms.sidebar.adminCategories',
-    icon: 'fas fa-layer-group',
+    icon: 'fal fa-layer-group',
     authenticated: true,
     subHeader: {
       refresh: true,
@@ -72,7 +72,7 @@ export default {
     page: () => import('@imagina/qcrud/_pages/admin/crudPage'),
     layout: () => import('@imagina/qsite/_layouts/master.vue'),
     title: 'isite.cms.sidebar.adminIcruds',
-    icon: 'fas fa-code',
+    icon: 'fal fa-code',
     authenticated: true,
     subHeader: {
       refresh: true
@@ -87,7 +87,7 @@ export default {
     page: () => import('@imagina/qcrud/_pages/admin/crudPage'),
     layout: () => import('@imagina/qsite/_layouts/master.vue'),
     title: 'isite.cms.sidebar.adminAuditLog',
-    icon: 'fas fa-file-code',
+    icon: 'fal fa-file-code',
     authenticated: true,
     subHeader: {
       refresh: true
