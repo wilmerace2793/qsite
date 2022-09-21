@@ -1160,7 +1160,8 @@
         "form": {},
         "label": {},
         "sidebar": {
-          "cargoInfo": "Cargo"
+          "cargoInfo": "Cargo",
+          "awbTracking": "Awb Tracking"
         },
         "message": {}
       }
@@ -2787,7 +2788,8 @@
         "form": {},
         "label": {},
         "sidebar": {
-          "cargoInfo": "Cargo"
+          "cargoInfo": "Cargo",
+          "awbTracking": "Awb Tracking"
         },
         "message": {}
       }
