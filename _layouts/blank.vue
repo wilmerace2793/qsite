@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-
   export default {
     meta () {
       let routeTitle = ((this.$route.meta && this.$route.meta.title) ? this.$route.meta.title : '')
