@@ -1119,7 +1119,8 @@
           "flight": "Flight | Flights",
           "flightInfo": "Flight Info",
           "workOrders": "Work Orders",
-          "rampInfo": "Ramp"
+          "rampInfo": "Ramp",
+          "map": "Map"
         },
         "message": {
           "servicesMessage": "At least one service is required",
@@ -2754,7 +2755,8 @@
           "flight": "Vuelo",
           "flightInfo": "Información de vuelo",
           "workOrders": "Órdenes de trabajo",
-          "rampInfo": "Rampa"
+          "rampInfo": "Rampa",
+          "map": "Map"
         }
       }
     },
