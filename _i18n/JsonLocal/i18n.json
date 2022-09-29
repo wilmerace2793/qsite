@@ -1141,7 +1141,8 @@
           "stations": "Stations",
           "buildings": "Buildings",
           "customers": "Customers",
-          "costCenters": "Cost Centers"
+          "costCenters": "Cost Centers",
+          "gates": "Parking Spots"
         },
         "message": {}
       }
@@ -1230,6 +1231,7 @@
           "approved": "Approved",
           "open": "Open",
           "close": "Close",
+          "closeFlight": "Close Flight",
           "closed": "Closed",
           "set": "Set",
           "ok": "Ok",
