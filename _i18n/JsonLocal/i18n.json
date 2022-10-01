@@ -1046,7 +1046,7 @@
           "acType": "A/C Type",
           "operation": "Operation",
           "station": "Station",
-          "gate": "Gate",
+          "gate": "Parking Spot",
           "date": "Date",
           "status": "Status",
           "origin": "Origin",
