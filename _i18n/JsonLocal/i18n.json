@@ -1046,7 +1046,7 @@
           "acType": "A/C Type",
           "operation": "Operation",
           "station": "Station",
-          "gate": "Gate",
+          "gate": "Parking Spot",
           "date": "Date",
           "status": "Status",
           "origin": "Origin",
@@ -1106,7 +1106,7 @@
           "signature": "Signature",
           "flightMessageInBound": "Does the inbound data belong to the outbound?",
           "flightMessageOutBound": "Does the outbound data belong to the inbound?",
-          "flightMessage": "Are you sure this is a correct flight number?",
+          "flightMessage": "Are you sure #file_number is a correct flight number?",
           "errorFlightSelected": "You must select a flight",
           "createNewCustomer": "Create new customer"
         },
@@ -1119,7 +1119,8 @@
           "flight": "Flight | Flights",
           "flightInfo": "Flight Info",
           "workOrders": "Work Orders",
-          "rampInfo": "Ramp"
+          "rampInfo": "Ramp",
+          "map": "Map"
         },
         "message": {
           "servicesMessage": "At least one service is required",
@@ -1140,7 +1141,8 @@
           "stations": "Stations",
           "buildings": "Buildings",
           "customers": "Customers",
-          "costCenters": "Cost Centers"
+          "costCenters": "Cost Centers",
+          "gates": "Parking Spots"
         },
         "message": {}
       }
@@ -1151,6 +1153,17 @@
         "label": {},
         "sidebar": {
           "reportsInfo": "Reports"
+        },
+        "message": {}
+      }
+    },
+    "icargo": {
+      "cms": {
+        "form": {},
+        "label": {},
+        "sidebar": {
+          "cargoInfo": "Cargo",
+          "awbTracking": "Awb Tracking"
         },
         "message": {}
       }
@@ -1218,6 +1231,7 @@
           "approved": "Approved",
           "open": "Open",
           "close": "Close",
+          "closeFlight": "Close Flight",
           "closed": "Closed",
           "set": "Set",
           "ok": "Ok",
@@ -2743,7 +2757,8 @@
           "flight": "Vuelo",
           "flightInfo": "Información de vuelo",
           "workOrders": "Órdenes de trabajo",
-          "rampInfo": "Rampa"
+          "rampInfo": "Rampa",
+          "map": "Map"
         }
       }
     },
@@ -2768,6 +2783,17 @@
         "label": {},
         "sidebar": {
           "reportsInfo": "Reportes"
+        },
+        "message": {}
+      }
+    },
+    "icargo": {
+      "cms": {
+        "form": {},
+        "label": {},
+        "sidebar": {
+          "cargoInfo": "Cargo",
+          "awbTracking": "Awb Tracking"
         },
         "message": {}
       }

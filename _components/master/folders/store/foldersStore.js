@@ -105,9 +105,19 @@ export default function foldersStore() {
             console.error('[folderStore:transformDataToDragableForderList]');
         }
     }
+    async function saveOrderFolders(route, forderList) {
+        try {
+            const positionFolder = forderList.map(item => ({ id: item.id }));
+            await baseService.create(route, positionFolder)
+        } catch (error) {
+            console.log(error);
+            console.error('[folderStore:saveOrderFolders]');
+        }
+    }
     return {
         transformDataToDragableForderList,
         getDragReports,
         setDragReports,
+        saveOrderFolders,
     }
 }

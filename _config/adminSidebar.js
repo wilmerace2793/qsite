@@ -4,7 +4,7 @@ const pages = config('pages') // Get Pages from config
 export default [
   {
     title: 'isite.cms.sidebar.adminGroup',
-    icon: 'fas fa-chess-rook',
+    icon: 'fal fa-chess-rook',
     children: [
       pages.qsite.organizations,//organizations
       pages.qsite.categories,//organization categories
