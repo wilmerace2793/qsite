@@ -30,8 +30,13 @@
       <!--Actions Content-->
       <div class="master-dialog__actions" v-if="actions && actions.length">
         <div class="row justify-end q-gutter-sm">
-          <q-btn v-for="(btn, keyBtn) in actions" :key="keyBtn" v-bind="{...actionBtnProps, ...(btn.props || {})}"
-                 @click="btn.action ? btn.action() : null"/>
+          <q-btn 
+            v-for="(btn, keyBtn) in actions"
+            v-if="btn.props.vIf != undefined ? btn.props.vIf : true"
+            :key="keyBtn" 
+            v-bind="{...actionBtnProps, ...(btn.props || {})}"
+            @click="btn.action ? btn.action() : null"
+          />
         </div>
       </div>
       <!--Loading-->
