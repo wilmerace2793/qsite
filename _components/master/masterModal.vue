@@ -36,6 +36,7 @@
             :key="keyBtn" 
             v-bind="{...actionBtnProps, ...(btn.props || {})}"
             @click="btn.action ? btn.action() : null"
+            :loading="btn.props.loading != undefined ? btn.props.loading : false"
           />
         </div>
       </div>
