@@ -1125,8 +1125,16 @@
           "rampInfo": "Ramp",
           "map": "Map"
         },
+        "map": {
+          "workOrderId": "Work Order Id",
+          "flightNumber": "Flight Number",
+          "aircraftType": "Aircraft Type",
+          "estimatedTimeOfArrival": "Estimated Time of Arrival",
+          "airportName": "Airport Name"
+        },
         "message": {
           "servicesMessage": "At least one service is required",
+          "flightDetails": "There are no flight details for this work order",
           "selectedCustomerWithContract": "You selected a customer with contract",
           "selectedCustomerWithoutContract": "You selected a customer without a contract",
           "requestNewCustomer": "You request a new customer, the Work Order will be created as a Ad Hoc",
