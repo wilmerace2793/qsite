@@ -1010,7 +1010,7 @@
           "airportIcaoCode": "Airline ICAO Code",
           "timezone": "Timezone",
           "tailNumber": "TailNumber",
-          "fligthStatus": "Fligth status",
+          "flightStatus": "Fligth status",
           "flightDate": "Fligth date",
           "adHoc": "Ad-Hoc",
           "estimatedDepartureTime": "Estimated Departure Time",
@@ -1036,17 +1036,19 @@
           "updateAirport": "Update Airport",
           "newAirport": "New Airport",
           "newflight": "New Flight",
+          "newFlightStatus": "New Flight Status",
           "newflightSchedule": "New flight schedule",
           "updateflightSchedule": "Update flight schedule",
           "newflightScheduleLeg": "New flight schedule Leg",
           "updateflightScheduleLeg": "Update flight schedule Leg",
+          "updateFlightStatus": "Update flight status",
           "carrier": "Carrier",
           "customer": "Customer",
           "customCustomer": "Custom Customer",
           "acType": "A/C Type",
           "operation": "Operation",
           "station": "Station",
-          "gate": "Gate",
+          "gate": "Parking Spot",
           "date": "Date",
           "status": "Status",
           "origin": "Origin",
@@ -1106,7 +1108,7 @@
           "signature": "Signature",
           "flightMessageInBound": "Does the inbound data belong to the outbound?",
           "flightMessageOutBound": "Does the outbound data belong to the inbound?",
-          "flightMessage": "Are you sure this is a correct flight number?",
+          "flightMessage": "Are you sure #file_number is a correct flight number?",
           "errorFlightSelected": "You must select a flight",
           "createNewCustomer": "Create new customer"
         },
@@ -1116,13 +1118,23 @@
           "airport": "Airport",
           "flightSchedule": "Flight Schedule",
           "flightScheduleLeg": "Flight Schedule Leg | Flight Schedule Legs",
+          "flightStatuses": "Flight Statuses",
           "flight": "Flight | Flights",
           "flightInfo": "Flight Info",
           "workOrders": "Work Orders",
-          "rampInfo": "Ramp"
+          "rampInfo": "Ramp",
+          "map": "Map"
+        },
+        "map": {
+          "workOrderId": "Work Order Id",
+          "flightNumber": "Flight Number",
+          "aircraftType": "Aircraft Type",
+          "estimatedTimeOfArrival": "Estimated Time of Arrival",
+          "airportName": "Airport Name"
         },
         "message": {
           "servicesMessage": "At least one service is required",
+          "flightDetails": "There are no flight details for this work order",
           "selectedCustomerWithContract": "You selected a customer with contract",
           "selectedCustomerWithoutContract": "You selected a customer without a contract",
           "requestNewCustomer": "You request a new customer, the Work Order will be created as a Ad Hoc",
@@ -1140,7 +1152,8 @@
           "stations": "Stations",
           "buildings": "Buildings",
           "customers": "Customers",
-          "costCenters": "Cost Centers"
+          "costCenters": "Cost Centers",
+          "gates": "Parking Spots"
         },
         "message": {}
       }
@@ -1151,6 +1164,17 @@
         "label": {},
         "sidebar": {
           "reportsInfo": "Reports"
+        },
+        "message": {}
+      }
+    },
+    "icargo": {
+      "cms": {
+        "form": {},
+        "label": {},
+        "sidebar": {
+          "cargoInfo": "Cargo",
+          "awbTracking": "Awb Tracking"
         },
         "message": {}
       }
@@ -1218,6 +1242,7 @@
           "approved": "Approved",
           "open": "Open",
           "close": "Close",
+          "closeFlight": "Close Flight",
           "closed": "Closed",
           "set": "Set",
           "ok": "Ok",
@@ -2743,7 +2768,8 @@
           "flight": "Vuelo",
           "flightInfo": "Información de vuelo",
           "workOrders": "Órdenes de trabajo",
-          "rampInfo": "Rampa"
+          "rampInfo": "Rampa",
+          "map": "Map"
         }
       }
     },
@@ -2768,6 +2794,17 @@
         "label": {},
         "sidebar": {
           "reportsInfo": "Reportes"
+        },
+        "message": {}
+      }
+    },
+    "icargo": {
+      "cms": {
+        "form": {},
+        "label": {},
+        "sidebar": {
+          "cargoInfo": "Cargo",
+          "awbTracking": "Awb Tracking"
         },
         "message": {}
       }

@@ -128,7 +128,9 @@ export default {
     dateFields() {
       let filterDate = this.$clone(this.filterValues.date)
       let filterFields = this.$clone(this.filter.fields)
+
       let fieldDate = (filterFields && filterFields.date && filterFields.date.field) ? filterFields.date.field : false
+      let fieldDateLabel = (filterFields && filterFields.date && filterFields.date.props) ? filterFields.date.props.label || null : null
 
       if (!filterDate) return {}
       let fields = {
@@ -137,7 +139,7 @@ export default {
           value: this.filterValues.date.type || null,
           type: 'select',
           props: {
-            label: this.$tr('isite.cms.form.date'),
+            label: fieldDateLabel ?? this.$tr('isite.cms.form.date'),
             clearable: true,
             options: [
               {label: this.$tr('isite.cms.label.customRange'), value: 'customRange'},

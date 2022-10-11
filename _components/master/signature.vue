@@ -70,8 +70,10 @@ export default {
   },
   methods: {
     init() {
-      this.model = this.value
-      this.$refs.signature.fromDataURL(this.value);
+      this.model = this.value;
+      if(this.$refs.signature) {
+        this.$refs.signature.fromDataURL(this.value);
+      }
       this.options.images = [{src: this.model, x: 0, y: 0}]
     },
     onBegin() {

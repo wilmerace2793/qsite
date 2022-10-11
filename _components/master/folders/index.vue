@@ -13,7 +13,8 @@
         "
         :animation="300"
         ghostClass="ghost"
-        handle=".folder-title-drag"
+        handle=".folder-title-drag",
+        @change="saveOrderFolders"
       >
         <folder 
             v-for="folder in folderList"
@@ -38,7 +39,11 @@ export default {
     folderList: {
       type: Array,
       default: () => [],
-    }
+    },
+    apiRouteOrderFolders: {
+      type: String,
+      default:() => null,
+    },
   },
   data() {
     return {
@@ -50,6 +55,16 @@ export default {
     reportList,
     actions,
     folder,
+  },
+  methods: {
+    async saveOrderFolders() {
+      try {
+        if(!this.apiRouteOrderFolders) return;
+        await foldersStore().saveOrderFolders(this.apiRouteOrderFolders, this.folderList);
+      } catch (error) {
+        console.error(error)
+      }
+    },
   },
 };
 </script>
