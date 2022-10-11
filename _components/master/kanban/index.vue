@@ -1,6 +1,6 @@
 <template>
   <div class="tw-py-2">
-    <div class="tw-px-3" v-if="showFunnel">
+    <!--<div class="tw-px-3" v-if="showFunnel">
       <div class="tw-flex">
         <div class="tw-w-3/12">
           <dynamic-field :field="funnel" v-model="funnelSelectedComputed" />
@@ -9,8 +9,8 @@
           <slot name="pageAction" />
         </div>
       </div>
-    </div>
-    <div :id="`kanbanCtn${uId}`">
+    </div>-->
+    <div :id="`kanbanCtn${uId}`" v-if="checkIfFunnelExists">
       <draggable
         id="columnKanban"
         :list="kanbanColumns"
@@ -46,6 +46,10 @@
           :key="index"
         />
       </draggable>
+    </div>
+    <div v-else>
+      <i class="fa-regular fa-square-kanban" />
+      No has selecionado ningun funnel 
     </div>
     <automationRules 
       ref="automationRules"
@@ -125,6 +129,7 @@ export default {
       automation: this.automation,
     };
   },
+  inject:['funnelPageAction'],
   components: {
     kanbanColumn,
     draggable,
@@ -181,6 +186,9 @@ export default {
         this.getColumns();
       },
     },
+    checkIfFunnelExists() {
+      return (this.funnelId || this.funnelPageAction) ;
+    },
   },
   methods: {
     async init() {
@@ -189,11 +197,11 @@ export default {
     },
     async getFunnel() {
       try {
-        if(this.funnelId) {
-          this.funnelSelectedComputed = this.funnelId;
+        if(this.checkIfFunnelExists) {
+          this.funnelSelectedComputed = this.funnelPageAction || this.funnelId;
           return;
         }
-        const route = this.routes.funnel.apiRoute;
+        /*const route = this.routes.funnel.apiRoute;
         if(!this.routes.funnel) return;
         const response = await this.$crud.index(route);
         const funnel = response.data
@@ -206,7 +214,7 @@ export default {
               : compare;
           })
           .shift();
-        this.funnelSelectedComputed = String(funnel.id);
+        this.funnelSelectedComputed = String(funnel.id);*/
       } catch (error) {
         console.log(error);
       }
@@ -318,6 +326,7 @@ export default {
           fields: card.fields || [],
           category: card.category || [],
           statusId: card.statusId,
+          comments: card.comments || [],
         })),
       };
     },

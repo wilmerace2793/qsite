@@ -81,7 +81,7 @@
               "
               :class="{ 'tw-text-white': columnData.color }"
             >
-              {{ columnData.title }} 
+              {{ columnData.title }}
             </p>
             <dynamic-field
               v-else
@@ -147,7 +147,11 @@
           </div>
         </div>
       </div>
-
+      <div>
+        <q-btn flat class="tw-w-full hover:tw-text-white hover:tw-bg-gray-200">
+          <i class="fa-solid fa-plus"></i>
+        </q-btn>
+      </div>
       <div class="tw-overflow-y-auto tw-overflow-x-hidden tw-mb-4 tw-px-2">
         <draggable
           :id="columnData.id"
