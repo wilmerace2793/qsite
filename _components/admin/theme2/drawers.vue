@@ -192,6 +192,7 @@ export default {
       padding 20px 25px 26px 25px
       height 120px
       background-color #FFFFFF
+      border-radius: 0px 0px 15px
     #miniLogoSite
       padding 30px 7px
       height 120px
@@ -201,46 +202,66 @@ export default {
       padding 3px 15px
       font-size 13px
 
-    .q-expansion-item
-      background-color $grey-3
-
-    .q-expansion-item__container
-      .q-expansion-item__content
-        padding 0px
-        border-left 21px solid $primary
-        #listMenu
-          .content-item
-            border-left 3px solid $secondary
-
     .q-item
-      padding-left 0
-      min-height 40px
+      padding-left 0  
+      background-color $primary
+      min-height 50px
       color var(--q-color-contrast)
-      background $primary
-      .q-item__section--side
-        color var(--q-color-contrast)
+      .q-focus-helper
+        opacity 0
       .q-item__section--avatar
-        padding 0 18px !important
-
+        padding 0 18px !important  
+      .q-item__section
+        font-weight 700 
+      .q-item__section, .q-icon
+        color var(--q-color-contrast)  
+        
+    .content-item 
+      > .q-item
+        .q-item__section--main 
+          font-size 16px
         .q-icon
-          font-size 20px
-          color var(--q-color-contrast)
+          font-size: 20px 
+        &:hover,  &.item-is-active
+          background-color $secondary
+          border-radius: 0 15px 15px 0
+          font-weight 900
 
-      &:hover
-        background-color $secondary
-        color var(--q-color-contrast-two)
-        border-radius 0%
-        .q-icon
-          color var(--q-color-contrast-two)
-          font-size 22px
+      > .q-expansion-item  
+        background-color $primary
+        .q-expansion-item__container > .q-item
+          .q-item__label
+            font-size 15px
+          .q-icon
+            font-size: 20px  
+          &:hover, &.item-is-active  
+            border-radius: 0 15px 15px 0
+            background-color $secondary
+            font-weight 900
 
-      &.item-is-active
-        background-color $secondary
-        border-radius 0%
-        .q-item__section, .q-icon
-          color var(--q-color-contrast-two)
+        .q-expansion-item__container > .q-expansion-item__content
+          padding 0px
+          border-left 21px solid $primary
+          #listMenu
+            .content-item
+              border-left 3px solid $secondary
+          .q-item    
+            min-height 40px
+            .q-item__section, .q-icon
+              color $secondary
+              font-size 14px
+              font-weight 600
+            .q-icon
+              display none  
+            &:hover, &.item-is-active
+              background-color transparent
+              .q-item__section, .q-icon
+                font-weight 900
 
     .expansion-selected
       background-color $primary
+
+    .q-drawer--mini .q-item
+      border-radius 0 !important
 
 </style>

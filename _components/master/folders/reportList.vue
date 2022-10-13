@@ -24,9 +24,9 @@
           <q-icon name="drag_handle" />
         </q-item-section>
         <q-item-section>
-          <q-item-label class="tw-font-bold">{{ report.title || report.id }}</q-item-label>
-          <q-item-label caption lines="2">
-            {{ report.name || report.description }}
+          <q-item-label class="tw-font-bold" lines="1">{{ report.title || report.id }}</q-item-label>
+          <q-item-label caption lines="1">
+            {{ report.name || report.description }} 
           </q-item-label>
         </q-item-section>
         <q-item-section side>
@@ -57,14 +57,14 @@
                     <q-list class="list-report-menu">
                       <q-item v-for="n in 3" :key="n" clickable v-ripple>
                         <q-item-section avatar>
-                          <q-icon name="folder" color="primary" />
+                          <q-icon name="folder_open" color="primary" />
                         </q-item-section>
                         <q-item-section>Folder {{ n }}</q-item-section>
                       </q-item>
                       <q-separator />
                       <q-item clickable v-ripple v-close-popup>
                         <q-item-section avatar>
-                          <q-icon name="add" color="primary" />
+                          <q-icon name="fa-solid fa-plus" color="primary" />
                         </q-item-section>
                         <q-item-section>New Folder</q-item-section>
                       </q-item>
@@ -73,14 +73,14 @@
                 </q-item>
                 <q-item clickable v-ripple>
                   <q-item-section avatar>
-                    <q-icon name="add" color="primary" />
+                    <q-icon name="fa-solid fa-plus" color="primary" />
                   </q-item-section>
                   <q-item-section>Add to favourites</q-item-section>
                 </q-item>
                 <q-separator />
                 <q-item clickable v-ripple v-close-popup>
                   <q-item-section avatar>
-                    <q-icon name="delete" color="primary" />
+                    <q-icon name="fa-regular fa-trash-can" color="primary" />
                   </q-item-section>
                   <q-item-section>Delete</q-item-section>
                 </q-item>
@@ -97,7 +97,7 @@
         tw-text-center 
         tw-text-5xl"
       >
-        <div class="fa-light fa-folder-xmark" />
+        <div class="fa-light fa-folder-xmark"></div>
         <div class="tw-text-base tw-py-2">
          {{ $tr('isite.cms.message.searchNotFound') }}
         </div>
