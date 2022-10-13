@@ -148,7 +148,14 @@
         </div>
       </div>
       <div>
-        <q-btn flat class="tw-w-full hover:tw-text-white hover:tw-bg-gray-200">
+        <q-btn 
+          flat 
+          class="
+            tw-w-full 
+            hover:tw-text-white 
+            hover:tw-bg-gray-200"
+          @click="openFormComponentModal(columnData.id)"
+          >
           <i class="fa-solid fa-plus"></i>
         </q-btn>
       </div>
@@ -246,6 +253,7 @@ export default {
     'disableCrud',
     'automation',
     'routes',
+    'openFormComponentModal',
   ],
   mounted() {
     const parent = document.querySelector(`#kanbanCtn${this.uId}`);

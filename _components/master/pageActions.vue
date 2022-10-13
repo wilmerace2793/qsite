@@ -55,7 +55,11 @@
       <!-- Quick Filters-->
       <div v-if="Object.keys(quickFilters).length" class="row q-col-gutter-md q-pt-sm">
         <dynamic-field v-for="(field, keyField) in quickFilters" :key="keyField" :field="field"
-                       v-model="filterData[keyField]" :class="field.colClass" @input="emitFilter"/>
+            v-model="filterData[keyField]" 
+            :class="field.colClass" 
+            @input="emitFilter"
+            :keyField="keyField"
+        />
       </div>
     </div>
     <!-- Export Component -->

@@ -94,7 +94,6 @@ export default {
       },
       openEdit() {
         if(this.updateRequest)this.updateRequest(this.cardData.id);
-        
       }
     }
 }

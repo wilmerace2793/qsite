@@ -3,8 +3,18 @@ import Vue from 'vue'
 
 class Helper {
   constructor() {
+    this.dynamicSelectList = {};
   }
 
+  // get the list of categories of the dynamic field
+  getDynamicSelectList() {
+    return this.dynamicSelectList;
+  }
+  setDynamicSelectList(data) {
+    this.dynamicSelectList = {
+      ...data
+    };
+  }
   //return timestamp in seconds unix
   timestamp(date = false) {
     if (!date) {
