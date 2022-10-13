@@ -1,5 +1,5 @@
 <template>
-  <div class="columnCtn tw-relative">
+  <div class="columnCtn tw-relative bg-white no-shadow">
     <div
       class="tw-h-auto"
       :class="`cardItemsCtn-${this.uId}${columnData.id}`"
@@ -56,15 +56,16 @@
         class="
           tw-flex 
           tw-w-full 
-          tw-py-3 
+          tw-py-2 
           tw-px-4 
-          tw-rounded-t-lg
+          tw-rounded-lg
           arrowKanbanName
         "
         @mouseover="arrowKanbanNameHover = true"
         @mouseleave="arrowKanbanNameHover = false"
         :style="{ background: columnData.color }"
       >
+        <div class="arrowKanban" :style="{ background: columnData.color }"></div>
         <div 
           class="tw-flex tw-w-full kanbanName"
         >
@@ -76,7 +77,7 @@
                 tw-text-xs
                 tw-whitespace-nowrap
                 tw-font-bold
-                tw-m-0
+                tw-my-1
                 tw-truncate
               "
               :class="{ 'tw-text-white': columnData.color }"
@@ -96,12 +97,13 @@
             class="
               tw-w-1/12 
               tw-text-xs 
-              tw-cursor-pointer"
+              tw-cursor-pointer" style="margin-top: 2px"
             :class="{ 'tw-text-white': columnData.color }"
           >
             <q-btn
               flat
               round
+              padding="5px"
               icon="fas fa-pencil-alt"
               size="6px"
               @click="columnData.new = true"
@@ -147,8 +149,12 @@
           </div>
         </div>
       </div>
-
-      <div class="tw-overflow-y-auto tw-overflow-x-hidden tw-mb-4 tw-px-2">
+      <div class="c-plus">
+        <q-btn flat class="tw-w-full hover:tw-text-white hover:tw-bg-gray-200">
+          <i class="fa-solid fa-plus"></i> 
+        </q-btn>
+      </div>
+      <div class="c-body tw-shadow tw-overflow-y-auto tw-overflow-x-hidden tw-mb-4 tw-px-2">
         <draggable
           :id="columnData.id"
           :list="columnData.data"
@@ -392,9 +398,9 @@ export default {
   @apply tw-uppercase;
 }
 
-.arrowKanbanName {
+/*.arrowKanbanName {
   clip-path: polygon(97% 0, 100% 49%, 97% 100%, 0% 100%, 0 100%, 0% 0%);
-}
+}*/
 .arrowKanbanName .kanbanName .q-field__focusable-action {
   @apply tw--mt-4;
 }
@@ -407,20 +413,24 @@ export default {
 .q-field--labeled .q-field__suffix {
   @apply tw-p-0;
 }
-.kd-without-arrow .q-btn-dropdown__arrow {
-  display: none;
+.columnCtn .arrowKanbanName {
+  width: calc(100% - 13px);
 }
-.kd-list-without-arrow .q-item .q-item__section--avatar {
-    min-width: 0px !important;
-    padding-right: 1px !important;
-    padding-left: 5px;
+.columnCtn .arrowKanbanName .arrowKanban {
+  height: 33px;
+  width: 33px;
+  border-radius: 10px;
+  position: absolute;
+  top: 4px;
+  right: 3px;
+  transform: rotate(45deg);
 }
-.kd-input .q-field__native {
-  padding-top: 2px !important;
+.columnCtn .c-plus {
+    border-left: 1px dashed #bdb9b9;
+    padding: 10px;
 }
-.kd-input .q-field__control, 
-.kd-input .q-field__marginal {
-    height: 30px !important;
+.columnCtn .c-body {
+    background: #f3f4f6;
     border-radius: 10px;
 }
 </style>
