@@ -7,7 +7,6 @@
     maximized
     @hide="hideModal"
     modalWidthSize="98%"
-    title="Crear"
   >
     <div>
       <div class="relative-position">
@@ -75,19 +74,22 @@ export default {
     },
     openModal(statusId) {
       this.statusId = statusId;
-      this.show = true;
       const funnel =
         this.$helper.getDynamicSelectList()[this.filterName] || null;
       if (funnel) {
         this.funnelForm = funnel.find((item) => item.id == this.funnelId);
       }
+      if(!this.formCategory.vIf) {
+        this.$alert.warning({message: 'No existen formulario para esta categoría'})
+        return;
+      }
+      this.show = true;
     },
     async saveForm() {
       try {
         this.loading = true;
         const nameRoute = this.automation ? "automation" : "card";
         if (!this.routes[nameRoute]) return;
-        console.log(this.funnelForm);
         const route = this.routes[nameRoute];
         const form = {
           ...this.form,
