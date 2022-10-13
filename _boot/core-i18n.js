@@ -71,8 +71,9 @@ export default async ({ router, app, Vue, store, ssrContext }) => {
     return app.i18n.d(moment(date, 'YYYY-MM-DD HH:mm:ss').toDate(), params.type)
   }
   //Date translate
-  Vue.prototype.$trdT = (date) => {
+  Vue.prototype.$trdT = (date, format = 'MMMM, DD, YYYY HH:mm') => {
     //Transform date from UTC
-    return moment(date).format('MMMM, DD, YYYY HH:mm');
+    return moment(date).format(format);
   }
+
 }

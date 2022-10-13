@@ -21,105 +21,6 @@
       >
         <q-spinner color="primary" size="2em" />
       </div>
-
-      <q-btn-dropdown v-if="!columnData.new" round color="white" flat size="10px" padding="5px 5px" 
-            class="kd-without-arrow
-                  tw-absolute
-                  tw-z-30
-                  tw-top-2
-                  tw-right-2.5
-                  tw-cursor-pointer
-                  tw-text-xs
-                  tw-transition
-                  tw-ease-out
-                  hover:tw-ease-in 
-                  hover:tw--translate-y-1" 
-                  icon="fa-solid fa-ellipsis">
-        <q-list dense class="tw-p-2 kd-list-without-arrow tw-bg-gray-100 tw-text-xs">
-          <q-item clickable v-close-popup @click="addColumnKanban">
-            <q-item-section avatar>
-              <q-icon  name="fas fa-plus" />
-            </q-item-section>
-            <q-item-section class="tw-px-2">
-              <q-item-label>Agregar columna</q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item clickable v-close-popup @click="columnData.new = true">
-            <q-item-section avatar>
-              <q-icon  name="fas fa-pencil-alt" />
-            </q-item-section>
-            <q-item-section  class="tw-px-2">
-              <q-item-label>Editar columna</q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item clickable v-close-popup @click="columnDeleteMessages">
-            <q-item-section avatar>
-              <q-icon  name="fa-solid fa-trash-can" />
-            </q-item-section>
-            <q-item-section  class="tw-px-2">
-              <q-item-label>Eliminar columna</q-item-label>
-            </q-item-section>
-          </q-item>
-
-        </q-list>
-      </q-btn-dropdown>
-
-      <div  class="tw-flex 
-                  tw-items-center 
-                  tw-rounded-t-lg 
-                  tw-mb-3 " 
-            :style="{ background: columnData.color }">
-        <div class="tw-flex-grow tw-py-2 tw-pl-2 tw-truncate">
-     
-          <q-btn v-if="!columnData.new"
-            color="white" flat dense @click="columnData.new = true" align="left" no-caps
-           padding="5px 5px" class="full-width tw-text-xs">
-            <div class="ellipsis">
-              {{ columnData.title }}
-            </div>
-          </q-btn>
-          <dynamic-field
-            v-else
-            :field="inputDynamicField"
-            v-model="columnData.title"
-            class="kd-input" 
-            @enter="addColumnName"
-          />
- 
-        </div>
-        <div class="tw-flex-none tw-w-auto tw-py-2 tw-px-2 tw-space-x-1" style="min-width: 40px;">
-          <span v-if="columnData.new">
-            <q-btn color="white" flat size="6px" padding="5px 5px">
-                <template v-slot:default>
-                  <q-icon name="fas fa-fill" class="cursor-pointer">
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-color
-                        v-model="columnData.color"
-                        no-header-tabs
-                        class="my-picker"
-                      />
-                    </q-popup-proxy>
-                  </q-icon>
-                  <q-tooltip> Asignar Color </q-tooltip>
-                </template>
-            </q-btn>
-            <q-btn
-              color="white" flat
-              icon="fa-solid fa-check"
-              size="6px" padding="5px 5px" @click="addColumnName">
-              <q-tooltip> Aceptar </q-tooltip>
-            </q-btn>
-          </span>
-
-        </div>
-      </div>
-
-      <!--
       <button
         class="
           tw-absolute
@@ -246,7 +147,7 @@
           </div>
         </div>
       </div>
-      -->
+
       <div class="tw-overflow-y-auto tw-overflow-x-hidden tw-mb-4 tw-px-2">
         <draggable
           :id="columnData.id"
