@@ -13,6 +13,7 @@
     :style="{ borderLeftColor: colorColumn }"
   >
     <div class="tw-flex tw-justify-between">
+
       <p
         class="
           tw-text-gray-700
@@ -20,9 +21,31 @@
           tw-font-sans
           tw-tracking-wide
           tw-text-sm
+          tw-w-full
         "
       >
+        <q-btn-dropdown v-if="!automation" round color="gray-4" flat size="10px" padding="5px 5px" 
+              class="kd-without-arrow
+                    tw-float-right
+                    tw-cursor-pointer
+                    tw-text-xs" 
+                    icon="fa-solid fa-ellipsis">
+          <q-list dense class="tw-p-2 kd-list-without-arrow tw-bg-gray-100 tw-text-xs">
+            <q-item clickable v-close-popup @click="openModal">
+              <q-item-section class="tw-p-1">
+                <q-item-label>{{ $tr('isite.cms.label.information') }}</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup @click="openEdit">
+              <q-item-section  class="tw-p-1">
+                <q-item-label>{{ $tr('isite.cms.label.edit') }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
+
         {{ cardData.title }}
+
       </p>
     </div>
     <div v-if="cardData.type" class="tw-flex tw-mt-1 tw-justify-between tw-items-center">
@@ -47,18 +70,22 @@
         <b>Fecha *</b> {{ cardData.createdAt }}
       </span>
     </div>
+
+    <!--
     <div class="tw-text-right" v-if="!automation">
-      <q-btn flat round color="primary" size="xs" icon="fas fa-info-circle" @click="openModal">
+      <q-btn flat padding="5px" color="grey-9" size="xs" icon="fas fa-info-circle" @click="openModal">
         <q-tooltip class="bg-indigo" :offset="[10, 10]" >
           {{ $tr('isite.cms.label.information') }}
         </q-tooltip>
       </q-btn>
-      <q-btn flat round color="primary" size="xs" icon="far fa-edit" @click="openEdit">
+      <q-btn flat padding="5px" color="grey-9" size="xs" icon="far fa-edit" @click="openEdit">
         <q-tooltip class="bg-indigo" :offset="[10, 10]">
           {{ $tr('isite.cms.label.edit') }}
         </q-tooltip>
       </q-btn>
     </div>
+    -->
+
   </div>
 </template>
 
@@ -99,3 +126,8 @@ export default {
     }
 }
 </script>
+<style>
+.kd-without-arrow .q-btn-dropdown__arrow {
+  @apply tw-hidden !important;
+}
+</style>
