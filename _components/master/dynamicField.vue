@@ -358,7 +358,11 @@ export default {
     field: {default: false},
     language: {default: false},
     itemId: {default: ''},
-    readOnly: {type: Boolean, default: false}
+    readOnly: {type: Boolean, default: false},
+    keyField: { 
+      type: String,
+      default: () => '',
+    }
   },
   components: {
     managePermissions,
@@ -1305,6 +1309,10 @@ export default {
 
           //Request
           this.$crud.index(loadOptions.apiRoute, params).then(response => {
+            if(this.keyField !== '') {
+              const keyData = { [this.keyField] :response.data }
+              this.$helper.setDynamicSelectList(keyData);
+            }
             this.rootOptionsData = this.$clone(response.data)
             let formatedOptions = []
             //Format response

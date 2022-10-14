@@ -1,6 +1,6 @@
 <template>
   <div class="tw-py-2">
-    <div class="tw-px-3" v-if="showFunnel">
+    <!--<div class="tw-px-3" v-if="showFunnel">
       <div class="tw-flex">
         <div class="tw-w-3/12">
           <dynamic-field :field="funnel" v-model="funnelSelectedComputed" />
@@ -9,8 +9,8 @@
           <slot name="pageAction" />
         </div>
       </div>
-    </div>
-    <div :id="`kanbanCtn${uId}`">
+    </div>-->
+    <div :id="`kanbanCtn${uId}`" v-if="checkIfFunnelExists">
       <draggable
         id="columnKanban"
         :list="kanbanColumns"
@@ -47,9 +47,18 @@
         />
       </draggable>
     </div>
+    <div v-else>
+      <i class="fa-regular fa-square-kanban" />
+      No has selecionado ningun funnel 
+    </div>
     <automationRules 
       ref="automationRules"
       :funnelId="funnelSelectedComputed"
+    />
+    <formComponent
+      ref="formComponent"
+      :funnelId="funnelSelectedComputed"
+      :filterName="routes.column.filter.name"
     />
   </div>
 </template>
@@ -59,13 +68,13 @@ import kanbanColumn from "@imagina/qsite/_components/master/kanban/kanbanColumn.
 import kanbanStore from "@imagina/qsite/_components/master/kanban/store/kanbanStore.js";
 import automationRules from "./automationRules/index.vue";
 import draggable from "vuedraggable";
+import formComponent from './modals/form.vue';
 
 const modelPayload = {
   id: null,
   title: null,
   color: null,
   value: 1,
-  categoryId: null,
 };
 const modelColumn = {
   id: null,
@@ -123,12 +132,15 @@ export default {
       disableCrud: this.disableCrud,
       routes: this.routes,
       automation: this.automation,
+      openFormComponentModal: this.openFormComponentModal,
     };
   },
+  inject:['funnelPageAction'],
   components: {
     kanbanColumn,
     draggable,
     automationRules,
+    formComponent,
   },
   data() {
     return {
@@ -181,6 +193,9 @@ export default {
         this.getColumns();
       },
     },
+    checkIfFunnelExists() {
+      return (this.funnelId || this.funnelPageAction) ;
+    },
   },
   methods: {
     async init() {
@@ -189,11 +204,11 @@ export default {
     },
     async getFunnel() {
       try {
-        if(this.funnelId) {
-          this.funnelSelectedComputed = this.funnelId;
+        if(this.checkIfFunnelExists) {
+          this.funnelSelectedComputed = this.funnelPageAction || this.funnelId;
           return;
         }
-        const route = this.routes.funnel.apiRoute;
+        /*const route = this.routes.funnel.apiRoute;
         if(!this.routes.funnel) return;
         const response = await this.$crud.index(route);
         const funnel = response.data
@@ -206,7 +221,7 @@ export default {
               : compare;
           })
           .shift();
-        this.funnelSelectedComputed = String(funnel.id);
+        this.funnelSelectedComputed = String(funnel.id);*/
       } catch (error) {
         console.log(error);
       }
@@ -311,13 +326,12 @@ export default {
       return {
         total: response.meta.page.total,
         data: response.data.map((card) => ({
-          id: card.id,
-          title: card.name || `${card.creator.firstName} ${card.creator.lastName}`,
+          title: card.name || `${card.creator.firstName} ${card.creator.lastName}` || card.title,
           type: card.type || null,
-          createdAt: card.createdAt,
           fields: card.fields || [],
           category: card.category || [],
           statusId: card.statusId,
+          ...card,
         })),
       };
     },
@@ -374,12 +388,12 @@ export default {
     async saveColumn(data) {
       try {
         if(!this.routes.column) return;
-        const route = this.routes.column.apiRoute;
-        const payloadStatus = this.payloadStatus;
+        const route = this.routes.column;
+        const payloadStatus = {};
         payloadStatus.title = data.title;
         payloadStatus.color = data.color;
-        payloadStatus.categoryId = this.funnelSelected;
-        return await this.$crud.create(route, payloadStatus);
+        payloadStatus[route.filter.name] = this.funnelSelected;
+        return await this.$crud.create(route.apiRoute, payloadStatus);
       } catch (error) {
         console.log(error);
         this.setPayloadStatus();
@@ -388,13 +402,13 @@ export default {
     async updateColumn(data) {
       try {
         if(!this.routes.column) return;
-        const route = this.routes.column.apiRoute;
-        const payloadStatus = this.payloadStatus;
+        const route = this.routes.column;
+        const payloadStatus = {};
         payloadStatus.id = data.id;
         payloadStatus.title = data.title;
         payloadStatus.color = data.color;
-        payloadStatus.categoryId = this.funnelSelected;
-        await this.$crud.update(route, data.id, payloadStatus);
+        payloadStatus[route.filter.name] = this.funnelSelected;
+        await this.$crud.update(route.apiRoute, data.id, payloadStatus);
       } catch (error) {
         console.log(error);
         this.setPayloadStatus();
@@ -406,11 +420,14 @@ export default {
         title: null,
         color: null,
         value: 1,
-        categoryId: null,
+        [this.routes.column.filter.name]: null,
       };
     },
     openAutomationRulesModal() {
       if(this.$refs.automationRules) this.$refs.automationRules.openModal();
+    },
+    openFormComponentModal(statusId) {
+      if(this.$refs.formComponent) this.$refs.formComponent.openModal(statusId);
     }
   },
 };

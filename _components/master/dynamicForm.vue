@@ -94,7 +94,9 @@
       </q-form>
 
       <!--Innerloading-->
-      <inner-loading :visible="(loading || innerLoading) ? true : false"/>
+      <div class="tw-py-8">
+        <inner-loading :visible="(loading || innerLoading) ? true : false"/>
+      </div>
     </div>
   </div>
 </template>

@@ -19,12 +19,12 @@
           <q-icon left size="1em" name="star" />
           <div>Add to Favourites</div>
         </q-btn>
-        <q-btn outline rounded color="primary" no-caps class="tw-font-bold">
+        <q-btn outline rounded color="primary" no-caps class="tw-font-bold" @click="newFolder = true">
           <q-icon left size="1em" name="fa fa-plus" />
           <div>New Folder</div>
         </q-btn>
         <q-btn rounded color="negative" no-caps class="tw-font-bold">
-          <q-icon left size="1em" name="fa fa-trash" />
+          <q-icon left size="1em" name="fa-solid fa-trash-can" />
           <div>Delete</div>
         </q-btn>
       </div>
@@ -46,7 +46,7 @@
 
               <q-item-section>Add to Favourites</q-item-section>
             </q-item>
-            <q-item clickable v-close-popup>
+            <q-item clickable v-close-popup @click="newFolder = true">
               <q-item-section avatar>
                 <q-icon name="fa fa-plus" color="primary" />
               </q-item-section>
@@ -55,7 +55,7 @@
             </q-item>
             <q-item clickable v-close-popup>
               <q-item-section avatar>
-                <q-icon name="fa fa-trash" color="primary" />
+                <q-icon name="fa-solid fa-trash-can" color="primary" />
               </q-item-section>
 
               <q-item-section>Delete</q-item-section>
@@ -69,9 +69,43 @@
         </div>
       </div>
     </div>
+    <q-dialog v-model="newFolder" persistent>
+      <q-card class="dialog-card-report">
+        <q-card-section class="tw-flex tw-items-center">
+          <q-icon name="folder" color="primary" size="1.5rem" /> 
+          <div class="tw-text-lg tw-pl-2 tw-font-bold">New Folder</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-input outlined dense autofocus @keyup.enter="newFolder = false">
+            <template v-slot:prepend>
+              <q-icon name="folder_open" />
+            </template>
+            <template v-slot:append>
+              <q-icon name="edit" color="primary" />
+            </template>
+          </q-input>
+        </q-card-section>
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat rounded size="md" label="Cancel" v-close-popup no-caps class="tw-px-3" />
+          <q-btn rounded color="primary" label="Create" class="tw-px-3" no-caps />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      newFolder: false,
+    };
+  },
+};
 </script>
+<style scope>
+  .dialog-card-report {
+    @apply tw-p-2 tw-rounded-xl !important;
+    min-width: 350px;
+  }
+</style>
