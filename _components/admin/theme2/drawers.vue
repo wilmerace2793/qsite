@@ -212,7 +212,7 @@ export default {
       .q-item__section--avatar
         padding 0 18px !important  
       .q-item__section
-        font-weight 700 
+        font-weight 700
       .q-item__section, .q-icon
         color var(--q-color-contrast)  
         
@@ -257,6 +257,7 @@ export default {
               background-color transparent
               .q-item__section, .q-icon
                 font-weight 900
+                color var(--q-color-contrast)
 
     .expansion-selected
       background-color $primary
