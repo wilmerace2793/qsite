@@ -1138,7 +1138,8 @@
           "selectedCustomerWithContract": "You selected a customer with contract",
           "selectedCustomerWithoutContract": "You selected a customer without a contract",
           "requestNewCustomer": "You request a new customer, the Work Order will be created as a Ad Hoc",
-          "orderaddNewrecord": "In order to add a new record it is necessary to write in the customer field"
+          "orderaddNewrecord": "In order to add a new record it is necessary to write in the customer field",
+          "errorlookingForFlight": "Error when looking for the flight"
         }
       }
     },
