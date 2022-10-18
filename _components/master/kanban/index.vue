@@ -133,7 +133,7 @@ export default {
       routes: this.routes,
       automation: this.automation,
       openFormComponentModal: this.openFormComponentModal,
-      getKanbanCard: this.getKanbanCard
+      addCard: this.addCard
     };
   },
   inject:['funnelPageAction'],
@@ -295,6 +295,15 @@ export default {
       });
       return kanbanColumn;
     },
+    async addCard(columnId) {
+      const column = this.kanbanColumns.find(item => item.id === columnId);
+      if(column) {
+        const kanbanCard = await this.getKanbanCard(column);
+        column.data = kanbanCard.data;
+        column.loading = false;
+        column.total = kanbanCard.total;
+      }
+    },
     async getKanbanCard(column, page = 1) {
       try {
         column.loading = true;
@@ -306,7 +315,6 @@ export default {
     },
     async getKanbanCardList(column, page) {
       try {
-        console.log(column);
         const nameRoute = this.automation ? 'automation' : 'card';
         if(!this.routes[nameRoute]) {
           return { total: 0, data: [] };
