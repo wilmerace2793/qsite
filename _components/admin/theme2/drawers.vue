@@ -192,7 +192,6 @@ export default {
       padding 20px 25px 26px 25px
       height 120px
       background-color #FFFFFF
-      border-radius: 0px 0px 15px
     #miniLogoSite
       padding 30px 7px
       height 120px
@@ -212,7 +211,7 @@ export default {
       .q-item__section--avatar
         padding 0 18px !important  
       .q-item__section
-        font-weight 700
+        font-weight 600
       .q-item__section, .q-icon
         color var(--q-color-contrast)  
         
@@ -248,15 +247,14 @@ export default {
           .q-item    
             min-height 40px
             .q-item__section, .q-icon
-              color $secondary
+              color var(--q-color-contrast)
               font-size 14px
               font-weight 600
             .q-icon
               display none  
             &:hover, &.item-is-active
-              background-color transparent
+              background-color $secondary
               .q-item__section, .q-icon
-                font-weight 900
                 color var(--q-color-contrast)
 
     .expansion-selected
