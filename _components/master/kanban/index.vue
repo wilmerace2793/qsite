@@ -133,6 +133,7 @@ export default {
       routes: this.routes,
       automation: this.automation,
       openFormComponentModal: this.openFormComponentModal,
+      getKanbanCard: this.getKanbanCard
     };
   },
   inject:['funnelPageAction'],
@@ -305,6 +306,7 @@ export default {
     },
     async getKanbanCardList(column, page) {
       try {
+        console.log(column);
         const nameRoute = this.automation ? 'automation' : 'card';
         if(!this.routes[nameRoute]) {
           return { total: 0, data: [] };

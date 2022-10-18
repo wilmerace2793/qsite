@@ -49,6 +49,10 @@ export default {
       type: Boolean,
       default: () => false,
     },
+    getKanbanCard: {
+      type: Function,
+      default: () => false,
+    },
   },
   data() {
     return {
@@ -97,8 +101,10 @@ export default {
           statusId: this.statusId,
         };
         await this.$crud.create(route.apiRoute, form);
-        this.init();
+        //this.init();
+        await this.getKanbanCard({id: this.statusId});
         this.hideModal();
+        
         this.loading = false;
       } catch (error) {
         this.loading = false;
