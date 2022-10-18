@@ -39,7 +39,7 @@
           tw-duration-150
           tw-ease-out
           hover:tw-ease-in 
-          hover:tw--translate-y-1
+          hover:tw--translate-y-1 icon-plus
         "
         v-if="!disableCrud && hover"
         @click="addColumnKanban"
@@ -57,7 +57,7 @@
           tw-flex 
           tw-w-full 
           tw-py-2 
-          tw-px-4 
+          tw-px-3 
           tw-rounded-lg
           arrowKanbanName
         "
@@ -97,8 +97,8 @@
             class="
               tw-w-1/12 
               tw-text-xs 
-              tw-cursor-pointer" style="margin-top: 2px"
-            :class="{ 'tw-text-white': columnData.color }"
+              tw-cursor-pointer icon-edit"
+            :class="{ 'tw-text-white': columnData.color }" 
           >
             <q-btn
               flat
@@ -182,7 +182,7 @@
             :colorColumn="columnData.color"
             class="tw-cursor-pointer"
           />
-          <div class="tw-text-center tw-h-5 tw-px-2">
+          <div class="tw-text-center tw-h-5 tw-rounded">
             <q-banner
               inline-actions
               rounded
@@ -413,9 +413,11 @@ export default {
   @apply tw--mt-4;
 }
 .arrowKanbanName .kanbanName .q-field--dense .q-field__control {
-  @apply tw-h-6 tw-rounded-3xl !important;
+  @apply tw-h-6 tw-rounded-lg !important;
 }
-
+.arrowKanbanName .kanbanName .q-field--dense .q-field__control:before {
+  @apply tw-border-0 tw-rounded-lg !important;
+}
 .arrowKanbanName .kanbanName .q-field--labeled .q-field__native,
 .q-field--labeled .q-field__prefix,
 .q-field--labeled .q-field__suffix {
@@ -440,5 +442,42 @@ export default {
 .columnCtn .c-body {
     background: #f3f4f6;
     border-radius: 10px;
+}
+.columnCtn .icon-edit {
+  animation-name: slideUpReturn;
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  margin-top: 2px;
+}
+.columnCtn .icon-plus {
+  animation-name: spaceInUp;
+  animation-duration: .2s;
+  animation-fill-mode: both;
+}
+@keyframes spaceInUp {
+  0% {
+    opacity: 0;
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+    -webkit-transform: scale(0.2) translate(0%, -200%);
+    transform: scale(0.2) translate(0%, -200%);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+    -webkit-transform: scale(1) translate(0%, 0%);
+    transform: scale(1) translate(0%, 0%);
+  }
+}
+@keyframes slideUpReturn {
+  0% {
+    transform-origin: 0 0;
+    transform: translateX(100%);
+  }
+  100% {
+    transform-origin: 0 0;
+    transform: translateX(0%);
+  }
 }
 </style>

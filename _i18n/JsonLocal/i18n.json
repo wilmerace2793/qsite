@@ -985,7 +985,8 @@
         "timeElapsedToCancel": "Cancel after at",
         "newCategory": "New Category",
         "updateCategory": "Update Category",
-        "requestableType": "Requestable Type"
+        "requestableType": "Requestable Type",
+        "titleInformation": "Information"
       }
     },
     "page": {
@@ -2743,7 +2744,8 @@
         "timeElapsedToCancel": "Cancelar despues de",
         "newCategory": "Nueva Categoría",
         "updateCategory": "Actualizar Categoría",
-        "requestableType": "Tipo de petición"
+        "requestableType": "Tipo de petición",
+        "titleInformation": "Información"
       }
     },
     "page": {

@@ -45,7 +45,9 @@ export default {
     'qrequestable',
     'qauction',
     'qsite',
-    'qcredit'
+    'qcredit',
+    'qreports',
+    'qramp'
   ],
   //Cache
   saveCache: {
