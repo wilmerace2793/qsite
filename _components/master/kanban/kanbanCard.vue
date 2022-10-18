@@ -117,12 +117,6 @@ export default {
 }
 </script>
 <style>
-.kb-card .kd-without-arrow {
-  @apply tw-opacity-0;
-}
-.kb-card:hover .kd-without-arrow {
-  @apply tw-opacity-100;
-}
 .kd-without-arrow .q-btn-dropdown__arrow {
   @apply tw-hidden !important;
 }
