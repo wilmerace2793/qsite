@@ -77,22 +77,6 @@
         <b>Fecha *</b> {{ cardData.createdAt }}
       </span>
     </div>
-
-    <!--
-    <div class="tw-text-right" v-if="!automation">
-      <q-btn flat padding="5px" color="grey-9" size="xs" icon="fas fa-info-circle" @click="openModal">
-        <q-tooltip class="bg-indigo" :offset="[10, 10]" >
-          {{ $tr('isite.cms.label.information') }}
-        </q-tooltip>
-      </q-btn>
-      <q-btn flat padding="5px" color="grey-9" size="xs" icon="far fa-edit" @click="openEdit">
-        <q-tooltip class="bg-indigo" :offset="[10, 10]">
-          {{ $tr('isite.cms.label.edit') }}
-        </q-tooltip>
-      </q-btn>
-    </div>
-    -->
-
   </div>
 </template>
 

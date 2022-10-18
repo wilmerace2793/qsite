@@ -161,7 +161,12 @@
           <i class="fa-solid fa-plus"></i> 
         </q-btn>
       </div>
-      <div class="c-body tw-shadow tw-overflow-y-auto tw-overflow-x-hidden tw-mb-4 tw-px-2">
+      <div class="c-body 
+                  tw-shadow 
+                  tw-overflow-y-auto 
+                  tw-overflow-x-hidden 
+                  tw-mb-4 tw-px-2"
+                >
         <draggable
           :id="columnData.id"
           :list="columnData.data"
@@ -406,9 +411,6 @@ export default {
   @apply tw-uppercase;
 }
 
-/*.arrowKanbanName {
-  clip-path: polygon(97% 0, 100% 49%, 97% 100%, 0% 100%, 0 100%, 0% 0%);
-}*/
 .arrowKanbanName .kanbanName .q-field__focusable-action {
   @apply tw--mt-4;
 }
