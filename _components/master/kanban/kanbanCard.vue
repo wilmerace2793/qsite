@@ -9,6 +9,7 @@
       tw-pb-2
       tw-border-l-2
       tw-my-2
+      kb-card
     "
     :style="{ borderLeftColor: colorColumn }"
   >
@@ -28,15 +29,21 @@
               class="kd-without-arrow
                     tw-float-right
                     tw-cursor-pointer
-                    tw-text-xs" 
+                    tw-text-xs tw-bg-gray-100" 
                     icon="fa-solid fa-ellipsis">
           <q-list dense class="tw-p-2 kd-list-without-arrow tw-bg-gray-100 tw-text-xs">
             <q-item clickable v-close-popup @click="openModal">
-              <q-item-section class="tw-p-1">
+              <q-item-section avatar>
+                <q-icon name="fa-regular fa-square-info" />
+              </q-item-section>
+              <q-item-section>
                 <q-item-label>{{ $tr('isite.cms.label.information') }}</q-item-label>
               </q-item-section>
             </q-item>
             <q-item clickable v-close-popup @click="openEdit">
+              <q-item-section avatar>
+                <q-icon name="fa-solid fa-pen-to-square" />
+              </q-item-section>
               <q-item-section  class="tw-p-1">
                 <q-item-label>{{ $tr('isite.cms.label.edit') }}</q-item-label>
               </q-item-section>
@@ -70,22 +77,6 @@
         <b>Fecha *</b> {{ cardData.createdAt }}
       </span>
     </div>
-
-    <!--
-    <div class="tw-text-right" v-if="!automation">
-      <q-btn flat padding="5px" color="grey-9" size="xs" icon="fas fa-info-circle" @click="openModal">
-        <q-tooltip class="bg-indigo" :offset="[10, 10]" >
-          {{ $tr('isite.cms.label.information') }}
-        </q-tooltip>
-      </q-btn>
-      <q-btn flat padding="5px" color="grey-9" size="xs" icon="far fa-edit" @click="openEdit">
-        <q-tooltip class="bg-indigo" :offset="[10, 10]">
-          {{ $tr('isite.cms.label.edit') }}
-        </q-tooltip>
-      </q-btn>
-    </div>
-    -->
-
   </div>
 </template>
 
@@ -126,7 +117,16 @@ export default {
 }
 </script>
 <style>
+.kb-card .kd-without-arrow {
+  @apply tw-opacity-0;
+}
+.kb-card:hover .kd-without-arrow {
+  @apply tw-opacity-100;
+}
 .kd-without-arrow .q-btn-dropdown__arrow {
   @apply tw-hidden !important;
+}
+.kd-list-without-arrow .q-item__section--avatar {
+  @apply tw-mx-1 tw-pr-1 !important tw-min-w-0 !important;
 }
 </style>
