@@ -156,7 +156,7 @@
             tw-w-full 
             hover:tw-text-white 
             hover:tw-bg-gray-200"
-          @click="openFormComponentModal(columnData.id)"
+          @click="openFormComponentModal(columnData.id, columnData.title)"
           >
           <i class="fa-solid fa-plus"></i> 
         </q-btn>

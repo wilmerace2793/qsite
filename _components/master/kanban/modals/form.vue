@@ -7,10 +7,19 @@
     maximized
     @hide="hideModal"
     modalWidthSize="98%"
+    :title="title"
   >
     <div>
       <div class="relative-position">
         <div class="box box-auto-height q-mb-md">
+          <div class="tw-mb-4">
+            <dynamic-field 
+              v-for="(field, keyField) in formFields" 
+              :key="keyField"
+              v-model="dynamicFieldForm[keyField]" 
+              :field="field"
+            />
+          </div>
           <div v-if="funnelForm">
             <dynamic-form
               v-if="formCategory.vIf"
@@ -60,7 +69,9 @@ export default {
       funnelForm: null,
       statusId: null,
       form: {},
+      dynamicFieldForm: {},
       loading: false,
+      title: null,
     };
   },
   computed: {
@@ -70,14 +81,34 @@ export default {
         formId: this.funnelForm?.form?.id || null,
       };
     },
+    formFields() {
+      const userData = this.$store.state.quserAuth.userData;
+      return {
+        requestedBy: {
+          value: userData.id,
+          type: 'crud',
+          permission: "requestable.requestables.edit-requested-by",
+          props: {
+            crudType: 'select',
+            crudData: import('@imagina/quser/_crud/users'),
+            crudProps: {
+              label: this.$tr('isite.cms.form.requestedBy')
+            },
+            requestParams: {refresh: true},
+            config: {options: {label: 'fullName', value: 'id'}},
+          }
+        },
+      }
+    },
   },
   methods: {
     hideModal() {
       this.show = false;
       this.resetForm();
     },
-    openModal(statusId) {
+    openModal(statusId, title = null) {
       this.statusId = statusId;
+      this.title = title;
       const funnel =
         this.$helper.getDynamicSelectList()[this.filterName] || null;
       if (funnel) {
@@ -99,6 +130,7 @@ export default {
           ...this.form,
           type: this.funnelForm.type,
           statusId: this.statusId,
+          requestedBy: this.dynamicFieldForm.requestedBy || this.$store.state.quserAuth.userId
         };
         await this.$crud.create(route.apiRoute, form);
         await this.addCard(this.statusId);
