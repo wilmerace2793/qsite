@@ -56,7 +56,7 @@ export default {
       mapZoom: 8,
       marker: false,
       searchLoading: false,
-      searchProvider: new OpenStreetMapProvider({params: {countrycodes: "co"}}),
+      searchProvider: new OpenStreetMapProvider({params: {countrycodes: this.countries}}),
       address: null,
       searchAddressValue: null,
       geolocations: [],
@@ -77,6 +77,11 @@ export default {
         this.$emit('input', this.$clone(this.address))
       }
     },
+    //Return the countries enables for the site
+    countries() {
+      const value = this.$store.getters['qsiteApp/getSettingValueByName']('ilocations::availableCountries')|| ["co"]
+      return value.map(val => val.toLowerCase())
+    }
   },
   methods: {
     init() {
