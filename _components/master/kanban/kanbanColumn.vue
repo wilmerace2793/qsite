@@ -179,6 +179,7 @@
           :force-fallback="true"
           @start="dragColumn = true"
           :move="move"
+          @change="countTotalRecords"
         >
           <kanbanCard
             v-for="(item, index) in columnData.data"
@@ -261,6 +262,7 @@ export default {
     'automation',
     'routes',
     'openFormComponentModal',
+    'countTotalRecords',
   ],
   mounted() {
     const parent = document.querySelector(`#kanbanCtn${this.uId}`);
