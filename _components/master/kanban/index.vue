@@ -133,7 +133,8 @@ export default {
       routes: this.routes,
       automation: this.automation,
       openFormComponentModal: this.openFormComponentModal,
-      addCard: this.addCard
+      addCard: this.addCard,
+      countTotalRecords: this.countTotalRecords
     };
   },
   inject:['funnelPageAction'],
@@ -438,6 +439,15 @@ export default {
     },
     openFormComponentModal(statusId, title) {
       if(this.$refs.formComponent) this.$refs.formComponent.openModal(statusId, title);
+    },
+    countTotalRecords() {
+      try {
+        this.kanbanColumns.forEach(item => {
+          item.total = item.data.length;
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
 };
