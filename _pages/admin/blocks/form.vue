@@ -6,44 +6,57 @@
     </div>
     <!--Content-->
     <div class="relative-position">
-      <!--Choose block-->
-      <div class="q-mb-md">
-        <dynamic-form v-model="form" :blocks="formFields.systemName" ref="mainForm" formType="grid"
-                      @submit="submitData" no-actions/>
-      </div>
-      <!--Config the attributes of the block-->
-      <div v-if="selectedBlock">
-        <!--Elements-->
-        <div class="box box-auto-height q-mb-md">
-          <!--Title-->
-          <div class="box-title text-center q-mb-md text-primary">
-            {{ $trp("isite.cms.label.item") }}
-          </div>
-          <!--Actions-->
-          <q-btn-toggle
-              v-model="elementSelected"
-              unelevated
-              spread
-              color="grey-3"
-              toggle-color="primary"
-              text-color="primary"
-              :options="selectedBlock.elementsOptions"
+      <div class="row q-col-gutter-md">
+        <div class="col" v-if="selectedBlock">
+          <iframe
+              :src="iframePreviewUrl"
+              frameborder="0"
+              class="box"
+              width="100%"
+              height="600px"
           />
         </div>
-        <!--Form attributes-->
-        <div v-if="elementSelected" class="q-mb-md">
-          <q-tab-panels v-model="elementSelected" animated>
-            <q-tab-panel v-for="(element, indexFA) in selectedBlock.block.elements" :key="indexFA"
-                         :name="element.systemName" class="q-pa-none">
-              <dynamic-form v-model="attributes[element.name]" :blocks="element.sections"
-                            formType="collapsible"/>
-            </q-tab-panel>
-          </q-tab-panels>
-        </div>
-        <!--Actions-->
-        <div class="box box-auto-height text-right">
-          <q-btn unelevated rounded no-caps @click="submitData" type="button" :label="$tr('isite.cms.label.save')"
-                 color="primary"/>
+        <div class="col">
+          <!--Choose block-->
+          <div class="q-mb-md">
+            <dynamic-form v-model="form" :blocks="formFields.systemName" ref="mainForm" formType="grid"
+                          @submit="submitData" no-actions/>
+          </div>
+          <!--Config the attributes of the block-->
+          <div v-if="selectedBlock">
+            <!--Elements-->
+            <div class="box box-auto-height q-mb-md">
+              <!--Title-->
+              <div class="box-title text-center q-mb-md text-primary">
+                {{ $trp("isite.cms.label.item") }}
+              </div>
+              <!--Actions-->
+              <q-btn-toggle
+                  v-model="elementSelected"
+                  unelevated
+                  spread
+                  color="grey-3"
+                  toggle-color="primary"
+                  text-color="primary"
+                  :options="selectedBlock.elementsOptions"
+              />
+            </div>
+            <!--Form attributes-->
+            <div v-if="elementSelected" class="q-mb-md">
+              <q-tab-panels v-model="elementSelected" animated>
+                <q-tab-panel v-for="(element, indexFA) in selectedBlock.block.elements" :key="indexFA"
+                             :name="element.systemName" class="q-pa-none">
+                  <dynamic-form v-model="attributes[element.name]" :blocks="element.sections"
+                                formType="collapsible"/>
+                </q-tab-panel>
+              </q-tab-panels>
+            </div>
+            <!--Actions-->
+            <div class="box box-auto-height text-right">
+              <q-btn unelevated rounded no-caps @click="submitData" type="button" :label="$tr('isite.cms.label.save')"
+                     color="primary"/>
+            </div>
+          </div>
         </div>
       </div>
       <!--Inner loading-->
@@ -58,7 +71,13 @@ export default {
   },
   props: {},
   components: {},
-  watch: {},
+  watch: {
+    'form.systemName'(){
+      //Reset Values
+      this.attributes = {}
+      this.elementSelected = null
+    }
+  },
   mounted() {
     this.$nextTick(function () {
       this.init()
@@ -165,9 +184,6 @@ export default {
     },
     //Selected block
     selectedBlock() {
-      //Reset Values
-      this.attributes = {}
-      this.elementSelected = null
       //Find the block
       const block = Object.values(this.blocks).find(block => block.systemName == this.form.systemName)
       var response = null
@@ -185,6 +201,12 @@ export default {
       }
       //response
       return response
+    },
+    //Url to iframe preview
+    iframePreviewUrl() {
+      var baseUrl = this.$store.state.qsiteApp.baseUrl
+      var attributes = encodeURIComponent(JSON.stringify(this.attributes))
+      return `${baseUrl}/blocks/preview?systemName=${this.elementSelected}&attributes=${attributes}`
     }
   },
   methods: {
