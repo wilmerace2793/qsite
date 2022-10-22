@@ -44,15 +44,15 @@
                        :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)">
                     <!--fake field-->
                     <div v-if="field.type === 'fileList'">
-                      <fileListComponent v-bind="field.files" @selected="files => selectedFile(files)" />
+                      <fileListComponent v-bind="field.files" @selected="files => selectedFile(files)"/>
                     </div>
                     <div v-else>
                       <dynamic-field v-if="field.fakeFieldName" :field="field" :key="key" :language="locale.language"
-                                    v-model="locale.formTemplate[field.fakeFieldName][field.name || key]"
-                                    :item-id="field.fieldItemId"/>
+                                     v-model="locale.formTemplate[field.fakeFieldName][field.name || key]"
+                                     :item-id="field.fieldItemId"/>
                       <!--Sample field-->
                       <dynamic-field v-else :field="field" :key="key" :item-id="field.fieldItemId"
-                                    v-model="locale.formTemplate[field.name || key]" :language="locale.language"/>
+                                     v-model="locale.formTemplate[field.name || key]" :language="locale.language"/>
                       <!--Child fields-->
                       <div v-if="field.children">
                         <!--Title-->
@@ -62,12 +62,12 @@
                         <!---Child fields-->
                         <div class="row q-col-gutter-x-md">
                           <div v-for="(childField, childKey) in getParsedFields(field.children)" :key="childKey"
-                              :class="childField.colClass || childField.columns || defaultColClass"
-                              v-if="childField.type != 'hidden'">
+                               :class="childField.colClass || childField.columns || defaultColClass"
+                               v-if="childField.type != 'hidden'">
                             <!--Child field-->
                             <dynamic-field :field="childField" :key="childKey" :language="locale.language"
-                                          v-model="locale.formTemplate[field.name || key][childField.name || childKey]"
-                                          :item-id="childField.fieldItemId"/>
+                                           v-model="locale.formTemplate[field.name || key][childField.name || childKey]"
+                                           :item-id="childField.fieldItemId"/>
                           </div>
                         </div>
                       </div>
@@ -94,9 +94,7 @@
       </q-form>
 
       <!--Innerloading-->
-      <div class="tw-py-8">
-        <inner-loading :visible="(loading || innerLoading) ? true : false"/>
-      </div>
+      <inner-loading :visible="(loading || innerLoading) ? true : false"/>
     </div>
   </div>
 </template>
@@ -104,6 +102,7 @@
 <script>
 import fileListComponent from '@imagina/qsite/_components/master/fileList';
 import layoutStore from '@imagina/qsite/_store/layoutStore.js'
+
 export default {
   components: {
     fileListComponent
@@ -246,7 +245,6 @@ export default {
               return {
                 props: {
                   is: 'div',
-                  class: 'q-mb-md',
                   class: 'box box-auto-height q-mb-md'
                 },
                 //childClass: 'q-py-sm q-px-md',
@@ -298,7 +296,6 @@ export default {
                   group: 'blockCollapsible',
                   defaultOpened: (keyBlock == 0) ? true : false,
                   style: 'padding : 0',
-                  class: 'q-mb-md',
                   label: block.title,
                   class: 'box box-auto-height q-mb-md',
                   headerClass: 'box-title text-blue-grey'
