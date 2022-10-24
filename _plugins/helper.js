@@ -10,11 +10,13 @@ class Helper {
   getDynamicSelectList() {
     return this.dynamicSelectList;
   }
+
   setDynamicSelectList(data) {
     this.dynamicSelectList = {
       ...data
     };
   }
+
   //return timestamp in seconds unix
   timestamp(date = false) {
     if (!date) {
@@ -545,6 +547,16 @@ class Helper {
     }
     //Response
     return host
+  }
+
+  //snakeCase to Camel
+  snakeToCamelCase(str) {
+    return str.toLowerCase().replace(/([-_][a-z])/g, group =>
+      group
+        .toUpperCase()
+        .replace('-', '')
+        .replace('_', '')
+    );
   }
 }
 

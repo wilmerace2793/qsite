@@ -20,4 +20,5 @@ export default {
   modulesInfo: `${urlBase}/configs/modules-info`,
   layouts: `${urlBase}/layouts`,
   logs: `${urlBase}/logs`,
+  blocks: `${urlBase}/blocks`
 }

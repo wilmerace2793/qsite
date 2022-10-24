@@ -1194,7 +1194,8 @@
           "adminCategories": "Categories",
           "adminIcruds": "Icruds",
           "adminAuditLog": "Audit Log",
-          "adminOrganizationForm": "Form"
+          "adminOrganizationForm": "Form",
+          "adminBlocks": "Blocks"
         },
         "crud": {
           "message": {
@@ -1203,6 +1204,8 @@
             "showAsCard": "Show as card"
           }
         },
+        "newBlock": "New Block",
+        "updateBlock": "Update Block",
         "newRecommendation": "New Recommendation",
         "updateRecommendation": "Update Recomendation",
         "deleteRecommendation": "Delete Recommendation",
@@ -2825,7 +2828,8 @@
           "adminCategories": "Categorias",
           "adminIcruds": "Icruds",
           "adminAuditLog": "Audit Log",
-          "adminOrganizationForm": "Formulario"
+          "adminOrganizationForm": "Formulario",
+          "adminBlocks": "Bloques"
         },
         "crud": {
           "message": {
@@ -2834,6 +2838,8 @@
             "showAsCard": "Ver como tarjetas"
           }
         },
+        "newBlock": "Nuevo Bloque",
+        "updateBlock": "Actualizar Bloque",
         "newRecommendation": "Nueva Recomendación",
         "updateRecommendation": "Actualizar Recomendación",
         "deleteRecommendation": "Eliminar Recomendación",
