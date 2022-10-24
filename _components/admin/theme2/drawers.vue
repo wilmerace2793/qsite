@@ -239,13 +239,14 @@ export default {
             font-weight 900
 
         .q-expansion-item__container > .q-expansion-item__content
-          padding 0px
-          border-left 21px solid $primary
+          padding 0 0 0 3px
+          border-left 18px solid $primary
           #listMenu
             .content-item
               border-left 3px solid $secondary
           .q-item    
             min-height 40px
+            margin-left -1px
             .q-item__section, .q-icon
               color var(--q-color-contrast)
               font-size 14px
