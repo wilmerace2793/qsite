@@ -956,8 +956,8 @@ export default {
       const toString = (items) => {
         items.forEach(item => {
           //Convert value and id to string
-          if (item.value || item.value >= 0) item.value = item.value
-          if (item.id || item.id >= 0) item.id = item.id
+          if (item.value || item.value >= 0) item.value = item.value.toString()
+          if (item.id || item.id >= 0) item.id = item.id.toString()
           //convert children
           if (item.children) item.children = toString(item.children)
         })
@@ -1256,13 +1256,13 @@ export default {
           propValue.forEach(item => {
             if (this.fieldProps.emitValue) {
               let value = (typeof item == 'object') ? item.id : item
-              this.responseValue.push(value)
+              this.responseValue.push(value.toString())
             } else {
               this.responseValue.push(item)
             }
           })
         } else {
-          this.responseValue = propValue ? this.$clone(this.fieldProps.emitValue ? propValue : propValue) : propValue
+          this.responseValue = propValue ? this.$clone(this.fieldProps.emitValue ? propValue.toString() : propValue) : propValue
         }
       }
     },
