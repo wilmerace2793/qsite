@@ -93,51 +93,5 @@ export default {
     subHeader: {
       refresh: true
     }
-  },
-  //Blocks
-  blocks: {
-    permission: 'isite.blocks.manage',
-    activated: true,
-    path: '/site/blocks',
-    name: 'qsite.admin.blocks.index',
-    crud: import('@imagina/qsite/_crud/blocks'),
-    page: () => import('@imagina/qcrud/_pages/admin/crudPage'),
-    layout: () => import('@imagina/qsite/_layouts/master.vue'),
-    title: 'isite.cms.sidebar.adminBlocks',
-    icon: 'fa-light fa-square-pen',
-    authenticated: true,
-    subHeader: {
-      refresh: true
-    }
-  },
-  blocksCreate: {
-    permission: 'isite.blocks.create',
-    activated: true,
-    path: '/site/blocks/create',
-    name: 'qsite.admin.blocks.create',
-    page: () => import('@imagina/qsite/_pages/admin/blocks/form'),
-    layout: () => import('@imagina/qsite/_layouts/master.vue'),
-    title: 'isite.cms.newBlock',
-    icon: 'fa-light fa-square-pen',
-    authenticated: true,
-    subHeader: {
-      refresh: true,
-      breadcrumb: ['qsite.blocks']
-    }
-  },
-  blocksUpdate: {
-    permission: 'isite.blocks.create',
-    activated: true,
-    path: '/site/blocks/:id',
-    name: 'qsite.admin.blocks.update',
-    page: () => import('@imagina/qsite/_pages/admin/blocks/form'),
-    layout: () => import('@imagina/qsite/_layouts/master.vue'),
-    title: 'isite.cms.updateBlock',
-    icon: 'fa-light fa-square-pen',
-    authenticated: true,
-    subHeader: {
-      refresh: true,
-      breadcrumb: ['qsite.blocks']
-    }
-  },
+  }
 }
