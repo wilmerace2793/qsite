@@ -1759,6 +1759,15 @@
           "contractRules": "Contract rules"
         }
       }
+    },
+    "idhl": {
+      "cms": {
+        "sidebar": {
+          "dhlInfo":"DHL",
+          "scoreCards": "Score Cards",
+          "staffs": "Staffing"
+        }
+      }
     }
   },
   "es": {
