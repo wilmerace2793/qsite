@@ -1233,6 +1233,9 @@
         "perzonalizationTitle": "Welcome to the editor of your website",
         "perzonalizationDescription": "Easily change the logo, colors and the main information of your website",
         "label": {
+          "attribute": "Attribute | Attributes",
+          "component": "Component",
+          "content": "Content",
           "continueWith": "Continue with",
           "facebook": "Facebook",
           "google": "Google",
@@ -1758,6 +1761,19 @@
         "sidebar": {
           "contractRules": "Contract rules"
         }
+      }
+    },
+    "ibuilder": {
+      "cms": {
+        "sidebar": {
+          "adminGroup": "Builder",
+          "adminBlocks": "Blocks",
+          "adminTemplates": "Templates"
+        },
+        "newBlock": "New Block",
+        "updateBlock": "Update Block",
+        "newTemplate": "New Template",
+        "updateTemplate": "Update Template"
       }
     }
   },
@@ -2867,6 +2883,9 @@
         "perzonalizationTitle": "Bienvenid@ al editor de tu sitio web",
         "perzonalizationDescription": "De manera fácil, cambia el logo, colores y la información principal de tu página web",
         "label": {
+          "attribute": "Atributo | Atributos",
+          "component": "Componente",
+          "content": "Contenido",
           "continueWith": "Continuar con",
           "facebook": "Facebook",
           "google": "Google",
@@ -3389,6 +3408,19 @@
         "sidebar": {
           "contractRules": "Reglas de contrato"
         }
+      }
+    },
+    "ibuilder": {
+      "cms": {
+        "sidebar": {
+          "adminGroup": "Constructor",
+          "adminBlocks": "Bloques",
+          "adminTemplates": "Plantillas"
+        },
+        "newBlock": "Nuevo Bloque",
+        "updateBlock": "Actualizar Bloque",
+        "newTemplate": "Nueva Plantilla",
+        "updateTemplate": "Actualizar Plantilla"
       }
     }
   }
