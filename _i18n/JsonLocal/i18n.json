@@ -1124,7 +1124,8 @@
           "flightInfo": "Flight Info",
           "workOrders": "Work Orders",
           "rampInfo": "Ramp",
-          "map": "Map"
+          "map": "Map",
+          "schedule": "Schedule"
         },
         "map": {
           "workOrderId": "Work Order Id",
@@ -2784,7 +2785,8 @@
           "flightInfo": "Información de vuelo",
           "workOrders": "Órdenes de trabajo",
           "rampInfo": "Rampa",
-          "map": "Map"
+          "map": "Map",
+          "schedule": "Calendario"
         }
       }
     },
