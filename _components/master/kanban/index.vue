@@ -115,7 +115,11 @@ export default {
     automation: {
       type: Boolean,
       default: () => false,
-    }
+    },
+    fieldActions: {
+      type: Function,
+      default: () => false,
+    },
   },
   provide() {
     return {
@@ -134,10 +138,11 @@ export default {
       automation: this.automation,
       openFormComponentModal: this.openFormComponentModal,
       addCard: this.addCard,
-      countTotalRecords: this.countTotalRecords
+      countTotalRecords: this.countTotalRecords,
+      crudfieldActions: this.crudfieldActions,
     };
   },
-  inject:['funnelPageAction'],
+  inject:['funnelPageAction', 'fieldActions'],
   components: {
     kanbanColumn,
     draggable,
@@ -448,7 +453,14 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
+    },
+    crudfieldActions(field) {
+      try {
+        return this.fieldActions(field);
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>

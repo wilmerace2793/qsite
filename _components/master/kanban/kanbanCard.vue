@@ -33,30 +33,37 @@
           padding="5px 5px"
           class="
             kd-without-arrow
-            tw-float-right tw-cursor-pointer tw-text-xs tw-bg-gray-100
+            tw-float-right 
+            tw-cursor-pointer 
+            tw-text-xs 
+            tw-bg-gray-100
           "
           icon="fa-solid fa-ellipsis"
         >
           <q-list
             dense
-            class="tw-p-2 kd-list-without-arrow tw-bg-gray-100 tw-text-xs"
+            class="
+              tw-p-2 
+              kd-list-without-arrow 
+              tw-bg-gray-100 
+              tw-text-xs"
           >
-            <q-item clickable v-close-popup @click="openModal">
+            <q-item
+              clickable
+              v-close-popup
+              v-for="(action, keyAction) in actionsData"
+              :key="keyAction"
+              v-bind="action.props"
+              v-if="action.vIf != undefined ? action.vIf : true"
+              @click.native="runAction(action)"
+            >
               <q-item-section avatar>
-                <q-icon name="fa-regular fa-square-info" />
+                <q-icon :name="action.icon" />
               </q-item-section>
               <q-item-section>
-                <q-item-label>{{
-                  $tr("isite.cms.label.information")
-                }}</q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-item clickable v-close-popup @click="openEdit">
-              <q-item-section avatar>
-                <q-icon name="fa-solid fa-pen-to-square" />
-              </q-item-section>
-              <q-item-section class="tw-p-1">
-                <q-item-label>{{ $tr("iappointment.cms.message.changeStatus") }}</q-item-label>
+                <q-item-label>
+                  {{ action.label || action.tooltip }}
+                </q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -110,6 +117,10 @@ export default {
       type: Boolean,
       default: () => false,
     },
+    crudfieldActions: {
+      type: Function,
+      default: () => false,
+    },
   },
   props: {
     cardData: {
@@ -121,12 +132,46 @@ export default {
       default: () => "#00000",
     },
   },
+  computed: {
+    actions() {
+      return this.crudfieldActions(this.cardData);
+    },
+    actionsData() {
+      return this.actions.map((item) => {
+        //Instance item props
+        item.props = { tag: "a", key: this.$uid(), clickable: true };
+
+        //Define external redirect
+        if (item.toRoute) item.props.href = item.toRoute;
+
+        //Instance vue route redirect
+        if (item.route)
+          item.props.to = {
+            name: item.route,
+            params: this.$clone(this.cardData || {}),
+          };
+
+        // Formatting all instances
+        if (item.format)
+          item = { ...item, ...(item.format(this.cardData) || {}) };
+
+        //Return item
+        return item;
+      });
+    },
+  },
   methods: {
     openModal() {
       if (this.showRequestData) this.showRequestData(this.cardData);
     },
     openEdit() {
       if (this.update) this.update(this.cardData);
+    },
+    async runAction(action) {
+      //Define action params
+      let actionData = this.$clone(this.cardData || {});
+      //Check if has action function
+      if (action.action) await action.action(actionData);
     },
   },
 };
