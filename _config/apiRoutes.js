@@ -19,5 +19,5 @@ export default {
   categories: `${urlBase}/categories`,
   modulesInfo: `${urlBase}/configs/modules-info`,
   layouts: `${urlBase}/layouts`,
-  logs: `${urlBase}/logs`,
+  logs: `${urlBase}/logs`
 }

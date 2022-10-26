@@ -8,7 +8,7 @@ export default [
     children: [
       pages.qsite.organizations,//organizations
       pages.qsite.categories,//organization categories
-      pages.qsite.icruds//Cruds
+      pages.qsite.icruds,//Cruds
     ]
   },
   pages.qsite.index,//setup

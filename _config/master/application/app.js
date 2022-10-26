@@ -44,6 +44,7 @@ export default {
     'qtranslation',
     'qrequestable',
     'qauction',
+    'qbuilder',
     'qsite',
     'qcredit'
   ],

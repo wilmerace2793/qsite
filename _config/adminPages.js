@@ -78,6 +78,7 @@ export default {
       refresh: true
     }
   },
+  //Logs
   auditLog: {
     permission: 'isite.logs.manage',
     activated: true,
@@ -92,5 +93,5 @@ export default {
     subHeader: {
       refresh: true
     }
-  },
+  }
 }

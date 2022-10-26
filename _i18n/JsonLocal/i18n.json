@@ -1124,7 +1124,8 @@
           "flightInfo": "Flight Info",
           "workOrders": "Work Orders",
           "rampInfo": "Ramp",
-          "map": "Map"
+          "map": "Map",
+          "schedule": "Schedule"
         },
         "map": {
           "workOrderId": "Work Order Id",
@@ -1194,7 +1195,8 @@
           "adminCategories": "Categories",
           "adminIcruds": "Icruds",
           "adminAuditLog": "Audit Log",
-          "adminOrganizationForm": "Form"
+          "adminOrganizationForm": "Form",
+          "adminBlocks": "Blocks"
         },
         "crud": {
           "message": {
@@ -1203,6 +1205,8 @@
             "showAsCard": "Show as card"
           }
         },
+        "newBlock": "New Block",
+        "updateBlock": "Update Block",
         "newRecommendation": "New Recommendation",
         "updateRecommendation": "Update Recomendation",
         "deleteRecommendation": "Delete Recommendation",
@@ -1754,6 +1758,15 @@
         "updateContractRule": "Update contract rule",
         "sidebar": {
           "contractRules": "Contract rules"
+        }
+      }
+    },
+    "idhl": {
+      "cms": {
+        "sidebar": {
+          "dhlInfo":"DHL",
+          "scoreCards": "Score Cards",
+          "staffs": "Staffing"
         }
       }
     }
@@ -2772,7 +2785,8 @@
           "flightInfo": "Información de vuelo",
           "workOrders": "Órdenes de trabajo",
           "rampInfo": "Rampa",
-          "map": "Map"
+          "map": "Map",
+          "schedule": "Calendario"
         }
       }
     },
@@ -2825,7 +2839,8 @@
           "adminCategories": "Categorias",
           "adminIcruds": "Icruds",
           "adminAuditLog": "Audit Log",
-          "adminOrganizationForm": "Formulario"
+          "adminOrganizationForm": "Formulario",
+          "adminBlocks": "Bloques"
         },
         "crud": {
           "message": {
@@ -2834,6 +2849,8 @@
             "showAsCard": "Ver como tarjetas"
           }
         },
+        "newBlock": "Nuevo Bloque",
+        "updateBlock": "Actualizar Bloque",
         "newRecommendation": "Nueva Recomendación",
         "updateRecommendation": "Actualizar Recomendación",
         "deleteRecommendation": "Eliminar Recomendación",
