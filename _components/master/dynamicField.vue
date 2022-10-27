@@ -305,7 +305,7 @@
         <!--Code Editor-->
         <q-field v-model="responseValue" v-if="loadField('json')" v-bind="fieldProps.fieldComponent" label=""
                  class="field-no-padding no-border">
-          <json-editor-vue class="jsoneditor-vue" v-model="responseValue"/>
+          <json-editor-vue class="jsoneditor-vue" v-model="responseValue" mode="text"/>
         </q-field>
         <!--Text Info-->
         <div id="bannerField" v-if="loadField('banner')" class="q-mb-md">
