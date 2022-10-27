@@ -303,8 +303,9 @@
           <schedulable v-model="responseValue" @input="watchValue" class="q-mb-sm" v-bind="fieldProps"/>
         </div>
         <!--Code Editor-->
-        <q-field v-model="responseValue" v-if="loadField('json')" v-bind="fieldProps.fieldComponent" label="">
-          <json-editor-vue :content="{json : responseValue}" :onChange="value => responseValue = value"/>
+        <q-field v-model="responseValue" v-if="loadField('json')" v-bind="fieldProps.fieldComponent" label=""
+                 class="field-no-padding no-border">
+          <json-editor-vue class="jsoneditor-vue" v-model="responseValue"/>
         </q-field>
         <!--Text Info-->
         <div id="bannerField" v-if="loadField('banner')" class="q-mb-md">
@@ -353,7 +354,7 @@ import captcha from '@imagina/qsite/_components/master/captcha'
 import schedulable from '@imagina/qsite/_components/master/schedulable'
 import selectMedia from '@imagina/qmedia/_components/selectMedia'
 import googleMapMarker from '@imagina/qsite/_components/master/googleMapMarker'
-import JsonEditorVue from '@imagina/qsite/_components/master/VueJSONEditor'
+import JsonEditorVue from 'json-editor-vue'
 
 export default {
   name: 'dynamicField',
@@ -431,7 +432,6 @@ export default {
     })
   },
   data() {
-
     return {
       success: false,//global component status
       loading: false,
@@ -459,7 +459,7 @@ export default {
           ['quote', 'unordered', 'ordered'],
           ['fullscreen']
         ]
-      }
+      },
     }
   },
   computed: {
@@ -1457,7 +1457,7 @@ export default {
 </script>
 <style lang="stylus">
 #dynamicFieldComponent
-  .svelte-jsoneditor-vue
+  .jsoneditor-vue
     width: 100%;
     height: 400px;
 
