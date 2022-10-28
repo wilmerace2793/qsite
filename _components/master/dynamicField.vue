@@ -26,7 +26,7 @@
                  round color="info"
                  icon="fas fa-info"
                  unelevated
-            >
+          >
             <q-menu id="dynamicFieldMenuHelp" v-model="tooltip" anchor="top right" self="top right">
               <!--actions-->
               <div class="row justify-between items-center">
@@ -71,20 +71,21 @@
         <div v-if="loadField('quantity')" class="tw-flex tw-w-full">
           <div>
             <q-btn class="" size="md" flat round color="primary" icon="remove"
-                 @click="field.value = responseValue > 0  ? --responseValue: 0" :disable="fieldProps.readonly"/>
+                   @click="field.value = responseValue > 0  ? --responseValue: 0" :disable="fieldProps.readonly"/>
           </div>
           <div class="tw-w-11/12">
             <q-input v-bind="fieldProps" v-model="responseValue" class="bg-white col-8"></q-input>
           </div>
           <div>
-            <q-btn class="" size="md" flat round color="primary" icon="add" @click="field.value = ++responseValue" :disable="fieldProps.readonly"/>
+            <q-btn class="" size="md" flat round color="primary" icon="add" @click="field.value = ++responseValue"
+                   :disable="fieldProps.readonly"/>
           </div>
         </div>
         <!--Search-->
         <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('search')"
                  v-bind="fieldProps">
           <template v-slot:append>
-            <q-icon name="search" class="cursor-pointer"  @click="$emit('enter')" />
+            <q-icon name="search" class="cursor-pointer" @click="$emit('enter')"/>
           </template>
         </q-input>
         <!--Date-->
@@ -140,7 +141,8 @@
           <template v-slot:append>
             <q-icon name="fas fa-clock" class="cursor-pointer" color="blue-grey">
               <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
-                <q-time v-model="responseValue" :format24h="fieldProps.field.format24h" @input="() => $refs.qTimeProxy.hide()"
+                <q-time v-model="responseValue" :format24h="fieldProps.field.format24h"
+                        @input="() => $refs.qTimeProxy.hide()"
                         v-bind="fieldProps.slot"/>
               </q-popup-proxy>
             </q-icon>
@@ -152,7 +154,7 @@
                   @clear="val => field.props.multiple ? responseValue = [] : ''">
           <!--No options slot-->
           <template v-slot:no-option v-if="!fieldProps.hideDropdownIcon">
-            <slot name="before-options" />
+            <slot name="before-options"/>
             <q-item>
               <q-item-section class="text-grey">
                 {{ $tr('isite.cms.message.notFound') }}
@@ -301,8 +303,9 @@
           <schedulable v-model="responseValue" @input="watchValue" class="q-mb-sm" v-bind="fieldProps"/>
         </div>
         <!--Code Editor-->
-        <q-field v-model="responseValue" v-if="loadField('json')" v-bind="fieldProps.fieldComponent">
-          <v-json-editor v-model="responseValue" height="300px" :options="fieldProps.field"/>
+        <q-field v-model="responseValue" v-if="loadField('json')" v-bind="fieldProps.fieldComponent" label=""
+                 class="field-no-padding no-border">
+          <json-editor-vue class="jsoneditor-vue" v-model="responseValue" mode="text"/>
         </q-field>
         <!--Text Info-->
         <div id="bannerField" v-if="loadField('banner')" class="q-mb-md">
@@ -351,7 +354,7 @@ import captcha from '@imagina/qsite/_components/master/captcha'
 import schedulable from '@imagina/qsite/_components/master/schedulable'
 import selectMedia from '@imagina/qmedia/_components/selectMedia'
 import googleMapMarker from '@imagina/qsite/_components/master/googleMapMarker'
-import VJsonEditor from 'v-jsoneditor/src/index'
+import JsonEditorVue from 'json-editor-vue'
 
 export default {
   name: 'dynamicField',
@@ -365,7 +368,7 @@ export default {
     language: {default: false},
     itemId: {default: ''},
     readOnly: {type: Boolean, default: false},
-    keyField: { 
+    keyField: {
       type: String,
       default: () => '',
     }
@@ -386,7 +389,7 @@ export default {
     schedulable,
     selectMedia,
     googleMapMarker,
-    VJsonEditor
+    JsonEditorVue
   },
   watch: {
     value: {
@@ -429,7 +432,6 @@ export default {
     })
   },
   data() {
-
     return {
       success: false,//global component status
       loading: false,
@@ -457,7 +459,7 @@ export default {
           ['quote', 'unordered', 'ordered'],
           ['fullscreen']
         ]
-      }
+      },
     }
   },
   computed: {
@@ -663,7 +665,7 @@ export default {
           break;
         case'treeSelect':
           props = {
-            emitValue : true,
+            emitValue: true,
             field: {
               appendToBody: true,
               sortValueBy: 'INDEX',
@@ -673,7 +675,7 @@ export default {
               outlined: true,
               dense: true,
               ...props,
-              clearable : false
+              clearable: false
             }
           }
           break;
@@ -888,10 +890,7 @@ export default {
           props = {
             field: {
               ...props,
-              mode: 'code',
-              mainMenuBar: true,
-              enableTransform: false,
-              enableSort: false
+              mode: 'text'
             },
             fieldComponent: {
               outlined: false,
@@ -1140,7 +1139,7 @@ export default {
         },
         json: {
           class: 'absolute-right',
-          margin: '8em 1em',
+          margin: '2.3em 1em',
           load: true
         }
       }
@@ -1243,6 +1242,9 @@ export default {
         case 'captcha':
           this.responseValue = (propValue !== undefined) ? propValue : null
           break
+        case 'json':
+          this.responseValue = (propValue !== undefined) ? propValue : {}
+          break
         default :
           this.responseValue = propValue || null
           break
@@ -1315,8 +1317,8 @@ export default {
 
           //Request
           this.$crud.index(loadOptions.apiRoute, params).then(response => {
-            if(this.keyField !== '') {
-              const keyData = { [this.keyField] :response.data }
+            if (this.keyField !== '') {
+              const keyData = {[this.keyField]: response.data}
               this.$helper.setDynamicSelectList(keyData);
             }
             this.rootOptionsData = this.$clone(response.data)
@@ -1455,6 +1457,10 @@ export default {
 </script>
 <style lang="stylus">
 #dynamicFieldComponent
+  .jsoneditor-vue
+    width: 100%;
+    height: 400px;
+
   .checkbox-field
     .q-field__control-container
       padding-top 0 !important
