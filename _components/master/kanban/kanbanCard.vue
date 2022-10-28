@@ -69,7 +69,7 @@
           </q-list>
         </q-btn-dropdown>
 
-        {{ cardData.title }}
+       ID:{{ cardData.id }} {{ cardData.title }}
       </p>
     </div>
     <div

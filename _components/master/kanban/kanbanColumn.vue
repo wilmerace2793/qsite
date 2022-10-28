@@ -137,6 +137,7 @@
             </div>
             <div>
               <q-btn
+                v-if="columnData.data.length === 0"
                 flat
                 round
                 icon="fas fa-times"
