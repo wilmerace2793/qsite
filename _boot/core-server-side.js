@@ -4,6 +4,7 @@ import lodash from 'lodash'
 
 export default async ({app, router, store, Vue}) => {
   await Promise.all([
+    store.dispatch('qsiteApp/SET_AXIOS_TIMEZONE'),
     store.dispatch('qsiteApp/GET_PAGES'),
     store.dispatch('qsiteApp/GET_MENU_SIDEBAR'),
     store.dispatch('qsiteApp/GET_SITE_SETTINGS'),

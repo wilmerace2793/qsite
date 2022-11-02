@@ -10,6 +10,8 @@ import {Loading} from 'quasar';
 import filter from '@imagina/qsite/_plugins/filter'
 import helper from '@imagina/qsite/_plugins/helper'
 import configApp from "src/config/app"
+import moment from "moment";
+import momentz from "moment-timezone";
 
 //Refresh page
 export const REFRESH_PAGE = ({state, commit, dispatch, getters}) => {
@@ -257,5 +259,18 @@ export const GET_SITE_HOOKS = ({commit, dispatch, state}) => {
       console.error('[store-qsite]Error:: Store getting site hooks - ', error)
       reject(error)
     })
+  })
+}
+
+//Set the navigator timezone into the azios settings payload
+export const SET_AXIOS_TIMEZONE = ({commit, dispatch, state}) => {
+  return new Promise((resolve, reject) => {
+    try{
+      axios.defaults.params.setting.timezone = moment.tz.guess()
+      resolve(true)
+    }catch(error){
+      console.error('[store-qsite]Error:: Store SET_AXIOS_TIMEZONE - ', error)
+      reject(error)
+    }
   })
 }
