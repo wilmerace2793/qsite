@@ -1383,6 +1383,9 @@ export default {
       let response = this.$clone(this.responseValue)
 
       if (JSON.stringify(value) !== JSON.stringify(response)) {
+        //decode when is json
+        if (this.field.type == "json" && (typeof response == "string"))
+          response = JSON.parse(response)
         //Emit input data
         this.$emit('input', response)
       }
