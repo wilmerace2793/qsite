@@ -107,8 +107,12 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(function () {
-      this.init()
+    this.$nextTick(async function () {
+      const origin = window.location.href.split('?');
+      if(origin.length === 2) {
+        this.currentUrl = origin;
+      }
+      await this.init();
     })
   },
   data() {
@@ -116,7 +120,8 @@ export default {
       tabName: 'tabForm',
       filterValues: {},
       pagination: {},
-      readOnlyData: {}
+      readOnlyData: {},
+      currentUrl: '',
     }
   },
   computed: {
@@ -232,19 +237,50 @@ export default {
     }
   },
   methods: {
-    init() {
-      this.emitFilter()
+    async init() {
+      await this.emitFilter();
     },
     //Emit filter
     async emitFilter() {
       this.changeDate()
+      console.log(this.filter.fields, this.currentUrl);
+      Object.keys(this.filter.fields).forEach((item, index) => {
+      });
       this.$filter.addValues(this.filterValues)
-
+      this.mutateCurrentURL();
       //Emit Filter
       if (this.filter && this.filter.callBack) {
         this.filter.callBack(this.filter)//Call back
         this.$root.$emit('page.data.filtered', this.filter)//Global event
       }
+    },
+    // Mutate Current Url
+    mutateCurrentURL() {
+      try {
+        let paramsUrl = '';
+        Object.keys(this.filterValues).forEach((item, index) => {
+          if(this.filterValues[item]) {
+            if(index === 0) {
+              paramsUrl += this.validateObjectFilter('?', item);
+            } else {
+              paramsUrl += this.validateObjectFilter('&', item);
+            }
+          }
+        });
+        const origin = window.location.href.split('?');
+        const url = `${origin[0]}${paramsUrl}`;
+        window.history.replaceState({}, '', url);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // validate Object Filter
+    validateObjectFilter(operator = '?', item) {
+      if(typeof this.filterValues[item] === 'object' 
+        || Array.isArray(this.filterValues[item])) {
+        return  `${operator}${item}=${JSON.stringify(this.filterValues[item])}`;
+      }
+      return `${operator}${item}=${this.filterValues[item]}`;
     },
     //Change dates by type
     changeDate() {
