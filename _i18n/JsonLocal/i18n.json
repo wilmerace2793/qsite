@@ -1787,9 +1787,7 @@
           "adminTemplates": "Templates"
         },
         "newBlock": "New Block",
-        "updateBlock": "Update Block",
-        "newTemplate": "New Template",
-        "updateTemplate": "Update Template"
+        "updateBlock": "Update Block"
       }
     }
   },
@@ -3442,9 +3440,7 @@
           "adminTemplates": "Plantillas"
         },
         "newBlock": "Nuevo Bloque",
-        "updateBlock": "Actualizar Bloque",
-        "newTemplate": "Nueva Plantilla",
-        "updateTemplate": "Actualizar Plantilla"
+        "updateBlock": "Actualizar Bloque"
       }
     }
   }
