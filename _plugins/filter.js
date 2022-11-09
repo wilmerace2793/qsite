@@ -4,6 +4,7 @@ import clone from 'lodash.clonedeep'
 class Filter {
   constructor() {
     this.filters = []
+    this.storeFilter = true
     this.reset()
   }
 
@@ -27,6 +28,7 @@ class Filter {
   //Load filter
   setFilter(params = {}) {
     return new Promise(async (resolve, reject) => {
+      this.storeFilter = params.storeFilter === undefined ? true : params.storeFilter; //Set attribute to know if store the filter
       this.setfilterByName(params.name)//load filter by name
       this.addFields(params.fields)//Add fields
       this.setCallBack(params.callBack)//set callBack
@@ -129,7 +131,7 @@ class Filter {
       if (this.name) {
         let filters = await cache.get.item(this.cacheName) || {}
         filters[this.name] = {...(filters[this.name] || {}), values: this.values}
-        await cache.set(this.cacheName, filters)
+        await this.saveCache(filters)
       }
       //Response
       resolve(true)
@@ -175,6 +177,7 @@ class Filter {
       //Save in cache
       filters[this.name] = {...(filters[this.name] || {}), pagination: this.pagination}
       cache.set(this.cacheName, filters)
+      this.saveCache(filters)
 
       //Response
       resolve(true)
@@ -207,6 +210,20 @@ class Filter {
         this.hasValues = true
       }
     }
+  }
+
+  //Save The filter in the storage
+  saveCache(value) {
+    return new Promise(async resolve => {
+      if (this.storeFilter) await cache.set(this.cacheName, value)
+      else {
+        let filters = await cache.get.item(this.cacheName) || {}
+        delete filters[this.name]
+        await cache.set(this.cacheName, filters)
+      }
+      //Resolve promise
+      resolve(true)
+    })
   }
 }
 
