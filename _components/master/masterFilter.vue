@@ -110,7 +110,7 @@ export default {
     this.$nextTick(async function () {
       const origin = window.location.href.split('?');
       if(origin.length === 2) {
-        this.currentUrl = origin;
+        this.currentUrlFilter = origin[1] || '';
       }
       await this.init();
     })
@@ -121,13 +121,14 @@ export default {
       filterValues: {},
       pagination: {},
       readOnlyData: {},
-      currentUrl: '',
+      currentUrlFilter: '',
     }
   },
   computed: {
     filter() {
-      if (this.$filter.values) this.filterValues = this.$clone(this.$filter.values)
-      if (this.$filter.pagination) this.pagination = this.$clone(this.$filter.pagination)
+      if(this.currentUrlFilter.length > 0) this.filterValues = this.convertStringToObject();
+      if (this.currentUrlFilter.length === 0 && this.$filter.values) this.filterValues = this.$clone(this.$filter.values);
+      if (this.$filter.pagination) this.pagination = this.$clone(this.$filter.pagination);
       return this.$filter
     },
     dateFields() {
@@ -238,15 +239,18 @@ export default {
   },
   methods: {
     async init() {
-      await this.emitFilter();
+      const filterValues = this.currentUrlFilter.length > 0 
+        ? await this.$route.query : this.filterValues;
+      this.filterValues = filterValues || {};
+      await this.emitFilter(true);
     },
     //Emit filter
-    async emitFilter() {
-      this.changeDate()
-      console.log(this.filter.fields, this.currentUrl);
-      Object.keys(this.filter.fields).forEach((item, index) => {
-      });
-      this.$filter.addValues(this.filterValues)
+    async emitFilter(filterBtn = false) {
+      if(!filterBtn) {
+        this.currentUrlFilter = '';
+      }
+      this.changeDate();
+      await this.$filter.addValues(this.filterValues);
       this.mutateCurrentURL();
       //Emit Filter
       if (this.filter && this.filter.callBack) {
@@ -254,8 +258,25 @@ export default {
         this.$root.$emit('page.data.filtered', this.filter)//Global event
       }
     },
+    // convert string to object
+    async convertStringToObject() {
+      try {
+        if(this.currentUrlFilter.length > 0) {
+          const regex = /=/g;
+          const regex2 = /&/g;
+          const remplaceFilter = this.currentUrlFilter.replace(regex, ':').replace(regex2, ',');
+          const remplaceObject = eval('({' + remplaceFilter + '})');
+          Object.keys(remplaceObject).forEach(key => {
+            remplaceObject[key] = String(remplaceObject[key]);
+          });
+          return remplaceObject || {};
+        }
+      } catch (error) {
+       console.log(error); 
+      }
+    },
     // Mutate Current Url
-    mutateCurrentURL() {
+    async mutateCurrentURL() {
       try {
         let paramsUrl = '';
         Object.keys(this.filterValues).forEach((item, index) => {
@@ -268,8 +289,8 @@ export default {
           }
         });
         const origin = window.location.href.split('?');
-        const url = `${origin[0]}${paramsUrl}`;
-        window.history.replaceState({}, '', url);
+        const urlBase = `${origin[0]}${paramsUrl}`
+        window.history.replaceState({}, '', urlBase);
       } catch (error) {
         console.log(error);
       }
