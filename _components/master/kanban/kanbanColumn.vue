@@ -151,6 +151,14 @@
         </div>
       </div>
       <div class="c-plus">
+        <div class="row q-col-gutter-sm">
+          <div class="col">
+            <q-btn class="tw-w-full" flat square color="primary" icon="fa fa-circle" @click="openModalsRules()"/>
+          </div>
+          <div class="col">
+            <q-btn class="tw-w-full" flat square color="secondary" icon="fa fa-circle" @click="openModalsTimes()"/>
+          </div>
+        </div>
         <q-btn 
           flat 
           class="
@@ -264,6 +272,8 @@ export default {
     'routes',
     'openFormComponentModal',
     'countTotalRecords',
+    'openModalsRules',
+    'openModalsTimes'
   ],
   mounted() {
     const parent = document.querySelector(`#kanbanCtn${this.uId}`);

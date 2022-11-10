@@ -60,6 +60,12 @@
       :funnelId="funnelSelectedComputed"
       :filterName="routes.column.filter.name"
     />
+    <rulesComponent
+      ref="rulesComponent"
+    />
+    <timesComponent
+      ref="timesComponent"
+    />
   </div>
 </template>
 
@@ -69,6 +75,8 @@ import kanbanStore from "@imagina/qsite/_components/master/kanban/store/kanbanSt
 import automationRules from "./automationRules/index.vue";
 import draggable from "vuedraggable";
 import formComponent from './modals/form.vue';
+import rulesComponent from './automationRules/modals/rules.vue';
+import timesComponent from './automationRules/modals/times.vue';
 
 const modelPayload = {
   id: null,
@@ -140,6 +148,8 @@ export default {
       addCard: this.addCard,
       countTotalRecords: this.countTotalRecords,
       crudfieldActions: this.crudfieldActions,
+      openModalsRules: this.openModalsRules,
+      openModalsTimes: this.openModalsTimes,
     };
   },
   inject:['funnelPageAction', 'fieldActions'],
@@ -148,6 +158,8 @@ export default {
     draggable,
     automationRules,
     formComponent,
+    rulesComponent,
+    timesComponent
   },
   data() {
     return {
@@ -460,6 +472,12 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    openModalsRules(title) {
+      if(this.$refs.rulesComponent) this.$refs.rulesComponent.openModal(title);
+    },
+    openModalsTimes(title) {
+      if(this.$refs.timesComponent) this.$refs.timesComponent.openModal(title);
     },
   },
 };
