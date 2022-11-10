@@ -28,7 +28,7 @@ class Filter {
   //Load filter
   setFilter(params = {}) {
     return new Promise(async (resolve, reject) => {
-      this.storeFilter = params.storeFilter === undefined ? true : params.storeFilter; //Set attribute to know if store the filter
+      this.storeFilter = params.hasOwnProperty("storeFilter") ? true : params.storeFilter; //Set attribute to know if store the filter
       this.setfilterByName(params.name)//load filter by name
       this.addFields(params.fields)//Add fields
       this.setCallBack(params.callBack)//set callBack

@@ -251,7 +251,7 @@ export default {
       }
       this.changeDate();
       await this.$filter.addValues(this.filterValues);
-      this.mutateCurrentURL();
+      if(!filterBtn && this.$filter.storeFilter) this.mutateCurrentURL();
       //Emit Filter
       if (this.filter && this.filter.callBack) {
         this.filter.callBack(this.filter)//Call back
