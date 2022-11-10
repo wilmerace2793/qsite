@@ -25,7 +25,7 @@
                       aspernatur nostrum cupiditate hic a enim?
 
                       <div>
-                        <q-checkbox label="solo horas de trabajo">
+                        <q-checkbox v-model="hours" label="solo horas de trabajo">
                           <q-icon
                             size="8px"
                             name="fa-solid fa-question"
@@ -52,7 +52,7 @@
             </div>
             <div class="col-12 col-md-5">
               <q-checkbox
-                v-model="right"
+                v-model="later"
                 label="después de la regla de automatización anterior"
               />
             </div>
@@ -87,6 +87,8 @@ export default {
       loading: false,
       title: null,
       time: ["minutos", "horas", "dias"],
+      later: false,
+      hours: false,
       time2: [
         "Tiempo actual",
         "Fecha actual",

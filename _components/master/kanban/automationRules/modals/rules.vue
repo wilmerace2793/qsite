@@ -50,7 +50,7 @@
                 :active="group.active"
                 @click="activeList(group.id, index)"
                 class="bg-grey-2 tw-mb-2 tw-rounded-lg"
-                v-for="(group, index) in groups"
+                v-for="(group, index) in groups" :key="group.id"
               >
                 <q-item-section avatar>
                   <q-avatar
@@ -92,13 +92,13 @@
               <q-tab-panel
                 class="tw-pl-0"
                 :name="`tab-group-${index}`"
-                v-for="(group, index) in groups"
+                v-for="(group, index) in groups" :key="group.id"
               >
                 <div v-if="group.content.length > 1">
                   <q-list bordered separator class="tw-rounded-lg tw-mr-1">
                     <q-item
                       class="bg-grey-2 tw-py-3"
-                      v-for="(item, index) in group.content"
+                      v-for="(item, index) in group.content" :key="index"
                     >
                       <q-item-section>
                         <q-item-label lines="1">
