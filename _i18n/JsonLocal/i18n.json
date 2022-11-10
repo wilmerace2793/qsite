@@ -1130,7 +1130,8 @@
           "flightInfo": "Flight Info",
           "workOrders": "Work Orders",
           "rampInfo": "Ramp",
-          "map": "Map"
+          "map": "Map",
+          "schedule": "Schedule"
         },
         "map": {
           "workOrderId": "Work Order Id",
