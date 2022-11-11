@@ -251,7 +251,7 @@ export default {
       }
       this.changeDate();
       await this.$filter.addValues(this.filterValues);
-      if(!filterBtn && this.$filter.storeFilter) this.mutateCurrentURL();
+      if(this.$filter.storeFilter) this.mutateCurrentURL();
       //Emit Filter
       if (this.filter && this.filter.callBack) {
         this.filter.callBack(this.filter)//Call back
@@ -261,13 +261,16 @@ export default {
     // convert string to object
     async convertStringToObject() {
       try {
+        
         if(this.currentUrlFilter.length > 0) {
           const regex = /=/g;
           const regex2 = /&/g;
           const remplaceFilter = this.currentUrlFilter.replace(regex, ':').replace(regex2, ',');
           const remplaceObject = eval('({' + remplaceFilter + '})');
           Object.keys(remplaceObject).forEach(key => {
-            remplaceObject[key] = String(remplaceObject[key]);
+            if(this.$filter.fields.hasOwnProperty(key)) {
+              remplaceObject[key] = String(remplaceObject[key]);
+            }
           });
           return remplaceObject || {};
         }
@@ -280,7 +283,7 @@ export default {
       try {
         let paramsUrl = '';
         Object.keys(this.filterValues).forEach((item, index) => {
-          if(this.filterValues[item]) {
+          if(this.$filter.fields.hasOwnProperty(item)) {
             if(index === 0) {
               paramsUrl += this.validateObjectFilter('?', item);
             } else {
