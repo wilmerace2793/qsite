@@ -49,9 +49,9 @@
     </div>
     <div v-else>
       <i class="fa-regular fa-square-kanban" />
-      No has selecionado ningun funnel 
+      No has selecionado ningun funnel
     </div>
-    <automationRules 
+    <automationRules
       ref="automationRules"
       :funnelId="funnelSelectedComputed"
     />
@@ -59,6 +59,11 @@
       ref="formComponent"
       :funnelId="funnelSelectedComputed"
       :filterName="routes.column.filter.name"
+    />
+    <formRules
+        ref="formRules"
+        :funnelId="funnelSelectedComputed"
+        :filterName="routes.column.filter.name"
     />
   </div>
 </template>
@@ -69,6 +74,7 @@ import kanbanStore from "@imagina/qsite/_components/master/kanban/store/kanbanSt
 import automationRules from "./automationRules/index.vue";
 import draggable from "vuedraggable";
 import formComponent from './modals/form.vue';
+import formRules from './modals/formRules';
 
 const modelPayload = {
   id: null,
@@ -148,6 +154,7 @@ export default {
     draggable,
     automationRules,
     formComponent,
+    formRules
   },
   data() {
     return {
@@ -443,7 +450,11 @@ export default {
       if(this.$refs.automationRules) this.$refs.automationRules.openModal();
     },
     openFormComponentModal(statusId, title) {
-      if(this.$refs.formComponent) this.$refs.formComponent.openModal(statusId, title);
+      if (this.automation) {
+        if (this.$refs.formRules) this.$refs.formRules.openModal(statusId, title);
+      } else {
+        if (this.$refs.formComponent) this.$refs.formComponent.openModal(statusId, title);
+      }
     },
     countTotalRecords() {
       try {
