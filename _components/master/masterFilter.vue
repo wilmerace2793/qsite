@@ -106,7 +106,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     this.$nextTick(async function () {
       const origin = window.location.href.split('?');
       if(origin.length === 2) {
@@ -261,7 +261,6 @@ export default {
     // convert string to object
     async convertStringToObject() {
       try {
-        
         if(this.currentUrlFilter.length > 0) {
           const regex = /=/g;
           const regex2 = /&/g;
