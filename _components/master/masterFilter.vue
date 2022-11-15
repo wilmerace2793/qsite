@@ -126,18 +126,16 @@ export default {
   },
   computed: {
     filter() {
-      if(this.currentUrlFilter.length > 0) this.filterValues = this.convertStringToObject();
-      if (this.currentUrlFilter.length === 0 && this.$filter.values) this.filterValues = this.$clone(this.$filter.values);
-      if (this.$filter.pagination) this.pagination = this.$clone(this.$filter.pagination);
+      if(this.$filter.storeFilter) this.filterValues = this.convertStringToObject();
+      if (!this.$filter.storeFilter && this.$filter.values) this.filterValues = this.$clone(this.$filter.values)
+      if (this.$filter.pagination) this.pagination = this.$clone(this.$filter.pagination)
       return this.$filter
     },
     dateFields() {
       let filterDate = this.$clone(this.filterValues.date)
       let filterFields = this.$clone(this.filter.fields)
-
       let fieldDate = (filterFields && filterFields.date && filterFields.date.field) ? filterFields.date.field : false
       let fieldDateLabel = (filterFields && filterFields.date && filterFields.date.props) ? filterFields.date.props.label || null : null
-
       if (!filterDate) return {}
       let fields = {
         field: fieldDate || {value: 'created_at'},
@@ -196,7 +194,6 @@ export default {
           }
         }
       }
-
       return fields
     },
     paginationFields() {
@@ -208,7 +205,6 @@ export default {
         //Define number of pages
         for (let i = 1; i <= lastPage; i++)
           pages.push({label: i.toString(), value: i.toString()})
-
         return {
           page: {
             value: filter.pagination.page || 1,
@@ -250,7 +246,7 @@ export default {
         this.currentUrlFilter = '';
       }
       this.changeDate();
-      await this.$filter.addValues(this.filterValues);
+      this.$filter.addValues(this.filterValues);
       if(this.$filter.storeFilter) this.mutateCurrentURL();
       //Emit Filter
       if (this.filter && this.filter.callBack) {
