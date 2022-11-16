@@ -126,8 +126,8 @@ export default {
   },
   computed: {
     filter() {
-      if(this.$filter.storeFilter) this.filterValues = this.convertStringToObject();
-      if (!this.$filter.storeFilter && this.$filter.values) this.filterValues = this.$clone(this.$filter.values)
+      if(this.$filter.storeFilter && this.currentUrlFilter.length > 0) this.filterValues = this.convertStringToObject();
+      if (!this.$filter.storeFilter && this.currentUrlFilter.length === 0 && this.$filter.values) this.filterValues = this.$clone(this.$filter.values)
       if (this.$filter.pagination) this.pagination = this.$clone(this.$filter.pagination)
       return this.$filter
     },
@@ -236,7 +236,7 @@ export default {
   methods: {
     async init() {
       const filterValues = this.currentUrlFilter.length > 0 
-        ? await this.$route.query : this.filterValues;
+        ? await this.convertStringToObject() : this.filterValues;
       this.filterValues = filterValues || {};
       await this.emitFilter(true);
     },
@@ -295,11 +295,14 @@ export default {
     },
     // validate Object Filter
     validateObjectFilter(operator = '?', item) {
-      if(typeof this.filterValues[item] === 'object' 
-        || Array.isArray(this.filterValues[item])) {
-        return  `${operator}${item}=${JSON.stringify(this.filterValues[item])}`;
+      if(this.filterValues[item]) {
+        if(typeof this.filterValues[item] === 'object' 
+          || Array.isArray(this.filterValues[item])) {
+          return  `${operator}${item}=${JSON.stringify(this.filterValues[item])}`;
+        }
+        return `${operator}${item}=${this.filterValues[item]}`;
       }
-      return `${operator}${item}=${this.filterValues[item]}`;
+      return '';
     },
     //Change dates by type
     changeDate() {
