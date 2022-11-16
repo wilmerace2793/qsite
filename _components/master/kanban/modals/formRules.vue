@@ -74,6 +74,7 @@ export default {
           type : 'treeSelect',
           required: true,
           props: {
+            disableBranchNodes: true,
             label: `${this.$tr('isite.cms.label.category')} *`,
             options: this.$array.tree(this.categories)
           }
