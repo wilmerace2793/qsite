@@ -71,11 +71,11 @@ export default {
 
       return {
         category: {
-          type: "select",
+          type : 'treeSelect',
           required: true,
           props: {
             label: `${this.$tr('isite.cms.label.category')} *`,
-            options: this.$array.select(this.categories)
+            options: this.$array.tree(this.categories)
           }
         },
         name: {
@@ -185,7 +185,9 @@ export default {
         //Request params
         const requestParams = {
           refresh: true,
-          params: {}
+          params: {
+            filter: { status: 1 }
+          }
         }
         //Request
         this.$crud.index('apiRoutes.qrequestable.categoriesRule', requestParams).then(response => {
