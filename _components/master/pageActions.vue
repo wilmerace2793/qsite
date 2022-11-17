@@ -24,8 +24,8 @@
         >
           <q-list>
             <q-item v-for="(item, index) in btn.items" :key="index" clickable v-close-popup
-                    @click="btn.action != undefined ? btn.action(item.type) : null">
-              <q-item-section avatar>
+                    @click="item.action != undefined ? item.action() : null" class="tw-px-4">
+              <q-item-section avatar v-if="item.icon">
                 <q-avatar :icon="item.icon"/>
               </q-item-section>
               <q-item-section>
@@ -95,7 +95,8 @@ export default {
     return {
       exportParams: false,
       search: null,
-      filterData: {}
+      filterData: {},
+      refreshIntervalId: null,
     }
   },
   computed: {
@@ -157,11 +158,29 @@ export default {
         //Refresh
         {
           label: this.$trp('isite.cms.label.refresh'),
+          type: 'btn-dropdown',
           vIf: (this.params.refresh && !excludeActions.includes('refresh')),
           props: {
             icon: 'fas fa-redo'
           },
-          action: this.emitRefresh
+          items: [
+            {
+              label: this.$tr('isite.cms.label.refreshAtOnce'),
+              action: () => {this.clearInterval(); this.emitRefresh()}
+            },
+            {
+              label: this.$tr('isite.cms.label.refreshEveryMinutes', {min: 5}),
+              action: () => this.refreshByTime(5)
+            },
+            {
+              label: this.$tr('isite.cms.label.refreshEveryMinutes', {min: 10}),
+              action: () => this.refreshByTime(10)
+            },
+            {
+              label: this.$tr('isite.cms.label.refreshEveryMinutes', {min: 15}),
+              action: () => this.refreshByTime(5)
+            }
+          ],
         }
       ]
 
@@ -214,6 +233,14 @@ export default {
         this.$set(this.filter, 'readValues', readValues)
       })
     },
+    refreshByTime(time) {
+      this.clearInterval();
+      const interval = 1000 * 60 * time;
+      this.emitRefresh();
+      this.refreshIntervalId = setInterval(() => {
+        this.emitRefresh();
+      }, interval);
+    },
     //Emit refresh
     emitRefresh() {
       this.$emit('refresh')
@@ -227,7 +254,13 @@ export default {
       this.$filter.addValues(this.filterData)
       //Call back
       if (this.filter && this.filter.callBack) this.filter.callBack(this.filter)
-    }
+    },
+    clearInterval() {
+      if(this.refreshIntervalId) {
+        clearInterval(this.refreshIntervalId);
+        this.refreshIntervalId = null;
+      }
+    },
   }
 }
 </script>
