@@ -1558,7 +1558,9 @@
           "ratio": "Ratio | Ratios",
           "format": "Format | Formats",
           "endPoint": "End Point",
-          "token": "Token"
+          "token": "Token",
+          "refreshAtOnce": "Refresh at once",
+          "refreshEveryMinutes": "Refresh every {min} minutes"
         },
         "message": {
           "notFound": "Sorry, nothing here",
@@ -3223,7 +3225,9 @@
           "ratio": "Proporción | Proporciones",
           "format": "Formato | Formatos",
           "endPoint": "Punto Final",
-          "token": "Token"
+          "token": "Token",
+          "refreshAtOnce": "Refrescar de una vez",
+          "refreshEveryMinutes": "Refrescar cada {min} minutos"
         },
         "message": {
           "notFound": "Lo sentimos, no hay nada aquí",
