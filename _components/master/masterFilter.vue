@@ -235,7 +235,7 @@ export default {
   },
   methods: {
     async init() {
-      const filterValues = this.currentUrlFilter.length > 0 
+      const filterValues = this.$filter.storeFilter && this.currentUrlFilter.length > 0 
         ? await this.convertStringToObject() : this.filterValues;
       this.filterValues = filterValues || {};
       await this.emitFilter(true);
