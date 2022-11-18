@@ -72,6 +72,7 @@ import masterExport from "@imagina/qsite/_components/master/masterExport"
 
 export default {
   beforeDestroy() {
+    this.clearInterval()
     this.$root.$off('page.data.filter.read')
     this.clearInterval();
   },
@@ -168,6 +169,10 @@ export default {
             {
               label: this.$tr('isite.cms.label.refreshAtOnce'),
               action: () => {this.clearInterval(); this.emitRefresh()}
+            },
+            {
+              label: this.$tr('isite.cms.label.refreshEveryMinutes', {min: 1}),
+              action: () => this.refreshByTime(1)
             },
             {
               label: this.$tr('isite.cms.label.refreshEveryMinutes', {min: 5}),
