@@ -131,7 +131,8 @@ export default {
       type: Number,
       default: 1,
       validator: (value) => [1, 2, 3].includes(value)
-    }
+    },
+    noResetWithBlocksUpdate: {type: Boolean, default: false}
   },
   watch: {
     value: {
@@ -634,7 +635,7 @@ export default {
     //Set form Fields from blocks
     setLocaleFields() {
       //Reset locale component
-      if (this.$refs.localeComponent) this.$refs.localeComponent.vReset()
+      if (!this.noResetWithBlocksUpdate && this.$refs.localeComponent) this.$refs.localeComponent.vReset()
 
       //Instance variables to locale fields
       let fields = {}, fieldsTranslatables = {}

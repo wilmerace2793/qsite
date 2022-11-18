@@ -992,7 +992,9 @@
           "updateComment": "Updated comment",
           "updateNoComment": "Can't update comment",
           "undoComment": "Do you want to cancel the comment?"
-        }
+        },
+        "newRule": "New Rule",
+        "updateRule": "Update Rule"
       }
     },
     "page": {
@@ -1240,7 +1242,14 @@
         "perzonalizationTitle": "Welcome to the editor of your website",
         "perzonalizationDescription": "Easily change the logo, colors and the main information of your website",
         "label": {
-          "attribute" : "Attribute | Attributes",
+          "recipient": "Recipient | Recipients",
+          "when": "When",
+          "run": "Run",
+          "currentTime": "Current Time",
+          "exactTime": "Exact time",
+          "inBefore": "In Before",
+          "inAfter": "In After",
+          "attribute": "Attribute | Attributes",
           "component": "Component",
           "content": "Content",
           "continueWith": "Continue with",
@@ -1790,9 +1799,7 @@
           "adminTemplates": "Templates"
         },
         "newBlock": "New Block",
-        "updateBlock": "Update Block",
-        "newTemplate": "New Template",
-        "updateTemplate": "Update Template"
+        "updateBlock": "Update Block"
       }
     }
   },
@@ -2789,7 +2796,9 @@
           "updateComment": "Comentario actualizado",
           "updateNoComment": "No se puedo actualizar el commentario",
           "undoComment": "¿Desea cancelar el comentario?"
-        }
+        },
+        "newRule": "Nueva Regla",
+        "updateRule": "Actualizar Regla"
       }
     },
     "page": {
@@ -2909,6 +2918,13 @@
         "perzonalizationTitle": "Bienvenid@ al editor de tu sitio web",
         "perzonalizationDescription": "De manera fácil, cambia el logo, colores y la información principal de tu página web",
         "label": {
+          "recipient": "Destinatario | Destinatarios",
+          "when": "Cuando",
+          "run": "Ejecutar",
+          "currentTime": "Tiempo Actual",
+          "exactTime": "Tiempo Exacto",
+          "inBefore": "Antes de",
+          "inAfter": "Despues de",
           "attribute": "Atributo | Atributos",
           "component": "Componente",
           "content": "Contenido",
@@ -3447,9 +3463,7 @@
           "adminTemplates": "Plantillas"
         },
         "newBlock": "Nuevo Bloque",
-        "updateBlock": "Actualizar Bloque",
-        "newTemplate": "Nueva Plantilla",
-        "updateTemplate": "Actualizar Plantilla"
+        "updateBlock": "Actualizar Bloque"
       }
     }
   }
