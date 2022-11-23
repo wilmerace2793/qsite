@@ -47,7 +47,10 @@
       <div class="text-blue-grey ellipsis text-caption">
         <q-icon name="fas fa-exclamation-circle" class="q-mr-xs" color="amber" size="14px"/>
         <b>{{ $trp('isite.cms.label.filter') }}:</b>
-        <label v-for="(item, itemKey) in filter.readValues" :key="itemKey" v-if="item.value"
+        <label 
+          v-for="(item, itemKey) in filter.readValues" 
+          :key="itemKey" 
+          v-if="item.value && item.label !== ''"
                class="q-ml-xs text-grey-7">
           {{ item.label }} {{ item.value }},
         </label>

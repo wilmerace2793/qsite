@@ -35,7 +35,7 @@ class Filter {
       this.setCallBack(params.callBack)//set callBack
       await this.restoreValuesFromCache()//Restore data filter from cache
       await this.setPagination()//Set pagination
-      this.validateIfLoadFilter()//Validate if load filter
+      await this.validateIfLoadFilter()//Validate if load filter
       resolve(true)//Response
     })
   }

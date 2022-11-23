@@ -147,11 +147,11 @@ export default {
     //Validate if item is same of current page
     getClassItem(item) {
       let response = 'single-item'
-
+      
       if (this.$route.name == item.name) {
-        if (JSON.stringify(this.$route.params) == JSON.stringify(item.params || {})) {
+        //if (JSON.stringify(this.$route.params) == JSON.stringify(item.params || {})) {
           response += ' item-is-active'
-        }
+        //}
       }
 
       return response

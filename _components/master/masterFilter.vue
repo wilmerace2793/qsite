@@ -101,8 +101,18 @@ export default {
     },
     readOnlyData: {
       deep: true,
-      handler: function () {
-        this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData))
+      handler: async function () {
+        if(this.$filter.storeFilter && this.currentUrlFilter.length > 0 ) {
+          const obj = await this.convertStringToObject();
+          Object.keys(this.readOnlyData).forEach((key) => {
+            if(obj.hasOwnProperty(key)) {
+              this.readOnlyData[key].value = obj[key];
+            }
+          })
+          this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData))
+          return;
+        }
+        this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData));
       }
     }
   },
