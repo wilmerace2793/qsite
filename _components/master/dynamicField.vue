@@ -303,9 +303,14 @@
           <schedulable v-model="responseValue" @input="watchValue" class="q-mb-sm" v-bind="fieldProps"/>
         </div>
         <!--Code Editor-->
-        <q-field v-model="responseValue" v-if="loadField('json')" v-bind="fieldProps.fieldComponent" label=""
-                 class="field-no-padding no-border">
-          <json-editor-vue class="jsoneditor-vue" v-model="responseValue" mode="text"/>
+        <q-field v-model="responseValue" v-if="loadField('json')" v-bind="fieldProps.fieldComponent"
+                 class="field-no-padding no-border" label="">
+          <div class="full-width">
+            <div class="text-grey-8 q-mb-xs" v-if="fieldProps.field.label">
+              {{ fieldProps.field.label }}
+            </div>
+            <json-editor-vue class="jsoneditor-vue" v-model="responseValue" mode="text"/>
+          </div>
         </q-field>
         <!--Text Info-->
         <div id="bannerField" v-if="loadField('banner')" class="q-mb-md">
