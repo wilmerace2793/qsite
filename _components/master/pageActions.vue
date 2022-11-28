@@ -19,9 +19,17 @@
       <!--Button Actions-->
       <div v-for="(btn, keyAction) in actions" :key="keyAction" v-if="btn.vIf != undefined ? btn.vIf : true">
         <!-- if the button is dropdown -->
-        <q-btn-dropdown split v-bind="{...buttonProps}" :dropdown-icon="btn.props.icon"
+        <q-btn-dropdown split v-bind="{...buttonProps}"
                         v-if="btn.type == 'btn-dropdown'" outline
         >
+        <template v-slot:label>
+          <div class="row items-center no-wrap">
+            <q-icon left :name="btn.props.icon" />
+            <div class="text-center">
+              {{ titleRefresh }}
+            </div>
+          </div>
+        </template>
           <q-list>
             <q-item v-for="(item, index) in btn.items" :key="index" clickable v-close-popup
                     @click="item.action != undefined ? item.action() : null" class="tw-px-4">
@@ -88,6 +96,10 @@ export default {
     extraActions: {type: Array},
     excludeActions: {default: false},
     searchAction: {default: true},
+    multipleRefresh: {
+      type: Boolean,
+      default: () => false,
+    }
   },
   components: {masterExport},
   watch: {},
@@ -102,6 +114,7 @@ export default {
       search: null,
       filterData: {},
       refreshIntervalId: null,
+      titleRefresh: this.$tr('isite.cms.label.refreshAtOnce'),
     }
   },
   computed: {
@@ -163,15 +176,16 @@ export default {
         //Refresh
         {
           label: this.$trp('isite.cms.label.refresh'),
-          type: this.$route.name === 'qramp.admin.schedule' || this.$route.name === 'qramp.admin.public.schedule' ? 'btn-dropdown' : '',
+          type: this.multipleRefresh ? 'btn-dropdown' : '',
           vIf: (this.params.refresh && !excludeActions.includes('refresh')),
           props: {
+            label: this.$tr('isite.cms.label.refreshAtOnce'),
             icon: 'fas fa-redo'
           },
           items: [
             {
               label: this.$tr('isite.cms.label.refreshAtOnce'),
-              action: () => {this.clearInterval(); this.emitRefresh()}
+              action: () => {this.titleRefresh = this.$tr('isite.cms.label.refreshAtOnce'); this.clearInterval(); this.emitRefresh()}
             },
             {
               label: this.$tr('isite.cms.label.refreshEveryMinutes', {min: 1}),
@@ -244,6 +258,7 @@ export default {
       })
     },
     refreshByTime(time) {
+      this.titleRefresh = this.$tr('isite.cms.label.refreshEveryMinutes', {min: time});
       this.clearInterval();
       const interval = 1000 * 60 * time;
       this.emitRefresh();
@@ -316,13 +331,8 @@ export default {
 
   .actions-content
     .q-btn-dropdown
-      .q-btn-dropdown--current
-        display none
-
       .q-btn-dropdown__arrow-container
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-
+       
         &[aria-expanded=true]
           .q-icon
             &::before
