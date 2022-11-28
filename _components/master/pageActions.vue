@@ -25,7 +25,7 @@
         <template v-slot:label>
           <div class="row items-center no-wrap">
             <q-icon left :name="btn.props.icon" />
-            <div class="text-center">
+            <div class="text-center" v-if="multipleRefresh">
               {{ titleRefresh }}
             </div>
           </div>
@@ -179,7 +179,6 @@ export default {
           type: this.multipleRefresh ? 'btn-dropdown' : '',
           vIf: (this.params.refresh && !excludeActions.includes('refresh')),
           props: {
-            label: this.$tr('isite.cms.label.refreshAtOnce'),
             icon: 'fas fa-redo'
           },
           items: [
@@ -328,16 +327,6 @@ export default {
         color: $tertiary 
       .q-field__append:last-child .q-icon
         color: $primary 
-
-  .actions-content
-    .q-btn-dropdown
-      .q-btn-dropdown__arrow-container
-       
-        &[aria-expanded=true]
-          .q-icon
-            &::before
-              content "\f106"
-
 .q-menu
   .q-list
     .q-item
