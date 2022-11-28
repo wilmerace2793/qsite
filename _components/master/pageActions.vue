@@ -163,12 +163,12 @@ export default {
         //Refresh
         {
           label: this.$trp('isite.cms.label.refresh'),
-          //type: 'btn-dropdown',
+          type: this.$route.name === 'qramp.admin.schedule' || this.$route.name === 'qramp.admin.public.schedule' ? 'btn-dropdown' : '',
           vIf: (this.params.refresh && !excludeActions.includes('refresh')),
           props: {
             icon: 'fas fa-redo'
           },
-          /*items: [
+          items: [
             {
               label: this.$tr('isite.cms.label.refreshAtOnce'),
               action: () => {this.clearInterval(); this.emitRefresh()}
@@ -189,7 +189,7 @@ export default {
               label: this.$tr('isite.cms.label.refreshEveryMinutes', {min: 15}),
               action: () => this.refreshByTime(5)
             }
-          ],*/
+          ],
           action: this.emitRefresh,
         }
       ]
