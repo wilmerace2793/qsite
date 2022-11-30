@@ -62,8 +62,6 @@ class Helper {
 
   //Return alphanumeric and symbol (-)
   getSlug(str) {
-    //return str.trim().replace(/[\W_]+/g, "-");
-    str = str.replace(/^\s+|\s+$/g, ''); // trim
     str = str.toLowerCase();
 
     // remove accents, swap ñ for n, etc
@@ -73,9 +71,9 @@ class Helper {
       str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
     }
 
-    str = str.replace(/[^a-z0-9 -/]/g, '') // remove invalid chars
-      .replace(/\s+/g, '-') // collapse whitespace and replace by -
-      .replace(/-+/g, '-'); // collapse dashes
+    //Replace symbols
+    str = str.replace(/[^\w /]+/g, ' ').trim()
+      .replace(/ +/g, '-')
 
     return str;
   }
