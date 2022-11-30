@@ -36,7 +36,7 @@
           </div>
         </div>
         <!--Separator-->
-        <div class="full-width q-mt-sm">
+        <div class="full-width q-mt-sm" v-if="title">
           <q-separator/>
         </div>
       </template>
