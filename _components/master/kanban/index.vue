@@ -167,6 +167,7 @@ export default {
       loading: false,
       payloadStatus: { ...modelPayload },
       uId: this.$uid(),
+      search: null,
     };
   },
   mounted() {
@@ -273,8 +274,9 @@ export default {
         const route = this.routes.column;
         const parameters = { params: {}, refresh: true };
         parameters.params.include = route.include;
+        const id =  { id: this.$filter.values.statusId } || {};
         parameters.params.filter = {
-          [route.filter.name]: this.funnelSelected,
+          [route.filter.name]: this.funnelSelected, ...id
         };
         const response = await this.$crud.index(route.apiRoute, parameters);
         const kanbanColumn = this.getKanbanColumns(response.data);
@@ -334,8 +336,9 @@ export default {
         }
         const route = this.routes[nameRoute];
         const parameters = { params: {}, refresh: true };
+        const search = this.automation ? {} : { search: this.search };
         parameters.params.include = route.include;
-        parameters.params.filter = { [route.filter.name]: column.id };
+        parameters.params.filter = { [route.filter.name]: column.id, ...this.$filter.values, ...search};
         parameters.params.page = page;
         parameters.params.take = 10;
         const response = await this.$crud.index(route.apiRoute, parameters);
@@ -471,6 +474,9 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    setSearch(value) {
+      this.search = value;
     },
   },
 };
