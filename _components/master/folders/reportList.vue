@@ -12,12 +12,14 @@
       @start="dragReports = true"
       @end="dragReports = false"
       :style="{ height: heightDrag }"
+      :move="move"
+      @change="updateList"
     >
       <q-item
         clickable
         v-ripple
         class="tw-py-3 tw-border-b tw-cursor-move"
-        v-for="(report, index) in folder.reportList"
+        v-for="(report, index) in uniqBy(folder.reportList)"
         :key="report.id"
       >
         <q-item-section avatar>
@@ -108,6 +110,7 @@
 <script>
 import draggable from "vuedraggable";
 import foldersStore from './store/foldersStore.js';
+import _ from "lodash";
 
 export default {
   components: {
@@ -119,6 +122,14 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      toFolderId: null,
+    };
+  },
+  inject: [
+    'updateRelationData',
+  ],
   computed: {
     dragReports: {
       get() {
@@ -134,6 +145,21 @@ export default {
       }
       return this.folder.reportList.length <= 5 ? 'auto' : '300px';
     },
+  },
+  methods: {
+    async move(elm) {
+      if (elm.from.id === elm.to.id) return;
+      const reportList = elm.draggedContext.element;
+      reportList.folderId = Number(elm.to.id);
+      this.toFolderId = reportList.folderId;
+      await this.updateRelationData(reportList);
+    },
+    uniqBy(data){
+      return _.uniqBy(data, 'id');
+    },
+    updateList() {
+      console.log(this.folder, this.toFolderId);
+    }
   },
 };
 </script>
