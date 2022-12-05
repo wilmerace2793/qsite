@@ -129,7 +129,6 @@ export default {
   },
   inject: [
     'updateRelationData',
-    'updateFolderList'
   ],
   computed: {
     dragReports: {

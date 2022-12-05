@@ -71,7 +71,6 @@ props: {
 inject: [
   'getRelationData', 
   'fieldActions',
-  'updateFolderList'
 ],
 computed: {
   dragReports() {
