@@ -132,7 +132,8 @@ export default {
       default: 1,
       validator: (value) => [1, 2, 3].includes(value)
     },
-    noResetWithBlocksUpdate: {type: Boolean, default: false}
+    noResetWithBlocksUpdate: {type: Boolean, default: false},
+    boxStyle: {type: Boolean, default: true}
   },
   watch: {
     value: {
@@ -246,7 +247,7 @@ export default {
               return {
                 props: {
                   is: 'div',
-                  class: 'box box-auto-height q-mb-md'
+                  class: `${this.boxStyle ? 'box box-auto-height' : ''} q-mb-md`
                 },
                 //childClass: 'q-py-sm q-px-md',
                 ...block
@@ -298,7 +299,7 @@ export default {
                   defaultOpened: (keyBlock == 0) ? true : false,
                   style: 'padding : 0',
                   label: block.title,
-                  class: 'box box-auto-height q-mb-md',
+                  class: `${this.boxStyle ? 'box box-auto-height' : ''} q-mb-md`,
                   headerClass: 'box-title text-blue-grey'
                 },
                 childClass: 'q-py-sm q-px-md',
