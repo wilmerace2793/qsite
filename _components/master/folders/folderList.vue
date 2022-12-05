@@ -30,7 +30,9 @@
             class="tw-pt-2 tw-rounded-b-xl"
             v-show="!folder.loading"
           >
-             <reportList :folder="folder" />
+             <reportList 
+                :folder="folder"
+              />
           </q-list>
           <div
             v-show="folder.loading"
@@ -69,6 +71,7 @@ props: {
 inject: [
   'getRelationData', 
   'fieldActions',
+  'updateFolderList'
 ],
 computed: {
   dragReports() {
@@ -76,15 +79,15 @@ computed: {
   },
 },
 methods: {
-  showCollapse() {
+  async showCollapse() {
      if(this.dragReports) {
-      this.getRelation();
+      await this.getRelation();
       this.folder.isCollapse = true;
     };
   },
-  getRelation() {
+  async getRelation() {
     if(this.folder.reportList.length === 0) {
-      this.getRelationData(this.folder);
+      await this.getRelationData(this.folder);
     };
   },
 }

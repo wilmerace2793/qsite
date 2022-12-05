@@ -13,7 +13,7 @@
         "
         :animation="300"
         ghostClass="ghost"
-        handle=".folder-title-drag",
+        handle=".folder-title-drag"
         @change="saveOrderFolders"
       >
         <folder 
