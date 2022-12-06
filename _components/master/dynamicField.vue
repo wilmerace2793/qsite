@@ -174,10 +174,23 @@
               </q-item-section>
               <!--Labels-->
               <q-item-section>
-                <q-item-label v-html="scope.opt.label"/>
-                <q-item-label style="margin: 0" caption v-if="scope.opt.sublabel">
-                  {{ scope.opt.sublabel }}
-                </q-item-label>
+                <div class="tw-flex" v-if="field.props.selectColor">
+                  <div>
+                    <div 
+                      class="tw-bg-gray-500 tw-h-4 tw-w-4 tw-rounded-full tw-py-3"
+                      :class="`bg-${scope.opt.value}`"
+                    />
+                  </div>
+                  <div class="tw-px-2">
+                    <div v-html="scope.opt.label"/>
+                  </div>
+                </div>
+                <div v-else>
+                  <q-item-label v-html="scope.opt.label"/>
+                  <q-item-label style="margin: 0" caption v-if="scope.opt.sublabel">
+                    {{ scope.opt.sublabel }}
+                  </q-item-label>
+                </div>
               </q-item-section>
             </q-item>
           </template>
