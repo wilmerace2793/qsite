@@ -58,12 +58,12 @@
     <formComponent
       ref="formComponent"
       :funnelId="funnelSelectedComputed"
-      :filterName="routes.column.filter.name"
+      :filterName="routes.column ? routes.column.filter.name : null"
     />
     <formRules
         ref="formRules"
         :funnelId="funnelSelectedComputed"
-        :filterName="routes.column.filter.name"
+        :filterName="routes.column ? routes.column.filter.name : null"
     />
   </div>
 </template>
