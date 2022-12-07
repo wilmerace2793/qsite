@@ -178,10 +178,11 @@
                   <div>
                     <div 
                       class="tw-bg-gray-500 tw-h-4 tw-w-4 tw-rounded-full tw-py-3"
-                      :class="`bg-${scope.opt.value}`"
+                      :class="`${field.props.colorType === 'tailwindcss' ? `tw-bg-${scope.opt.color  || scope.opt.value}`: `bg-${scope.opt.color || scope.opt.value}`}`"
                     />
                   </div>
                   <div class="tw-px-2">
+                    
                     <div v-html="scope.opt.label"/>
                   </div>
                 </div>
