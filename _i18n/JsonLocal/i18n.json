@@ -1203,7 +1203,8 @@
           "adminIcruds": "Icruds",
           "adminAuditLog": "Audit Log",
           "adminOrganizationForm": "Form",
-          "adminBlocks": "Blocks"
+          "adminBlocks": "Blocks",
+          "adminLayouts": "Layouts"
         },
         "crud": {
           "message": {
@@ -1214,6 +1215,8 @@
         },
         "newBlock": "New Block",
         "updateBlock": "Update Block",
+        "newLayout": "New Layout",
+        "updateLayout": "Update Layout",
         "newRecommendation": "New Recommendation",
         "updateRecommendation": "Update Recomendation",
         "deleteRecommendation": "Delete Recommendation",
@@ -1241,7 +1244,7 @@
         "perzonalizationTitle": "Welcome to the editor of your website",
         "perzonalizationDescription": "Easily change the logo, colors and the main information of your website",
         "label": {
-          "apply" : "Apply",
+          "apply": "Apply",
           "template": "Template | Templates",
           "recipient": "Recipient | Recipients",
           "when": "When",
@@ -1341,6 +1344,7 @@
           "ready": "Ready",
           "module": "Module | Modules",
           "entity": "Entity",
+          "path": "Path",
           "change": "Change",
           "socialNetwork": "Social Network | Social Networks",
           "logo": "Logo | Logos",
@@ -2879,7 +2883,8 @@
           "adminIcruds": "Icruds",
           "adminAuditLog": "Audit Log",
           "adminOrganizationForm": "Formulario",
-          "adminBlocks": "Bloques"
+          "adminBlocks": "Bloques",
+          "adminLayouts": "Layouts"
         },
         "crud": {
           "message": {
@@ -2890,6 +2895,8 @@
         },
         "newBlock": "Nuevo Bloque",
         "updateBlock": "Actualizar Bloque",
+        "newLayout": "Nuevo Layout",
+        "updateLayout": "Actualizar Layout",
         "newRecommendation": "Nueva Recomendación",
         "updateRecommendation": "Actualizar Recomendación",
         "deleteRecommendation": "Eliminar Recomendación",
@@ -2917,7 +2924,7 @@
         "perzonalizationTitle": "Bienvenid@ al editor de tu sitio web",
         "perzonalizationDescription": "De manera fácil, cambia el logo, colores y la información principal de tu página web",
         "label": {
-          "apply" : "Aplicar",
+          "apply": "Aplicar",
           "template": "Plantilla | Plantillas",
           "recipient": "Destinatario | Destinatarios",
           "when": "Cuando",
@@ -3015,6 +3022,7 @@
           "ready": "Listo",
           "module": "Modulo | Modulos",
           "entity": "Entidad",
+          "path": "Path",
           "change": "Cambiar",
           "socialNetwork": "Red Social | Redes Sociales",
           "logo": "Logo | Logos",

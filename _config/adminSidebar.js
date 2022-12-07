@@ -9,6 +9,7 @@ export default [
       pages.qsite.organizations,//organizations
       pages.qsite.categories,//organization categories
       pages.qsite.icruds,//Cruds
+      pages.qsite.layouts
     ]
   },
   pages.qsite.index,//setup
