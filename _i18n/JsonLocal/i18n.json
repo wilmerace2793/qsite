@@ -1133,7 +1133,8 @@
           "workOrders": "Work Orders",
           "rampInfo": "Ramp",
           "map": "Map",
-          "schedule": "Schedule"
+          "schedule": "Schedule",
+          "scheduleStatus": "Schedule status"
         },
         "map": {
           "workOrderId": "Work Order Id",
