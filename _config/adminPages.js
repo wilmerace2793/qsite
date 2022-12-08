@@ -65,7 +65,7 @@ export default {
   //Icruds
   icruds: {
     permission: 'isite.icruds.manage',
-    activated: true,
+    activated: false,
     path: '/site/icruds',
     name: 'qsite.admin.icruds.index',
     crud: import('@imagina/qsite/_crud/icruds'),
@@ -93,5 +93,21 @@ export default {
     subHeader: {
       refresh: true
     }
-  }
+  },
+  //Layouts
+  layouts: {
+    permission: 'isite.layouts.manage',
+    activated: true,
+    path: '/site/layouts',
+    name: 'qsite.admin.ayouts.index',
+    crud: import('@imagina/qsite/_crud/layouts'),
+    page: () => import('@imagina/qcrud/_pages/admin/crudPage'),
+    layout: () => import('@imagina/qsite/_layouts/master.vue'),
+    title: 'isite.cms.sidebar.adminLayouts',
+    icon: 'fal fa-layer-group',
+    authenticated: true,
+    subHeader: {
+      refresh: true
+    }
+  },
 }
