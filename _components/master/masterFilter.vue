@@ -255,10 +255,10 @@ export default {
     //Emit filter
     async emitFilter(filterBtn = false) {
       if(!filterBtn) {
-        this.currentUrlFilter = '';
         if(this.$filter.storeFilter && this.currentUrlFilter.length > 0) {
           this.filterValues = await this.convertStringToObject();
         }
+        this.currentUrlFilter = '';
       }
       this.changeDate();
       this.$filter.addValues(this.filterValues);
