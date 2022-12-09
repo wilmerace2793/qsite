@@ -136,7 +136,9 @@ export default {
   },
   computed: {
     filter() {
-      if(this.$filter.storeFilter && this.currentUrlFilter.length > 0) this.filterValues = this.convertStringToObject();
+      if(this.$filter.storeFilter && this.currentUrlFilter.length > 0) {
+        this.filterValues = this.convertStringToObject();
+      }
       if (!this.$filter.storeFilter && this.currentUrlFilter.length === 0 && this.$filter.values) this.filterValues = this.$clone(this.$filter.values)
       if (this.$filter.pagination) this.pagination = this.$clone(this.$filter.pagination)
       return this.$filter
@@ -254,6 +256,9 @@ export default {
     async emitFilter(filterBtn = false) {
       if(!filterBtn) {
         this.currentUrlFilter = '';
+        if(this.$filter.storeFilter && this.currentUrlFilter.length > 0) {
+          this.filterValues = await this.convertStringToObject();
+        }
       }
       this.changeDate();
       this.$filter.addValues(this.filterValues);
@@ -265,7 +270,7 @@ export default {
       }
     },
     // convert string to object
-    async convertStringToObject() {
+    /*async convertStringToObject() {
       try {
         if(this.currentUrlFilter.length > 0) {
           const regex = /=/g;
@@ -281,6 +286,32 @@ export default {
         }
       } catch (error) {
        console.log(error); 
+      }
+    },*/
+    async convertStringToObject() {
+      try {
+        let url = "";
+        const origin = window.location.href.split("?");
+        if (origin.length === 2) {
+          url = origin[1] || "";
+        }
+        if (url.length > 0) {
+          const regex = /=/g;
+          const regex2 = /&/g;
+          const remplaceFilter = url.replace(regex, ":").replace(regex2, ",");
+          const remplaceObject = eval("({" + remplaceFilter + "})");
+          Object.keys(remplaceObject).forEach((key) => {
+            if (this.$filter.fields.hasOwnProperty(key)) {
+              remplaceObject[key] = String(remplaceObject[key]);
+            }
+          });
+          console.log(remplaceFilter);
+          return remplaceObject || {};
+        }
+        return {};
+      } catch (error) {
+        this.$alert.error('The filter url is misspelled');
+        console.log(error);
       }
     },
     // Mutate Current Url
