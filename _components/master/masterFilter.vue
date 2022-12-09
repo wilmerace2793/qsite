@@ -255,14 +255,18 @@ export default {
     //Emit filter
     async emitFilter(filterBtn = false) {
       if(!filterBtn) {
-        if(this.$filter.storeFilter && this.currentUrlFilter.length > 0) {
-          this.filterValues = await this.convertStringToObject();
+        if(this.$filter.storeFilter) {
+          const objUrl = await this.convertStringToObject();
+          const type = objUrl.type ? {type: objUrl.type} : {};
+          this.filterValues = {...this.filterValues, ...type};
         }
         this.currentUrlFilter = '';
       }
       this.changeDate();
       this.$filter.addValues(this.filterValues);
-      if(this.$filter.storeFilter) this.mutateCurrentURL();
+      if(this.$filter.storeFilter) {
+        this.mutateCurrentURL();
+      };
       //Emit Filter
       if (this.filter && this.filter.callBack) {
         this.filter.callBack(this.filter)//Call back
@@ -305,7 +309,6 @@ export default {
               remplaceObject[key] = String(remplaceObject[key]);
             }
           });
-          console.log(remplaceFilter);
           return remplaceObject || {};
         }
         return {};
