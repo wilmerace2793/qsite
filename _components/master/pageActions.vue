@@ -23,7 +23,7 @@
                         v-if="btn.type == 'btn-dropdown'" outline
         >
         <template v-slot:label>
-          <div class="row items-center no-wrap">
+          <div class="row items-center no-wrap" @click="refreshByTime(timeRefresh)">
             <q-icon left :name="btn.props.icon" />
             <div class="text-center" v-if="multipleRefresh">
               {{ titleRefresh }}
@@ -115,6 +115,7 @@ export default {
       filterData: {},
       refreshIntervalId: null,
       titleRefresh: this.$tr('isite.cms.label.refreshAtOnce'),
+      timeRefresh: 0,
     }
   },
   computed: {
@@ -184,7 +185,7 @@ export default {
           items: [
             {
               label: this.$tr('isite.cms.label.refreshAtOnce'),
-              action: () => {this.titleRefresh = this.$tr('isite.cms.label.refreshAtOnce'); this.clearInterval(); this.emitRefresh()}
+              action: () => this.refreshByTime(0)
             },
             {
               label: this.$tr('isite.cms.label.refreshEveryMinutes', {min: 1}),
@@ -257,13 +258,16 @@ export default {
       })
     },
     refreshByTime(time) {
-      this.titleRefresh = this.$tr('isite.cms.label.refreshEveryMinutes', {min: time});
+      this.timeRefresh = time;
+      this.titleRefresh = time === 0 ? this.$tr('isite.cms.label.refreshAtOnce') : this.$tr('isite.cms.label.refreshEveryMinutes', {min: time});
       this.clearInterval();
       const interval = 1000 * 60 * time;
       this.emitRefresh();
-      this.refreshIntervalId = setInterval(() => {
-        this.emitRefresh();
-      }, interval);
+      if(time > 0) {
+        this.refreshIntervalId = setInterval(() => {
+          this.emitRefresh();
+        }, interval);
+      }
     },
     //Emit refresh
     emitRefresh() {
