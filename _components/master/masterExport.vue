@@ -217,16 +217,16 @@ export default {
     },
     //Get data
     getExportData() {
-      return new Promise((resolve, reject) => {
+      return new Promise(async (resolve, reject) => {
         if (!this.params) return resolve(false)
         this.loading = true
-
+        const filter = await this.storeFilter();
         //Request params
         let requestParams = {
           refresh: true,
           params: {
             exportParams: this.exportItem ? {...this.params, ...(this.paramsItem.exportParams || {})} : this.params,
-            filter: this.exportItem ? (this.paramsItem.filter || {}) : (this.$filter ? this.$filter.values : {})
+            filter: this.exportItem ? (this.paramsItem.filter || {}) : (filter ? filter.values : {})
           }
         }
 
@@ -242,11 +242,11 @@ export default {
     //Request new report
     newReport() {
       console.warn("sss 1");
-      return new Promise((resolve, reject) => {
+      return new Promise(async (resolve, reject) => {
         //this.loading = true
         //Instance de apiRoute
         const apiRoute = this.params.apiRoute || 'apiRoutes.qsite.export'
-
+        const filter = await this.storeFilter();
         //Request params
         let requestParams = {
           exportParams: {
@@ -254,7 +254,7 @@ export default {
             fileFormat: this.filters.fileFormat
           },
           filter: {
-            ...(this.exportItem ? (this.paramsItem.filter || {}) : (this.$filter ? this.$filter.values : {})),
+            ...(this.exportItem ? (this.paramsItem.filter || {}) : (filter ? filter.values : {})),
             ...this.filters
           }
         }
@@ -286,6 +286,43 @@ export default {
       this.customExportData = false
       this.fileExport = []
       this.filters = {}
+    },
+    async getCurrentFilterDate(lastStart, lastEnd) {
+      try {
+        let lastStartM = this.$moment(lastStart)
+          .startOf('day')
+          .format("YYYY-MM-DD HH:mm:ss");
+        let lastEndM = this.$moment(lastEnd)
+          .endOf('day')
+          .format("YYYY-MM-DD HH:mm:ss");
+        return {
+          date: {
+            field: "inbound_scheduled_arrival",
+            type: "custom",
+            from: lastStartM,
+            to: lastEndM,
+          },
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async storeFilter() {
+      const filterClone = this.$clone(this.$filter);
+      let filter = { ...filterClone };
+        if(this.$filter.storeFilter) {
+          if(filter.values.dateStart && filter.values.dateEnd) {
+            const dateFilter = await this.getCurrentFilterDate(filter.values.dateStart, filter.values.dateEnd);
+            delete filter.values.type;
+            delete filter.values.dateStart;
+            delete filter.values.dateEnd;
+            filter.values = {
+              ...dateFilter,
+              ...filter.values,
+            }
+          }
+        }
+      return filter;
     }
   }
 }
