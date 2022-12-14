@@ -366,9 +366,9 @@ export default {
       this.loadingCacheClear = true
       //Request
       this.$crud.post('apiRoutes.qsite.cacheClear').then(response => {
-        this.loadingCacheClear = false
-        this.$store.dispatch('qsiteApp/REFRESH_PAGE')
       }).catch(error => this.loadingCacheClear = false)
+      this.loadingCacheClear = false
+      this.$store.dispatch('qsiteApp/REFRESH_PAGE');
     },
 
     //set organization
