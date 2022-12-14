@@ -1163,7 +1163,8 @@
           "buildings": "Buildings",
           "customers": "Customers",
           "costCenters": "Cost Centers",
-          "gates": "Parking Spots"
+          "gates": "Parking Spots",
+          "areas": "Areas"
         },
         "message": {}
       }
@@ -2843,7 +2844,9 @@
           "stations": "Estaciones",
           "buildings": "Edificios",
           "customers": "Clientes",
-          "costCenters": "Centros de costo"
+          "costCenters": "Centros de costo",
+          "gates": "Lugares de estacionamiento",
+          "areas": "Areas"
         },
         "message": {}
       }
