@@ -308,7 +308,7 @@ export default {
       }
     },
     async storeFilter() {
-      const filterClone = this.$clone(this.$filter);
+      const filterClone = this.$filter.storeFilter ? { values: await this.convertStringToObject() } : this.$clone(this.$filter);
       let filter = { ...filterClone };
         if(this.$filter.storeFilter) {
           if(filter.values.dateStart && filter.values.dateEnd) {
@@ -323,7 +323,32 @@ export default {
           }
         }
       return filter;
-    }
+    },
+    async convertStringToObject() {
+      try {
+        let url = "";
+        const origin = window.location.href.split("?");
+        if (origin.length === 2) {
+          url = origin[1] || "";
+        }
+        if (url.length > 0) {
+          const regex = /=/g;
+          const regex2 = /&/g;
+          const remplaceFilter = url.replace(regex, ":").replace(regex2, ",");
+          const remplaceObject = eval("({" + remplaceFilter + "})");
+          Object.keys(remplaceObject).forEach((key) => {
+            if (this.$filter.fields.hasOwnProperty(key)) {
+              remplaceObject[key] = String(remplaceObject[key]);
+            }
+          });
+          return remplaceObject || {};
+        }
+        return {};
+      } catch (error) {
+        this.$alert.error('The filter url is misspelled');
+        console.log(error);
+      }
+    },
   }
 }
 </script>
