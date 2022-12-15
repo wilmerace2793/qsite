@@ -258,7 +258,8 @@ export default {
         if(this.$filter.storeFilter) {
           const objUrl = await this.convertStringToObject();
           const type = objUrl.type ? {type: objUrl.type} : {};
-          this.filterValues = {...this.filterValues, ...type};
+          const date = objUrl.dateStart && objUrl.dateEnd ? { dateEnd: objUrl.dateEnd, dateStart: objUrl.dateStart} : {};
+          this.filterValues = {...this.filterValues, ...type, ...date};
         }
         this.currentUrlFilter = '';
       }
