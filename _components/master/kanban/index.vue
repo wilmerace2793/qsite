@@ -1,15 +1,5 @@
 <template>
   <div class="tw-py-2">
-    <!--<div class="tw-px-3" v-if="showFunnel">
-      <div class="tw-flex">
-        <div class="tw-w-3/12">
-          <dynamic-field :field="funnel" v-model="funnelSelectedComputed" />
-        </div>
-        <div class="tw-absolute tw-right-0 kanbanBtnCtn">
-          <slot name="pageAction" />
-        </div>
-      </div>
-    </div>-->
     <div :id="`kanbanCtn${uId}`" v-if="checkIfFunnelExists">
       <draggable
         id="columnKanban"
@@ -19,7 +9,7 @@
         ghost-class="ghostCard"
         drag-class="dragCard"
         filter=".ignoreItem"
-        :disabled="loading || !dragColumn"
+        :disabled="loading || !dragColumn || kanbanColumns.length === 0"
         class="tw-p-3 tw-h-auto tw-flex tw-space-x-4 tw-overflow-x-auto"
         @change="reorderColumns"
       >
@@ -45,6 +35,10 @@
           v-for="(item, index) in 5"
           :key="index"
         />
+        <div class="tw-text-center tw-w-full" v-if="!loading && kanbanColumns.length === 0">
+          <i class="fa-duotone fa-face-pleading tw-text-9xl colorTextPrimary"></i>
+          <p class="tw-text-xl tw-font-semibold tw-py-4">No tiene estados creados en esta categoría</p>
+        </div>
       </draggable>
     </div>
     <div v-else>
@@ -482,8 +476,11 @@ export default {
 };
 </script>
 
-<style>
+<style lang="stylus">
 .kanbanBtnCtn .q-btn {
   border-radius: 10px;
+}
+.colorTextPrimary {
+  color: $primary;
 }
 </style>
