@@ -1395,6 +1395,9 @@ export default {
         this.$emit('input', response)
       }
 
+      //Load option for value
+      this.loadOptionForValue()
+
       //Emit info read only data
       this.$emit('inputReadOnly', this.$clone({label: this.fieldLabel, value: this.infoReadOnly}))
     },
@@ -1459,6 +1462,24 @@ export default {
 
       //Emit filter Value
       this.$emit("filter", val)
+    },
+    //Load the option for default value when is loadOptions
+    loadOptionForValue() {
+      let loadOptions = this.field.loadOptions
+      if (loadOptions && loadOptions.apiRoute) {
+        //Validate if there is the option for the value
+        if (loadOptions.filterByQuery && this.responseValue && !this.options.length) {
+          let fieldSelect = loadOptions.select || {label: 'title', id: 'id'}
+          //Instance request params
+          let requestParams = {
+            params: {filter: {field: fieldSelect.id}}
+          }
+          //Request
+          this.$crud.show(loadOptions.apiRoute, this.responseValue, requestParams).then(response => {
+            this.rootOptions = this.$array.select([response.data], fieldSelect)
+          })
+        }
+      }
     }
   }
 }
