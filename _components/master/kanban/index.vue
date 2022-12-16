@@ -8,7 +8,7 @@
       
     >
       <draggable
-        id="columnKanban"
+        :id="`columnKanban${uId}`"
         :list="kanbanColumns"
         :animation="200"
         group="columns"
@@ -206,7 +206,7 @@ export default {
   },
   mounted() {
     this.$nextTick(async function () {
-      document.getElementById("columnKanban").addEventListener("scroll", evt => 
+      document.getElementById(`columnKanban${this.uId}`).addEventListener("scroll", evt => 
         this.scrollTotal = evt.target.scrollLeft
       )
         await this.init();
@@ -249,7 +249,7 @@ export default {
       return (this.funnelId || this.funnelPageAction) ;
     },
     scroll() {
-      return document.getElementById('columnKanban');
+      return document.getElementById(`columnKanban${this.uId}`);
     },
   },
   methods: {
