@@ -1,6 +1,12 @@
 <template>
   <div class="tw-py-2">
-    <div :id="`kanbanCtn${uId}`" v-if="checkIfFunnelExists">
+    <div 
+      :id="`kanbanCtn${uId}`" 
+      v-if="checkIfFunnelExists"
+      @mouseover="hoverArrow = true"
+      @mouseleave="hoverArrow = false"
+      
+    >
       <draggable
         id="columnKanban"
         :list="kanbanColumns"
@@ -38,6 +44,38 @@
         <div class="tw-text-center tw-w-full" v-if="!loading && kanbanColumns.length === 0">
           <i class="fa-duotone fa-face-pleading tw-text-9xl colorTextPrimary"></i>
           <p class="tw-text-xl tw-font-semibold tw-py-4">No tiene estados creados en esta categoría</p>
+        </div>
+        <div
+          v-if="!loading && hoverArrow && scrollTotal > 0"
+          class="
+            tw-absolute 
+            tw-left-0 
+            tw-cursor-pointer 
+            tw-bg-white 
+            tw-shadow-lg 
+            tw-rounded-full
+            tw-p-1
+            tw-z-20"
+            style="top: 35%"
+            @click="scrollLeft"
+          >
+            <i class="fa-light fa-arrow-left tw-text-4xl tw-text-gray-300"></i>
+        </div>
+        <div
+          v-if="!loading && hoverArrow"
+          class="
+            tw-absolute 
+            tw-right-0 
+            tw-cursor-pointer 
+            tw-bg-white 
+            tw-shadow-lg 
+            tw-rounded-full
+            tw-p-1
+            tw-z-20"
+            style="top: 35%"
+            @click="scrollRight"
+          >
+            <i class="fa-light fa-arrow-right tw-text-4xl tw-text-gray-300"></i>
         </div>
       </draggable>
     </div>
@@ -162,10 +200,15 @@ export default {
       payloadStatus: { ...modelPayload },
       uId: this.$uid(),
       search: null,
+      hoverArrow: false,
+      scrollTotal: 0,
     };
   },
   mounted() {
     this.$nextTick(async function () {
+      document.getElementById("columnKanban").addEventListener("scroll", evt => 
+        this.scrollTotal = evt.target.scrollLeft
+      )
         await this.init();
     });
   },
@@ -204,6 +247,9 @@ export default {
     },
     checkIfFunnelExists() {
       return (this.funnelId || this.funnelPageAction) ;
+    },
+    scroll() {
+      return document.getElementById('columnKanban');
     },
   },
   methods: {
@@ -471,6 +517,16 @@ export default {
     },
     setSearch(value) {
       this.search = value;
+    },
+    scrollLeft() {
+      const content = this.scroll;
+      content.scrollLeft -= 400;
+      this.scrollTotal = content.scrollLeft;
+    },
+    scrollRight() {
+      const content = this.scroll;
+      content.scrollLeft += 400;
+      this.scrollTotal = content.scrollLeft;
     },
   },
 };
