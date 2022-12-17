@@ -62,7 +62,7 @@
             <i class="fa-light fa-arrow-left tw-text-4xl tw-text-gray-300"></i>
         </div>
         <div
-          v-if="!loading && hoverArrow"
+          v-if="!loading && hoverArrow && kanbanColumns.length !== 0"
           class="
             tw-absolute 
             tw-right-0 
