@@ -206,10 +206,13 @@ export default {
   },
   mounted() {
     this.$nextTick(async function () {
-      document.getElementById(`columnKanban${this.uId}`).addEventListener("scroll", evt => 
-        this.scrollTotal = evt.target.scrollLeft
-      )
-        await this.init();
+      const addEventListener = document.getElementById(`columnKanban${this.uId}`);
+      if(addEventListener) {
+        addEventListener.addEventListener("scroll", evt => 
+            this.scrollTotal = evt.target.scrollLeft
+        )
+      }
+      await this.init();
     });
   },
   computed: {
