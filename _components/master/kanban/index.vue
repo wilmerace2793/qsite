@@ -1,11 +1,11 @@
 <template>
   <div class="tw-py-2">
-    <div 
-      :id="`kanbanCtn${uId}`" 
+    <div
+      :id="`kanbanCtn${uId}`"
       v-if="checkIfFunnelExists"
       @mouseover="hoverArrow = true"
       @mouseleave="hoverArrow = false"
-      
+
     >
       <draggable
         :id="`columnKanban${uId}`"
@@ -48,11 +48,11 @@
         <div
           v-if="!loading && hoverArrow && scrollTotal > 0"
           class="
-            tw-absolute 
-            tw-left-0 
-            tw-cursor-pointer 
-            tw-bg-white 
-            tw-shadow-lg 
+            tw-absolute
+            tw-left-0
+            tw-cursor-pointer
+            tw-bg-white
+            tw-shadow-lg
             tw-rounded-full
             tw-p-1
             tw-z-20"
@@ -64,11 +64,11 @@
         <div
           v-if="!loading && hoverArrow && kanbanColumns.length !== 0"
           class="
-            tw-absolute 
-            tw-right-0 
-            tw-cursor-pointer 
-            tw-bg-white 
-            tw-shadow-lg 
+            tw-absolute
+            tw-right-0
+            tw-cursor-pointer
+            tw-bg-white
+            tw-shadow-lg
             tw-rounded-full
             tw-p-1
             tw-z-20"
@@ -207,8 +207,8 @@ export default {
   mounted() {
     this.$nextTick(async function () {
       const addEventListener = document.getElementById(`columnKanban${this.uId}`);
-      if(addEventListener) {
-        addEventListener.addEventListener("scroll", evt => 
+      if (elementColumnKanban) {
+        elementColumnKanban.addEventListener("scroll", evt =>
             this.scrollTotal = evt.target.scrollLeft
         )
       }
