@@ -55,7 +55,10 @@
             tw-shadow-lg
             tw-rounded-full
             tw-p-1
-            tw-z-20"
+            tw-z-20
+            tw-border
+            tw-border-gray-200
+            icon-left"
             style="top: 35%"
             @click="scrollLeft"
           >
@@ -71,7 +74,10 @@
             tw-shadow-lg
             tw-rounded-full
             tw-p-1
-            tw-z-20"
+            tw-z-20
+            tw-border
+            tw-border-gray-200
+            icon-right"
             style="top: 35%"
             @click="scrollRight"
           >
@@ -207,11 +213,13 @@ export default {
   mounted() {
     this.$nextTick(async function () {
       await this.init();
-      const elementColumnKanban = document.getElementById(`columnKanban${this.uId}`);
-      if (elementColumnKanban) {
-        elementColumnKanban.addEventListener("scroll", evt =>
-            this.scrollTotal = evt.target.scrollLeft
-        )
+      if(this.checkIfFunnelExists) {
+        const elementColumnKanban = document.getElementById(`columnKanban${this.uId}`);
+        if (elementColumnKanban) {
+          elementColumnKanban.addEventListener("scroll", evt =>
+              this.scrollTotal = evt.target.scrollLeft
+          )
+        }
       }
     });
   },
@@ -249,7 +257,7 @@ export default {
       },
     },
     checkIfFunnelExists() {
-      return (this.funnelId || this.funnelPageAction) ;
+      return (this.funnelId || this.funnelPageAction);
     },
     scroll() {
       return document.getElementById(`columnKanban${this.uId}`);
@@ -541,5 +549,38 @@ export default {
 }
 .colorTextPrimary {
   color: $primary;
+}
+.icon-right {
+  animation-name: slideUpReturn;
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  margin-top: 2px;
+}
+.icon-left {
+  animation-name: slideLeftReturn;
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  margin-top: 2px;
+}
+
+@keyframes slideUpReturn {
+  0% {
+    transform-origin: 0 0;
+    transform: translateX(100%);
+  }
+  100% {
+    transform-origin: 0 0;
+    transform: translateX(0%);
+  }
+}
+@keyframes slideLeftReturn {
+  0% {
+    transform-origin: 0 0;
+    transform: translateX(0%);
+  }
+  100% {
+    transform-origin: 0 0;
+    transform: translateX(25%);
+  }
 }
 </style>
