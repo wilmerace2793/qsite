@@ -206,7 +206,7 @@ export default {
   },
   mounted() {
     this.$nextTick(async function () {
-      const addEventListener = document.getElementById(`columnKanban${this.uId}`);
+      const elementColumnKanban = document.getElementById(`columnKanban${this.uId}`);
       if (elementColumnKanban) {
         elementColumnKanban.addEventListener("scroll", evt =>
             this.scrollTotal = evt.target.scrollLeft
