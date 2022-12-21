@@ -1,25 +1,21 @@
 <template>
   <div class="tw-py-2">
-    <!--<div class="tw-px-3" v-if="showFunnel">
-      <div class="tw-flex">
-        <div class="tw-w-3/12">
-          <dynamic-field :field="funnel" v-model="funnelSelectedComputed" />
-        </div>
-        <div class="tw-absolute tw-right-0 kanbanBtnCtn">
-          <slot name="pageAction" />
-        </div>
-      </div>
-    </div>-->
-    <div :id="`kanbanCtn${uId}`" v-if="checkIfFunnelExists">
+    <div
+      :id="`kanbanCtn${uId}`"
+      v-if="checkIfFunnelExists"
+      @mouseover="hoverArrow = true"
+      @mouseleave="hoverArrow = false"
+
+    >
       <draggable
-        id="columnKanban"
+        :id="`columnKanban${uId}`"
         :list="kanbanColumns"
         :animation="200"
         group="columns"
         ghost-class="ghostCard"
         drag-class="dragCard"
         filter=".ignoreItem"
-        :disabled="loading || !dragColumn"
+        :disabled="loading || !dragColumn || kanbanColumns.length === 0"
         class="tw-p-3 tw-h-auto tw-flex tw-space-x-4 tw-overflow-x-auto"
         @change="reorderColumns"
       >
@@ -45,6 +41,48 @@
           v-for="(item, index) in 5"
           :key="index"
         />
+        <div class="tw-text-center tw-w-full" v-if="!loading && kanbanColumns.length === 0">
+          <i class="fa-duotone fa-face-pleading tw-text-9xl colorTextPrimary"></i>
+          <p class="tw-text-xl tw-font-semibold tw-py-4">No tiene estados creados en esta categoría</p>
+        </div>
+        <div
+          v-if="!loading && hoverArrow && scrollTotal > 0"
+          class="
+            tw-absolute
+            tw-left-0
+            tw-cursor-pointer
+            tw-bg-white
+            tw-shadow-lg
+            tw-rounded-full
+            tw-p-1
+            tw-z-20
+            tw-border
+            tw-border-gray-200
+            icon-left"
+            style="top: 35%"
+            @click="scrollLeft"
+          >
+            <i class="fa-light fa-arrow-left tw-text-4xl tw-text-gray-300"></i>
+        </div>
+        <div
+          v-if="!loading && hoverArrow && kanbanColumns.length !== 0"
+          class="
+            tw-absolute
+            tw-right-0
+            tw-cursor-pointer
+            tw-bg-white
+            tw-shadow-lg
+            tw-rounded-full
+            tw-p-1
+            tw-z-20
+            tw-border
+            tw-border-gray-200
+            icon-right"
+            style="top: 35%"
+            @click="scrollRight"
+          >
+            <i class="fa-light fa-arrow-right tw-text-4xl tw-text-gray-300"></i>
+        </div>
       </draggable>
     </div>
     <div v-else>
@@ -168,11 +206,21 @@ export default {
       payloadStatus: { ...modelPayload },
       uId: this.$uid(),
       search: null,
+      hoverArrow: false,
+      scrollTotal: 0,
     };
   },
   mounted() {
     this.$nextTick(async function () {
-        await this.init();
+      await this.init();
+      if(this.checkIfFunnelExists) {
+        const elementColumnKanban = document.getElementById(`columnKanban${this.uId}`);
+        if (elementColumnKanban) {
+          elementColumnKanban.addEventListener("scroll", evt =>
+              this.scrollTotal = evt.target.scrollLeft
+          )
+        }
+      }
     });
   },
   computed: {
@@ -209,7 +257,10 @@ export default {
       },
     },
     checkIfFunnelExists() {
-      return (this.funnelId || this.funnelPageAction) ;
+      return (this.funnelId || this.funnelPageAction);
+    },
+    scroll() {
+      return document.getElementById(`columnKanban${this.uId}`);
     },
   },
   methods: {
@@ -478,12 +529,58 @@ export default {
     setSearch(value) {
       this.search = value;
     },
+    scrollLeft() {
+      const content = this.scroll;
+      content.scrollLeft -= 400;
+      this.scrollTotal = content.scrollLeft;
+    },
+    scrollRight() {
+      const content = this.scroll;
+      content.scrollLeft += 400;
+      this.scrollTotal = content.scrollLeft;
+    },
   },
 };
 </script>
 
-<style>
+<style lang="stylus">
 .kanbanBtnCtn .q-btn {
   border-radius: 10px;
+}
+.colorTextPrimary {
+  color: $primary;
+}
+.icon-right {
+  animation-name: slideUpReturn;
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  margin-top: 2px;
+}
+.icon-left {
+  animation-name: slideLeftReturn;
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  margin-top: 2px;
+}
+
+@keyframes slideUpReturn {
+  0% {
+    transform-origin: 0 0;
+    transform: translateX(100%);
+  }
+  100% {
+    transform-origin: 0 0;
+    transform: translateX(0%);
+  }
+}
+@keyframes slideLeftReturn {
+  0% {
+    transform-origin: 0 0;
+    transform: translateX(0%);
+  }
+  100% {
+    transform-origin: 0 0;
+    transform: translateX(25%);
+  }
 }
 </style>
