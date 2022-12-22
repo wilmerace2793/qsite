@@ -88,14 +88,19 @@
           </div>
         </div>
         <!--Empty results-->
-        <div class="text-center" v-if="!items.length && !loading">
+        <div class="text-center" v-if="cardParams.type !== 'slot' && !items.length && !loading">
           <not-result/>
+        </div>
+        <!-- Slot -->
+        <div v-if="cardParams.type === 'slot'">
+          <slot></slot>
         </div>
         <!--Action to-->
         <div class="text-center">
           <q-btn v-if="items.length && cardParams.actionTo" unelevated :label="$tr('isite.cms.label.showMore')" color="primary"
                  rounded :to="{name : cardParams.actionTo}"/>
         </div>
+
         <!--Inner Loading-->
         <inner-loading :visible="loading"/>
       </div>
