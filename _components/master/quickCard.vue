@@ -88,14 +88,48 @@
           </div>
         </div>
         <!--Empty results-->
-        <div class="text-center" v-if="!items.length && !loading">
+        <div class="text-center" v-if="showNotResult">
           <not-result/>
+        </div>
+        <!-- chart -->
+        <div v-if="cardParams.type === 'chart'">
+          <QCharts :chartsData="items" v-if="!loading && typeof items === 'object'" />
+        </div>
+        <!-- percentage -->
+        <div v-if="cardParams.type === 'percentage'">
+          <div class="tw-flex" v-if="!loading && typeof items === 'object'">
+              <div class="text-center">
+                <q-circular-progress
+                  show-value
+                  font-size="40px"
+                  :value="items.value"
+                  size="200px"
+                  :thickness="0.22"
+                  track-color="grey-3"
+                  class="q-ma-md tw-text-center colorPercentage"
+                >
+                {{ items.value || 0 }}%
+                </q-circular-progress>
+              </div>
+              <div>
+                <p 
+                  class="
+                    tw-font-semibold 
+                    tw-py-5 
+                    tw-text-base 
+                    tw-text-justify 
+                    tw-break-normal"
+                    v-html="items.description"
+                /> 
+              </div>
+          </div>
         </div>
         <!--Action to-->
         <div class="text-center">
           <q-btn v-if="items.length && cardParams.actionTo" unelevated :label="$tr('isite.cms.label.showMore')" color="primary"
                  rounded :to="{name : cardParams.actionTo}"/>
         </div>
+
         <!--Inner Loading-->
         <inner-loading :visible="loading"/>
       </div>
@@ -103,6 +137,8 @@
   </div>
 </template>
 <script>
+import QCharts from '@imagina/qsite/_components/master/charts.vue';
+
 export default {
   beforeDestroy() {
     this.$root.$off('page.data.refresh')
@@ -110,7 +146,7 @@ export default {
   props: {
     params: {type: Object, default: false}
   },
-  components: {},
+  components: {QCharts},
   watch: {},
   mounted() {
     this.$nextTick(function () {
@@ -125,6 +161,14 @@ export default {
     }
   },
   computed: {
+    showNotResult() {
+      if(this.cardParams.type === 'percentage' || this.cardParams.type === 'chart') {
+        if(typeof this.items === 'object') {
+          return Object.keys(this.items).length === 0 && !this.loading;
+        }
+      }
+      return !this.items.length && !this.loading;
+    },
     cardParams() {
       let response = {
         type: 'list-v',
@@ -245,4 +289,7 @@ export default {
         position absolute
         bottom 0
         left 0
+  
+  .colorPercentage
+    color: $primary      
 </style>
