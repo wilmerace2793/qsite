@@ -1486,10 +1486,13 @@ export default {
           let fieldSelect = loadOptions.select || {label: 'title', id: 'id'}
           //Instance request params
           let requestParams = {
+            refresh : true,
             params: {filter: {field: fieldSelect.id}}
           }
+          //Instance the criteria
+          const criteria = this.responseValue.id || this.responseValue.value || this.responseValue
           //Request
-          this.$crud.show(loadOptions.apiRoute, this.responseValue, requestParams).then(response => {
+          this.$crud.show(loadOptions.apiRoute, criteria, requestParams).then(response => {
             this.rootOptions = this.$array.select([response.data], fieldSelect)
           })
         }
