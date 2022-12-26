@@ -32,7 +32,6 @@ import reportList from './reportList.vue';
 import actions from './actions.vue';
 import folder from './folderList.vue';
 import foldersStore from './store/foldersStore.js';
-import { computed } from '@vue/composition-api';
 
 export default {
   props: {

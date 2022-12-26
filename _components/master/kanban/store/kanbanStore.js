@@ -1,4 +1,4 @@
-import { reactive } from '@vue/composition-api';
+import { reactive } from 'vue';
 import baseService from '@imagina/qcrud/_services/baseService.js';
 import getKanbanCardList from './actions/getKanbanCardList.js';
 import getColumns from './actions/getColumns.js';
