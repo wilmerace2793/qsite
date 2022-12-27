@@ -1578,7 +1578,7 @@
           "format": "Format | Formats",
           "endPoint": "End Point",
           "token": "Token",
-          "refreshAtOnce": "Refresh at once",
+          "refreshAtOnce": "Refresh",
           "refreshEveryMinutes": "Refresh every {min} minutes"
         },
         "message": {

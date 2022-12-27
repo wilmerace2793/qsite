@@ -1313,8 +1313,11 @@ export default {
           this.rootOptions = []//Reset options
           let fieldSelect = {label: 'title', id: 'id'}
 
+          //enable cache by isite setting
+          let enableCache = this.$store.getters['qsiteApp/getSettingValueByName']('isite::enableDynamicFieldsCache')
+
           let params = {//Params to request
-            refresh: true,
+            refresh: enableCache == '1' ? false : true,
             params: loadOptions.requestParams || {}
           }
 
