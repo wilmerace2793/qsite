@@ -35,57 +35,19 @@
           <q-btn flat round color="tw-gray-300" size="sm" icon="more_vert">
             <q-menu>
               <q-list class="list-report-menu">
-                <q-item clickable v-ripple>
+                <q-item 
+                  clickable
+                  v-close-popup
+                  v-for="(item, index) in fieldRelationActions" 
+                  :key="index"  
+                  @click.native="item.action(report)"
+                >
                   <q-item-section avatar>
-                    <q-icon name="edit" color="primary" />
+                    <q-icon :class="item.icon" color="primary" />
                   </q-item-section>
-                  <q-item-section>Edit</q-item-section>
-                </q-item>
-                <q-item clickable v-ripple>
-                  <q-item-section avatar>
-                    <q-icon name="file_copy" color="primary" />
-                  </q-item-section>
-                  <q-item-section>Duplicate</q-item-section>
-                </q-item>
-                <q-item clickable v-ripple>
-                  <q-item-section avatar>
-                    <q-icon name="drive_file_move" color="primary" />
-                  </q-item-section>
-                  <q-item-section>Move</q-item-section>
-                  <q-item-section side>
-                    <q-icon name="arrow_right" />
-                  </q-item-section>
-                  <q-menu anchor="top end" self="top start">
-                    <q-list class="list-report-menu">
-                      <q-item v-for="n in 3" :key="n" clickable v-ripple>
-                        <q-item-section avatar>
-                          <q-icon name="folder_open" color="primary" />
-                        </q-item-section>
-                        <q-item-section>Folder {{ n }}</q-item-section>
-                      </q-item>
-                      <q-separator />
-                      <q-item clickable v-ripple v-close-popup>
-                        <q-item-section avatar>
-                          <q-icon name="fa-solid fa-plus" color="primary" />
-                        </q-item-section>
-                        <q-item-section>New Folder</q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-menu>
-                </q-item>
-                <q-item clickable v-ripple>
-                  <q-item-section avatar>
-                    <q-icon name="fa-solid fa-plus" color="primary" />
-                  </q-item-section>
-                  <q-item-section>Add to favourites</q-item-section>
+                  <q-item-section>{{  item.label  }}</q-item-section>
                 </q-item>
                 <q-separator />
-                <q-item clickable v-ripple v-close-popup>
-                  <q-item-section avatar>
-                    <q-icon name="fa-regular fa-trash-can" color="primary" />
-                  </q-item-section>
-                  <q-item-section>Delete</q-item-section>
-                </q-item>
               </q-list>
             </q-menu>
           </q-btn>
@@ -127,9 +89,16 @@ export default {
       toFolderId: null,
     };
   },
-  inject: [
-    'updateRelationData',
-  ],
+  inject: {
+    updateRelationData: {
+      type: Function,
+      default: () => false,
+    },
+    getFieldRelationActions: {
+      type: Function,
+      default: () => false,
+    },
+  },
   computed: {
     dragReports: {
       get() {
@@ -138,6 +107,9 @@ export default {
       set(value) {
         foldersStore().setDragReports(value);
       },
+    },
+    fieldRelationActions() {
+      return this.getFieldRelationActions();
     },
     heightDrag() {
       if(this.dragReports && this.folder.reportList.length === 0) {
@@ -159,7 +131,7 @@ export default {
     },
     updateList() {
       console.log(this.folder, this.toFolderId);
-    }
+    },
   },
 };
 </script>
