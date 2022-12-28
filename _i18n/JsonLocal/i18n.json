@@ -1176,7 +1176,10 @@
         "form": {},
         "label": {},
         "sidebar": {
-          "reportsInfo": "Reports"
+          "reportsInfo": "Reports",
+          "reportInfo": "Report",
+          "foldersInfo": "Folders",
+          "reportCreate": "Create report"
         },
         "message": {}
       }
@@ -1577,9 +1580,7 @@
           "ratio": "Ratio | Ratios",
           "format": "Format | Formats",
           "endPoint": "End Point",
-          "token": "Token",
-          "refreshAtOnce": "Refresh",
-          "refreshEveryMinutes": "Refresh every {min} minutes"
+          "token": "Token"
         },
         "message": {
           "notFound": "Sorry, nothing here",
@@ -2836,7 +2837,8 @@
           "workOrders": "Órdenes de trabajo",
           "rampInfo": "Rampa",
           "map": "Map",
-          "schedule": "Calendario"
+          "schedule": "Calendario",
+          "scheduleStatus": "Estado del calendario"
         }
       }
     },
@@ -2862,7 +2864,10 @@
         "form": {},
         "label": {},
         "sidebar": {
-          "reportsInfo": "Reportes"
+          "reportsInfo": "Reportes",
+          "reportInfo": "Reporte",
+          "foldersInfo": "Carpetas",
+          "reportCreate": "Crear Reporte"
         },
         "message": {}
       }
@@ -3261,9 +3266,7 @@
           "ratio": "Proporción | Proporciones",
           "format": "Formato | Formatos",
           "endPoint": "Punto Final",
-          "token": "Token",
-          "refreshAtOnce": "Refrescar de una vez",
-          "refreshEveryMinutes": "Refrescar cada {min} minutos"
+          "token": "Token"
         },
         "message": {
           "notFound": "Lo sentimos, no hay nada aquí",

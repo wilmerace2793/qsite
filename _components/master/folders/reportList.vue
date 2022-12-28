@@ -13,7 +13,6 @@
       @end="dragReports = false"
       :style="{ height: heightDrag }"
       :move="move"
-      @change="updateList"
     >
       <q-item
         clickable
@@ -128,9 +127,6 @@ export default {
     },
     uniqBy(data){
       return _.uniqBy(data, 'id');
-    },
-    updateList() {
-      console.log(this.folder, this.toFolderId);
     },
   },
 };
