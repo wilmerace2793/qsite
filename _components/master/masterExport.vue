@@ -241,7 +241,6 @@ export default {
     },
     //Request new report
     newReport() {
-      console.warn("sss 1");
       return new Promise(async (resolve, reject) => {
         //this.loading = true
         //Instance de apiRoute
@@ -261,11 +260,9 @@ export default {
 
         //Request
         this.$crud.post(apiRoute, requestParams).then(response => {
-          console.warn("sss 2");
           this.$alert.info(this.$tr('isite.cms.messages.reportInProgress', {fileName: this.params.fileName}))
           this.showModal = false
         }).catch(error => {
-          console.warn("sss 3",error);
           this.loading = false
         })
       })

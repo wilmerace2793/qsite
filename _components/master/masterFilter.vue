@@ -275,24 +275,6 @@ export default {
       }
     },
     // convert string to object
-    /*async convertStringToObject() {
-      try {
-        if(this.currentUrlFilter.length > 0) {
-          const regex = /=/g;
-          const regex2 = /&/g;
-          const remplaceFilter = this.currentUrlFilter.replace(regex, ':').replace(regex2, ',');
-          const remplaceObject = eval('({' + remplaceFilter + '})');
-          Object.keys(remplaceObject).forEach(key => {
-            if(this.$filter.fields.hasOwnProperty(key)) {
-              remplaceObject[key] = String(remplaceObject[key]);
-            }
-          });
-          return remplaceObject || {};
-        }
-      } catch (error) {
-       console.log(error); 
-      }
-    },*/
     async convertStringToObject() {
       try {
         let url = "";
