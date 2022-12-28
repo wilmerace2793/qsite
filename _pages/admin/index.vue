@@ -1,5 +1,5 @@
 <template>
-  <div id="indexMasterPage">
+  <div id="indexMasterPage" class="relative-position">
     <!--Logo-->
     <div v-if="!quickCards.list1.length" id="logoContent" class="flex flex-center">
       <img style="max-width: 40vw" :src="$store.state.qsiteApp.logo">
@@ -8,6 +8,11 @@
     <!--Quick cards-->
     <div id="quickCardsContent" v-if="quickCards.list1.length">
       <div class="row q-col-gutter-x-md">
+        <!--Activities-->
+        <div class="col-12">
+          <activities system-name="admin_home" @loaded="loading = false"/>
+        </div>
+        <!-- QuickCards -->
         <div v-for="(groupQuickCard, key) in quickCards" :key="key" class="col-12 col-lg-6">
           <div class="row q-col-gutter-y-md full-width">
             <div v-for="(item, keyItem) in groupQuickCard" :key="keyItem" class="col-12">
@@ -17,12 +22,18 @@
         </div>
       </div>
     </div>
+
+    <!--inner-loading-->
+    <inner-loading :visible="loading"/>
   </div>
 </template>
 <script>
+//Components
+import activities from '@imagina/qgamification/_components/activities'
+
 export default {
   props: {},
-  components: {},
+  components: {activities},
   watch: {},
   mounted() {
     this.$nextTick(function () {
@@ -30,7 +41,8 @@ export default {
   },
   data() {
     return {
-      testSchedule: false
+      testSchedule: false,
+      loading: true
     }
   },
   computed: {

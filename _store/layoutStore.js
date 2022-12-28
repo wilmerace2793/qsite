@@ -1,5 +1,4 @@
-import Vue from "vue";
-import { reactive } from '@vue/composition-api';
+import Vue, {reactive} from "vue";
 import baseService from '@imagina/qcrud/_services/baseService.js';
 
 const data = {
