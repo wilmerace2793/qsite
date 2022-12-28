@@ -3,7 +3,7 @@
     <div class="row justify-center q-gutter-y-lg relative-position">
       <!--Logo-->
       <div class="col-12 text-center">
-        <img style="max-width: 30vw" :src="$store.state.qsiteApp.logo">
+        <img style="max-width: 30vw; margin: auto" :src="$store.state.qsiteApp.logo">
       </div>
       <!--Activities-->
       <activities system-name="panel_home" @loaded="loading = false"/>
