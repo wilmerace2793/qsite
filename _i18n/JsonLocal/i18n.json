@@ -1174,7 +1174,9 @@
         "form": {},
         "label": {},
         "sidebar": {
-          "reportsInfo": "Reports"
+          "reportsInfo": "Reports",
+          "foldersInfo": "Folders",
+          "reportCreate": "Create report"
         },
         "message": {}
       }
@@ -2858,7 +2860,9 @@
         "form": {},
         "label": {},
         "sidebar": {
-          "reportsInfo": "Reportes"
+          "reportsInfo": "Reportes",
+          "foldersInfo": "Carpetas",
+          "reportCreate": "Crear Reporte"
         },
         "message": {}
       }
