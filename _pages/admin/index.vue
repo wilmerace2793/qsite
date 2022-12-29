@@ -9,7 +9,7 @@
     <div id="quickCardsContent" v-if="quickCards.list1.length">
       <div class="row q-col-gutter-x-md">
         <!--Activities-->
-        <div class="col-12">
+        <div class="col-12 q-mb-md">
           <activities system-name="admin_home" @loaded="loading = false"/>
         </div>
         <!-- QuickCards -->
