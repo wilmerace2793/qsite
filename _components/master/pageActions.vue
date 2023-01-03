@@ -83,9 +83,8 @@ import masterExport from "@imagina/qsite/_components/master/masterExport"
 
 export default {
   beforeDestroy() {
-    this.clearInterval()
-    this.$root.$off('page.data.filter.read')
     this.clearInterval();
+    this.$root.$off('page.data.filter.read')
   },
   props: {
     title: {type: String},

@@ -103,7 +103,7 @@ export default {
       deep: true,
       handler: async function () {
         if(this.$filter.storeFilter && this.currentUrlFilter.length > 0 ) {
-          const obj = await this.convertStringToObject();
+          const obj = await this.$helper.convertStringToObject();
           Object.keys(this.readOnlyData).forEach((key) => {
             if(obj.hasOwnProperty(key)) {
               this.readOnlyData[key].value = obj[key];
@@ -137,7 +137,7 @@ export default {
   computed: {
     filter() {
       if(this.$filter.storeFilter && this.currentUrlFilter.length > 0) {
-        this.filterValues = this.convertStringToObject();
+        this.filterValues = this.$helper.convertStringToObject();
       }
       if (!this.$filter.storeFilter && this.currentUrlFilter.length === 0 && this.$filter.values) this.filterValues = this.$clone(this.$filter.values)
       if (this.$filter.pagination) this.pagination = this.$clone(this.$filter.pagination)
@@ -248,7 +248,8 @@ export default {
   methods: {
     async init() {
       const filterValues = this.$filter.storeFilter && this.currentUrlFilter.length > 0 
-        ? await this.convertStringToObject() : this.filterValues;
+        ? await this.$helper.convertStringToObject() 
+        : this.filterValues;
       this.filterValues = filterValues || {};
       await this.emitFilter(true);
     },
@@ -256,9 +257,11 @@ export default {
     async emitFilter(filterBtn = false) {
       if(!filterBtn) {
         if(this.$filter.storeFilter) {
-          const objUrl = await this.convertStringToObject();
+          const objUrl = await this.$helper.convertStringToObject();
           const type = objUrl.type ? {type: objUrl.type} : {};
-          const date = objUrl.dateStart && objUrl.dateEnd ? { dateEnd: objUrl.dateEnd, dateStart: objUrl.dateStart} : {};
+          const date = objUrl.dateStart && objUrl.dateEnd 
+          ? { dateEnd: objUrl.dateEnd, dateStart: objUrl.dateStart} 
+          : {};
           this.filterValues = {...this.filterValues, ...type, ...date};
         }
         this.currentUrlFilter = '';
@@ -272,32 +275,6 @@ export default {
       if (this.filter && this.filter.callBack) {
         this.filter.callBack(this.filter)//Call back
         this.$root.$emit('page.data.filtered', this.filter)//Global event
-      }
-    },
-    // convert string to object
-    async convertStringToObject() {
-      try {
-        let url = "";
-        const origin = window.location.href.split("?");
-        if (origin.length === 2) {
-          url = origin[1] || "";
-        }
-        if (url.length > 0) {
-          const regex = /=/g;
-          const regex2 = /&/g;
-          const remplaceFilter = url.replace(regex, ":").replace(regex2, ",");
-          const remplaceObject = eval("({" + remplaceFilter + "})");
-          Object.keys(remplaceObject).forEach((key) => {
-            if (this.$filter.fields.hasOwnProperty(key)) {
-              remplaceObject[key] = String(remplaceObject[key]);
-            }
-          });
-          return remplaceObject || {};
-        }
-        return {};
-      } catch (error) {
-        this.$alert.error('The filter url is misspelled');
-        console.log(error);
       }
     },
     // Mutate Current Url
