@@ -149,9 +149,9 @@ export default {
       let response = 'single-item'
       
       if (this.$route.name == item.name) {
-        //if (JSON.stringify(this.$route.params) == JSON.stringify(item.params || {})) {
+        if (JSON.stringify(this.$route.params) == JSON.stringify(item.params || {})) {
           response += ' item-is-active'
-        //}
+        }
       }
 
       return response
