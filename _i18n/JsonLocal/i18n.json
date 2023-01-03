@@ -1181,6 +1181,16 @@
           "foldersInfo": "Folders",
           "reportCreate": "Create report"
         },
+        "identifyYourReport": "Identify your report",
+        "selectColumnsFilters": "Select columns and filters",
+        "selectSortColumns": "Seleccionar y ordenar las columnas",
+        "moveColumn":"Move column",
+        "selectFirst": "Select the first {total} filters",
+        "detailFilterOptions": "Detail the filter options",
+        "selectInfoYouWantToShowForEachFilter": "Select the info you want to show for each filter",
+        "chooseColumnSorting": "Choose column sorting",
+        "adjustFollowingParameters": "Do you want to schedule it? Adjust the following parameters",
+        "sort": "Sort",
         "message": {}
       }
     },
@@ -1580,7 +1590,9 @@
           "ratio": "Ratio | Ratios",
           "format": "Format | Formats",
           "endPoint": "End Point",
-          "token": "Token"
+          "token": "Token",
+          "refreshAtOnce": "Refresh",
+          "refreshEveryMinutes": "Refresh every {min} minutes"
         },
         "message": {
           "notFound": "Sorry, nothing here",
@@ -2869,6 +2881,16 @@
           "foldersInfo": "Carpetas",
           "reportCreate": "Crear Reporte"
         },
+        "identifyYourReport": "Identifique su informe",
+        "selectColumnsFilters": "Seleccionar columnas y filtros",
+        "selectSortColumns": "Seleccionar y ordenar las columnas",
+        "moveColumn": "Mover columna",
+        "selectFirst": "Selecciona el primer {total} filtros",
+        "detailFilterOptions": "Detalla las opciones de filtro",
+        "selectInfoYouWantToShowForEachFilter": "Seleccione la información que desea mostrar para cada filtro",
+        "chooseColumnSorting": "Elija la clasificación de columnas",
+        "adjustFollowingParameters": "¿Quieres programarlo? Ajuste los siguientes parámetros",
+        "sort": "Ordenar",
         "message": {}
       }
     },
@@ -3266,7 +3288,9 @@
           "ratio": "Proporción | Proporciones",
           "format": "Formato | Formatos",
           "endPoint": "Punto Final",
-          "token": "Token"
+          "token": "Token",
+          "refreshAtOnce": "Refrescar de una vez",
+          "refreshEveryMinutes": "Refrescar cada {min} minutos"
         },
         "message": {
           "notFound": "Lo sentimos, no hay nada aquí",
