@@ -139,7 +139,7 @@ export default {
       if(this.$filter.storeFilter && this.currentUrlFilter.length > 0) {
         this.filterValues = this.$helper.convertStringToObject();
       }
-      if (!this.$filter.storeFilter && this.currentUrlFilter.length === 0 && this.$filter.values) this.filterValues = this.$clone(this.$filter.values)
+      if (!this.$filter.storeFilter && this.$filter.values) this.filterValues = this.$clone(this.$filter.values)
       if (this.$filter.pagination) this.pagination = this.$clone(this.$filter.pagination)
       return this.$filter
     },
