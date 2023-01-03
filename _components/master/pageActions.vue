@@ -332,14 +332,4 @@ export default {
         color: $tertiary 
       .q-field__append:last-child .q-icon
         color: $primary 
-.q-menu
-  .q-list
-    .q-item
-      padding: 3px 10px 3px 3px;
-      .q-item__section--avatar
-        min-width: 50px;
-        padding-right 10px
-        color $primary
-        i
-          font-size 16px
 </style>
