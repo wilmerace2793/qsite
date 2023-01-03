@@ -1183,7 +1183,7 @@
         },
         "identifyYourReport": "Identify your report",
         "selectColumnsFilters": "Select columns and filters",
-        "selectSortColumns": "Seleccionar y ordenar las columnas",
+        "selectSortColumns": "Select and sort columns",
         "moveColumn":"Move column",
         "selectFirst": "Select the first {total} filters",
         "detailFilterOptions": "Detail the filter options",
