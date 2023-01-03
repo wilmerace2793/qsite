@@ -258,7 +258,9 @@ export default {
     },
     refreshByTime(time) {
       this.timeRefresh = time;
-      this.titleRefresh = time === 0 ? this.$tr('isite.cms.label.refreshAtOnce') : this.$tr('isite.cms.label.refreshEveryMinutes', {min: time});
+      this.titleRefresh = time === 0 
+      ? this.$tr('isite.cms.label.refreshAtOnce') 
+      : this.$tr('isite.cms.label.refreshEveryMinutes', {min: time});
       this.clearInterval();
       const interval = 1000 * 60 * time;
       this.emitRefresh();
@@ -334,12 +336,10 @@ export default {
   .q-list
     .q-item
       padding: 3px 10px 3px 3px;
-
       .q-item__section--avatar
         min-width: 50px;
         padding-right 10px
         color $primary
-
         i
           font-size 16px
 </style>
