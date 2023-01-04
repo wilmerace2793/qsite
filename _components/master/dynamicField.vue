@@ -324,7 +324,7 @@
             <div class="text-grey-8 q-mb-xs" v-if="fieldProps.field.label">
               {{ fieldProps.field.label }}
             </div>
-            <json-editor-vue class="jsoneditor-vue" v-model="responseValue" mode="text"/>
+            <json-editor-vue class="jsoneditor-vue" v-model="responseValue" mode="tree"/>
           </div>
         </q-field>
         <!--Text Info-->
@@ -910,7 +910,7 @@ export default {
           props = {
             field: {
               ...props,
-              mode: 'text'
+              mode: 'tree'
             },
             fieldComponent: {
               outlined: false,
