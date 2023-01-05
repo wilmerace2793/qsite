@@ -29,7 +29,6 @@
 <script>
 import draggable from "vuedraggable";
 import reportList from './reportList.vue';
-import actions from './actions.vue';
 import folder from './folderList.vue';
 import foldersStore from './store/foldersStore.js';
 
@@ -52,7 +51,6 @@ export default {
   components: {
     draggable,
     reportList,
-    actions,
     folder,
   },
   methods: {

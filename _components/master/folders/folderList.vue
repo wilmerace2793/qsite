@@ -59,7 +59,6 @@
 </template>
 
 <script>
-import draggable from "vuedraggable";
 import reportList from "./reportList";
 import foldersStore from "./store/foldersStore.js";
 export default {
