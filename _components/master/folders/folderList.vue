@@ -33,17 +33,18 @@
           <q-list
             separator
             class="tw-pt-2 tw-rounded-b-xl"
-            v-show="folder.isCollapse && !folder.loading"
+            v-show="!folder.loading"
           >
-            <reportList :folder="folder" />
+            <reportList   
+              :folder="folder" 
+            />
           </q-list>
           <div
-            v-show="folder.isCollapse && folder.loading"
+            v-show="folder.loading"
             class="
               tw-bg-gray-100
               tw-h-32
               tw-flex
-              tw-absolute
               tw-inset-0
               tw-justify-center
               tw-py-8
