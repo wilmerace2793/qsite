@@ -174,10 +174,25 @@
               </q-item-section>
               <!--Labels-->
               <q-item-section>
-                <q-item-label v-html="scope.opt.label"/>
-                <q-item-label style="margin: 0" caption v-if="scope.opt.sublabel">
-                  {{ scope.opt.sublabel }}
-                </q-item-label>
+                <div :class="{'tw-flex': field.props.selectColor }">
+                  <div v-if="field.props.selectColor">
+                    <div 
+                      class="
+                        tw-bg-gray-500 
+                        tw-h-4 
+                        tw-w-4 
+                        tw-rounded-full 
+                        tw-py-3"
+                      :class="badgeColor(field, scope)"
+                    />
+                  </div>
+                  <div :class="{'tw-px-4' : field.props.selectColor }">
+                    <q-item-label v-html="scope.opt.label"/>
+                    <q-item-label style="margin: 0" caption v-if="scope.opt.sublabel">
+                      {{ scope.opt.sublabel }}
+                    </q-item-label>
+                  </div>
+                </div>
               </q-item-section>
             </q-item>
           </template>
@@ -1155,6 +1170,13 @@ export default {
       return {
         mapType: this.$store.getters['qsiteApp/getSettingValueByName']('isite::mapInShow')
       }
+    },
+    badgeColor() {
+      return (field, scope) => {
+        return field.props.colorType === 'tailwindcss' 
+        ? `tw-bg-${scope.opt.color  || scope.opt.value}`
+        : `bg-${scope.opt.color || scope.opt.value}`
+      }
     }
   },
   methods: {
@@ -1299,8 +1321,11 @@ export default {
           this.rootOptions = []//Reset options
           let fieldSelect = {label: 'title', id: 'id'}
 
+          //enable cache by isite setting
+          let enableCache = this.$store.getters['qsiteApp/getSettingValueByName']('isite::enableDynamicFieldsCache')
+
           let params = {//Params to request
-            refresh: true,
+            refresh: enableCache == '1' ? false : true,
             params: loadOptions.requestParams || {}
           }
 

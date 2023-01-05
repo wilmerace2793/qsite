@@ -1,6 +1,7 @@
 <template>
   <q-layout view="lHh LpR fFf">
     <!-- === ROUTER VIEW === -->
+    <drawersBlank />
     <q-page-container>
       <router-view/>
     </q-page-container>
@@ -8,7 +9,11 @@
 </template>
 
 <script>
+  import drawersBlank from '@imagina/qsite/_components/admin/theme2/drawersBlank.vue'
   export default {
+    components: {
+      drawersBlank
+    },
     meta () {
       let routeTitle = ((this.$route.meta && this.$route.meta.title) ? this.$route.meta.title : '')
       if (this.$route.meta && this.$route.meta.headerTitle) routeTitle = this.$route.meta.headerTitle
@@ -30,7 +35,6 @@
       useLegacyStructure() {
       const legacyStructure = parseInt(this.$store.getters["qsiteApp/getSettingValueByName"]("isite::legacyStructureCMS") || 0)
       return legacyStructure === 1 || false
-
     },
     }
   }

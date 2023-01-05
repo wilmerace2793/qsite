@@ -167,7 +167,6 @@ export default {
       //Toogle drawer
       if (drawerName == 'menu') {
         if (this.windowSize == 'mobile') {
-          console.log('ingreso');
           this.miniState = false
           this.drawer.menu = !this.drawer.menu
         } else {

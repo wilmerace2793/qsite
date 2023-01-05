@@ -23,7 +23,7 @@
         <!--Component-->
         <VueSignaturePad v-if="!readonly" class="bg-grey-2" ref="signature" :options="options" :width="width" :height="height"/>
         <div v-else class="bg-grey-2">
-          <img :src="value" alt="" srcset="" :width="width" :height="height"></img>
+          <img  v-if="value" :src="value" alt="" srcset="" :width="width" :height="height"></img>
         </div>
       </div>
       <!---Close fullscreen-->

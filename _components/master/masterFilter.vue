@@ -101,14 +101,28 @@ export default {
     },
     readOnlyData: {
       deep: true,
-      handler: function () {
-        this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData))
+      handler: async function () {
+        if(this.$filter.storeFilter && this.currentUrlFilter.length > 0 ) {
+          const obj = await this.$helper.convertStringToObject();
+          Object.keys(this.readOnlyData).forEach((key) => {
+            if(obj.hasOwnProperty(key)) {
+              this.readOnlyData[key].value = obj[key];
+            }
+          })
+          this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData))
+          return;
+        }
+        this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData));
       }
     }
   },
-  mounted() {
-    this.$nextTick(function () {
-      this.init()
+  created() {
+    this.$nextTick(async function () {
+      const origin = window.location.href.split('?');
+      if(origin.length === 2) {
+        this.currentUrlFilter = origin[1] || '';
+      }
+      await this.init();
     })
   },
   data() {
@@ -116,22 +130,24 @@ export default {
       tabName: 'tabForm',
       filterValues: {},
       pagination: {},
-      readOnlyData: {}
+      readOnlyData: {},
+      currentUrlFilter: '',
     }
   },
   computed: {
     filter() {
-      if (this.$filter.values) this.filterValues = this.$clone(this.$filter.values)
+      if(this.$filter.storeFilter && this.currentUrlFilter.length > 0) {
+        this.filterValues = this.$helper.convertStringToObject();
+      }
+      if (!this.$filter.storeFilter && this.$filter.values) this.filterValues = this.$clone(this.$filter.values)
       if (this.$filter.pagination) this.pagination = this.$clone(this.$filter.pagination)
       return this.$filter
     },
     dateFields() {
       let filterDate = this.$clone(this.filterValues.date)
       let filterFields = this.$clone(this.filter.fields)
-
       let fieldDate = (filterFields && filterFields.date && filterFields.date.field) ? filterFields.date.field : false
       let fieldDateLabel = (filterFields && filterFields.date && filterFields.date.props) ? filterFields.date.props.label || null : null
-
       if (!filterDate) return {}
       let fields = {
         field: fieldDate || {value: 'created_at'},
@@ -190,7 +206,6 @@ export default {
           }
         }
       }
-
       return fields
     },
     paginationFields() {
@@ -202,7 +217,6 @@ export default {
         //Define number of pages
         for (let i = 1; i <= lastPage; i++)
           pages.push({label: i.toString(), value: i.toString()})
-
         return {
           page: {
             value: filter.pagination.page || 1,
@@ -232,19 +246,67 @@ export default {
     }
   },
   methods: {
-    init() {
-      this.emitFilter()
+    async init() {
+      const filterValues = this.$filter.storeFilter && this.currentUrlFilter.length > 0 
+        ? await this.$helper.convertStringToObject() 
+        : this.filterValues;
+      this.filterValues = filterValues || {};
+      await this.emitFilter(true);
     },
     //Emit filter
-    async emitFilter() {
-      this.changeDate()
-      this.$filter.addValues(this.filterValues)
-
+    async emitFilter(filterBtn = false) {
+      if(!filterBtn) {
+        if(this.$filter.storeFilter) {
+          const objUrl = await this.$helper.convertStringToObject();
+          const type = objUrl.type ? {type: objUrl.type} : {};
+          const date = objUrl.dateStart && objUrl.dateEnd 
+          ? { dateEnd: objUrl.dateEnd, dateStart: objUrl.dateStart} 
+          : {};
+          this.filterValues = {...this.filterValues, ...type, ...date};
+        }
+        this.currentUrlFilter = '';
+      }
+      this.changeDate();
+      this.$filter.addValues(this.filterValues);
+      if(this.$filter.storeFilter) {
+        this.mutateCurrentURL();
+      };
       //Emit Filter
       if (this.filter && this.filter.callBack) {
         this.filter.callBack(this.filter)//Call back
         this.$root.$emit('page.data.filtered', this.filter)//Global event
       }
+    },
+    // Mutate Current Url
+    async mutateCurrentURL() {
+      try {
+        let paramsUrl = '';
+        Object.keys(this.filterValues).forEach((item, index) => {
+          if(this.$filter.fields.hasOwnProperty(item)) {
+            if(index === 0) {
+              paramsUrl += this.validateObjectFilter('?', item);
+            } else {
+              paramsUrl += this.validateObjectFilter('&', item);
+            }
+          }
+        });
+        const origin = window.location.href.split('?');
+        const urlBase = `${origin[0]}${paramsUrl}`
+        window.history.replaceState({}, '', urlBase);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // validate Object Filter
+    validateObjectFilter(operator = '?', item) {
+      if(this.filterValues[item]) {
+        if(typeof this.filterValues[item] === 'object' 
+          || Array.isArray(this.filterValues[item])) {
+          return  `${operator}${item}=${JSON.stringify(this.filterValues[item])}`;
+        }
+        return `${operator}${item}=${this.filterValues[item]}`;
+      }
+      return '';
     },
     //Change dates by type
     changeDate() {
