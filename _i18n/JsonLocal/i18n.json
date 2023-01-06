@@ -1191,7 +1191,9 @@
         "chooseColumnSorting": "Choose column sorting",
         "adjustFollowingParameters": "Do you want to schedule it? Adjust the following parameters",
         "sort": "Sort",
-        "message": {}
+        "message": {
+          "selectColumn": "Please select at least one column to continue and a filter"
+        }
       }
     },
     "icargo": {
@@ -1774,7 +1776,9 @@
           "sortOrder": "Sort Order",
           "availableDate": "Available Date",
           "printName": "Print Name",
-          "requestedBy": "Requested By"
+          "requestedBy": "Requested By",
+          "feature": "Feature | Features",
+          "fieldsDetails": "Fields Details"
         },
         "configList": {
           "loggedAs": "logged as",
@@ -2891,7 +2895,9 @@
         "chooseColumnSorting": "Elija la clasificación de columnas",
         "adjustFollowingParameters": "¿Quieres programarlo? Ajuste los siguientes parámetros",
         "sort": "Ordenar",
-        "message": {}
+        "message": {
+          "selectColumn": "Seleccione al menos una columna y un filtro para continuar"
+        }
       }
     },
     "icargo": {
@@ -3471,7 +3477,9 @@
           "featured": "Destacado",
           "sortOrder": "Orden de prioridad",
           "availableDate": "Disponible desde",
-          "requestedBy": "Solicitado Por"
+          "requestedBy": "Solicitado Por",
+          "feature": "Característica | Características",
+          "fieldsDetails": "Detalles de la Característica"
         },
         "configList": {
           "loggedAs": "Registrado como",
