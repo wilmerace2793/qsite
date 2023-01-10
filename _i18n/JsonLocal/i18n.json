@@ -1179,7 +1179,8 @@
           "reportsInfo": "Reports",
           "reportInfo": "Report",
           "foldersInfo": "Folders",
-          "reportCreate": "Create report"
+          "reportCreate": "Create report",
+          "reportEdit": "Edit report"
         },
         "identifyYourReport": "Identify your report",
         "selectColumnsFilters": "Select columns and filters",
@@ -2883,7 +2884,8 @@
           "reportsInfo": "Reportes",
           "reportInfo": "Reporte",
           "foldersInfo": "Carpetas",
-          "reportCreate": "Crear Reporte"
+          "reportCreate": "Crear Reporte",
+          "reportEdit": "Editar Reporte"
         },
         "identifyYourReport": "Identifique su informe",
         "selectColumnsFilters": "Seleccionar columnas y filtros",
