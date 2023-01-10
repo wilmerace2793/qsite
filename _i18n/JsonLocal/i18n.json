@@ -1144,7 +1144,9 @@
           "flightInfo": "Flight Info",
           "workOrders": "Work Orders",
           "rampInfo": "Ramp",
-          "map": "Map"
+          "map": "Map",
+          "schedule": "Schedule",
+          "scheduleStatus": "Schedule status"
         },
         "map": {
           "workOrderId": "Work Order Id",
@@ -1191,7 +1193,19 @@
           "foldersInfo": "Folders",
           "reportCreate": "Create report"
         },
-        "message": {}
+        "identifyYourReport": "Identify your report",
+        "selectColumnsFilters": "Select columns and filters",
+        "selectSortColumns": "Select and sort columns",
+        "moveColumn":"Move column",
+        "selectFirst": "Select the first {total} filters",
+        "detailFilterOptions": "Detail the filter options",
+        "selectInfoYouWantToShowForEachFilter": "Select the info you want to show for each filter",
+        "chooseColumnSorting": "Choose column sorting",
+        "adjustFollowingParameters": "Do you want to schedule it? Adjust the following parameters",
+        "sort": "Sort",
+        "message": {
+          "selectColumn": "Please select at least one column to continue and a filter"
+        }
       }
     },
     "icargo": {
@@ -1591,7 +1605,9 @@
           "ratio": "Ratio | Ratios",
           "format": "Format | Formats",
           "endPoint": "End Point",
-          "token": "Token"
+          "token": "Token",
+          "refreshAtOnce": "Refresh",
+          "refreshEveryMinutes": "Refresh every {min} minutes"
         },
         "message": {
           "editFormProduct": "In this form you can edit your product in a simple way, if you want to edit your product with more advanced options, click on the following button to go to the advanced form.",
@@ -1775,7 +1791,9 @@
           "sortOrder": "Sort Order",
           "availableDate": "Available Date",
           "printName": "Print Name",
-          "requestedBy": "Requested By"
+          "requestedBy": "Requested By",
+          "feature": "Feature | Features",
+          "fieldsDetails": "Fields Details"
         },
         "configList": {
           "loggedAs": "logged as",
@@ -2862,7 +2880,8 @@
           "workOrders": "Órdenes de trabajo",
           "rampInfo": "Rampa",
           "map": "Map",
-          "schedule": "Calendario"
+          "schedule": "Calendario",
+          "scheduleStatus": "Estado del calendario"
         }
       }
     },
@@ -2893,7 +2912,19 @@
           "foldersInfo": "Carpetas",
           "reportCreate": "Crear Reporte"
         },
-        "message": {}
+        "identifyYourReport": "Identifique su informe",
+        "selectColumnsFilters": "Seleccionar columnas y filtros",
+        "selectSortColumns": "Seleccionar y ordenar las columnas",
+        "moveColumn": "Mover columna",
+        "selectFirst": "Selecciona el primer {total} filtros",
+        "detailFilterOptions": "Detalla las opciones de filtro",
+        "selectInfoYouWantToShowForEachFilter": "Seleccione la información que desea mostrar para cada filtro",
+        "chooseColumnSorting": "Elija la clasificación de columnas",
+        "adjustFollowingParameters": "¿Quieres programarlo? Ajuste los siguientes parámetros",
+        "sort": "Ordenar",
+        "message": {
+          "selectColumn": "Seleccione al menos una columna y un filtro para continuar"
+        }
       }
     },
     "icargo": {
@@ -3292,7 +3323,9 @@
           "ratio": "Proporción | Proporciones",
           "format": "Formato | Formatos",
           "endPoint": "Punto Final",
-          "token": "Token"
+          "token": "Token",
+          "refreshAtOnce": "Refrescar de una vez",
+          "refreshEveryMinutes": "Refrescar cada {min} minutos"
         },
         "message": {
           "editFormProduct": "En este formulario podrás editar tu producto de manera sencilla, si quieres editar tu producto con opciones más avanzadas, da click en el siguiente botón para ir a el formulario avanzado.",
@@ -3475,7 +3508,9 @@
           "featured": "Destacado",
           "sortOrder": "Orden de prioridad",
           "availableDate": "Disponible desde",
-          "requestedBy": "Solicitado Por"
+          "requestedBy": "Solicitado Por",
+          "feature": "Característica | Características",
+          "fieldsDetails": "Detalles de la Característica"
         },
         "configList": {
           "loggedAs": "Registrado como",
