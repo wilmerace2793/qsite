@@ -1502,9 +1502,6 @@ export default {
             //Instance the criteria
             const criteria = this.responseValue.id || this.responseValue.value || this.responseValue
             //Request
-            if (this.field) {
-
-            }
             this.$crud.show(loadOptions.apiRoute, criteria, requestParams).then(response => {
               this.rootOptions = this.$array.select([response.data], fieldSelect)
             })
