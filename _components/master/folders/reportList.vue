@@ -16,7 +16,6 @@
       :move="move"
     >
       <q-item
-        v-ripple
         class="
           tw-py-3 
           tw-border-b 
