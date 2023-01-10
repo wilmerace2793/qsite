@@ -93,7 +93,6 @@ export default {
         select: {
           ...globalData,
           type: 'select',
-          value: 2,
           props: {
             label: 'type: select',
             options: []
@@ -101,7 +100,6 @@ export default {
           loadOptions: {
             apiRoute: 'apiRoutes.quser.users',
             select: {label: 'fullName', id: 'id'},
-            filterByQuery: true
           }
         },
         treeSelect: {
