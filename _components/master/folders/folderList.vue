@@ -11,7 +11,11 @@
         >
           <template v-slot:header>
             <q-item-section avatar>
-              <q-icon name="folder" color="primary" size="2rem" />
+              <q-icon 
+                name="folder" 
+                color="primary" 
+                size="2rem" 
+              />
             </q-item-section>
             <q-item-section
               class="folder-title-drag tw-py-5 f-cursor-grab"

@@ -57,9 +57,15 @@
                   @click.native="item.action(report)"
                 >
                   <q-item-section avatar>
-                    <q-icon :class="item.icon" color="primary" />
+                    <q-icon 
+                      :class="item.icon" 
+                      color="primary" 
+                      size="xs" 
+                    />
                   </q-item-section>
-                  <q-item-section>{{  item.label  }}</q-item-section>
+                  <q-item-section>
+                    {{  item.label  }}
+                  </q-item-section>
                 </q-item>
                 <q-separator />
               </q-list>
