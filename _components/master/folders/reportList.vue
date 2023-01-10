@@ -8,6 +8,7 @@
       ghost-class="ghostCard"
       drag-class="dragCard"
       filter=".ignoreItem"
+      handle=".drag_handle"
       :force-fallback="true"
       @start="dragReports = true"
       @end="dragReports = false"
@@ -15,18 +16,22 @@
       :move="move"
     >
       <q-item
-        clickable
         v-ripple
         class="
           tw-py-3 
           tw-border-b 
-          tw-cursor-move
         "
         v-for="(report, index) in uniqBy(folder.reportList)"
         :key="report.id"
       >
-        <q-item-section avatar>
-          <q-icon name="drag_handle" />
+        <q-item-section 
+          avatar 
+          class="tw-cursor-move"
+        >
+          <q-icon 
+            name="drag_handle" 
+            class="drag_handle" 
+          />
         </q-item-section>
         <q-item-section>
           <q-item-label 

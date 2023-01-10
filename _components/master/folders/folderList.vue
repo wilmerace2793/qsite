@@ -14,15 +14,26 @@
               <q-icon 
                 name="folder" 
                 color="primary" 
-                size="2rem" 
+                size="1.5rem" 
               />
             </q-item-section>
             <q-item-section
-              class="folder-title-drag tw-py-5 f-cursor-grab"
+              class="
+               folder-title-drag 
+               tw-py-4 
+               f-cursor-grab"
               @mouseover="showCollapse"
             >
-              <q-item-label class="tw-text-xl tw-font-bold" lines="1">
-                {{ folder.title || folder.name || folder.id }}
+              <q-item-label 
+                class="
+                  tw-text-base 
+                  tw-font-bold
+                  tw-lowercase" 
+                lines="1"
+              >
+                <p class="capitalize-first">
+                  {{ folder.title || folder.name || folder.id }}
+                </p>
               </q-item-label>
             </q-item-section>
             <q-item-section side>
@@ -109,5 +120,8 @@ export default {
 <style>
 .f-cursor-grab {
   cursor: grab;
+}
+.capitalize-first:first-letter {
+  text-transform: uppercase;
 }
 </style>
