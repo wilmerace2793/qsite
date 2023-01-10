@@ -35,14 +35,20 @@ export default {
   props: {},
   components: {activities},
   watch: {},
+  created() {
+    this.loading = true;
+  },
   mounted() {
     this.$nextTick(function () {
+      setTimeout(() => {
+        this.loading = false;
+      }, 1000);
     })
   },
   data() {
     return {
       testSchedule: false,
-      loading: true
+      loading: false,
     }
   },
   computed: {

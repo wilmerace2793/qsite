@@ -3,6 +3,7 @@ import clone from 'lodash.clonedeep'
 
 class Filter {
   constructor() {
+    this.storeFilter = false;
     this.filters = []
     this.reset()
   }
@@ -22,17 +23,19 @@ class Filter {
     this.pagination = {}
     this.load = false
     this.hasValues = false
+    this.storeFilter = false;
   }
 
   //Load filter
   setFilter(params = {}) {
     return new Promise(async (resolve, reject) => {
+      this.storeFilter = params.storeFilter ? params.storeFilter : false;
       this.setfilterByName(params.name)//load filter by name
       this.addFields(params.fields)//Add fields
       this.setCallBack(params.callBack)//set callBack
       await this.restoreValuesFromCache()//Restore data filter from cache
       await this.setPagination()//Set pagination
-      this.validateIfLoadFilter()//Validate if load filter
+      await this.validateIfLoadFilter()//Validate if load filter
       resolve(true)//Response
     })
   }

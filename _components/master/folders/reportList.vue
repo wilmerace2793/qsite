@@ -17,7 +17,11 @@
       <q-item
         clickable
         v-ripple
-        class="tw-py-3 tw-border-b tw-cursor-move"
+        class="
+          tw-py-3 
+          tw-border-b 
+          tw-cursor-move
+        "
         v-for="(report, index) in uniqBy(folder.reportList)"
         :key="report.id"
       >
@@ -25,13 +29,24 @@
           <q-icon name="drag_handle" />
         </q-item-section>
         <q-item-section>
-          <q-item-label class="tw-font-bold" lines="1">{{ report.title || report.id }}</q-item-label>
+          <q-item-label 
+            class="tw-font-bold" 
+            lines="1"
+          >
+            {{ report.title || report.id }}
+          </q-item-label>
           <q-item-label caption lines="1">
             {{ report.name || report.description }} 
           </q-item-label>
         </q-item-section>
         <q-item-section side>
-          <q-btn flat round color="tw-gray-300" size="sm" icon="more_vert">
+          <q-btn 
+            flat 
+            round 
+            color="tw-gray-300" 
+            size="sm"
+            icon="more_vert"
+          >
             <q-menu>
               <q-list class="list-report-menu">
                 <q-item 
@@ -60,7 +75,7 @@
         tw-text-center 
         tw-text-5xl"
       >
-        <div class="fa-light fa-folder-xmark"></div>
+        <div class="fa-light fa-folder-xmark" />
         <div class="tw-text-base tw-py-2">
          {{ $tr('isite.cms.message.searchNotFound') }}
         </div>

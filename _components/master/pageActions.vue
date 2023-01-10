@@ -19,13 +19,21 @@
       <!--Button Actions-->
       <div v-for="(btn, keyAction) in actions" :key="keyAction" v-if="btn.vIf != undefined ? btn.vIf : true">
         <!-- if the button is dropdown -->
-        <q-btn-dropdown split v-bind="{...buttonProps}" :dropdown-icon="btn.props.icon"
+        <q-btn-dropdown split v-bind="{...buttonProps}"
                         v-if="btn.type == 'btn-dropdown'" outline
         >
+        <template v-slot:label>
+          <div class="row items-center no-wrap" @click="refreshByTime(timeRefresh)">
+            <q-icon left :name="btn.props.icon" />
+            <div class="text-center" v-if="multipleRefresh">
+              {{ titleRefresh }}
+            </div>
+          </div>
+        </template>
           <q-list>
             <q-item v-for="(item, index) in btn.items" :key="index" clickable v-close-popup
-                    @click="btn.action != undefined ? btn.action(item.type) : null">
-              <q-item-section avatar>
+                    @click="item.action != undefined ? item.action() : null" class="tw-px-4">
+              <q-item-section avatar v-if="item.icon">
                 <q-avatar :icon="item.icon"/>
               </q-item-section>
               <q-item-section>
@@ -47,7 +55,10 @@
       <div class="text-blue-grey ellipsis text-caption">
         <q-icon name="fas fa-exclamation-circle" class="q-mr-xs" color="amber" size="14px"/>
         <b>{{ $trp('isite.cms.label.filter') }}:</b>
-        <label v-for="(item, itemKey) in filter.readValues" :key="itemKey" v-if="item.value"
+        <label 
+          v-for="(item, itemKey) in filter.readValues" 
+          :key="itemKey" 
+          v-if="item.value && item.label !== ''"
                class="q-ml-xs text-grey-7">
           {{ item.label }} {{ item.value }},
         </label>
@@ -72,6 +83,7 @@ import masterExport from "@imagina/qsite/_components/master/masterExport"
 
 export default {
   beforeDestroy() {
+    this.clearInterval();
     this.$root.$off('page.data.filter.read')
   },
   props: {
@@ -83,6 +95,10 @@ export default {
     extraActions: {type: Array},
     excludeActions: {default: false},
     searchAction: {default: true},
+    multipleRefresh: {
+      type: Boolean,
+      default: () => false,
+    }
   },
   components: {masterExport},
   watch: {},
@@ -95,7 +111,10 @@ export default {
     return {
       exportParams: false,
       search: null,
-      filterData: {}
+      filterData: {},
+      refreshIntervalId: null,
+      titleRefresh: this.$tr('isite.cms.label.refreshAtOnce'),
+      timeRefresh: 0,
     }
   },
   computed: {
@@ -157,11 +176,34 @@ export default {
         //Refresh
         {
           label: this.$trp('isite.cms.label.refresh'),
+          type: this.multipleRefresh ? 'btn-dropdown' : '',
           vIf: (this.params.refresh && !excludeActions.includes('refresh')),
           props: {
             icon: 'fas fa-redo'
           },
-          action: this.emitRefresh
+          items: [
+            {
+              label: this.$tr('isite.cms.label.refreshAtOnce'),
+              action: () => this.refreshByTime(0)
+            },
+            {
+              label: this.$tr('isite.cms.label.refreshEveryMinutes', {min: 1}),
+              action: () => this.refreshByTime(1)
+            },
+            {
+              label: this.$tr('isite.cms.label.refreshEveryMinutes', {min: 5}),
+              action: () => this.refreshByTime(5)
+            },
+            {
+              label: this.$tr('isite.cms.label.refreshEveryMinutes', {min: 10}),
+              action: () => this.refreshByTime(10)
+            },
+            {
+              label: this.$tr('isite.cms.label.refreshEveryMinutes', {min: 15}),
+              action: () => this.refreshByTime(5)
+            }
+          ],
+          action: this.emitRefresh,
         }
       ]
 
@@ -214,6 +256,20 @@ export default {
         this.$set(this.filter, 'readValues', readValues)
       })
     },
+    refreshByTime(time) {
+      this.timeRefresh = time;
+      this.titleRefresh = time === 0 
+      ? this.$tr('isite.cms.label.refreshAtOnce') 
+      : this.$tr('isite.cms.label.refreshEveryMinutes', {min: time});
+      this.clearInterval();
+      const interval = 1000 * 60 * time;
+      this.emitRefresh();
+      if(time > 0) {
+        this.refreshIntervalId = setInterval(() => {
+          this.emitRefresh();
+        }, interval);
+      }
+    },
     //Emit refresh
     emitRefresh() {
       this.$emit('refresh')
@@ -227,7 +283,13 @@ export default {
       this.$filter.addValues(this.filterData)
       //Call back
       if (this.filter && this.filter.callBack) this.filter.callBack(this.filter)
-    }
+    },
+    clearInterval() {
+      if(this.refreshIntervalId) {
+        clearInterval(this.refreshIntervalId);
+        this.refreshIntervalId = null;
+      }
+    },
   }
 }
 </script>
@@ -270,31 +332,4 @@ export default {
         color: $tertiary 
       .q-field__append:last-child .q-icon
         color: $primary 
-
-  .actions-content
-    .q-btn-dropdown
-      .q-btn-dropdown--current
-        display none
-
-      .q-btn-dropdown__arrow-container
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-
-        &[aria-expanded=true]
-          .q-icon
-            &::before
-              content "\f106"
-
-.q-menu
-  .q-list
-    .q-item
-      padding: 3px 10px 3px 3px;
-
-      .q-item__section--avatar
-        min-width: 50px;
-        padding-right 10px
-        color $primary
-
-        i
-          font-size 16px
 </style>
