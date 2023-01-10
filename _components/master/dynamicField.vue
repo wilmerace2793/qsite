@@ -1430,14 +1430,12 @@ export default {
     loadField(name) {
       let response = true
       let field = this.$clone(this.field)
-
       //Validate type field
       if (field.type !== name) response = false
       //Validate permission
       if (field.permission && !this.$auth.hasAccess(field.permission)) response = false
       //Validate vIf prop
       if (response && field.props && (field.props.vIf != undefined)) response = field.props.vIf
-
       //Response
       return response
     },
@@ -1490,22 +1488,27 @@ export default {
     },
     //Load the option for default value when is loadOptions
     loadOptionForValue() {
-      let loadOptions = this.field.loadOptions
-      if (loadOptions && loadOptions.apiRoute) {
-        //Validate if there is the option for the value
-        if (loadOptions.filterByQuery && this.responseValue && !this.options.length) {
-          let fieldSelect = loadOptions.select || {label: 'title', id: 'id'}
-          //Instance request params
-          let requestParams = {
-            refresh : true,
-            params: {filter: {field: fieldSelect.id}}
+      if (this.loadField('select')) {
+        let loadOptions = this.field.loadOptions
+        if (loadOptions && loadOptions.apiRoute) {
+          //Validate if there is the option for the value
+          if (loadOptions.filterByQuery && this.responseValue && !this.options.length) {
+            let fieldSelect = loadOptions.select || {label: 'title', id: 'id'}
+            //Instance request params
+            let requestParams = {
+              refresh : true,
+              params: {filter: {field: fieldSelect.id}}
+            }
+            //Instance the criteria
+            const criteria = this.responseValue.id || this.responseValue.value || this.responseValue
+            //Request
+            if (this.field) {
+
+            }
+            this.$crud.show(loadOptions.apiRoute, criteria, requestParams).then(response => {
+              this.rootOptions = this.$array.select([response.data], fieldSelect)
+            })
           }
-          //Instance the criteria
-          const criteria = this.responseValue.id || this.responseValue.value || this.responseValue
-          //Request
-          this.$crud.show(loadOptions.apiRoute, criteria, requestParams).then(response => {
-            this.rootOptions = this.$array.select([response.data], fieldSelect)
-          })
         }
       }
     }
