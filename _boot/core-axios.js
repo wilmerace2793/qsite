@@ -25,7 +25,9 @@ export default function ({app, router, store, Vue, ssrContext}) {
   //========== Show alert from interceptor
   function showMessages(messages = []) {
     messages.forEach(item => {
-      alert[item.type || 'info'](item)
+      if(item.message !== '') { 
+        alert[item.type || 'info'](item)
+      }
     })
   }
   //========== Request interceptor

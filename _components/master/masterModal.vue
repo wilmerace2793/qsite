@@ -9,8 +9,8 @@
     :content-style="masterModalWidthSize"
   >
     <!--Content-->
-    <div :id="id || 'masterModalContent'" :style="customPosition ? '' : `min-width: ${width}`"
-         v-if="show" class="master-dialog__content round relative-position">
+    <div :id="id || 'masterModalContent'"  :style="customPosition ? '' : `min-width: ${width}`"
+         v-if="show" class="master-dialog__content round relative-position" :class="customClass">
       <!--Header-->
       <div :class="`master-dialog__header text-${color} row justify-between items-center`">
         <!--Title-->
@@ -61,7 +61,8 @@ export default {
     maximized: {type: Boolean, default: false},
     hideCloseAction: {type: Boolean, default: false},
     customPosition: {type: Boolean, default: false},
-    modalWidthSize: {type: String, default: '65vw'}
+    modalWidthSize: {type: String, default: '65vw'},
+    customClass: {type: String, default: ''}
   },
   components: {},
   watch: {

@@ -51,7 +51,7 @@
       //reder chart
       data () {
         return {
-          labels: this.chartsData.dataLabels.map(({name}) => name),
+          labels: this.chartsData.dataLabels.map((item) => item.name || item),
           datasets: this.chartsData.dataSets
         }
       }
