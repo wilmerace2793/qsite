@@ -59,6 +59,7 @@
                   v-for="(item, index) in fieldRelationActions" 
                   :key="index"  
                   @click.native="item.action(report)"
+                  v-if="item.vIf !== undefined ? item.vIf : true"
                 >
                   <q-item-section avatar>
                     <q-icon 
