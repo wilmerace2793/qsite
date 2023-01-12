@@ -31,6 +31,7 @@ import draggable from "vuedraggable";
 import reportList from './reportList.vue';
 import folder from './folderList.vue';
 import foldersStore from './store/foldersStore.js';
+import cache from '@imagina/qsite/_plugins/cache';
 
 export default {
   props: {
@@ -58,6 +59,7 @@ export default {
       try {
         if(!this.apiRouteOrderFolders) return;
         await foldersStore().saveOrderFolders(this.apiRouteOrderFolders, this.folderList);
+        await cache.restore(config('app.saveCache.refresh'))//Reset cache
       } catch (error) {
         console.error(error)
       }
