@@ -1,14 +1,33 @@
 <template>
-  <q-btn class="btn-menu-component" color="grey-1" text-color="blue-grey" icon="fas fa-ellipsis-v" round
-         unelevated size="sm" style="font-size: 8px; padding: 6px" v-if="actions && actions.length">
-    <q-menu max-width="200px" content-class="btn-menu-component__menu" anchor="bottom right" self="top right">
+  <q-btn
+    class="btn-menu-component"
+    color="grey-1"
+    text-color="blue-grey"
+    icon="fas fa-ellipsis-v"
+    round
+    unelevated
+    size="sm"
+    style="font-size: 8px; padding: 6px"
+    v-if="showBtnMenu"
+  >
+    <q-menu
+      max-width="200px"
+      content-class="btn-menu-component__menu"
+      anchor="bottom right"
+      self="top right"
+    >
       <q-list dense separator>
-        <q-item v-for="(action, keyAction) in actionsData" :key="keyAction" v-bind="action.props"
-                v-close-popup v-if="action.vIf != undefined ? action.vIf : true"
-                @click.native="runAction(action)">
+        <q-item
+          v-for="(action, keyAction) in actionsData"
+          :key="keyAction"
+          v-bind="action.props"
+          v-close-popup
+          v-if="showActionMenu(action)"
+          @click.native="runAction(action)"
+        >
           <q-item-section>
             <div class="row items-center text-blue-grey">
-              <q-icon :name="action.icon" color="blue-grey" size="16px"/>
+              <q-icon :name="action.icon" color="blue-grey" size="16px" />
               {{ action.label || action.tooltip }}
             </div>
           </q-item-section>
@@ -33,27 +52,35 @@ export default {
   },
   computed: {
     actionsData() {
-      return this.actions.map((item) => {
-        //Instance item props
-        item.props = { tag: "a", key: this.$uid(), clickable: true };
+      return this.actions
+        .map((item) => {
+          //Instance item props
+          item.props = { tag: "a", key: this.$uid(), clickable: true };
 
-        //Define external redirect
-        if (item.toRoute) item.props.href = item.toRoute;
+          //Define external redirect
+          if (item.toRoute) item.props.href = item.toRoute;
 
-        //Instance vue route redirect
-        if (item.route)
-          item.props.to = {
-            name: item.route,
-            params: this.$clone(this.actionData || {}),
-          };
+          //Instance vue route redirect
+          if (item.route)
+            item.props.to = {
+              name: item.route,
+              params: this.$clone(this.actionData || {}),
+            };
 
-        // Formatting all instances
-        if (item.format)
-          item = { ...item, ...(item.format(this.actionData) || {}) };
+          // Formatting all instances
+          if (item.format)
+            item = { ...item, ...(item.format(this.actionData) || {}) };
 
-        //Return item
-        return item;
-      });
+          //Return item
+          return item;
+        })
+        .filter((item) => item.vIf !== "" && item.vIf !== false);
+    },
+    showBtnMenu() {
+      return this.actions && this.actions.length && this.actionsData.length;
+    },
+    showActionMenu() {
+      return (action) => (action.vIf != undefined ? action.vIf : true);
     },
   },
   methods: {
