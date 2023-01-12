@@ -25,7 +25,7 @@
       >
         <q-item-section 
           avatar 
-          class="tw-cursor-move"
+          class="f-cursor-grab"
         >
           <q-icon 
             name="drag_handle" 
