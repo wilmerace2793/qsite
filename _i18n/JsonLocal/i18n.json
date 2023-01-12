@@ -1205,7 +1205,8 @@
         "adjustFollowingParameters": "Do you want to schedule it? Adjust the following parameters",
         "sort": "Sort",
         "message": {
-          "selectColumn": "Please select at least one column to continue and a filter"
+          "selectColumn": "Please select at least one column to continue and a filter",
+          "waitMoment": "Wait a moment we are loading your report"
         }
       }
     },
@@ -2925,7 +2926,8 @@
         "adjustFollowingParameters": "¿Quieres programarlo? Ajuste los siguientes parámetros",
         "sort": "Ordenar",
         "message": {
-          "selectColumn": "Seleccione al menos una columna y un filtro para continuar"
+          "selectColumn": "Seleccione al menos una columna y un filtro para continuar",
+          "waitMoment": "Espere un momento estamos cargando su reporte"
         }
       }
     },
