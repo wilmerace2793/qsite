@@ -440,11 +440,11 @@ export default {
                 return { total: 0, data: [] };
               }
               const route = this.routes[nameRoute];
+              const column = this.kanbanColumns.find(column => column.id === item.statusId);
+              if(column) column.loading = true;
               await this.$crud.delete(route.apiRoute, item.id);
               const kanbanCard = await this.getKanbanCard(item.status);
-              const column = this.kanbanColumns.find(column => column.id === item.statusId);
               if(column) {
-                column.loading = true;
                 column.data = kanbanCard.data;
                 setTimeout(() => {
                   column.loading = false;
