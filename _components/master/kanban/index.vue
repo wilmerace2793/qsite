@@ -423,6 +423,43 @@ export default {
         }
       }
     },
+    async deleteKanbanCard(item){
+      try {
+        this.$alert.error({
+        mode: 'modal',
+        title: `ID: ${item.id}`,
+        message: this.$tr('isite.cms.message.deleteRecord'),
+        actions: [
+          {label: this.$tr('isite.cms.label.cancel'), color: 'grey'},
+          {
+            label: this.$tr('isite.cms.label.delete'),
+            color: 'red',
+            handler: async () => {
+              const nameRoute = this.automation ? 'automation' : 'card';
+              if(!this.routes[nameRoute]) {
+                return { total: 0, data: [] };
+              }
+              const route = this.routes[nameRoute];
+              const column = this.kanbanColumns.find(column => column.id === item.statusId);
+              if(column) column.loading = true;
+              await this.$crud.delete(route.apiRoute, item.id);
+              const kanbanCard = await this.getKanbanCard(item.status);
+              if(column) {
+                column.data = kanbanCard.data;
+                setTimeout(() => {
+                  column.loading = false;
+                }, 1000);
+                column.total = kanbanCard.total;
+              }
+
+            }
+          }
+        ]
+      })
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async saveStatusOrdering() {
       try {
         if(!this.routes.orderStatus) return;
