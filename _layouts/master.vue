@@ -34,6 +34,9 @@
     <!---Cropper-->
     <cropper-component ref="cropperComponent"/>
 
+    <!-- Help Center -->
+    <help-center/>
+
     <!-- FOOTER -->
     <component :is="components.footer"/>
   </q-layout>
@@ -54,6 +57,7 @@ import drawersPanel from '@imagina/qsite/_components/panel/drawers'
 import footerPanel from '@imagina/qsite/_components/panel/footer'
 //Components
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
+import helpCenter from '@imagina/qsite/_components/master/helpCenter.vue'
 
 export default {
   name: "MasterLayout",
@@ -75,6 +79,7 @@ export default {
   components: {
     chat,
     cropperComponent,
+    helpCenter,
     //Admin
     headerAdminTheme1,
     headerAdminTheme2,

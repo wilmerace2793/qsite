@@ -4,6 +4,32 @@
       <!--Actions-->
       <q-btn v-for="(btn, keyAction) in actions.bottons" :key="keyAction" v-bind="btn.props"
              v-if="btn.vIf != undefined ? btn.vIf : true" @click="btn.action != undefined ? btn.action() : null">
+        <!-- Menu Actions -->
+        <q-menu v-if="btn.menu" fit>
+          <div class="q-py-sm q-px-md">
+            <div class="text-subtitle1 text-primary">{{ btn.label }}</div>
+            <!--Separator-->
+            <q-separator class="q-my-sm"/>
+            <!-- Description -->
+            <div class="text-caption text-blue-grey">{{ $tr('isite.cms.message.descriptionHelpCenter') }}.</div>
+            <!--Actions-->
+            <q-list separator class="no-shadow" style="min-width: 260px">
+              <q-item v-for="(act, keyAction) in btn.menu.actions" :key="keyAction" clickable v-ripple
+                      v-close-popup @click.native="act.action != undefined ? act.action() : null">
+                <q-item-section class="text-blue-grey">
+                  <div>
+                    <q-icon :name="act.icon" class="q-mr-sm" color="primary" size="xs"/>
+                    {{ $tr('isite.cms.label.faq') }}
+                  </div>
+                </q-item-section>
+                <q-item-section side>
+                  <q-icon name="fa-light fa-chevron-right" size="12px"/>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </div>
+        </q-menu>
+        <!-- Tooltip -->
         <q-tooltip>{{ btn.label }}</q-tooltip>
       </q-btn>
       <!--Auth section-->
@@ -71,6 +97,15 @@ export default {
       badge: {
         chat: false,
         notification: false
+      },
+      defaultButtonProps: {
+        round: true,
+        dense: true,
+        color: "white",
+        unelevated: true,
+        class: "btn-small",
+        textColor: "blue-grey",
+        noCaps: true
       }
     }
   },
@@ -92,17 +127,6 @@ export default {
     },
     //Site Actions
     actions() {
-      //Default buttons props
-      let defaultButtonProps = {
-        round: true,
-        dense: true,
-        color: "white",
-        unelevated: true,
-        class: "btn-small",
-        textColor: "blue-grey",
-        noCaps: true
-      }
-
       let goToSiteUrl = this.$store.state.qsiteApp.baseUrl;
 
       //define the organization url if there're someone selected
@@ -115,19 +139,19 @@ export default {
         bottons: [
           //Go To Site
           {
-             vIf: this.showGoToSiteButton,
-             name: 'goToSite',
-             label: this.$tr('isite.cms.configList.goToSite'),
-             props: {
-               ...defaultButtonProps,
-               label: this.$tr('isite.cms.showSite'),
-               type: 'a',
-               href: goToSiteUrl,
-               target: '_blank',
-               round: false,
-               rounded: true,
-               padding: 'xs md'
-             }
+            vIf: this.showGoToSiteButton,
+            name: 'goToSite',
+            label: this.$tr('isite.cms.configList.goToSite'),
+            props: {
+              ...this.defaultButtonProps,
+              label: this.$tr('isite.cms.showSite'),
+              type: 'a',
+              href: goToSiteUrl,
+              target: '_blank',
+              round: false,
+              rounded: true,
+              padding: 'xs md'
+            }
           },
           //checking
           {
@@ -135,7 +159,7 @@ export default {
             vIf: (config('app.mode') == 'ipanel') && this.$auth.hasAccess('icheckin.shifts.create'),
             label: this.$tr('icheckin.cms.sidebar.checkin'),
             props: {
-              ...defaultButtonProps,
+              ...this.defaultButtonProps,
               icon: 'fas fa-stopwatch',
               round: true
             },
@@ -147,8 +171,8 @@ export default {
             label: 'Chat',
             vIf: (config('app.mode') == 'iadmin') && this.$auth.hasAccess('ichat.conversations.index'),
             props: {
-              ...defaultButtonProps,
-              icon: this.theme === 1 ? 'fas fa-comment-alt' : 'far fa-comment-alt',
+              ...this.defaultButtonProps,
+              icon: 'fa-light fa-message-lines',
               class: `btn-small ${this.badge.chat ? 'active-badge' : ''}`
             },
             action: () => this.$eventBus.$emit('toggleMasterDrawer', 'chat')
@@ -159,11 +183,31 @@ export default {
             label: this.$trp('isite.cms.label.notification'),
             vIf: this.$auth.hasAccess('notification.notifications.manage'),
             props: {
-              ...defaultButtonProps,
-              icon: this.theme === 1 ? 'fas fa-bell' : 'far fa-bell',
+              ...this.defaultButtonProps,
+              icon: 'fa-light fa-bell',
               class: `btn-small ${this.badge.notification ? 'active-badge' : ''}`
             },
             action: () => this.$eventBus.$emit('toggleMasterDrawer', 'notification')
+          },
+          //Help Center
+          {
+            name: 'helpCenter',
+            label: this.$trp('isite.cms.label.helpCenter'),
+            vIf: parseInt(this.$store.getters['qsiteApp/getSettingValueByName']('isite::hcStatus') || '0'),
+            props: {
+              id: 'siteActionHelpCenter',
+              ...this.defaultButtonProps,
+              icon: "fal fa-question-circle",
+            },
+            menu: {
+              actions: [
+                {
+                  icon: 'fa-light fa-question-circle',
+                  label: 'FAQ',
+                  action: () => this.$eventBus.$emit('toggleHelpSection', {sectionName: 'faq'})
+                }
+              ]
+            }
           }
         ],
         menu: [
@@ -171,9 +215,9 @@ export default {
           {
             name: 'profile',
             props: {
-              ...defaultButtonProps,
+              ...this.defaultButtonProps,
               label: this.$tr('iprofile.cms.sidebar.panelProfile'),
-              icon: 'fas fa-user-circle',
+              icon: 'fa-light fa-circle-user',
               round: false,
               rounded: true,
               align: "left"
@@ -185,9 +229,9 @@ export default {
             name: 'settings',
             vIf: (config('app.mode') == 'iadmin'),
             props: {
-              ...defaultButtonProps,
+              ...this.defaultButtonProps,
               label: this.$trp('isite.cms.label.setting'),
-              icon: 'fas fa-cog',
+              icon: 'fa-light fa-folder-gear',
               round: false,
               rounded: true,
               align: "left"
@@ -199,9 +243,9 @@ export default {
             name: 'settings',
             vIf: (config('app.mode') == 'iadmin'),
             props: {
-              ...defaultButtonProps,
+              ...this.defaultButtonProps,
               label: this.$tr('isite.cms.configList.signOut'),
-              icon: 'fas fa-sign-out-alt',
+              icon: 'fa-light fa-right-from-bracket',
               round: false,
               rounded: true,
               align: "left"
@@ -221,7 +265,7 @@ export default {
     },
     logout() {
       const authProvider = axios.defaults.params.setting.authProvider;
-      if(authProvider === 'microsoft') {
+      if (authProvider === 'microsoft') {
         storeMicrosoft().signOut();
         return;
       }

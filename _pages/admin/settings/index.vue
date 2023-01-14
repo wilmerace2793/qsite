@@ -7,7 +7,7 @@
       <!--Page Actions-->
       <div class="col-xs-12">
         <div class="box box-auto-height">
-          <page-actions :title="$route.meta.title" @refresh="getData"/>
+          <page-actions :title="pageTitle" @refresh="getData"/>
         </div>
       </div>
       <!--Menu settings-->
@@ -74,6 +74,11 @@ export default {
     }
   },
   computed: {
+    //Page title
+    pageTitle() {
+      const useLegacyStructure = parseInt(this.$store.getters['qsiteApp/getSettingValueByName']('isite::legacyStructureCMS') || 0)
+      return useLegacyStructure ? this.$tr(this.$route.meta.title) : this.$route.meta.title
+    },
     //Return setting assigned settings
     assignedSettings() {
       let userSettings = this.$store.state.quserAuth.settings || {}
