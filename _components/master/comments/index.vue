@@ -56,7 +56,7 @@
             </q-item-section>
           </q-item>
           <q-item v-if="permisionComments.index">
-            <q-item-section>
+            <q-item-section v-if="!loading">
               <q-timeline class="grey-4">
                 <q-timeline-entry
                   v-for="(item, index, itemKey) in comments"
@@ -133,6 +133,9 @@
                 </q-timeline-entry>
               </q-timeline>
             </q-item-section>
+            <div v-if="loading" class="tw-my-10">
+              <inner-loading :visible="loading"/>
+            </div>
           </q-item>
         </q-list>
       </q-card-section>
@@ -143,17 +146,11 @@
 <script lang="ts">
 import Vue, { defineComponent, computed, ref } from "vue";
 import CKEditor from "@imagina/qsite/_components/master/ckEditor.vue";
-export interface CommentModelContract {
-        text: string;
-        textEdit: string;
-        active: boolean;
-        user: string;
-        loading: boolean;
-        avatar: string;
-}
-interface EditorConfigContract {
-        height: number;
-}
+import {
+  CommentModelContract, 
+  EditorConfigContract 
+} from '@imagina/qsite/_components/master/comments/contracts/comments.ts';
+
 export default defineComponent({
    components: { CKEditor },
    props: {
@@ -294,10 +291,10 @@ export default defineComponent({
           commentableId: props.requestableId,
           comment: dataBase.value.text,
         };
-        const response = await Vue.prototype.$crud.create(route.value, params);
-        getCommentsList(props.requestableId);
-        dataBase.value = commentModel;
-        Vue.prototype.$alert.info({
+        await Vue.prototype.$crud.create(route.value, params);
+        await getCommentsList(props.requestableId);
+        dataBase.value = { ...commentModel };
+        await Vue.prototype.$alert.info({
           message: tr.value(`requestable.cms.message.savedComment`),
         });
       } catch (error) {
@@ -386,6 +383,7 @@ export default defineComponent({
       editorConfig,
       formatDate,
       comments,
+      loading,
     };
   },
 });
