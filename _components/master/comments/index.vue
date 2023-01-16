@@ -149,7 +149,7 @@ import CKEditor from "@imagina/qsite/_components/master/ckEditor.vue";
 import {
   CommentModelContract, 
   EditorConfigContract 
-} from '@imagina/qsite/_components/master/comments/contracts/comments.ts';
+} from "./contracts/comments";
 
 export default defineComponent({
    components: { CKEditor },
