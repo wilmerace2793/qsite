@@ -143,13 +143,16 @@
 <script lang="ts">
 import Vue, { defineComponent, computed, ref } from "vue";
 import CKEditor from "@imagina/qsite/_components/master/ckEditor.vue";
-export interface commentModelContract {
+export interface CommentModelContract {
         text: string;
         textEdit: string;
         active: boolean;
         user: string;
         loading: boolean;
         avatar: string;
+}
+interface EditorConfigContract {
+        height: number;
 }
 export default defineComponent({
    components: { CKEditor },
@@ -160,7 +163,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const commentModel = ref<commentModelContract>({
+    const commentModel = ref<CommentModelContract>({
     text: "",
     textEdit: "",
     active: false,
@@ -181,7 +184,7 @@ export default defineComponent({
     }));
     const dataBase = ref<any>({ ...commentModel.value });
     const textPlaceholder = ref<string>("Escriba un comentario...");
-    const editorConfig = ref({
+    const editorConfig = ref<EditorConfigContract>({
         height: 100,
     });
     function formatDate(date: Date): Date {
@@ -328,7 +331,6 @@ export default defineComponent({
             })
             .catch((error) => {
               console.log(error);
-              //this.modal.loading = false;
               Vue.prototype.$alert.error({
                 message: tr.value("isite.cms.message.recordNoDeleted"),
               });
