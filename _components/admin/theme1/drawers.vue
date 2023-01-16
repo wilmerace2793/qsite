@@ -36,7 +36,7 @@
     </q-drawer>
 
     <!--Recommendation-->
-    <q-drawer id="drawerRecommendationMaster" v-model="drawer.recommendation" side="right" :overlay="false"
+    <q-drawer id="drawerRecommendationMaster" v-model="drawer.recommendation" side="right" behavior="mobile" :overlay="true"
               v-if="routeSubHeader.recommendations ? true : false">
       <master-recommendation/>
     </q-drawer>
@@ -121,7 +121,7 @@ export default {
       //handler toggleMasterDrawer
       this.$eventBus.$on('toggleMasterDrawer', (drawerName) => this.toggleDrawer(drawerName))
       //handler openMasterDrawer
-      this.$eventBus.$on('openMasterDrawer', (drawerName) => this.drawer[drawerName] = true)
+      this.$eventBus.$on('openMasterDrawer', (drawerName) => drawerName === 'recommendation' ? this.drawer[drawerName] = false : this.drawer[drawerName] = true)
     },
     //Show drawer specific
     toggleDrawer(drawerName) {
