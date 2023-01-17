@@ -40,4 +40,5 @@ export interface commentsContract {
     active: boolean;
     loading: boolean;
     textEdit: string | null;
+    edit: boolean;
 }

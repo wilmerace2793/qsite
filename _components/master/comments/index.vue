@@ -243,7 +243,7 @@ export default defineComponent({
         console.log(error);
       }
     }
-    function cancelComment(comment): void {
+    function cancelComment(comment: commentsContract): void {
       if (comment.comment !== comment.textEdit) {
         Vue.prototype.$q
           .dialog({
@@ -261,7 +261,7 @@ export default defineComponent({
         comment.active = false;
       }
     }
-    function editComment(id: number, comment: any) {
+    function editComment(id: number, comment: commentsContract) {
       try {
         comment.loading = true;
         Vue.prototype.$crud
