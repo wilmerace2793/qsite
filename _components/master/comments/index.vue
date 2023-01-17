@@ -96,14 +96,15 @@
                         v-else
                       />
                     </q-card>
-                    <p class="tw-mt-2 tw-text-xs">
-                      <a
+                    <div class="tw-mt-2 tw-text-xs">
+                      <q-btn
                         v-if="permisionComments.destroy"
-                        class="link-delete tw-cursor-pointer"
+                        class="tw-bg-red-500 tw-text-white"
+                        :label="tr(`isite.cms.label.delete`)"
+                        size="sm"
                         @click="deleteComment(item.id)"
-                        >{{ tr(`isite.cms.label.delete`) }}</a
-                      >
-                    </p>
+                      />
+                    </div>
                   </div>
                   <div class="flex justify-between" v-if="item.active">
                     <div class="tw-mt-2 tw-space-x-2">
