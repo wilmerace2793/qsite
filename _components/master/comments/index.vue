@@ -61,9 +61,12 @@
                 <q-timeline-entry
                   v-for="(item, index, itemKey) in comments"
                   :key="itemKey"
-                  :avatar="item.userProfile.mainImage"
+                  :avatar="mainImage(item)"
                 >
-                  <h4 class="tw-text-sm">
+                  <h4 
+                    class="tw-text-sm" 
+                    v-if="item.userProfile"
+                  >
                     <strong>
                       {{ item.userProfile.fullName }}
                     </strong>
@@ -177,6 +180,10 @@ export default defineComponent({
     const commentableType = computed<string>(() => props.commentableType);
     const commentModel = ref<CommentModelContract>({...commentModelConst});
     const route = computed<string>(() => props.apiRoute);
+    const mainImage = computed(() => {
+      return item => item.userProfile && item.userProfile?.mainImage 
+      ? item.userProfile.mainImage: commentModelConst.avatar;
+    })
     const tr = ref(Vue.prototype.$tr);
     const comments = ref<commentsContract[]>([]);
     const loading = ref<boolean>(false);
@@ -396,6 +403,7 @@ export default defineComponent({
       formatDate,
       comments,
       loading,
+      mainImage,
     };
   },
 });
