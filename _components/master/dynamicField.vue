@@ -177,8 +177,7 @@
                 <div :class="{'tw-flex': field.props.selectColor }">
                   <div v-if="field.props.selectColor">
                     <div 
-                      class="
-                        tw-bg-gray-500 
+                      class=" 
                         tw-h-4 
                         tw-w-4 
                         tw-rounded-full 
