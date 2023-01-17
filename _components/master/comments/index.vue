@@ -144,32 +144,38 @@
 </template>
 
 <script lang="ts">
-import Vue, { defineComponent, computed, ref } from "vue";
+import Vue, 
+{ defineComponent, computed, ref} 
+from "vue";
 import CKEditor from "@imagina/qsite/_components/master/ckEditor.vue";
 import { 
   CommentModelContract, 
-  EditorConfigContract 
+  EditorConfigContract,
+  apiRouteDefault,
+  commentModelConst,
+  commentsContract,
+  commentableTypeDefault,
 } from "@imagina/qsite/_components/master/comments/contracts/comments";
 
 export default defineComponent({
    components: { CKEditor },
    props: {
-    requestableId: {
+    commentableId: {
       type: Number,
       required: true,
     },
+    commentableType: {
+      type: String,
+      default: () => commentableTypeDefault,
+    },
+    apiRoute: {
+      type: String,
+      default: () => apiRouteDefault,
+    },
   },
   setup(props) {
-    const commentModel = ref<CommentModelContract>({
-    text: "",
-    textEdit: "",
-    active: false,
-    user: "",
-    loading: false,
-    avatar:
-        "https://dev-gestionhc.ozonohosting.com/modules/iprofile/img/default.jpg",
-    });
-    const route = ref<string>("apiRoutes.qrequestable.comments");
+    const commentModel = ref<CommentModelContract>({...commentModelConst});
+    const route = computed<string>(() => props.apiRoute);
     const tr = ref(Vue.prototype.$tr);
     const comments = ref<any>([]);
     const loading = ref<boolean>(false);
@@ -285,14 +291,20 @@ export default defineComponent({
     }
     async function addComment(): Promise<void> {
       try {
+        // @ts-ignore
+        const userId = this.$store.state.quserAuth.userId;
         dataBase.value.loading = true;
         const params = {
-          commentableType: "Modules\\Requestable\\Entities\\Requestable",
-          commentableId: props.requestableId,
+          approved: true,
+          commentableType: props.commentableType,
+          commentableId: props.commentableId,
           comment: dataBase.value.text,
+          userId: userId,
+          is_internal: false,
+          options: null,
         };
         await Vue.prototype.$crud.create(route.value, params);
-        await getCommentsList(props.requestableId);
+        await getCommentsList(props.commentableId);
         dataBase.value = { ...commentModel };
         await Vue.prototype.$alert.info({
           message: tr.value(`requestable.cms.message.savedComment`),
@@ -366,6 +378,7 @@ export default defineComponent({
         console.log(error);
       }
     }
+    getCommentsList(props.commentableId);
     return {
       permisionComments,
       tr,
