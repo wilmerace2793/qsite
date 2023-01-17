@@ -36,9 +36,46 @@ export interface commentsContract {
     updatedAt: string;
     updatedBy: number;
     userId: number;
-    userProfile: any;
+    userProfile: UserProfileContract;
     active: boolean;
     loading: boolean;
     textEdit: string | null;
     edit: boolean;
+}
+
+export interface UserProfileContract {
+    email: string;
+    password: string;
+    permissions: any;
+    allSettings: any;
+    socialData: any;
+    defaultInclude: string;
+    allPermissions: any;
+    crudPermissions?: any;
+    lastLogin: string;
+    fullName: string;
+    firstName: string;
+    lastName: string;
+    timezone?: any;
+    language?: any;
+    createdBy?: any;
+    updatedBy?: any;
+    deletedBy?: any;
+    externalGuid?: any;
+    roles: any[];
+    departments: any[];
+    id: number;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt?: any;
+    externalId?: any;
+    options: Options;
+    searchableFields: string;
+    fileFormats?: any;
+}
+
+export interface Options {
+    buildingsAssigned: any[];
+    businessUnitType: string;
+    stationsAssigned: any[];
 }
