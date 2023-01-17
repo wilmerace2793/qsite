@@ -23,7 +23,7 @@ export interface EditorConfigContract {
 
 export interface commentsContract {
     approved: boolean;
-    comment: string;
+    comment: string | null;
     commentableId: number;
     commentableType: string;
     createdAt: string;
@@ -37,4 +37,7 @@ export interface commentsContract {
     updatedBy: number;
     userId: number;
     userProfile: any;
+    active: boolean;
+    loading: boolean;
+    textEdit: string | null;
 }

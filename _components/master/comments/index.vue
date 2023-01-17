@@ -98,7 +98,7 @@
                         v-if="permisionComments.destroy"
                         class="link-delete tw-cursor-pointer"
                         @click="deleteComment(item.id)"
-                        >Eliminar</a
+                        >{{ $tr(`isite.cms.label.delete`) }}</a
                       >
                     </p>
                   </div>
@@ -177,7 +177,7 @@ export default defineComponent({
     const commentModel = ref<CommentModelContract>({...commentModelConst});
     const route = computed<string>(() => props.apiRoute);
     const tr = ref(Vue.prototype.$tr);
-    const comments = ref<any>([]);
+    const comments = ref<commentsContract[]>([]);
     const loading = ref<boolean>(false);
     const permisionComments = computed(() => ({
       create: Vue.prototype.$auth.hasAccess("icomments.comments.create"),
@@ -305,7 +305,7 @@ export default defineComponent({
         };
         await Vue.prototype.$crud.create(route.value, params);
         await getCommentsList(props.commentableId);
-        dataBase.value = { ...commentModel };
+        dataBase.value = { ...commentModel.value };
         await Vue.prototype.$alert.info({
           message: tr.value(`requestable.cms.message.savedComment`),
         });
@@ -326,7 +326,6 @@ export default defineComponent({
           persistent: true,
         })
         .onOk(async () => {
-          comments.value.loading = true;
           Vue.prototype.$crud
             .delete(route.value, id)
             .then((response) => {
@@ -336,7 +335,6 @@ export default defineComponent({
               Vue.prototype.$alert.info({
                 message: tr.value("isite.cms.message.recordDeleted"),
               });
-              comments.value.loading = false;
             })
             .catch((error) => {
               console.log(error);
