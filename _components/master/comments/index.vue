@@ -146,10 +146,10 @@
 <script lang="ts">
 import Vue, { defineComponent, computed, ref } from "vue";
 import CKEditor from "@imagina/qsite/_components/master/ckEditor.vue";
-import {
+import { 
   CommentModelContract, 
   EditorConfigContract 
-} from "./contracts/comments";
+} from "@imagina/qsite/_components/master/comments/contracts/comments";
 
 export default defineComponent({
    components: { CKEditor },
