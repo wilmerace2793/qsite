@@ -22,7 +22,7 @@
                   class="tw-py-2 tw-cursor-pointer text-grey-6"
                   v-html="textPlaceholder"
                   @click="activeText()"
-                  :title="$tr(`isite.cms.label.edit`)"
+                  :title="tr(`isite.cms.label.edit`)"
                 />
               </q-card>
             </q-item-section>
@@ -39,7 +39,7 @@
                     @click="addComment()"
                     rounded
                     size="md"
-                    :label="$tr(`isite.cms.label.save`)"
+                    :label="tr(`isite.cms.label.save`)"
                     color="primary"
                     no-caps
                   />
@@ -67,10 +67,10 @@
                     <strong>
                       {{ item.userProfile.fullName }}
                     </strong>
-                    <small>
+                    <small v-if="item.updatedAt">
                       {{ formatDate(item.updatedAt) }}
                       <span v-if="item.createdAt !== item.updatedAt">
-                        ({{ $tr(`isite.cms.label.edited`) }})</span
+                        ({{ tr(`isite.cms.label.edited`) }})</span
                       >
                     </small>
                   </h4>
@@ -84,7 +84,7 @@
                         class="tw-py-2 tw-cursor-pointer"
                         v-html="item.comment"
                         @click="activeEdit(item.id)"
-                        :title="$tr(`isite.cms.label.edit`)"
+                        :title="tr(`isite.cms.label.edit`)"
                         v-if="permisionComments.edit"
                       />
                       <q-card-section
@@ -98,7 +98,7 @@
                         v-if="permisionComments.destroy"
                         class="link-delete tw-cursor-pointer"
                         @click="deleteComment(item.id)"
-                        >{{ $tr(`isite.cms.label.delete`) }}</a
+                        >{{ tr(`isite.cms.label.delete`) }}</a
                       >
                     </p>
                   </div>
@@ -112,7 +112,7 @@
                         @click="updateComment('edit', item.id)"
                         rounded
                         size="md"
-                        :label="$tr(`isite.cms.label.update`)"
+                        :label="tr(`isite.cms.label.update`)"
                         color="primary"
                         no-caps
                       />
@@ -125,7 +125,7 @@
                         color="primary"
                       >
                         <q-tooltip>{{
-                          $tr(`isite.cms.label.cancel`)
+                          tr(`isite.cms.label.cancel`)
                         }}</q-tooltip>
                       </q-btn>
                     </div>
@@ -174,6 +174,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const commentableType = computed<string>(() => props.commentableType);
     const commentModel = ref<CommentModelContract>({...commentModelConst});
     const route = computed<string>(() => props.apiRoute);
     const tr = ref(Vue.prototype.$tr);
@@ -186,11 +187,11 @@ export default defineComponent({
       destroy: Vue.prototype.$auth.hasAccess("icomments.comments.destroy"),
     }));
     const dataBase = ref<any>({ ...commentModel.value });
-    const textPlaceholder = ref<string>("Escriba un comentario...");
+    const textPlaceholder = ref<string>(tr.value(`requestable.cms.message.writeComment`));
     const editorConfig = ref<EditorConfigContract>({
         height: 100,
     });
-    function formatDate(date: Date): Date {
+    function formatDate(date: string): Date {
       return date ? Vue.prototype.$moment(date).format("DD MMM YYYY, h:mm a") : null;
     };
     function activeText(): void {
@@ -350,7 +351,7 @@ export default defineComponent({
         loading.value = true;
         const params = {
           filter: {
-            commentableType: "Modules\\Requestable\\Entities\\Requestable",
+            commentableType: commentableType.value,
             commentableId,
           },
           include: "userProfile",
@@ -369,7 +370,7 @@ export default defineComponent({
           })
           .catch((error) => {
             loading.value = false;
-            Vue.prototype.$alert.error({ message: "error no actualizo" });
+            Vue.prototype.$alert.error({ message: error });
             console.log(error);
           });
       } catch (error) {
