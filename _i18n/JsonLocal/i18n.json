@@ -1003,7 +1003,8 @@
           "savedNoComment": "I can't save your comment",
           "updateComment": "Updated comment",
           "updateNoComment": "Can't update comment",
-          "undoComment": "Do you want to cancel the comment?"
+          "undoComment": "Do you want to cancel the comment?",
+          "writeComment": "Write a comment..."
         },
         "newRule": "New Rule",
         "updateRule": "Update Rule"
@@ -2851,7 +2852,8 @@
           "savedNoComment": "No se puedo guardar su comentario",
           "updateComment": "Comentario actualizado",
           "updateNoComment": "No se puedo actualizar el commentario",
-          "undoComment": "¿Desea cancelar el comentario?"
+          "undoComment": "¿Desea cancelar el comentario?",
+          "writeComment": "Escriba un comentario..."
         },
         "newRule": "Nueva Regla",
         "updateRule": "Actualizar Regla"
