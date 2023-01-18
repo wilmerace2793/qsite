@@ -159,6 +159,7 @@ import {
   commentModelConst,
   commentsContract,
   commentableTypeDefault,
+  permissionsCommentsDefault,
 } from "@imagina/qsite/_components/master/comments/contracts/comments";
 
 export default defineComponent({
@@ -176,6 +177,10 @@ export default defineComponent({
       type: String,
       default: () => apiRouteDefault,
     },
+    permisionComments: {
+      type: String,
+      default: () => permissionsCommentsDefault,
+    }
   },
   setup(props) {
     const commentableType = computed<string>(() => props.commentableType);
@@ -189,10 +194,10 @@ export default defineComponent({
     const comments = ref<commentsContract[]>([]);
     const loading = ref<boolean>(false);
     const permisionComments = computed(() => ({
-      create: Vue.prototype.$auth.hasAccess("icomments.comments.create"),
-      edit: Vue.prototype.$auth.hasAccess("icomments.comments.edit"),
-      index: Vue.prototype.$auth.hasAccess("icomments.comments.index"),
-      destroy: Vue.prototype.$auth.hasAccess("icomments.comments.destroy"),
+      create: Vue.prototype.$auth.hasAccess(`${props.permisionComments}.create`),
+      edit: Vue.prototype.$auth.hasAccess(`${props.permisionComments}.edit`),
+      index: Vue.prototype.$auth.hasAccess(`${props.permisionComments}.index`),
+      destroy: Vue.prototype.$auth.hasAccess(`${props.permisionComments}.destroy`),
     }));
     const dataBase = ref<any>({ ...commentModel.value });
     const textPlaceholder = ref<string>(tr.value(`requestable.cms.message.writeComment`));

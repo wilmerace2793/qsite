@@ -1,5 +1,13 @@
 export const apiRouteDefault: string = 'apiRoutes.qrequestable.comments';
 export const commentableTypeDefault: string = 'Modules\\Requestable\\Entities\\Requestable';
+export const permissionsCommentsDefault: String = 'icomments.comments';
+
+export interface PermissionsCommentsContract {
+    create: string;
+    edit: string;
+    index: string;
+    destroy: string;
+}
 export const commentModelConst: CommentModelContract = {
     text: "",
     textEdit: "",
