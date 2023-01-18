@@ -252,9 +252,9 @@ export default defineComponent({
       if (comment.comment !== comment.textEdit) {
         Vue.prototype.$q
           .dialog({
-            ok: "Si",
+            ok: tr.value('isite.cms.label.yes'),
             message: tr.value(`requestable.cms.message.undoComment`),
-            cancel: "No",
+            cancel: tr.value('isite.cms.label.no'),
             persistent: true,
           })
           .onOk(async () => {
