@@ -274,20 +274,6 @@ export default {
           this.funnelSelectedComputed = this.funnelPageAction || this.funnelId;
           return;
         }
-        /*const route = this.routes.funnel.apiRoute;
-        if(!this.routes.funnel) return;
-        const response = await this.$crud.index(route);
-        const funnel = response.data
-          .sort((a, b) => {
-            const compare = a.title
-              .toLocaleLowerCase()
-              .localeCompare(b.title.toLocaleLowerCase());
-            return compare === 0 && a.title !== b.title
-              ? b.title.localeCompare(a.title)
-              : compare;
-          })
-          .shift();
-        this.funnelSelectedComputed = String(funnel.id);*/
       } catch (error) {
         console.log(error);
       }
@@ -327,7 +313,7 @@ export default {
         parameters.params.include = route.include;
         const id =  { id: this.$filter.values.statusId } || {};
         parameters.params.filter = {
-          [route.filter.name]: this.funnelSelected, ...id
+          [route.filter.name]: this.funnelSelectedComputed, ...id
         };
         const response = await this.$crud.index(route.apiRoute, parameters);
         const kanbanColumn = this.getKanbanColumns(response.data);
