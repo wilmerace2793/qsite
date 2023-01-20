@@ -5,6 +5,9 @@
       <q-btn v-for="(btn, keyAction) in actions.bottons" :key="keyAction" v-bind="btn.props"
              v-if="btn.vIf != undefined ? btn.vIf : true" @click="btn.action != undefined ? btn.action() : null">
         <!-- Menu Actions -->
+        <q-menu v-if="btn.isComponent">
+          <activities system-name="admin_home" @loaded="loading = false" mode="menu" :label="btn.label" :description="btn.description"/>
+        </q-menu>
         <q-menu v-if="btn.menu" fit>
           <div class="q-py-sm q-px-md">
             <div class="text-subtitle1 text-primary">{{ btn.label }}</div>
@@ -75,6 +78,7 @@
 <script>
 import storeMicrosoft from '@imagina/quser/_store/storeMicrosoft.js'
 import axios from 'axios';
+import activities from '@imagina/qgamification/_components/activities'
 
 export default {
   beforeDestroy() {
@@ -84,7 +88,7 @@ export default {
     gutter: {type: String, default: 'sm'},
     size: {type: String, default: 'small'},
   },
-  components: {},
+  components: {activities},
   watch: {},
   mounted() {
     this.$nextTick(function () {
@@ -208,6 +212,19 @@ export default {
                 }
               ]
             }
+          },
+          //gamification
+          {
+            name: 'gamifications',
+            label: this.$trp('isite.cms.label.activities'),
+            description: this.$trp('isite.cms.message.activitiesDescription'),
+            vIf: true,
+            props: {
+              id: 'siteActionGamifications',
+              ...this.defaultButtonProps,
+              icon: "fal fa-book-circle",
+            },
+            isComponent: true,
           }
         ],
         menu: [
