@@ -24,7 +24,7 @@
     </q-btn>
     <q-input
       ref="inputKey"
-      v-model="fieldDataComputed"
+      v-model="inputDataComputed"
       v-bind="fieldProps"
       outlined
       class="tw-bg-white"
@@ -51,7 +51,7 @@ export default {
     selectionStart: 0,
   }),
   computed: {
-    fieldDataComputed: {
+    inputDataComputed: {
       get() {
         return this.inputData;
       },
@@ -79,7 +79,7 @@ export default {
         origString = origString.split("");
         origString.splice(indexPosition, 0, stringToAdd);
         const newString = origString.join("");
-        this.fieldDataComputed = newString;
+        this.inputDataComputed = newString;
       } catch (error) {
         console.log(error);
       }
