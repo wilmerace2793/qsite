@@ -56,6 +56,7 @@ export default {
         return this.inputData;
       },
       set(value) {
+        this.selectionStart = this.$refs.inputKey.$el.control.selectionStart || 0;
         this.inputData = value;
         this.$emit("input", value);
       },
