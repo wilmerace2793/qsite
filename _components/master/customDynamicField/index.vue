@@ -73,7 +73,7 @@ export default {
     },
     selectKeyFromOptions(item) {
       try {
-        let origString = this.fieldDataComputed;
+        let origString = this.inputDataComputed;
         let stringToAdd = `{{${item}}`;
         let indexPosition = this.selectionStart;
         origString = origString.split("");
