@@ -350,6 +350,14 @@
             </div>
           </div>
         </div>
+        <!-- Custom -->
+          <customDynamicField 
+            v-if="loadField('custom')"
+            v-model="responseValue"
+            :fieldProps="fieldProps"
+            :options="formatOptions" 
+          />
+        <!-- custom end-->
       </div>
     </div>
   </div>
@@ -374,6 +382,7 @@ import schedulable from '@imagina/qsite/_components/master/schedulable'
 import selectMedia from '@imagina/qmedia/_components/selectMedia'
 import googleMapMarker from '@imagina/qsite/_components/master/googleMapMarker'
 import JsonEditorVue from 'json-editor-vue'
+import customDynamicField from '@imagina/qsite/_components/master/customDynamicField/index.vue';
 
 export default {
   name: 'dynamicField',
@@ -408,7 +417,8 @@ export default {
     schedulable,
     selectMedia,
     googleMapMarker,
-    JsonEditorVue
+    JsonEditorVue,
+    customDynamicField
   },
   watch: {
     value: {
@@ -1160,6 +1170,10 @@ export default {
           class: 'absolute-right',
           margin: '2.3em 1em',
           load: true
+        },
+        custom: {
+          class: 'absolute-left tw-ml-8',
+          load: true
         }
       }
       return objectOptions[this.field.type] || result
@@ -1353,7 +1367,7 @@ export default {
             this.rootOptionsData = this.$clone(response.data)
             let formatedOptions = []
             //Format response
-            formatedOptions = this.field.type == 'select' ?
+            formatedOptions = this.field.type == 'select' || this.field.type == 'custom' ?
                 this.$array.select(response.data, loadOptions.select || fieldSelect) :
                 this.$array.tree(response.data, loadOptions.select || fieldSelect)
 
@@ -1386,7 +1400,7 @@ export default {
     },
     //Set options
     async setOptions() {
-      if (['treeSelect', 'select', 'multiSelect'].indexOf(this.field.type) != -1) {
+      if (['treeSelect', 'select', 'multiSelect', 'custom'].indexOf(this.field.type) != -1) {
         if (this.field.loadOptions) {
           await this.getOptions()
         }//Get options
