@@ -175,6 +175,30 @@ export default {
           type: 'json',
           props: {label: 'type: json'}
         },
+        customInput: {
+          ...globalData,
+          type: 'custom',
+          props: {
+            label: 'type: custom input',
+            options: [
+              {label: 'opt1', value: 'opt1'},
+              {label: 'opt2', value: 'opt2'},
+              {label: 'opt3', value: 'opt3'}
+            ],
+          }
+        },
+        customTextArea: {
+          ...globalData,
+          type: 'custom',
+          props: {
+            label: 'type: custom textarea',
+            type: 'textarea',
+          },
+          loadOptions: {
+            apiRoute: 'apiRoutes.quser.users',
+            select: {label: 'fullName', id: 'id'}
+          }
+        },
       }
     }
   },
