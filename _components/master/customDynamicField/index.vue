@@ -75,10 +75,8 @@ export default {
     selectKeyFromOptions(item) {
       try {
         let origString = this.inputDataComputed;
-        let stringToAdd = `{{${item}}`;
-        let indexPosition = this.selectionStart;
         origString = origString.split("");
-        origString.splice(indexPosition, 0, stringToAdd);
+        origString.splice(this.selectionStart, 0, `{{${item}}`);
         const newString = origString.join("");
         this.inputDataComputed = newString;
       } catch (error) {
