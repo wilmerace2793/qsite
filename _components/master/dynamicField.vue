@@ -1357,9 +1357,10 @@ export default {
               return resolve(false)
             }
           }
-
+          const parametersUrl = loadOptions.parametersUrl || {};
+          const crud = Object.keys(parametersUrl).length > 0 ? this.$crud.get : this.$crud.index;
           //Request
-          this.$crud.index(loadOptions.apiRoute, params).then(response => {
+          crud(loadOptions.apiRoute, params, parametersUrl).then(response => {
             if (this.keyField !== '') {
               const keyData = {[this.keyField]: response.data}
               this.$helper.setDynamicSelectList(keyData);

@@ -195,8 +195,11 @@ export default {
             type: 'textarea',
           },
           loadOptions: {
-            apiRoute: 'apiRoutes.quser.users',
-            select: {label: 'fullName', id: 'id'}
+            apiRoute: 'apiRoutes.qrequestable.categoriesFormFields',
+            select: {label: 'label', id: 'value'},
+            parametersUrl: {
+              categoryId: 1
+            }
           }
         },
       }
