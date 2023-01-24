@@ -2,12 +2,8 @@
   <div id="siteActionscomponent">
     <div :class="`row q-gutter-${gutter}`">
       <!--Actions-->
-      <q-btn v-for="(btn, keyAction) in actions.bottons" :key="keyAction" v-bind="btn.props"
+      <q-btn v-for="(btn, keyAction) in actions.buttons" :key="keyAction" v-bind="btn.props"
              v-if="btn.vIf != undefined ? btn.vIf : true" @click="btn.action != undefined ? btn.action() : null">
-        <!-- Menu Actions -->
-        <q-menu v-if="btn.isComponent">
-          <activities system-name="admin_home" @loaded="loading = false" mode="menu" :label="btn.label" :description="btn.description"/>
-        </q-menu>
         <q-menu v-if="btn.menu" fit>
           <div class="q-py-sm q-px-md">
             <div class="text-subtitle1 text-primary">{{ btn.label }}</div>
@@ -22,7 +18,7 @@
                 <q-item-section class="text-blue-grey">
                   <div>
                     <q-icon :name="act.icon" class="q-mr-sm" color="primary" size="xs"/>
-                    {{ $tr('isite.cms.label.faq') }}
+                    {{ act.label }}
                   </div>
                 </q-item-section>
                 <q-item-section side>
@@ -35,6 +31,8 @@
         <!-- Tooltip -->
         <q-tooltip>{{ btn.label }}</q-tooltip>
       </q-btn>
+      <!-- Help Center -->
+      <activities system-name="help_center" mode="button" :btn-props="defaultButtonProps"/>
       <!--Auth section-->
       <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" rounded no-caps
              padding="2px 8px" color="white" unelevated>
@@ -140,7 +138,7 @@ export default {
       }
 
       return {
-        bottons: [
+        buttons: [
           //Go To Site
           {
             vIf: this.showGoToSiteButton,
@@ -212,19 +210,6 @@ export default {
                 }
               ]
             }
-          },
-          //gamification
-          {
-            name: 'gamifications',
-            label: this.$trp('isite.cms.label.activities'),
-            description: this.$trp('isite.cms.message.activitiesDescription'),
-            vIf: true,
-            props: {
-              id: 'siteActionGamifications',
-              ...this.defaultButtonProps,
-              icon: "fal fa-book-circle",
-            },
-            isComponent: true,
           }
         ],
         menu: [
