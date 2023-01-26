@@ -2958,7 +2958,7 @@
           "adminCategories": "Categorias",
           "adminIcruds": "Icruds",
           "adminAuditLog": "Audit Log",
-          "oagStations": "OAG Estaciones",
+          "oagStations": "OAG staciones",
           "adminOrganizationForm": "Formulario",
           "adminBlocks": "Bloques",
           "adminLayouts": "Layouts"
@@ -3377,7 +3377,7 @@
           "preview": "Vista previa",
           "showMore": "Ver más",
           "showLess": "Ver menos",
-          "request": "Request | Request",
+          "request": "Request | Requests",
           "accept": "Accept",
           "reject": "Reject",
           "rejected": "Rejected",
