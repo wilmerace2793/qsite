@@ -76,7 +76,7 @@ export default {
       try {
         let origString = this.inputDataComputed;
         origString = origString.split("");
-        origString.splice(this.selectionStart, 0, `{{${item}}`);
+        origString.splice(this.selectionStart, 0, `{{${item}}}`);
         const newString = origString.join("");
         this.inputDataComputed = newString;
       } catch (error) {

@@ -175,11 +175,11 @@ export default {
           type: 'json',
           props: {label: 'type: json'}
         },
-        customInput: {
+        expressionInput: {
           ...globalData,
-          type: 'custom',
+          type: 'expression',
           props: {
-            label: 'type: custom input',
+            label: 'type: expression input',
             options: [
               {label: 'opt1', value: 'opt1'},
               {label: 'opt2', value: 'opt2'},
@@ -187,11 +187,11 @@ export default {
             ],
           }
         },
-        customTextArea: {
+        expressionTextArea: {
           ...globalData,
-          type: 'custom',
+          type: 'expression',
           props: {
-            label: 'type: custom textarea',
+            label: 'type: expression textarea',
             type: 'textarea',
           },
           loadOptions: {

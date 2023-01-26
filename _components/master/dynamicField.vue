@@ -350,14 +350,14 @@
             </div>
           </div>
         </div>
-        <!-- Custom -->
-          <customDynamicField 
-            v-if="loadField('custom')"
+        <!-- Expression -->
+          <expressionField 
+            v-if="loadField('expression')"
             v-model="responseValue"
             :fieldProps="fieldProps"
             :options="formatOptions" 
           />
-        <!-- custom end-->
+        <!-- Expression end-->
       </div>
     </div>
   </div>
@@ -382,7 +382,7 @@ import schedulable from '@imagina/qsite/_components/master/schedulable'
 import selectMedia from '@imagina/qmedia/_components/selectMedia'
 import googleMapMarker from '@imagina/qsite/_components/master/googleMapMarker'
 import JsonEditorVue from 'json-editor-vue'
-import customDynamicField from '@imagina/qsite/_components/master/customDynamicField/index.vue';
+import expressionField from '@imagina/qsite/_components/master/expressionField/index.vue';
 
 export default {
   name: 'dynamicField',
@@ -418,7 +418,7 @@ export default {
     selectMedia,
     googleMapMarker,
     JsonEditorVue,
-    customDynamicField
+    expressionField
   },
   watch: {
     value: {
@@ -1171,7 +1171,7 @@ export default {
           margin: '2.3em 1em',
           load: true
         },
-        custom: {
+        expression: {
           class: 'absolute-left tw-ml-8',
           load: true
         }
@@ -1368,7 +1368,7 @@ export default {
             this.rootOptionsData = this.$clone(response.data)
             let formatedOptions = []
             //Format response
-            formatedOptions = this.field.type == 'select' || this.field.type == 'custom' ?
+            formatedOptions = this.field.type == 'select' || this.field.type == 'expression' ?
                 this.$array.select(response.data, loadOptions.select || fieldSelect) :
                 this.$array.tree(response.data, loadOptions.select || fieldSelect)
 
@@ -1401,7 +1401,7 @@ export default {
     },
     //Set options
     async setOptions() {
-      if (['treeSelect', 'select', 'multiSelect', 'custom'].indexOf(this.field.type) != -1) {
+      if (['treeSelect', 'select', 'multiSelect', 'expression'].indexOf(this.field.type) != -1) {
         if (this.field.loadOptions) {
           await this.getOptions()
         }//Get options
