@@ -1618,7 +1618,6 @@
           "refreshEveryMinutes": "Refresh every {min} minutes"
         },
         "message": {
-          "errorSendForm": "Error submitting the form",
           "activitiesDescription": "Select the activity you want",
           "descriptionHelpCenter": "Choose the option you want to solve your doubts",
           "editFormProduct": "In this form you can edit your product in a simple way, if you want to edit your product with more advanced options, click on the following button to go to the advanced form.",
@@ -3347,7 +3346,6 @@
           "refreshEveryMinutes": "Refrescar cada {min} minutos"
         },
         "message": {
-          "errorSendForm": "Error al enviar el formulario.",
           "activitiesDescription": "Seleeciona la actividad que desees.",
           "descriptionHelpCenter": "Elige la opción que deseas para resolver tus dudas",
           "editFormProduct": "En este formulario podrás editar tu producto de manera sencilla, si quieres editar tu producto con opciones más avanzadas, da click en el siguiente botón para ir a el formulario avanzado.",

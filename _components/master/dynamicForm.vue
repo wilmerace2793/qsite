@@ -726,9 +726,8 @@ export default {
     },
     //validate all languages
     async validateCompleteForm(){
-      let isValid = await this.$refs.localeComponent.validateForm()
-      //Dispatch event to know if if is valid
-      this.$emit('validated', isValid)
+      const isValid = await this.$refs.localeComponent.validateForm();
+      return isValid;
     },
     //Handler step transition
     async changeStep(toStep, isSubmit = false) {
