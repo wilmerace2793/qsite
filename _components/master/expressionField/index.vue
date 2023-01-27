@@ -48,27 +48,8 @@ export default defineComponent({
     },
   },
   setup(props, {emit}) {
-    const {
-      menu,
-      inputData,
-      inputKey,
-      selectionStart,
-      inputDataComputed,
-      selectKeyFromOptions,
-      getNativeElement,
-      field,
-      optionsList
-    } = useExpressionField(props, emit);
     return {
-      menu,
-      inputData,
-      selectionStart,
-      inputDataComputed,
-      selectKeyFromOptions,
-      getNativeElement,
-      inputKey,
-      field,
-      optionsList,
+      ...useExpressionField(props, emit)
     }
   },
 })
