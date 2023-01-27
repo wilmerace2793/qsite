@@ -1172,7 +1172,8 @@ export default {
           load: true
         },
         expression: {
-          class: 'absolute-left tw-ml-8',
+          class: 'absolute-right tw-mx-8',
+          margin: '1em',
           load: true
         }
       }
