@@ -1353,6 +1353,7 @@ export default {
             this.rootOptionsData = this.$clone(response.data)
             let formatedOptions = []
             //Format response
+            response.data.forEach((item, index) => item.id = index + 1)
             formatedOptions = this.field.type == 'select' ?
                 this.$array.select(response.data, loadOptions.select || fieldSelect) :
                 this.$array.tree(response.data, loadOptions.select || fieldSelect)
@@ -1487,7 +1488,7 @@ export default {
     },
     //Load the option for default value when is loadOptions
     loadOptionForValue() {
-      if (this.loadField('select')) {
+      if (this.loadField('select') || this.loadField('treeSelect')) {
         let loadOptions = this.field.loadOptions
         if (loadOptions && loadOptions.apiRoute) {
           //Validate if there is the option for the value

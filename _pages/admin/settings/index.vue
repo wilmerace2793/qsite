@@ -147,7 +147,6 @@ export default {
         let field = fields[fieldName]
         response[fieldName] = {...field, fieldItemId: this.getSettingId(field, fieldName)}
       })
-
       //response
       return response
     }
