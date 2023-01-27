@@ -1488,7 +1488,7 @@ export default {
     },
     //Load the option for default value when is loadOptions
     loadOptionForValue() {
-      if (this.loadField('select') || this.loadField('treeSelect')) {
+      if (this.loadField('select')) {
         let loadOptions = this.field.loadOptions
         if (loadOptions && loadOptions.apiRoute) {
           //Validate if there is the option for the value
