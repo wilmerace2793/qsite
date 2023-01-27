@@ -11,7 +11,7 @@
           <q-item
             clickable
             v-close-popup
-            v-for="(item, index) in options"
+            v-for="(item, index) in optionsList"
             :key="index"
             @click.prevent="selectKeyFromOptions(item.value)"
           >
@@ -25,7 +25,7 @@
     <q-input
       ref="inputKey"
       v-model="inputDataComputed"
-      v-bind="fieldProps"
+      v-bind="field"
       outlined
       class="tw-bg-white"
       @click="getNativeElement"
@@ -34,7 +34,9 @@
 </template>
 
 <script>
-export default {
+import { defineComponent, ref } from 'vue';
+import useExpressionField from './useExpressionField.js';
+export default defineComponent({
   props: {
     fieldProps: {
       type: Object,
@@ -45,44 +47,29 @@ export default {
       default: () => [],
     },
   },
-  data: () => ({
-    menu: false,
-    inputData: "",
-    selectionStart: 0,
-  }),
-  computed: {
-    inputDataComputed: {
-      get() {
-        return this.inputData;
-      },
-      set(value) {
-        this.selectionStart = this.$refs.inputKey.$el.control.selectionStart || 0;
-        this.inputData = value;
-        this.$emit("input", value);
-      },
-    },
+  setup(props, {emit}) {
+    const {
+      menu,
+      inputData,
+      inputKey,
+      selectionStart,
+      inputDataComputed,
+      selectKeyFromOptions,
+      getNativeElement,
+      field,
+      optionsList
+    } = useExpressionField(props, emit);
+    return {
+      menu,
+      inputData,
+      selectionStart,
+      inputDataComputed,
+      selectKeyFromOptions,
+      getNativeElement,
+      inputKey,
+      field,
+      optionsList,
+    }
   },
-  methods: {
-    getNativeElement($event) {
-      try {
-        if ($event.target) {
-          this.selectionStart = $event.target.selectionStart;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    selectKeyFromOptions(item) {
-      try {
-        let origString = this.inputDataComputed;
-        origString = origString.split("");
-        origString.splice(this.selectionStart, 0, `{{${item}}}`);
-        const newString = origString.join("");
-        this.inputDataComputed = newString;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-  },
-};
+})
 </script>
