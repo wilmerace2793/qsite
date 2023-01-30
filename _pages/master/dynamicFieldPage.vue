@@ -175,6 +175,33 @@ export default {
           type: 'json',
           props: {label: 'type: json'}
         },
+        expressionInput: {
+          ...globalData,
+          type: 'expression',
+          props: {
+            label: 'type: expression input',
+            options: [
+              {label: 'opt1', value: 'opt1'},
+              {label: 'opt2', value: 'opt2'},
+              {label: 'opt3', value: 'opt3'}
+            ],
+          }
+        },
+        expressionTextArea: {
+          ...globalData,
+          type: 'expression',
+          props: {
+            label: 'type: expression textarea',
+            type: 'textarea',
+          },
+          loadOptions: {
+            apiRoute: 'apiRoutes.qrequestable.categoriesFormFields',
+            select: {label: 'label', id: 'value'},
+            parametersUrl: {
+              categoryId: 1
+            }
+          }
+        },
       }
     }
   },

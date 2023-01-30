@@ -184,6 +184,7 @@ export default {
       addCard: this.addCard,
       countTotalRecords: this.countTotalRecords,
       crudfieldActions: this.crudfieldActions,
+      deleteKanbanCard: this.deleteKanbanCard
     };
   },
   inject:['funnelPageAction', 'fieldActions'],
@@ -429,13 +430,13 @@ export default {
               const column = this.kanbanColumns.find(column => column.id === item.statusId);
               if(column) column.loading = true;
               await this.$crud.delete(route.apiRoute, item.id);
-              const kanbanCard = await this.getKanbanCard(item.status);
+              const kanbanCard = await this.getKanbanCard(this.automation ? column : item.status);
               if(column) {
-                column.data = kanbanCard.data;
+                column.data = kanbanCard.data || [];
                 setTimeout(() => {
                   column.loading = false;
                 }, 1000);
-                column.total = kanbanCard.total;
+                column.total = kanbanCard.total || 0;
               }
 
             }
