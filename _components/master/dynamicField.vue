@@ -1369,7 +1369,8 @@ export default {
             this.rootOptionsData = this.$clone(response.data)
             let formatedOptions = []
             //Format response
-            formatedOptions = this.field.type == 'select' || this.field.type == 'expression' ?
+            response.data = response.data.map((item, index) => ({...item, id : item.id || (index + 1)}))
+            formatedOptions = ['select','expression'].includes(this.field.type) ?
                 this.$array.select(response.data, loadOptions.select || fieldSelect) :
                 this.$array.tree(response.data, loadOptions.select || fieldSelect)
 
