@@ -187,7 +187,7 @@ export default {
         const requestParams = {
           refresh: true,
           params: {
-            filter: { status: 1 }
+            filter: { statusId: this.statusId, categoryId: this.$filter.values.categoryId}
           }
         }
         //Request
