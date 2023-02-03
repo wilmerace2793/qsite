@@ -724,6 +724,11 @@ export default {
         })(i);
       }
     },
+    //validate all languages
+    async validateCompleteForm(){
+      const isValid = await this.$refs.localeComponent.validateForm();
+      return isValid;
+    },
     //Handler step transition
     async changeStep(toStep, isSubmit = false) {
       //Validate if new Step it's not same to current step

@@ -184,6 +184,7 @@ export default {
       addCard: this.addCard,
       countTotalRecords: this.countTotalRecords,
       crudfieldActions: this.crudfieldActions,
+      deleteKanbanCard: this.deleteKanbanCard
     };
   },
   inject:['funnelPageAction', 'fieldActions'],
@@ -274,20 +275,6 @@ export default {
           this.funnelSelectedComputed = this.funnelPageAction || this.funnelId;
           return;
         }
-        /*const route = this.routes.funnel.apiRoute;
-        if(!this.routes.funnel) return;
-        const response = await this.$crud.index(route);
-        const funnel = response.data
-          .sort((a, b) => {
-            const compare = a.title
-              .toLocaleLowerCase()
-              .localeCompare(b.title.toLocaleLowerCase());
-            return compare === 0 && a.title !== b.title
-              ? b.title.localeCompare(a.title)
-              : compare;
-          })
-          .shift();
-        this.funnelSelectedComputed = String(funnel.id);*/
       } catch (error) {
         console.log(error);
       }
@@ -327,7 +314,7 @@ export default {
         parameters.params.include = route.include;
         const id =  { id: this.$filter.values.statusId } || {};
         parameters.params.filter = {
-          [route.filter.name]: this.funnelSelected, ...id
+          [route.filter.name]: this.funnelSelectedComputed, ...id
         };
         const response = await this.$crud.index(route.apiRoute, parameters);
         const kanbanColumn = this.getKanbanColumns(response.data);
@@ -443,13 +430,13 @@ export default {
               const column = this.kanbanColumns.find(column => column.id === item.statusId);
               if(column) column.loading = true;
               await this.$crud.delete(route.apiRoute, item.id);
-              const kanbanCard = await this.getKanbanCard(item.status);
+              const kanbanCard = await this.getKanbanCard(this.automation ? column : item.status);
               if(column) {
-                column.data = kanbanCard.data;
+                column.data = kanbanCard.data || [];
                 setTimeout(() => {
                   column.loading = false;
                 }, 1000);
-                column.total = kanbanCard.total;
+                column.total = kanbanCard.total || 0;
               }
 
             }

@@ -24,7 +24,7 @@
           <q-btn size="xs" class="after-field"
                  :style="'margin:'+helpLoad.margin"
                  round color="info"
-                 icon="fas fa-info"
+                 icon="fa fa-info"
                  unelevated
           >
             <q-menu id="dynamicFieldMenuHelp" v-model="tooltip" anchor="top right" self="top right">
@@ -131,7 +131,7 @@
                  :label="fieldLabel"
                  v-bind="fieldProps.field">
           <template v-slot:prepend>
-            <q-icon name="fas fa-calendar-day" class="cursor-pointer" color="blue-grey">
+            <q-icon name="fa-light fa-calendar-day" class="cursor-pointer" color="blue-grey">
               <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                 <q-date v-model="responseValue" @input="() => $refs.qDateProxy.hide()"
                         v-bind="fieldProps.slot"/>
@@ -139,7 +139,7 @@
             </q-icon>
           </template>
           <template v-slot:append>
-            <q-icon name="fas fa-clock" class="cursor-pointer" color="blue-grey">
+            <q-icon name="fa-light fa-clock" class="cursor-pointer" color="blue-grey">
               <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
                 <q-time v-model="responseValue" :format24h="fieldProps.field.format24h"
                         @input="() => $refs.qTimeProxy.hide()"
@@ -176,11 +176,11 @@
               <q-item-section>
                 <div :class="{'tw-flex': field.props.selectColor }">
                   <div v-if="field.props.selectColor">
-                    <div 
-                      class=" 
-                        tw-h-4 
-                        tw-w-4 
-                        tw-rounded-full 
+                    <div
+                      class="
+                        tw-h-4
+                        tw-w-4
+                        tw-rounded-full
                         tw-py-3"
                       :class="badgeColor(field, scope)"
                     />
@@ -272,7 +272,7 @@
                  @click="$refs.qColorProxi.show()" :ref="`inputColor-${fieldKey}`">
           <template v-slot:append>
             <!--Icon-->
-            <q-icon name="fas fa-tint" class="cursor-pointer"/>
+            <q-icon name="fa-light fa-droplet" class="cursor-pointer"/>
             <!--Picker-->
             <q-popup-proxy ref="qColorProxi" transition-show="scale" transition-hide="scale">
               <q-color v-model="responseValue"/>
@@ -350,6 +350,14 @@
             </div>
           </div>
         </div>
+        <!-- Expression -->
+          <expressionField 
+            v-if="loadField('expression')"
+            v-model="responseValue"
+            :fieldProps="fieldProps"
+            :options="formatOptions" 
+          />
+        <!-- Expression end-->
       </div>
     </div>
   </div>
@@ -374,6 +382,7 @@ import schedulable from '@imagina/qsite/_components/master/schedulable'
 import selectMedia from '@imagina/qmedia/_components/selectMedia'
 import googleMapMarker from '@imagina/qsite/_components/master/googleMapMarker'
 import JsonEditorVue from 'json-editor-vue'
+import expressionField from '@imagina/qsite/_components/master/expressionField/index.vue';
 
 export default {
   name: 'dynamicField',
@@ -408,7 +417,8 @@ export default {
     schedulable,
     selectMedia,
     googleMapMarker,
-    JsonEditorVue
+    JsonEditorVue,
+    expressionField
   },
   watch: {
     value: {
@@ -580,7 +590,7 @@ export default {
               color: 'primary',
               outlined: true,
               dense: true,
-              icon: 'fas fa-calendar-alt',
+              icon: 'fa-light fa-calendar-days',
               placeHolder: maskDate,
               hint: `${this.$tr("isite.cms.label.format")}: ${maskDate}`,
               ...props,
@@ -609,7 +619,7 @@ export default {
               color: 'primary',
               outlined: true,
               dense: true,
-              icon: 'fas fa-clock',
+              icon: 'fa-light fa-clock',
               placeHolder: maskHour,
               hint: `${this.$tr("isite.cms.label.format")}: ${maskHour}`,
               ...props,
@@ -1160,6 +1170,11 @@ export default {
           class: 'absolute-right',
           margin: '2.3em 1em',
           load: true
+        },
+        expression: {
+          class: 'absolute-right tw-mx-8',
+          margin: '1em',
+          load: true
         }
       }
       return objectOptions[this.field.type] || result
@@ -1172,7 +1187,7 @@ export default {
     },
     badgeColor() {
       return (field, scope) => {
-        return field.props.colorType === 'tailwindcss' 
+        return field.props.colorType === 'tailwindcss'
         ? `tw-bg-${scope.opt.color  || scope.opt.value}`
         : `bg-${scope.opt.color || scope.opt.value}`
       }
@@ -1343,9 +1358,10 @@ export default {
               return resolve(false)
             }
           }
-
+          const parametersUrl = loadOptions.parametersUrl || {};
+          const crud = Object.keys(parametersUrl).length > 0 ? this.$crud.get : this.$crud.index;
           //Request
-          this.$crud.index(loadOptions.apiRoute, params).then(response => {
+          crud(loadOptions.apiRoute, params, parametersUrl).then(response => {
             if (this.keyField !== '') {
               const keyData = {[this.keyField]: response.data}
               this.$helper.setDynamicSelectList(keyData);
@@ -1353,7 +1369,8 @@ export default {
             this.rootOptionsData = this.$clone(response.data)
             let formatedOptions = []
             //Format response
-            formatedOptions = this.field.type == 'select' ?
+            response.data = response.data.map((item, index) => ({...item, id : item.id || (index + 1)}))
+            formatedOptions = ['select','expression'].includes(this.field.type) ?
                 this.$array.select(response.data, loadOptions.select || fieldSelect) :
                 this.$array.tree(response.data, loadOptions.select || fieldSelect)
 
@@ -1386,7 +1403,7 @@ export default {
     },
     //Set options
     async setOptions() {
-      if (['treeSelect', 'select', 'multiSelect'].indexOf(this.field.type) != -1) {
+      if (['treeSelect', 'select', 'multiSelect', 'expression'].indexOf(this.field.type) != -1) {
         if (this.field.loadOptions) {
           await this.getOptions()
         }//Get options

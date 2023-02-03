@@ -809,6 +809,7 @@
           "selectProduct": "Select a product option",
           "warnAddDiscount": "To add discounts, you must first create the product",
           "viewProduct": "View product",
+          "advanceEdit": "Advanced Edit",
           "btnAddProduct": "Add Product",
           "chooseProduct": "Choose Product",
           "productSetup": "Product Setup",
@@ -1003,7 +1004,8 @@
           "savedNoComment": "I can't save your comment",
           "updateComment": "Updated comment",
           "updateNoComment": "Can't update comment",
-          "undoComment": "Do you want to cancel the comment?"
+          "undoComment": "Do you want to cancel the comment?",
+          "writeComment": "Write a comment..."
         },
         "newRule": "New Rule",
         "updateRule": "Update Rule"
@@ -1197,7 +1199,7 @@
         "identifyYourReport": "Identify your report",
         "selectColumnsFilters": "Select columns and filters",
         "selectSortColumns": "Select and sort columns",
-        "moveColumn":"Move column",
+        "moveColumn": "Move column",
         "selectFirst": "Select the first {total} filters",
         "detailFilterOptions": "Detail the filter options",
         "selectInfoYouWantToShowForEachFilter": "Select the info you want to show for each filter",
@@ -1234,6 +1236,7 @@
           "adminCategories": "Categories",
           "adminIcruds": "Icruds",
           "adminAuditLog": "Audit Log",
+          "oagStations": "OAG Stations",
           "adminOrganizationForm": "Form",
           "adminBlocks": "Blocks",
           "adminLayouts": "Layouts"
@@ -1276,6 +1279,11 @@
         "perzonalizationTitle": "Welcome to the editor of your website",
         "perzonalizationDescription": "Easily change the logo, colors and the main information of your website",
         "label": {
+          "noActivities": "There is no activities to display",
+          "copyDisclosureLink": "Disclosure Copy",
+          "faq": "Frequent Questions",
+          "helpCenter": "Help Center",
+          "activities": "Activities",
           "advanceOptions": "Advance Options",
           "responsive": "Responsive",
           "mobile": "Mobile",
@@ -1612,6 +1620,8 @@
           "refreshEveryMinutes": "Refresh every {min} minutes"
         },
         "message": {
+          "activitiesDescription": "Select the activity you want",
+          "descriptionHelpCenter": "Choose the option you want to solve your doubts",
           "editFormProduct": "In this form you can edit your product in a simple way, if you want to edit your product with more advanced options, click on the following button to go to the advanced form.",
           "createFormProduct": "In this form you can create a new product in a simple way, if you want to create your product with more advanced options, click on the following button to go to the advanced form.",
           "notFound": "Sorry, nothing here",
@@ -1677,7 +1687,8 @@
           "noRegistered": "You are not registered yet",
           "hintFilterByQuery": "Type 3 or more characters to search for options",
           "invalidFormat": "Invalid format",
-          "specialCharactersAreNotAllowed": "Special characters are not allowed"
+          "specialCharactersAreNotAllowed": "Special characters are not allowed",
+          "configureThisSection": "configure This section"
         },
         "form": {
           "id": "ID",
@@ -2657,6 +2668,7 @@
           "selectProduct": "Seleccione una opción de producto",
           "warnAddDiscount": "Para agregar descuentos, primero debe crear el producto",
           "viewProduct": "Ver producto",
+          "advanceEdit": "Edición Avanzada",
           "btnAddProduct": "Agregar Producto",
           "chooseProduct": "Elegir Producto",
           "productSetup": "Configuración de Producto",
@@ -2851,7 +2863,8 @@
           "savedNoComment": "No se puedo guardar su comentario",
           "updateComment": "Comentario actualizado",
           "updateNoComment": "No se puedo actualizar el commentario",
-          "undoComment": "¿Desea cancelar el comentario?"
+          "undoComment": "¿Desea cancelar el comentario?",
+          "writeComment": "Escriba un comentario..."
         },
         "newRule": "Nueva Regla",
         "updateRule": "Actualizar Regla"
@@ -2955,6 +2968,7 @@
           "adminCategories": "Categorias",
           "adminIcruds": "Icruds",
           "adminAuditLog": "Audit Log",
+          "oagStations": "OAG staciones",
           "adminOrganizationForm": "Formulario",
           "adminBlocks": "Bloques",
           "adminLayouts": "Layouts"
@@ -2997,6 +3011,11 @@
         "perzonalizationTitle": "Bienvenid@ al editor de tu sitio web",
         "perzonalizationDescription": "De manera fácil, cambia el logo, colores y la información principal de tu página web",
         "label": {
+          "noActivities": "No hay actividades para mostrar",
+          "copyDisclosureLink": "Copia de Divulgación",
+          "faq": "Preguntas Frecuentes",
+          "helpCenter": "Centro de Ayuda",
+          "activities": "Actividades",
           "advanceOptions": "Opciones Avanzadas",
           "discardChanges": "Descartar Cambios",
           "responsive": "Responsivo",
@@ -3332,6 +3351,8 @@
           "refreshEveryMinutes": "Refrescar cada {min} minutos"
         },
         "message": {
+          "activitiesDescription": "Seleeciona la actividad que desees.",
+          "descriptionHelpCenter": "Elige la opción que deseas para resolver tus dudas",
           "editFormProduct": "En este formulario podrás editar tu producto de manera sencilla, si quieres editar tu producto con opciones más avanzadas, da click en el siguiente botón para ir a el formulario avanzado.",
           "createFormProduct": "En este formulario podrás crear un nuevo producto de manera sencilla, si quieres crear tu producto con opciones más avanzadas, da click en el siguiente botón para ir a el formulario avanzado.",
           "notFound": "Lo sentimos, no hay nada aquí",
@@ -3373,7 +3394,7 @@
           "preview": "Vista previa",
           "showMore": "Ver más",
           "showLess": "Ver menos",
-          "request": "Request | Request",
+          "request": "Request | Requests",
           "accept": "Accept",
           "reject": "Reject",
           "rejected": "Rejected",
@@ -3397,7 +3418,8 @@
           "noRegistered": "Aún no estás registrado",
           "hintFilterByQuery": "Escribe 3 o más caracteres para buscar opciones",
           "invalidFormat": "Formato invalido",
-          "specialCharactersAreNotAllowed": "No se permiten caracteres especiales"
+          "specialCharactersAreNotAllowed": "No se permiten caracteres especiales",
+          "configureThisSection": "Configura esta sección"
         },
         "form": {
           "id": "ID",
