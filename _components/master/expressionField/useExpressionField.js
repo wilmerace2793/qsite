@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 export default function useExpressionField(props = {}, emit = null) {
   const inputKey = ref(null);
   const menu = ref(false);
@@ -8,7 +8,7 @@ export default function useExpressionField(props = {}, emit = null) {
   const optionsList = computed(() => props.options);
   const inputDataComputed = computed({
     get() {
-      return this.inputData;
+      return inputData.value;
     },
     set(value) {
       selectionStart.value = inputKey.value.$el.control.selectionStart || 0;
@@ -36,6 +36,12 @@ export default function useExpressionField(props = {}, emit = null) {
       console.log(error);
     }
   }
+  async function init() {
+    inputDataComputed.value = props.value;
+  }
+  onMounted(async () => {
+    await init();
+  })
   return {
     menu,
     inputData,
@@ -46,5 +52,6 @@ export default function useExpressionField(props = {}, emit = null) {
     getNativeElement,
     field,
     optionsList,
+    init
   }
 }

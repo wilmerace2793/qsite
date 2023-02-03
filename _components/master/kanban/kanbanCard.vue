@@ -124,6 +124,10 @@ export default {
       type: Function,
       default: () => false,
     },
+    openFormComponentModal:  {
+      type: Function,
+      default: () => false,
+    },
   },
   props: {
     cardData: {
@@ -148,6 +152,14 @@ export default {
           label: this.$tr('isite.cms.label.delete'),
           action: (item) => {
             if(this.deleteKanbanCard) this.deleteKanbanCard(item);
+          }
+        },
+        {
+          icon: 'fas fa-pencil',
+          color: 'red',
+          label: this.$tr('isite.cms.label.edit'),
+          action: (item) => {
+            if(this.openFormComponentModal) this.openFormComponentModal(item.statusId, item.title, item.id);
           }
         }
       ];
