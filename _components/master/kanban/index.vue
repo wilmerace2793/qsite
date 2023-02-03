@@ -527,9 +527,9 @@ export default {
     openAutomationRulesModal() {
       if(this.$refs.automationRules) this.$refs.automationRules.openModal();
     },
-    openFormComponentModal(statusId, title) {
+    openFormComponentModal(statusId, title, id = null) {
       if (this.automation) {
-        if (this.$refs.formRules) this.$refs.formRules.openModal(statusId, title);
+        if (this.$refs.formRules) this.$refs.formRules.openModal(statusId, title, id);
       } else {
         if (this.$refs.formComponent) this.$refs.formComponent.openModal(statusId, title);
       }
