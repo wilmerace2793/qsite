@@ -23,10 +23,10 @@
     </q-drawer>
 
     <!-- Chat -->
-    <q-drawer bordered id="chatMaster" overlay v-model="drawer.chat" side="right"
-              v-if="$auth.hasAccess('ichat.conversations.index')">
-      <chat-list/>
-    </q-drawer>
+<!--    <q-drawer bordered id="chatMaster" overlay v-model="drawer.chat" side="right"-->
+<!--              v-if="$auth.hasAccess('ichat.conversations.index')">-->
+<!--      <chat-list/>-->
+<!--    </q-drawer>-->
 
     <!--Master filter-->
     <q-drawer bordered id="drawerFilterMaster" v-model="drawer.filter" side="right" v-if="filter.load" :overlay="false">
@@ -120,7 +120,7 @@ export default {
       set(value) {
         this.drawer.menu = value;
       }
-    },    
+    },
   },
   methods: {
     //init
@@ -201,38 +201,38 @@ export default {
       font-size 13px
 
     .q-item
-      padding-left 0  
+      padding-left 0
       background-color $primary
       min-height 50px
       color var(--q-color-contrast)
       .q-focus-helper
         opacity 0
       .q-item__section--avatar
-        padding 0 18px !important  
+        padding 0 18px !important
       .q-item__section
         font-weight 600
       .q-item__section, .q-icon
-        color var(--q-color-contrast)  
-        
-    .content-item 
+        color var(--q-color-contrast)
+
+    .content-item
       > .q-item
-        .q-item__section--main 
+        .q-item__section--main
           font-size 16px
         .q-icon
-          font-size: 20px 
+          font-size: 20px
         &:hover,  &.item-is-active
           background-color $secondary
           border-radius: 0 15px 15px 0
           font-weight 900
 
-      > .q-expansion-item  
+      > .q-expansion-item
         background-color $primary
         .q-expansion-item__container > .q-item
           .q-item__label
             font-size 15px
           .q-icon
-            font-size: 20px  
-          &:hover, &.item-is-active  
+            font-size: 20px
+          &:hover, &.item-is-active
             border-radius: 0 15px 15px 0
             background-color $secondary
             font-weight 900
@@ -243,7 +243,7 @@ export default {
           #listMenu
             .content-item
               border-left 3px solid $secondary
-          .q-item    
+          .q-item
             min-height 40px
             margin-left -1px
             .q-item__section, .q-icon
@@ -251,7 +251,7 @@ export default {
               font-size 14px
               font-weight 600
             .q-icon
-              display none  
+              display none
             &:hover, &.item-is-active
               background-color $secondary
               .q-item__section, .q-icon
