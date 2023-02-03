@@ -74,8 +74,6 @@
   </div>
 </template>
 <script>
-import storeMicrosoft from '@imagina/quser/_store/storeMicrosoft.js'
-import axios from 'axios';
 import activities from '@imagina/qgamification/_components/activities'
 
 export default {
@@ -266,11 +264,6 @@ export default {
       })
     },
     logout() {
-      const authProvider = axios.defaults.params.setting.authProvider;
-      if (authProvider === 'microsoft') {
-        storeMicrosoft().signOut();
-        return;
-      }
       this.$router.push({name: 'auth.logout'});
     },
   }
