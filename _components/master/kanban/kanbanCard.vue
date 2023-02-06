@@ -25,7 +25,6 @@
         "
       >
         <q-btn-dropdown
-          v-if="!automation"
           round
           color="gray-4"
           flat
@@ -51,7 +50,7 @@
             <q-item
               clickable
               v-close-popup
-              v-for="(action, keyAction) in actionsData"
+              v-for="(action, keyAction) in actionsAutomations"
               :key="keyAction"
               v-bind="action.props"
               v-if="action.vIf != undefined ? action.vIf : true"
@@ -121,6 +120,14 @@ export default {
       type: Function,
       default: () => false,
     },
+    deleteKanbanCard:  {
+      type: Function,
+      default: () => false,
+    },
+    openFormComponentModal:  {
+      type: Function,
+      default: () => false,
+    },
   },
   props: {
     cardData: {
@@ -135,6 +142,28 @@ export default {
   computed: {
     actions() {
       return this.crudfieldActions(this.cardData);
+    },
+    actionsAutomations() {
+      let response = [
+       //Delete action
+        {
+          icon: 'fas fa-trash-alt',
+          color: 'red',
+          label: this.$tr('isite.cms.label.delete'),
+          action: (item) => {
+            if(this.deleteKanbanCard) this.deleteKanbanCard(item);
+          }
+        },
+        {
+          icon: 'fas fa-pencil',
+          color: 'red',
+          label: this.$tr('isite.cms.label.edit'),
+          action: (item) => {
+            if(this.openFormComponentModal) this.openFormComponentModal(item.statusId, item.title, item.id);
+          }
+        }
+      ];
+      return this.automation ?  response : this.actionsData;
     },
     actionsData() {
       return this.actions.map((item) => {

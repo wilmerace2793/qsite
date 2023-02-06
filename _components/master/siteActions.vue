@@ -74,8 +74,6 @@
   </div>
 </template>
 <script>
-import storeMicrosoft from '@imagina/quser/_store/storeMicrosoft.js'
-import axios from 'axios';
 import activities from '@imagina/qgamification/_components/activities'
 
 export default {
@@ -171,7 +169,7 @@ export default {
           {
             name: 'chat',
             label: 'Chat',
-            vIf: (config('app.mode') == 'iadmin') && this.$auth.hasAccess('ichat.conversations.index'),
+            vIf: false && (config('app.mode') == 'iadmin') && this.$auth.hasAccess('ichat.conversations.index'),
             props: {
               ...this.defaultButtonProps,
               icon: 'fa-light fa-message-lines',
@@ -266,11 +264,6 @@ export default {
       })
     },
     logout() {
-      const authProvider = axios.defaults.params.setting.authProvider;
-      if (authProvider === 'microsoft') {
-        storeMicrosoft().signOut();
-        return;
-      }
       this.$router.push({name: 'auth.logout'});
     },
   }

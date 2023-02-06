@@ -1279,6 +1279,7 @@
         "perzonalizationTitle": "Welcome to the editor of your website",
         "perzonalizationDescription": "Easily change the logo, colors and the main information of your website",
         "label": {
+          "backgroundImage": "Background Image",
           "noActivities": "There is no activities to display",
           "copyDisclosureLink": "Disclosure Copy",
           "faq": "Frequent Questions",
@@ -1687,7 +1688,8 @@
           "noRegistered": "You are not registered yet",
           "hintFilterByQuery": "Type 3 or more characters to search for options",
           "invalidFormat": "Invalid format",
-          "specialCharactersAreNotAllowed": "Special characters are not allowed"
+          "specialCharactersAreNotAllowed": "Special characters are not allowed",
+          "configureThisSection": "configure This section"
         },
         "form": {
           "id": "ID",
@@ -3010,6 +3012,7 @@
         "perzonalizationTitle": "Bienvenid@ al editor de tu sitio web",
         "perzonalizationDescription": "De manera fácil, cambia el logo, colores y la información principal de tu página web",
         "label": {
+          "backgroundImage": "Imagen de fondo",
           "noActivities": "No hay actividades para mostrar",
           "copyDisclosureLink": "Copia de Divulgación",
           "faq": "Preguntas Frecuentes",
@@ -3417,7 +3420,8 @@
           "noRegistered": "Aún no estás registrado",
           "hintFilterByQuery": "Escribe 3 o más caracteres para buscar opciones",
           "invalidFormat": "Formato invalido",
-          "specialCharactersAreNotAllowed": "No se permiten caracteres especiales"
+          "specialCharactersAreNotAllowed": "No se permiten caracteres especiales",
+          "configureThisSection": "Configura esta sección"
         },
         "form": {
           "id": "ID",
