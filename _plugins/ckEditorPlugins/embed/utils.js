@@ -14,9 +14,8 @@ export const getInstagramId = (url) => {
     let splitUrl;
     if (url.includes("?")){
         splitUrl = url.split("?")[0];
-    }else{
-        splitUrl = url.split("/");
     }
+    splitUrl = splitUrl ? splitUrl.split("/") : url.split("/");
     if (splitUrl[splitUrl.length - 1] === '') {
         splitUrl.pop();
     }
