@@ -17,7 +17,7 @@ class PluginEmbed {
                         '<div class="iframe">' +
                         '</div>',
 
-                    requiredContent: 'div(iframe)',
+                    allowedContent: 'div(!iframe*)[*];',
 
                     dialog: 'simplebox',
 
@@ -58,7 +58,7 @@ class PluginEmbed {
                                 return;
                             }
                             if (url.includes(availableUrls.youtube)) {
-                                const videoId = getUrlParamValue(url);
+                                const videoId = getUrlParamValue(url, 'v');
                                 iframe.innerHTML = `
                         <iframe width="560" height="315" src="//www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`
                                     ;
@@ -71,8 +71,6 @@ class PluginEmbed {
                       `;
                                 return;
                             }
-                            iframe.textContent = "Type embed is not supported";
-                        } else {
                             iframe.textContent = "Type embed is not supported";
                         }
                     }

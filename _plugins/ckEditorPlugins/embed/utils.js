@@ -4,20 +4,23 @@ export const getUrlParamValue = (url, param) => {
     return encodeURI(urlParams.get(param));
 };
 export const isFacebookVideo = (url) => {
-    return url.includes("videos");
+    return url.includes("videos") || url.includes("watch");
 };
 export const isFacebookPost = (url) => {
-    return url.includes("post");
+    return url.includes("post") || url.includes("photo");
 };
 export const getInstagramId = (url) => {
-    const splitUrl = url.split("/");
-    console.log(splitUrl);
-    const findReelOrPost = splitUrl.findIndex(string => string === 'reel' || string === 'p');
-    if (findReelOrPost === -1) {
-        iframe.textContent = "Type embed is not supported";
-        return;
+    //url has params
+    let splitUrl;
+    if (url.includes("?")){
+        splitUrl = url.split("?")[0];
+    }else{
+        splitUrl = url.split("/");
     }
-    return splitUrl[findReelOrPost + 1];
+    if (splitUrl[splitUrl.length - 1] === '') {
+        splitUrl.pop();
+    }
+    return splitUrl.pop();
 };
 
 export const availableUrls = {
