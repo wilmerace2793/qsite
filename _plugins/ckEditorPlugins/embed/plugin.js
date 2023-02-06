@@ -33,7 +33,7 @@ class PluginEmbed {
                         const iframe = this.element.$;
                         if (this.data.value && this.data.value.trim() !== '') {
                             const url = this.data.value;
-                            if (url.includes(availableUrls.facebook)) {
+                            if (url.includes(availableUrls.facebook) || url.includes(availableUrls.facebookWatch)) {
                                 if (isFacebookVideo(url)) {
                                     iframe.innerHTML = `
                           <iframe 
