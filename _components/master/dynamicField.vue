@@ -85,7 +85,9 @@
         <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('search')"
                  v-bind="fieldProps" :class="`${field.help ? 'search-dynamic-field' : ''}`">
           <template v-slot:append>
-            <q-icon name="search" class="cursor-pointer" @click="$emit('enter')"/>
+            <q-icon v-if="(fieldProps.icon === undefined) || fieldProps.icon"
+                    :name="fieldProps.icon || 'fa-duotone fa-magnifying-glass'"
+                    size="xs" class="cursor-pointer" @click="$emit('enter')"/>
           </template>
         </q-input>
         <!--Date-->
@@ -180,12 +182,12 @@
                 <div :class="{'tw-flex': field.props.selectColor }">
                   <div v-if="field.props.selectColor">
                     <div
-                      class="
+                        class="
                         tw-h-4
                         tw-w-4
                         tw-rounded-full
                         tw-py-3"
-                      :class="badgeColor(field, scope)"
+                        :class="badgeColor(field, scope)"
                     />
                   </div>
                   <div :class="{'tw-px-4' : field.props.selectColor }">
@@ -354,7 +356,7 @@
           </div>
         </div>
         <!-- Expression -->
-          <expressionField 
+        <expressionField
             v-if="loadField('expression')"
             v-model="responseValue"
             :fieldProps="fieldProps"
@@ -1192,8 +1194,8 @@ export default {
     badgeColor() {
       return (field, scope) => {
         return field.props.colorType === 'tailwindcss'
-        ? `tw-bg-${scope.opt.color  || scope.opt.value}`
-        : `bg-${scope.opt.color || scope.opt.value}`
+            ? `tw-bg-${scope.opt.color || scope.opt.value}`
+            : `bg-${scope.opt.color || scope.opt.value}`
       }
     }
   },
@@ -1373,8 +1375,8 @@ export default {
             this.rootOptionsData = this.$clone(response.data)
             let formatedOptions = []
             //Format response
-            response.data = response.data.map((item, index) => ({...item, id : item.id || (index + 1)}))
-            formatedOptions = ['select','expression'].includes(this.field.type) ?
+            response.data = response.data.map((item, index) => ({...item, id: item.id || (index + 1)}))
+            formatedOptions = ['select', 'expression'].includes(this.field.type) ?
                 this.$array.select(response.data, loadOptions.select || fieldSelect) :
                 this.$array.tree(response.data, loadOptions.select || fieldSelect)
 
@@ -1516,7 +1518,7 @@ export default {
             let fieldSelect = loadOptions.select || {label: 'title', id: 'id'}
             //Instance request params
             let requestParams = {
-              refresh : true,
+              refresh: true,
               params: {filter: {field: fieldSelect.id}}
             }
             //Instance the criteria

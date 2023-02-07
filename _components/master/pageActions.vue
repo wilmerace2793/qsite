@@ -13,7 +13,7 @@
                v-if="extraActions && extraActions.includes('search') && searchAction"
                @input="$emit('search', $clone(search))">
         <template v-slot:prepend>
-          <q-icon color="tertiary" name="fa-duotone fa-magnifying-glass"/>
+          <q-icon color="tertiary" size="xs" name="fa-duotone fa-magnifying-glass"/>
         </template>
       </q-input>
       <!--Button Actions-->
