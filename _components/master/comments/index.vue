@@ -147,18 +147,20 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue, 
 { defineComponent, computed, ref} 
 from "vue";
 import CKEditor from "@imagina/qsite/_components/master/ckEditor.vue";
 import { 
+  CommentModelContract, 
+  EditorConfigContract,
   apiRouteDefault,
   commentModelConst,
+  commentsContract,
   commentableTypeDefault,
   permissionsCommentsDefault,
-} from "@imagina/qsite/_components/master/comments/contracts/comments.js";
-
+} from "@imagina/qsite/_components/master/comments/contracts/comments";
 export default defineComponent({
    components: { CKEditor },
    props: {
@@ -180,35 +182,35 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const commentableType = computed(() => props.commentableType);
-    const commentModel = ref({...commentModelConst});
-    const route = computed(() => props.apiRoute);
+    const commentableType = computed<string>(() => props.commentableType);
+    const commentModel = ref<CommentModelContract>({...commentModelConst});
+    const route = computed<string>(() => props.apiRoute);
     const mainImage = computed(() => {
       return item => item.userProfile && item.userProfile?.mainImage 
       ? item.userProfile.mainImage: commentModelConst.avatar;
     })
     const tr = ref(Vue.prototype.$tr);
-    const comments = ref([]);
-    const loading = ref(false);
+    const comments = ref<commentsContract[]>([]);
+    const loading = ref<boolean>(false);
     const permisionComments = computed(() => ({
       create: Vue.prototype.$auth.hasAccess(`${props.permisionComments}.create`),
       edit: Vue.prototype.$auth.hasAccess(`${props.permisionComments}.edit`),
       index: Vue.prototype.$auth.hasAccess(`${props.permisionComments}.index`),
       destroy: Vue.prototype.$auth.hasAccess(`${props.permisionComments}.destroy`),
     }));
-    const dataBase = ref({ ...commentModel.value });
-    const textPlaceholder = ref(tr.value(`requestable.cms.message.writeComment`));
-    const editorConfig = ref({
+    const dataBase = ref<any>({ ...commentModel.value });
+    const textPlaceholder = ref<string>(tr.value(`requestable.cms.message.writeComment`));
+    const editorConfig = ref<EditorConfigContract>({
         height: 100,
     });
-    function formatDate(date) {
+    function formatDate(date: string): Date {
       return date ? Vue.prototype.$moment(date).format("DD MMM YYYY, h:mm a") : null;
     };
-    function activeText() {
+    function activeText(): void {
       dataBase.value.active = true;
       dataBase.value.text = "";
     }
-    function cancelText() {
+    function cancelText(): void {
       if (dataBase.value.text.length > 0) {
         Vue.prototype.$q
           .dialog({
@@ -226,7 +228,7 @@ export default defineComponent({
         dataBase.value.active = false;
       }
     }
-    function updateComment(type, id) {
+    function updateComment(type: string, id: number): void {
       try {
         const comment = comments.value.find((item) => item.id === id);
         if (comment) {
@@ -245,7 +247,7 @@ export default defineComponent({
         console.log(error);
       }
     }
-    function cancelComment(comment) {
+    function cancelComment(comment: commentsContract): void {
       if (comment.comment !== comment.textEdit) {
         Vue.prototype.$q
           .dialog({
@@ -263,7 +265,7 @@ export default defineComponent({
         comment.active = false;
       }
     }
-    function editComment(id, comment) {
+    function editComment(id: number, comment: commentsContract) {
       try {
         comment.loading = true;
         Vue.prototype.$crud
@@ -289,7 +291,7 @@ export default defineComponent({
         console.log(error);
       }
     }
-    function activeEdit(id) {
+    function activeEdit(id: number): void {
       try {
         const comment = comments.value.find((item) => item.id === id);
         if (comment) {
@@ -300,8 +302,9 @@ export default defineComponent({
         console.log(error);
       }
     }
-    async function addComment() {
+    async function addComment(): Promise<void> {
       try {
+        // @ts-ignore
         const userId = this.$store.state.quserAuth.userId;
         dataBase.value.loading = true;
         const params = {
@@ -327,7 +330,7 @@ export default defineComponent({
         });
       }
     }
-    async function deleteComment(id) {
+    async function deleteComment(id: number): Promise<void> {
         Vue.prototype.$q
         .dialog({
           ok: tr.value("isite.cms.label.delete"),
@@ -355,7 +358,7 @@ export default defineComponent({
         })
         .onCancel(() => {});
     }
-    function getCommentsList(commentableId) {
+    function getCommentsList(commentableId: number): void {
       try {
         loading.value = true;
         const params = {
