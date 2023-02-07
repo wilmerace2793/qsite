@@ -44,10 +44,10 @@
         <crud v-model="responseValue" @created="getOptions" v-bind="fieldProps" :key="field.name"
               :type="field.props.crudType || 'select'" ref="crudComponent"
               v-if="loadField('crud') || (field.props && field.props.crudData)"
-              :class="`q-mb-xs ${(field.props && field.props.crudType == 'button-create') ? 'absolute-right' : ''}`"/>
+              :class="`q-mb-xs ${field.help ? 'crud-dynamic-field' : ''} ${(field.props && field.props.crudType == 'button-create') ? 'absolute-right' : ''}`"/>
         <!--Input-->
         <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('input')"
-                 :label="fieldLabel" v-bind="fieldProps">
+                 :label="fieldLabel" v-bind="fieldProps" :class="`${field.help ? 'input-dynamic-field' : ''}`">
           <template v-slot:prepend v-if="fieldProps.icon">
             <q-icon :name="fieldProps.icon" size="18px"/>
           </template>
@@ -83,7 +83,7 @@
         </div>
         <!--Search-->
         <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('search')"
-                 v-bind="fieldProps">
+                 v-bind="fieldProps" :class="`${field.help ? 'search-dynamic-field' : ''}`">
           <template v-slot:append>
             <q-icon name="search" class="cursor-pointer" @click="$emit('enter')"/>
           </template>
@@ -92,7 +92,8 @@
         <q-input v-if="loadField('date')"
                  v-model="responseValue"
                  :label="fieldLabel"
-                 v-bind="fieldProps.field">
+                 v-bind="fieldProps.field"
+                 :class="`${field.help ? 'date-dynamic-field' : ''}`">
           <template v-slot:prepend>
             <!--Float calendar-->
             <q-icon v-if="fieldProps.field.icon"
@@ -111,7 +112,8 @@
         <q-input v-if="loadField('hour')"
                  v-model="responseValue"
                  :label="fieldLabel"
-                 v-bind="fieldProps.field">
+                 v-bind="fieldProps.field"
+                 :class="`${field.help ? 'hour-dynamic-field' : ''}`">
           <template v-slot:prepend>
             <!--Float Time-->
             <q-icon v-if="fieldProps.field.icon"
@@ -129,7 +131,8 @@
         <q-input v-if="loadField('fullDate')"
                  v-model="responseValue"
                  :label="fieldLabel"
-                 v-bind="fieldProps.field">
+                 v-bind="fieldProps.field"
+                 :class="`${field.help ? 'full-date-dynamic-field' : ''}`">
           <template v-slot:prepend>
             <q-icon name="fa-light fa-calendar-day" class="cursor-pointer" color="blue-grey">
               <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -151,7 +154,7 @@
         <!--Select-->
         <q-select v-model="responseValue" :options="formatOptions" :label="fieldLabel" use-input v-bind="fieldProps"
                   @input="matchTags(field)" v-if="loadField('select')" @filter="filterSelectOptions"
-                  @clear="val => field.props.multiple ? responseValue = [] : ''">
+                  @clear="val => field.props.multiple ? responseValue = [] : ''" :class="`${field.help ? 'select-dynamic-field' : ''}`">
           <!--No options slot-->
           <template v-slot:no-option v-if="!fieldProps.hideDropdownIcon">
             <slot name="before-options"/>
@@ -210,7 +213,7 @@
         </q-select>
         <!--tree select-->
         <q-field v-model="responseValue" v-if="loadField('treeSelect')" :label="fieldLabel"
-                 v-bind="fieldProps.fieldComponent">
+                 v-bind="fieldProps.fieldComponent" :class="`${field.help ? 'treeselect-dynamic-field' : ''}`">
           <tree-select v-model="responseValue" :options="formatOptions" placeholder="" v-bind="fieldProps.field"
                        @select="(node, instanceId) => $emit('select', {node, instanceId})">
             <!--Before options slot-->
@@ -251,7 +254,7 @@
           <upload-image v-model="responseValue" v-bind="fieldProps.field"/>
         </q-field>
         <!--Media-->
-        <q-field v-model="responseValue" v-if="loadField('media')" label="" class="field-no-padding no-border"
+        <q-field v-model="responseValue" v-if="loadField('media')" label="" class="field-no-padding no-border media-dinamyc-field"
                  v-bind="fieldProps.fieldComponent">
           <!--<media v-model="responseValue" class="bg-white" v-bind="fieldProps.field" />-->
           <select-media v-model="responseValue" class="bg-white" v-bind="fieldProps.field"/>
@@ -269,7 +272,7 @@
         </div>
         <!--input color-->
         <q-input v-model="responseValue" :label="fieldLabel" v-if="loadField('inputColor')" v-bind="fieldProps.field"
-                 @click="$refs.qColorProxi.show()" :ref="`inputColor-${fieldKey}`">
+                 @click="$refs.qColorProxi.show()" :ref="`inputColor-${fieldKey}`" :class="`${field.help ? 'input-color-dynamic-field' : ''}`">
           <template v-slot:append>
             <!--Icon-->
             <q-icon name="fa-light fa-droplet" class="cursor-pointer"/>
@@ -303,7 +306,7 @@
           <q-rating v-model="responseValue" v-bind="fieldProps.field" class="q-mt-sm"/>
         </q-field>
         <!--icon select-->
-        <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps" class="q-mb-md"/>
+        <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps" class="q-mb-md" :class="`${field.help ? 'select-icon-dinamyc-field' : ''}`"/>
         <!--optionGroup-->
         <q-field v-model="responseValue" v-if="loadField('optionGroup')" v-bind="fieldProps.fieldComponent">
           <q-option-group class="q-pt-md" v-model="responseValue" v-bind="fieldProps.field"/>
@@ -318,7 +321,7 @@
         </div>
         <!--Code Editor-->
         <q-field v-model="responseValue" v-if="loadField('json')" v-bind="fieldProps.fieldComponent"
-                 class="field-no-padding no-border" label="">
+                 class="field-no-padding no-border code-dinamyc-field" label="">
           <div class="full-width">
             <div class="text-grey-8 q-mb-xs" v-if="fieldProps.field.label">
               {{ fieldProps.field.label }}
@@ -355,7 +358,8 @@
             v-if="loadField('expression')"
             v-model="responseValue"
             :fieldProps="fieldProps"
-            :options="formatOptions" 
+            :options="formatOptions"
+            :class="`${field.help ? 'expression-dinamyc-field' : ''}`"
           />
         <!-- Expression end-->
       </div>
@@ -673,7 +677,7 @@ export default {
             outlined: true,
             dense: true,
             bgColor: 'white',
-            style: 'width: 100%',
+            //style: 'width: 100%',
             behavior: "menu",
             class: "q-pb-md",
             ...props
@@ -1068,7 +1072,7 @@ export default {
       const objectOptions = {
         crud: {
           class: 'absolute-right',
-          margin: '1em 4.5em',
+          margin: '1em',
           load: true
         },
         input: {
@@ -1088,7 +1092,7 @@ export default {
         },
         search: {
           class: 'absolute-right',
-          margin: '1em 5em',
+          margin: '1em',
           load: true
         },
         date: {
@@ -1103,22 +1107,22 @@ export default {
         },
         fullDate: {
           class: 'absolute-right',
-          margin: '1em 5.5em',
+          margin: '1em',
           load: true
         },
         select: {
           class: 'absolute-right',
-          margin: '1em 4.5em',
+          margin: '1em',
           load: true
         },
         treeSelect: {
           class: 'absolute-right',
-          margin: '1em 4.5em',
+          margin: '1em',
           load: true
         },
         html: {
           class: 'absolute-right',
-          margin: '3.5em 1.5em',
+          margin: '3.8em 1.5em',
           load: true
         },
         checkbox: {
@@ -1128,12 +1132,12 @@ export default {
         },
         media: {
           class: 'absolute-right',
-          margin: '2em 20em',
+          margin: '2em 18em 0 0',
           load: true
         },
         inputColor: {
           class: 'absolute-right',
-          margin: '1em 5em',
+          margin: '1em',
           load: true
         },
         toggle: {
@@ -1143,7 +1147,7 @@ export default {
         },
         signature: {
           class: 'absolute-bottom-right',
-          margin: '1.5em 1em',
+          margin: '21.5em 12.5em',
           load: true
         },
         rating: {
@@ -1158,21 +1162,21 @@ export default {
         },
         optionGroup: {
           class: "absolute-left",
-          margin: '1.3em 12em',
+          margin: '1.3em 16em',
           load: true
         },
         schedulable: {
           class: 'absolute-left',
-          margin: '2.8em 12em',
+          margin: '3.6em 12.5em',
           load: true
         },
         json: {
           class: 'absolute-right',
-          margin: '2.3em 1em',
+          margin: '3.7em 1em',
           load: true
         },
         expression: {
-          class: 'absolute-right tw-mx-8',
+          class: 'absolute-right',
           margin: '1em',
           load: true
         }
@@ -1530,6 +1534,9 @@ export default {
 </script>
 <style lang="stylus">
 #dynamicFieldComponent
+  .crud-dynamic-field, .input-dynamic-field, .search-dynamic-field, .select-dynamic-field, .date-dynamic-field, .hour-dynamic-field, .full-date-dynamic-field, .treeselect-dynamic-field, .input-color-dynamic-field, .select-icon-dinamyc-field, .expression-dinamyc-field{
+    width: calc(100% - 40px)
+  }
   .jsoneditor-vue
     width: 100%;
     height: 400px;
