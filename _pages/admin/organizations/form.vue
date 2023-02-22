@@ -1,10 +1,10 @@
 <template>
   <div id="organizationFormPage">
     <!--Content-->
-    <div v-if="organizationId" id="pageContent">
+    <div v-if="organizationIdLocal" id="pageContent">
       <!--page actions-->
       <div class="box box-auto-height q-mb-md">
-        <page-actions :title="$route.meta.title" @refresh="getData(true)"/>
+        <page-actions :title="pageTitle" @refresh="getData(true)"/>
       </div>
       <!--Form-->
       <div class="relative-position">
@@ -27,8 +27,11 @@
 <script>
 import layout from "src/modules/app/_i18n/en-us/layout"
 import layoutStore from '@imagina/qsite/_store/layoutStore.js'
+
 export default {
-  props: {},
+  props: {
+    organizationId: {default: null}
+  },
   components: {},
   watch: {
     '$route.params.id'(organizationId) {
@@ -49,10 +52,13 @@ export default {
     }
   },
   computed: {
+    pageTitle() {
+      const useLegacyStructure = parseInt(this.$store.getters['qsiteApp/getSettingValueByName']('isite::legacyStructureCMS') || 0)
+      return useLegacyStructure ? this.$tr(this.$route.meta.title) : this.$route.meta.title
+    },
     //Organization data
-    organizationId() {
-      //return this.$clone(this.$store.state.quserAuth.organizationId)
-      return this.$clone(this.$route.params.id)
+    organizationIdLocal() {
+      return this.$clone(this.organizationId || this.$route.params.id)
     },
     //Parse crud data
     parseCrudData() {
@@ -91,7 +97,7 @@ export default {
     getOrganizationData(refresh = false) {
       return new Promise((resolve, reject) => {
         //Validate if user has a organization
-        if (!this.organizationId) return resolve(null)
+        if (!this.organizationIdLocal) return resolve(null)
         //Requets params
         let requestParams = {
           refresh: refresh,
@@ -101,7 +107,7 @@ export default {
           }
         }
         //Request
-        this.$crud.show('apiRoutes.qsite.organizations', this.organizationId, requestParams).then(response => {
+        this.$crud.show('apiRoutes.qsite.organizations', this.organizationIdLocal, requestParams).then(response => {
           setTimeout(() => {
             this.organization = this.$clone(response.data)
             this.form = this.$clone(response.data)
@@ -132,7 +138,7 @@ export default {
     syncOrganization() {
       return new Promise((resolve, reject) => {
         const layoutId = layoutStore().getSelectedLayout();
-        if(layoutId) {
+        if (layoutId) {
           this.form.layoutId = layoutId;
           layoutStore().setSelectedLayout(layoutId);
         }
