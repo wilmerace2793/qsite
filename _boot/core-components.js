@@ -19,7 +19,7 @@ import pageActions from '@imagina/qsite/_components/master/pageActions'
 import crudComponent from '@imagina/qcrud/_components/v2/crud'
 import kanban from '@imagina/qsite/_components/master/kanban/index.vue';
 import folders from '@imagina/qsite/_components/master/folders/index.vue';
-import activitiesList from '@imagina/qgamification/_components/activitiesList/index.vue';
+import activities from '@imagina/qgamification/_components/categoryView/index.vue';
 
 
 export default ({app, router, store, Vue}) => {
@@ -45,7 +45,7 @@ export default ({app, router, store, Vue}) => {
     {name: 'crud-component', component: crudComponent},
     {name: 'kanban', component: kanban},
     {name: 'folders', component: folders},
-    {name: 'activitiesList', component: activitiesList},
+    {name: 'activities', component: activities},
   ]
 
   //Register components

@@ -10,7 +10,7 @@
       <div class="row q-col-gutter-x-md">
         <!--Activities-->
         <div class="col-12 q-mb-md">
-          <activities-list system-name="admin_home" @loaded="loading = false"/>
+          <activities system-name="admin_home" @loaded="loading = false" view="cardImage"/>
         </div>
         <!-- QuickCards -->
         <div v-for="(groupQuickCard, key) in quickCards" :key="key" class="col-12 col-lg-6">
