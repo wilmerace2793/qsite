@@ -37,6 +37,9 @@
     <!-- Help Center -->
     <help-center/>
 
+    <!-- Tutorial -->
+    <tutorial />
+
     <!-- FOOTER -->
     <component :is="components.footer"/>
   </q-layout>
@@ -58,6 +61,7 @@ import footerPanel from '@imagina/qsite/_components/panel/footer'
 //Components
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
 import helpCenter from '@imagina/qsite/_components/master/helpCenter.vue'
+import tutorial from '@imagina/qsite/_components/master/tutorial.vue'
 
 export default {
   name: "MasterLayout",
@@ -90,7 +94,8 @@ export default {
     //Panel
     headerPanel,
     drawersPanel,
-    footerPanel
+    footerPanel,
+    tutorial
   },
   watch: {
     shouldChangePassword(data) {

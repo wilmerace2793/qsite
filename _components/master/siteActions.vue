@@ -34,7 +34,7 @@
       <!-- Help Center -->
       <activities system-name="help_center" mode="button" :btn-props="defaultButtonProps"/>
       <!--Auth section-->
-      <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" rounded no-caps
+      <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" id="profile-button" rounded no-caps
              padding="2px 8px" color="white" unelevated>
         <div id="profileImage" class="img-as-bg"
              :style="`background-image: url('${quserState.userData.mainImage}')`"></div>
@@ -208,6 +208,16 @@ export default {
                 }
               ]
             }
+          },
+          {
+            name: 'tutorial',
+            label: this.$trp('isite.cms.label.tutorial'),
+            props: {
+              id: 'tutorial',
+              ...this.defaultButtonProps,
+              icon: "fal fa-book-circle",
+            },
+            action: () => this.$eventBus.$emit('showTutorial', this.$route.meta.path)
           }
         ],
         menu: [
@@ -220,7 +230,8 @@ export default {
               icon: 'fa-light fa-circle-user',
               round: false,
               rounded: true,
-              align: "left"
+              align: "left",
+              id: 'profile-button'
             },
             action: () => (this.$route.name != 'user.profile.me') ? this.$router.push({name: 'user.profile.me'}) : null
           },
