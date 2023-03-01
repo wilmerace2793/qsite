@@ -34,8 +34,11 @@
     <!---Cropper-->
     <cropper-component ref="cropperComponent"/>
 
-    <!-- Help Center -->
-    <help-center/>
+    <!-- Activities -->
+    <activities v-for="(activity, keyACt) in globalActivities" :key="keyACt" v-bind="activity"/>
+
+    <!-- Activities Actions -->
+    <activities-actions/>
 
     <!-- Tutorial -->
     <tutorial />
@@ -62,6 +65,7 @@ import footerPanel from '@imagina/qsite/_components/panel/footer'
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
 import helpCenter from '@imagina/qsite/_components/master/helpCenter.vue'
 import tutorial from '@imagina/qsite/_components/master/tutorial.vue'
+import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
 
 export default {
   name: "MasterLayout",
@@ -83,7 +87,7 @@ export default {
   components: {
     chat,
     cropperComponent,
-    helpCenter,
+    activitiesActions,
     //Admin
     headerAdminTheme1,
     headerAdminTheme2,
@@ -203,6 +207,28 @@ export default {
     //Should change password state
     shouldChangePassword() {
       return this.$store.state.quserAuth.shouldChangePassword
+    },
+    //Activities
+    globalActivities() {
+      const activities = [
+        {
+          systemName: 'help_center',
+          view: 'button',
+          style: {
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px'
+          },
+          btnProps: {
+            color: 'info'
+          }
+        },
+        {
+          systemName: 'admin_popup',
+          view: 'popup'
+        }
+      ]
+      return activities
     }
   },
   methods: {
