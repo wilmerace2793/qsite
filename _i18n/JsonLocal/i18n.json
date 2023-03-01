@@ -1146,6 +1146,7 @@
           "flightInfo": "Flight Info",
           "workOrders": "Work Orders",
           "rampInfo": "Ramp",
+          "passengerInfo": "Passenger",
           "map": "Map",
           "schedule": "Schedule",
           "scheduleStatus": "Schedule status"
