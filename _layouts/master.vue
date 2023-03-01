@@ -216,6 +216,10 @@ export default {
           btnProps: {
             color: 'info'
           }
+        },
+        {
+          systemName: 'admin_popup',
+          view: 'popup'
         }
       ]
       return activities
