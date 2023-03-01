@@ -70,9 +70,9 @@
                     <strong>
                       {{ item.userProfile.fullName }}
                     </strong>
-                    <small v-if="item.updatedAt">
-                      {{ formatDate(item.updatedAt) }}
-                      <span v-if="item.createdAt !== item.updatedAt">
+                    <small v-if="item.updatedAt || item.createdAt">
+                      {{ formatDate(item.updatedAt|| item.createdAt) }}
+                      <span v-if="item.updatedAt && item.createdAt !== item.updatedAt">
                         ({{ tr(`isite.cms.label.edited`) }})</span
                       >
                     </small>
