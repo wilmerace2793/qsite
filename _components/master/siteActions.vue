@@ -128,7 +128,7 @@ export default {
       //define the organization url if there're someone selected
       if (this.quserState.organizationId) {
         let organizationSelected = this.quserState.organizations.find(organization => organization.id == this.quserState.organizationId)
-        goToSiteUrl = organizationSelected.url
+        if(organizationSelected) goToSiteUrl = organizationSelected.url
       }
 
       return {
