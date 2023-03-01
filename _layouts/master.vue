@@ -34,6 +34,9 @@
     <!---Cropper-->
     <cropper-component ref="cropperComponent"/>
 
+    <!-- Activities -->
+    <activities v-for="(activity, keyACt) in globalActivities" :key="keyACt" v-bind="activity"/>
+
     <!-- Activities Actions -->
     <activities-actions/>
 
@@ -198,6 +201,24 @@ export default {
     //Should change password state
     shouldChangePassword() {
       return this.$store.state.quserAuth.shouldChangePassword
+    },
+    //Activities
+    globalActivities() {
+      const activities = [
+        {
+          systemName: 'help_center',
+          view: 'button',
+          style: {
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px'
+          },
+          btnProps: {
+            color: 'info'
+          }
+        }
+      ]
+      return activities
     }
   },
   methods: {
