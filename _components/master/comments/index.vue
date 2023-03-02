@@ -266,8 +266,17 @@ export default defineComponent({
     function editComment(id, comment) {
       try {
         comment.loading = true;
+        const params = {
+          approved: comment.approved,
+          commentableType: props.commentableType,
+          commentableId: props.commentableId,
+          comment: comment.comment,
+          userId: comment.userId,
+          is_internal: comment.is_internal,
+          options: comment.options,
+        };
         Vue.prototype.$crud
-          .update(route.value, id, { comment: comment.comment })
+          .update(route.value, id, { ...params })
           .then((response) => {
             const commentUpdate = response.data;
             comment.updatedAt = commentUpdate.updatedAt;
