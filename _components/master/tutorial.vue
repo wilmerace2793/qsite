@@ -49,13 +49,6 @@ export default {
                         buttons: [
                             {
                                 action() {
-                                    return this.back();
-                                },
-                                classes: 'tour-secondary',
-                                text: 'Atrás'
-                            },
-                            {
-                                action() {
                                     return this.next();
                                 },
                                 classes: 'tour-primary',
@@ -63,28 +56,73 @@ export default {
                             }
                         ],
                         id: 'creating'
+                    });
+
+                    tutorial.addStep({
+                      title: 'Menú Lateral',
+                      text: `Aquí podrás encontrar las diferentes categorias y acciones, para poder crear usuarios, formularios, productos, etc...`,
+                      attachTo: {
+                        element: "#listMenu",
+                        on: 'right-start'
+                      },
+                      buttons: [
+                        {
+                          action() {
+                            return this.back();
+                          },
+                          classes: 'tour-secondary',
+                          text: 'Atrás'
+                        },
+                        {
+                          action() {
+                            return this.next();
+                          },
+                          text: 'Siguiente',
+                          classes: 'tour-primary',
+                        }
+                      ],
+                      id: 'creating'
+                    });
+
+                    tutorial.addStep({
+                      title: 'Ajustes',
+                      text: `Aquí encontrar todas las configuraciones de tu sitio web, tal como modulos, configuraciones avanzadas, aws, etc...`,
+                      attachTo: {
+                        element: document.querySelector("#listMenu").lastElementChild,
+                        on: 'right-start'
+                      },
+                      buttons: [
+                        {
+                          action() {
+                            return this.back();
+                          },
+                          classes: 'tour-secondary',
+                          text: 'Atrás'
+                        },
+                        {
+                          action() {
+                            return this.next();
+                          },
+                          text: 'Siguiente',
+                          classes: 'tour-primary',
+                        }
+                      ],
+                      id: 'creating'
                     });
 
                     tutorial.addStep({
                         title: 'Lista de actividades',
-                        text: `Crea actividades, para que tus usuarios, puedan realizar acciones rápidas, como crear un producto, script personalizados etc, formularios, entre otros.`,
+                        text: `Aquí encontraras actividades rapidas que te ayudaran en la administración de tu sitio.`,
                         attachTo: {
-                            element: "#activitiesComponent",
+                            element: "#gamificationCategory-admin_home",
                             on: 'bottom'
                         },
                         buttons: [
                             {
                                 action() {
-                                    return this.back();
-                                },
-                                classes: 'tour-secondary',
-                                text: 'Atrás'
-                            },
-                            {
-                                action() {
                                     return this.next();
                                 },
-                                text: 'Siguiente',
+                                text: 'Finalizar',
                                 classes: 'tour-primary',
                             }
                         ],
@@ -92,10 +130,10 @@ export default {
                     });
 
                     tutorial.addStep({
-                        title: 'Productos por agotar',
-                        text: `Puedes estar pendiente de los productos que están apunto de quedar sin stock`,
+                        title: 'Dashboard',
+                        text: `Aquí encontraras una vista rapida de los ultimos movimientos en la información de tu sitio, como nuevos usuarios registrados...`,
                         attachTo: {
-                            element: "#quick-card-sold-out",
+                            element: "#quickCardsContent",
                             on: 'bottom'
                         },
                         buttons: [
@@ -112,110 +150,6 @@ export default {
                                 },
                                 classes: 'tour-primary',
                                 text: 'Siguiente'
-                            }
-                        ],
-                        id: 'creating'
-                    });
-
-                    tutorial.addStep({
-                        title: 'Últimas ordenes',
-                        text: `Revisa el estado de las últimas ventas de tu tienda online.`,
-                        attachTo: {
-                            element: "#quick-card-last-orders",
-                            on: 'bottom'
-                        },
-                        buttons: [
-                            {
-                                action() {
-                                    return this.back();
-                                },
-                                classes: 'tour-secondary',
-                                text: 'Atrás'
-                            },
-                            {
-                                action() {
-                                    return this.next();
-                                },
-                                text: 'Siguiente',
-                                classes: 'tour-primary',
-                            }
-                        ],
-                        id: 'creating'
-                    });
-
-                    tutorial.addStep({
-                        title: 'Últimas publicaciones',
-                        text: `Revisa el cuáles fueron de tus últimas publicaciones, crea otra, edita o elimina.`,
-                        attachTo: {
-                            element: "#quick-card-last-posts",
-                            on: 'bottom'
-                        },
-                        buttons: [
-                            {
-                                action() {
-                                    return this.back();
-                                },
-                                classes: 'tour-secondary',
-                                text: 'Atrás'
-                            },
-                            {
-                                action() {
-                                    return this.next();
-                                },
-                                text: 'Siguiente',
-                                classes: 'tour-primary',
-                            }
-                        ],
-                        id: 'creating'
-                    });
-
-                    tutorial.addStep({
-                        title: 'Menú Lateral',
-                        text: `Aquí podrás encontrar las diferentes categorias y acciones, para poder crear usuarios, formularios, productos, etc...`,
-                        attachTo: {
-                            element: "#listMenu",
-                            on: 'right-start'
-                        },
-                        buttons: [
-                            {
-                                action() {
-                                    return this.back();
-                                },
-                                classes: 'tour-secondary',
-                                text: 'Atrás'
-                            },
-                            {
-                                action() {
-                                    return this.next();
-                                },
-                                text: 'Siguiente',
-                                classes: 'tour-primary',
-                            }
-                        ],
-                        id: 'creating'
-                    });
-
-                    tutorial.addStep({
-                        title: 'Ajustes',
-                        text: `Aquí encontrar todas las configuraciones de tu sitio web, tal como modulos, configuraciones avanzadas, aws, etc...`,
-                        attachTo: {
-                            element: document.querySelector("#listMenu").lastElementChild,
-                            on: 'right-start'
-                        },
-                        buttons: [
-                            {
-                                action() {
-                                    return this.back();
-                                },
-                                classes: 'tour-secondary',
-                                text: 'Atrás'
-                            },
-                            {
-                                action() {
-                                    return this.next();
-                                },
-                                text: 'Siguiente',
-                                classes: 'tour-primary',
                             }
                         ],
                         id: 'creating'
@@ -444,7 +378,7 @@ export default {
             }else{
                 return false;
             }
-            
+
         }
     }
 }
