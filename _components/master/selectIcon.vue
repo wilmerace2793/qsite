@@ -2,9 +2,9 @@
   <div id="iconSelectComponent">
     <!--Input selected-->
     <q-input v-model="selectedIcon" bg-color="white" outlined dense clearable :label="label || $tr('isite.cms.form.icon')"
-             readonly @click="modal.show = true" class="cursor-pointer" :rules="rules">
+             class="cursor-pointer" :rules="rules">
       <template v-slot:append v-if="selectedIcon">
-        <q-icon :name="selectedIcon" color="blue-grey"/>
+        <q-icon :name="selectedIcon" color="blue-grey" @click="modal.show = true"/>
       </template>
     </q-input>
 
