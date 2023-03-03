@@ -70,9 +70,9 @@
                     <strong>
                       {{ item.userProfile.fullName }}
                     </strong>
-                    <small v-if="item.updatedAt">
-                      {{ formatDate(item.updatedAt) }}
-                      <span v-if="item.createdAt !== item.updatedAt">
+                    <small v-if="item.updatedAt || item.createdAt">
+                      {{ formatDate(item.updatedAt|| item.createdAt) }}
+                      <span v-if="item.updatedAt && item.createdAt !== item.updatedAt">
                         ({{ tr(`isite.cms.label.edited`) }})</span
                       >
                     </small>
@@ -266,8 +266,17 @@ export default defineComponent({
     function editComment(id, comment) {
       try {
         comment.loading = true;
+        const params = {
+          approved: comment.approved,
+          commentableType: props.commentableType,
+          commentableId: props.commentableId,
+          comment: comment.comment,
+          userId: comment.userId,
+          is_internal: comment.is_internal,
+          options: comment.options,
+        };
         Vue.prototype.$crud
-          .update(route.value, id, { comment: comment.comment })
+          .update(route.value, id, { ...params })
           .then((response) => {
             const commentUpdate = response.data;
             comment.updatedAt = commentUpdate.updatedAt;
