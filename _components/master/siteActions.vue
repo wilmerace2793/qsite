@@ -31,8 +31,6 @@
         <!-- Tooltip -->
         <q-tooltip>{{ btn.label }}</q-tooltip>
       </q-btn>
-      <!-- Help Center -->
-      <activities system-name="help_center" mode="button" :btn-props="defaultButtonProps"/>
       <!--Auth section-->
       <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" rounded no-caps
              padding="2px 8px" color="white" unelevated>
@@ -74,8 +72,6 @@
   </div>
 </template>
 <script>
-import activities from '@imagina/qgamification/_components/activities'
-
 export default {
   beforeDestroy() {
     this.$eventBus.$off('header.badge.manage')
@@ -84,7 +80,7 @@ export default {
     gutter: {type: String, default: 'sm'},
     size: {type: String, default: 'small'},
   },
-  components: {activities},
+  components: {},
   watch: {},
   mounted() {
     this.$nextTick(function () {
@@ -99,7 +95,7 @@ export default {
         notification: false
       },
       defaultButtonProps: {
-        round: true,
+        round : true,
         dense: true,
         color: "white",
         unelevated: true,
@@ -132,7 +128,7 @@ export default {
       //define the organization url if there're someone selected
       if (this.quserState.organizationId) {
         let organizationSelected = this.quserState.organizations.find(organization => organization.id == this.quserState.organizationId)
-        goToSiteUrl = organizationSelected.url
+        if(organizationSelected) goToSiteUrl = organizationSelected.url
       }
 
       return {
