@@ -320,7 +320,11 @@
         "newActivity": "New Activity",
         "updateActivity": "Update Activity",
         "newCategory": "New Category",
-        "updateCategory": "Update Category"
+        "updateCategory": "Update Category",
+        "label": {
+          "tourElement": "Element Id",
+          "tourElementPosition": "Element Position"
+        }
       }
     },
     "iforms": {
@@ -832,7 +836,8 @@
         "quickCard": {
           "lastOrders": "Commerce - Last Orders",
           "productsToSoldOut": "Tienda - Products to sold out"
-        }
+        },
+        "advancedSummary": "Advanced Summary"
       }
     },
     "icredit": {
@@ -1281,6 +1286,10 @@
         "perzonalizationTitle": "Welcome to the editor of your website",
         "perzonalizationDescription": "Easily change the logo, colors and the main information of your website",
         "label": {
+          "top": "Top",
+          "bottom": "Bottom",
+          "left": "Left",
+          "right": "Right",
           "backgroundImage": "Background Image",
           "noActivities": "There is no activities to display",
           "copyDisclosureLink": "Disclosure Copy",
@@ -2182,7 +2191,11 @@
         "newActivity": "Nueva Actividad",
         "updateActivity": "Actualizar Actividad",
         "newCategory": "Nueva Categoría",
-        "updateCategory": "Actualizar Categoría"
+        "updateCategory": "Actualizar Categoría",
+        "label": {
+          "tourElement": "ID del elemento",
+          "tourElementPosition": "Pocisión del Elemento"
+        }
       }
     },
     "iforms": {
@@ -2694,7 +2707,8 @@
         "quickCard": {
           "lastOrders": "Tienda - Ultimas Ordenes",
           "productsToSoldOut": "Tienda - Productos por agotar"
-        }
+        },
+        "advancedSummary": "Resumen Avanzado"
       }
     },
     "icredit": {
@@ -3016,6 +3030,10 @@
         "perzonalizationTitle": "Bienvenid@ al editor de tu sitio web",
         "perzonalizationDescription": "De manera fácil, cambia el logo, colores y la información principal de tu página web",
         "label": {
+          "top": "Arriba",
+          "bottom": "Abajo",
+          "left": "Izquierda",
+          "right": "Derecha",
           "backgroundImage": "Imagen de fondo",
           "noActivities": "No hay actividades para mostrar",
           "copyDisclosureLink": "Copia de Divulgación",
