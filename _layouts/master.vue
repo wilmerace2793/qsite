@@ -28,6 +28,7 @@
       <!--Router view-->
       <div id="routerPageContent" class="layout-padding">
         <router-view v-if="appState.loadPage"/>
+        <Alert/>
       </div>
     </q-page-container>
 
@@ -61,6 +62,7 @@ import footerPanel from '@imagina/qsite/_components/panel/footer'
 //Components
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
 import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
+import Alert from '@imagina/qoffline/_components/Alert.vue'
 
 export default {
   name: "MasterLayout",
@@ -93,7 +95,9 @@ export default {
     //Panel
     headerPanel,
     drawersPanel,
-    footerPanel
+    footerPanel,
+    //Offline
+    Alert
   },
   watch: {
     shouldChangePassword(data) {
@@ -108,6 +112,7 @@ export default {
   mounted() {
     this.$nextTick(async function () {
       this.init()
+      console.log(this.$store.state.qofflineMaster.isAppOffline);
     })
   },
   data() {
@@ -274,7 +279,9 @@ export default {
 
 <style lang="stylus">
 #layoutMaster {
-
+  #routerPageContent{
+    position: relative;
+  }
   #routeInformationContent {
     width: 100%;
     position: fixed;
