@@ -58,9 +58,6 @@ export default {
   mounted() {
     this.$nextTick(async function () {
       this.init()
-      const category = await this.$tour.getCategoryBySystemName('tour_settings');
-      const steps = await this.$tour.getStepsByCategory(category.data);
-      this.$tour.showTutorialBySteps(steps);
     })
   },
   data() {

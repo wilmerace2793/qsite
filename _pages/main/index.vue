@@ -17,9 +17,6 @@ export default {
   watch: {},
   mounted() {
     this.$nextTick(async function () {
-      const category = await this.$tour.getCategoryBySystemName('home_tour');
-      const steps = await this.$tour.getStepsByCategory(category.data);
-      this.$tour.showTutorialBySteps(steps);
     })
   },
   data() {
