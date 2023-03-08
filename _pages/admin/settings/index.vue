@@ -56,7 +56,7 @@ export default {
   components: {},
   watch: {},
   mounted() {
-    this.$nextTick(function () {
+    this.$nextTick(async function () {
       this.init()
     })
   },

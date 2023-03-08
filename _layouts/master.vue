@@ -41,6 +41,8 @@
     <!-- Activities Actions -->
     <activities-actions/>
 
+    
+
     <!-- FOOTER -->
     <component :is="components.footer"/>
   </q-layout>
@@ -107,12 +109,16 @@ export default {
           this.$alert[item.type || 'info'](item)
         })
       }
+    },
+    $route (to, from){
+      if (this.$tour.tour) {
+        this.$tour?.complete();
+      }
     }
   },
   mounted() {
     this.$nextTick(async function () {
       this.init()
-      console.log(this.$store.state.qofflineMaster.isAppOffline);
     })
   },
   data() {
