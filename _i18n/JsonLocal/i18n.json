@@ -1152,9 +1152,11 @@
           "flightInfo": "Flight Info",
           "workOrders": "Work Orders",
           "rampInfo": "Ramp",
+          "passengerInfo": "Passenger",
           "map": "Map",
           "schedule": "Schedule",
-          "scheduleStatus": "Schedule status"
+          "scheduleStatus": "Schedule status",
+          "workOrderStatuses": "Work Order statuses"
         },
         "map": {
           "workOrderId": "Work Order Id",
