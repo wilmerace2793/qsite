@@ -58,6 +58,20 @@ export default {
   mounted() {
     this.$nextTick(function () {
       this.init()
+      this.$crud.show('apiRoutes.qgamification.categories', 'tour_settings', {refresh : true, params : {include: 'activities', filter : {"markAsCompleted": true, "field" : 'system_name'}}}).then(response => {
+        if (!response.data.userCompleted) {
+          const steps = response.data.activities.map(step => {
+            return {
+              icon: step.options.icon,
+              title: step.title,
+              content: step.description,
+              element: step.options.tourElement,
+              position: step.options.tourElementPosition
+            }
+          })
+          if (steps.length > 0) this.$tour.showTutorialBySteps(steps);
+        }
+      }).catch(error => console.error("Tour category was not found", error));
     })
   },
   data() {

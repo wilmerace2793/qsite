@@ -40,8 +40,7 @@
     <!-- Activities Actions -->
     <activities-actions/>
 
-    <!-- Tutorial -->
-    <tutorial />
+    
 
     <!-- FOOTER -->
     <component :is="components.footer"/>
@@ -64,7 +63,6 @@ import footerPanel from '@imagina/qsite/_components/panel/footer'
 //Components
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
 import helpCenter from '@imagina/qsite/_components/master/helpCenter.vue'
-import tutorial from '@imagina/qsite/_components/master/tutorial.vue'
 import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
 
 export default {
@@ -99,7 +97,6 @@ export default {
     headerPanel,
     drawersPanel,
     footerPanel,
-    tutorial
   },
   watch: {
     shouldChangePassword(data) {
@@ -108,6 +105,11 @@ export default {
         data.messages.forEach(item => {
           this.$alert[item.type || 'info'](item)
         })
+      }
+    },
+    $route (to, from){
+      if (this.$tour.tour) {
+        this.$tour?.complete();
       }
     }
   },

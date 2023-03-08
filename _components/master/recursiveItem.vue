@@ -5,7 +5,7 @@
         <!--ToolTip-->
         <q-tooltip v-if="withTooltip">{{ translatable ? $tr(item.title) : item.title }}</q-tooltip>
         <!--Single Item-->
-        <q-item v-bind="item.itemProps" v-if="item.itemProps.vIf != undefined ? item.itemProps.vIf : true">
+        <q-item :id="`menuItem-${parseIdItem(item.name)}` || `menuItem-${key}`" v-bind="item.itemProps" v-if="item.itemProps.vIf != undefined ? item.itemProps.vIf : true">
           <q-item-section v-if="item.icon && showIcons" avatar>
             <q-icon :name="item.icon"/>
           </q-item-section>
@@ -48,6 +48,7 @@ export default {
     this.$nextTick(function () {
       this.init()
     })
+    console.warn(this.menu)
   },
   data() {
     return {
@@ -88,6 +89,10 @@ export default {
         this.checkCollapsibles()
         this.showMenu = true
       }, 300)
+    },
+    //Parse Id Item
+    parseIdItem(idItem){
+      return idItem.replaceAll(".", "");;
     },
     //Validate if should load single-item
     checkItemSingle(item) {
