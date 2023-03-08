@@ -205,16 +205,6 @@ export default {
               ]
             }
           },
-          {
-            name: 'tutorial',
-            label: this.$trp('isite.cms.label.tutorial'),
-            props: {
-              id: 'tutorial',
-              ...this.defaultButtonProps,
-              icon: "fal fa-book-circle",
-            },
-            action: () => this.$eventBus.$emit('showTutorial', this.$route.meta.path)
-          }
         ],
         menu: [
           //Profile
