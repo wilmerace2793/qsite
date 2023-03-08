@@ -27,4 +27,5 @@ export const availableUrls = {
     youtube: "https://www.youtube.com/",
     instagram: "https://www.instagram.com/",
     facebookWatch: 'https://fb.watch/',
+    twitter: "https://twitter.com/",
 };

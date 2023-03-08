@@ -16,21 +16,10 @@ export default {
   components: {indexAdmin, indexPanel},
   watch: {},
   mounted() {
-    this.$nextTick(function () {
-      this.$crud.show('apiRoutes.qgamification.categories', 'home_tour', {refresh : true, params : {include: 'activities', filter : {"markAsCompleted": true, "field" : 'system_name'}}}).then(response => {
-        if (!response.data.userCompleted) {
-          const steps = response.data.activities.map(step => {
-            return {
-              icon: step.options.icon,
-              title: step.title,
-              content: step.description,
-              element: step.options.tourElement,
-              position: step.options.tourElementPosition
-            }
-          })
-          if (steps.length > 0) this.$tour.showTutorialBySteps(steps);
-        }
-      })
+    this.$nextTick(async function () {
+      const category = await this.$tour.getCategoryBySystemName('home_tour');
+      const steps = await this.$tour.getStepsByCategory(category.data);
+      this.$tour.showTutorialBySteps(steps);
     })
   },
   data() {

@@ -48,7 +48,6 @@ export default {
     this.$nextTick(function () {
       this.init()
     })
-    console.warn(this.menu)
   },
   data() {
     return {
