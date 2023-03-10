@@ -12,6 +12,7 @@ import helper from '@imagina/qsite/_plugins/helper'
 import configApp from "src/config/app"
 import moment from "moment";
 import momentz from "moment-timezone";
+import centralizeModel from '@imagina/qsite/_store/model/centralizeModel.ts'
 
 //Refresh page
 export const REFRESH_PAGE = ({state, commit, dispatch, getters}) => {
@@ -49,10 +50,40 @@ export const GET_IP_ADDRESS = ({commit}) => {
 export const GET_SITE_SETTINGS = ({commit, dispatch, state, getters}, payload = {}) => {
   return new Promise((resolve, reject) => {
     let params = {refresh: true}
-    let configName = 'apiRoutes.qsite.siteSettings'
-    let configApp = config('app')
-
+    let configName = 'apiRoutes.qsite.siteSettings';
+    const settingCenter = false;
     crud.index(configName, params).then(async response => {
+      const responseMain =  response;
+      dispatch('GET_MAIN_SETTINGS', responseMain);
+      if(settingCenter) {
+        const response = await axios.get('https://components.ozonohosting.com/api/isite/v1/site/settings');
+        await dispatch('GET_CENTRALIZED_SETTINGS', response.data)
+      }
+      resolve(true)
+    }).catch(error => {
+      console.error('[store-qsite]Error:: Store getting site settings - ', error)
+      reject(error)
+    })
+  })
+}
+export const GET_CENTRALIZED_SETTINGS = ({ state, commit, dispatch }, response) => {
+  const { siteSettings } = response.data;
+  const brand = siteSettings.filter(item => item.name.split('::')[1].indexOf('brand') !== -1);
+  const logo = siteSettings.find(item => item.name === 'isite::logo1');
+  const setting = state.settings.filter(item => item.name !== 'isite::logo1');
+  const siteSettingsArray = [...setting, logo, ...brand];
+  commit('SET_SITE_SETTINGS', siteSettingsArray);
+  dispatch('SET_LOGO_SETTINGS');
+};
+
+export const SET_LOGO_SETTINGS = ({commit, getters}) => {
+  let logo = getters.getSettingMediaByName('isite::logoIadmin')
+  if (!logo || !logo.path || logo.path.includes('defaultLogo')) logo = getters.getSettingMediaByName('isite::logo1')
+  commit('SET_SITE_LOGO', logo.path)
+}
+
+export const GET_MAIN_SETTINGS = ({commit, dispatch}, response) => {
+      let configApp = config('app');
       let data = response.data
       commit('SET_SITE_SETTINGS', data.siteSettings)
       commit('SET_AVAILABLE_LOCALES', data.availableLocales)
@@ -61,21 +92,12 @@ export const GET_SITE_SETTINGS = ({commit, dispatch, state, getters}, payload = 
       commit('SET_MODULES_DATA', data.modulesEnabled)
       commit('SET_SELECTED_LOCALES')
       //Set logo
-      let logo = getters.getSettingMediaByName('isite::logoIadmin')
-      if (!logo || !logo.path || logo.path.includes('defaultLogo')) logo = getters.getSettingMediaByName('isite::logo1')
-      commit('SET_SITE_LOGO', logo.path)
+      dispatch('SET_LOGO_SETTINGS');
       //Set filters
       filter.setFilters(data.filters)
       //Set setting if is admin
       axios.defaults.params.setting.fromAdmin = (configApp.mode == 'iadmin' ? true : false)
       axios.defaults.params.setting.appMode = configApp.mode
-
-      resolve(true)
-    }).catch(error => {
-      console.error('[store-qsite]Error:: Store getting site settings - ', error)
-      reject(error)
-    })
-  })
 }
 
 export const GET_PAGES = ({commit}) => {
