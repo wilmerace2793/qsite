@@ -24,7 +24,7 @@
           <q-btn size="xs" class="after-field"
                  :style="'margin:'+helpLoad.margin"
                  round color="info"
-                 icon="fal fa-question-circle"
+                 icon="fa-light fa-info"
                  unelevated
           >
             <q-menu id="dynamicFieldMenuHelp" v-model="tooltip" anchor="top right" self="top right">
