@@ -1,9 +1,10 @@
 <template>
   <div class="page-stepper">
     <q-stepper
-        v-model="step"
+        v-model="pace"
         ref="stepper"
     >
+     
       <q-step
         v-for="step in steps"
         :key="step.id"
@@ -12,7 +13,7 @@
         :title="step.title"
         :done="step.done"
         >
-        <component :is="step.component" />
+        <component :is="step.component" @update="navNext"/>
       </q-step>
 
       <template v-slot:navigation>
@@ -20,11 +21,11 @@
           <div class="tw-px-4 tw-pt-4 tw-pb-1">
             <div class="row justify-between">
               <div class="col-4">
-                <q-btn rounded no-caps v-if="step > 1"  icon="fas fa-arrow-left" color="primary" @click="$refs.stepper.previous();sliderMinus()" label="Anterior"
+                <q-btn rounded no-caps v-if="pace > 1"  icon="fas fa-arrow-left" color="primary" @click="stepperPrevious()" label="Anterior"
                        class="q-ml-sm"/>
               </div>
               <div class="col-4 text-right">
-                <q-btn rounded no-caps @click="$refs.stepper.next();sliderPlus()" icon-right="fas fa-arrow-right"  color="primary" :label="step === 4 ? 'Pagar' : 'Continuar'"/>
+                <q-btn :disabled="!isActive" rounded no-caps @click="stepperNext()" icon-right="fas fa-arrow-right"  color="primary" :label="pace === steps.length ? 'Finalizar' : 'Continuar'"/>
               </div>
             </div>
           </div>
@@ -42,17 +43,82 @@ export default {
   components: {},
   data() {
     return {
-      step: 1,
+      pace: 1,
       slider: 0,
-      steps: modelSteps
+      steps: modelSteps,
+      sliderPercent:0,
+      isActive: false,
+      dataCheck: {
+        terms: false,
+        category: null,
+        layout: null,
+        plan: null,
+        organization: '',
+      }
     }
   },
+  mounted() {
+    this.$nextTick(async function () {
+      this.init()
+    })
+  },
   methods: {
-    sliderPlus(){
-      this.slider = this.slider + 25;
+    init() {
+      //this.getData()
+      this.sliderPercent = 100/this.steps.length;
+      this.slider = this.sliderPercent;
     },
-    sliderMinus(){
-      this.slider = this.slider - 25;
+    stepperPrevious(){
+      this.$refs.stepper.previous();
+      this.slider = this.slider - this.sliderPercent;
+    },
+    async stepperNext(){
+      try {
+        this.slider = this.slider + this.sliderPercent;
+        
+        // si llega al final y todo esta lleno envia la info
+        if (this.pace === this.steps.length) {
+          if(this.dataCheck.terms && 
+            (this.dataCheck.category!== null) && 
+            (this.dataCheck.layout!== null) && 
+            (this.dataCheck.plan!== null) && 
+            (this.dataCheck.organization!== '')) {
+            console.log('enviar los datos');
+          }
+        }
+        console.log(this.dataCheck); 
+        this.$refs.stepper.next();
+
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    navNext(value, info) {
+      // ubico el step actual para activar el boton next dependiento del emit
+      const current = this.steps.find((item) => item.id === this.pace);
+      current.done=value;
+      this.isActive = current.done;
+
+      // si es terminos y condiciones el valor del check actualiza la data
+      if(current.id==1){
+        this.dataCheck.terms = value;
+      }
+
+      // si es un step distinto a terminos y condiciones lo evalua y guarda la info
+      if (info!==undefined){
+        if(current.id==2){ // company
+          this.dataCheck.organization = info;
+        }
+        if(current.id==3){ // Category
+          this.dataCheck.category = info;
+        }
+        if(current.id==4){ // Layout
+          this.dataCheck.layout = info;
+        }
+        if(current.id==5){ // plan
+          this.dataCheck.plan = info;
+        }
+      }
     },
   }
 }
@@ -116,33 +182,9 @@ export default {
   @apply tw-p-0;
 }
 .page-stepper .step-title {
-  @apply tw-text-xl lg:tw-text-3xl tw-px-10 tw-text-center tw-pb-6 tw-font-bold;
+  @apply tw-text-xl lg:tw-text-3xl tw-px-12 tw-text-center tw-pb-8 tw-font-bold;
 }
 .page-stepper .step-title-1 {
   @apply tw-text-xl lg:tw-text-2xl tw-px-10 tw-text-center tw-pb-6 tw-font-bold;
 }
-/*@-webkit-keyframes fade-in-left {
-  0% {
-    -webkit-transform: translateX(-50px);
-            transform: translateX(-50px);
-    opacity: 0;
-  }
-  100% {
-    -webkit-transform: translateX(0);
-            transform: translateX(0);
-    opacity: 1;
-  }
-}
-@keyframes fade-in-left {
-  0% {
-    -webkit-transform: translateX(-50px);
-            transform: translateX(-50px);
-    opacity: 0;
-  }
-  100% {
-    -webkit-transform: translateX(0);
-            transform: translateX(0);
-    opacity: 1;
-  }
-}*/
 </style>

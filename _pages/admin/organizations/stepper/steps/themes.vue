@@ -1,10 +1,9 @@
 <template>
   <div class="step-themes">
-    <h2 class="step-title">Selecciona la plantilla que mas te gusta</h2>
-    <p class="tw-text-sm tw-px-8 tw-text-center tw-mb-9">Despues de elegir tu plantilla, podras cambiar el color y el
-      contenido de tu sitio siempre que lo desees</p>
+    <h2 class="step-title">{{stepContent.title}}</h2>
+    <p class="tw-text-sm tw-px-12 tw-text-center tw-mb-9">{{stepContent.summary}}</p>
     <div class="row">
-      <div class="col-6 col-md-4 tw-mb-2 tw-p-3 tw-cursor-pointer" v-for="(item, index) in themes" @click="selected=item">
+      <div class="col-6 col-md-4 tw-mb-2 tw-p-3 tw-cursor-pointer" v-for="(item, index) in themes" @click="selectData(item)">
         <div class="item-theme" :class="{ activeClass : item.name === selected.name }">
           <q-img 
                  :src="item.image"
@@ -26,8 +25,6 @@
     </div>
     <div class="step-sidebar" v-else>
       <div class="select-card tw-max-w-md" >
-        <p class="tw-text-sm tw-mb-8">Despues de elegir tu plantilla, podras cambiar el color y el
-      contenido de tu sitio siempre que lo desees</p>
           <img src="./images/composition.svg"/>
       </div>
     </div>
@@ -38,17 +35,40 @@
 export default {
   data() {
     return {
+      stepContent: {
+        title: 'Selecciona la plantilla que mas te gusta',
+        summary: 'Despues de elegir tu plantilla, podras cambiar el color y el contenido de tu sitio siempre que lo desees',
+        image: './images/composition.svg',
+      },
       selected: "",
       themes: [
-        {name: 'uno', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
-        {name: 'dos', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
-        {name: 'tres', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
-        {name: 'unod', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
-        {name: 'dosd', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
-        {name: 'tresd', image: 'http://imgfz.com/i/ckeaMRb.jpeg'}
+        {id: 1, name: 'uno', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
+        {id: 2, name: 'dos', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
+        {id: 3, name: 'tres', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
+        {id: 4, name: 'unod', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
+        {id: 5, name: 'dosd', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
+        {id: 6, name: 'tresd', image: 'http://imgfz.com/i/ckeaMRb.jpeg'}
       ]
     }
   },
+  mounted() {
+    this.$nextTick(async function () {
+      this.navNext()
+    })
+  },
+  methods: {
+    selectData(item) {
+      this.selected=item;
+      this.navNext();
+    },
+    navNext() {
+      if(this.selected!==''){
+        this.$emit("update", true, this.selected.id);
+      }else {
+        this.$emit("update", false);
+      }
+    }
+  }
 }
 </script>
 <style>

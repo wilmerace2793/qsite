@@ -1,41 +1,39 @@
 <template>
-  <div class="step-company">
+  <div class="step-sterm">
     <h2 class="step-title-1">{{stepContent.title}}</h2>
-    <p class="tw-text-sm tw-px-10 tw-text-center tw-mb-10">{{ stepContent.summary }}</p>
+    
 
-    <div class="tw-px-10 tw-mb-8">
-      <dynamic-field v-model="name" :field="formFields.nameOrganizations" />
+    <div class=" tw-px-12">
+ 
+        <div class="tw-flex tw-overflow-hidden">
+            <q-checkbox dense v-model="buttonTerms" color="primary" />
+            <div class="tw-pl-3">
+                Se aplican las Condiciones de uso de Wygo. Se aplica la <a href="#" target="_blank" class="text-primary">Política de privacidad</a> de Wygo.
+            </div>
+        </div>
+
     </div>
+
 
     <div class="step-sidebar ">
-      <div class="select-project tw-max-w-md">
-        <img src="./images/project.svg"/>
-      </div>
+      
+        
     </div>
+
+
 
   </div>
 </template>
 <script>
-
 export default {
   data() {
     return {
-      name:'',
+      buttonTerms: false,
       stepContent: {
-        title: '¿Cuál es el nombre de tu negocio o proyecto?',
-        summary: 'El nombre de tu negocio o proyecto es la base para armar tu sitio web, sera el elemento que se usara para identificarlo.',
-        image: './images/project.svg',
+        title: 'Condiciones de uso',
+        summary: '',
+        image: '',
       }
-    }
-  },
-  mounted() {
-    this.$nextTick(async function () {
-      this.navNext()
-    })
-  },
-  watch: {
-    name(newName, oldName) {
-      this.navNext();
     }
   },
   computed: {
@@ -54,15 +52,11 @@ export default {
       };
     },
   },
-  methods: {
-    navNext() {
-      if(this.name!==''){
-        this.$emit("update", true, this.name);
-      }else {
-        this.$emit("update", false);
-      }
+  watch: {
+    buttonTerms(newTerms, oldTerms) {
+      this.$emit("update", newTerms);
     }
-  }
+  },
 }
 </script>
 <style>
