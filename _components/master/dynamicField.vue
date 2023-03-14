@@ -156,7 +156,8 @@
         <!--Select-->
         <q-select v-model="responseValue" :options="formatOptions" :label="fieldLabel" use-input v-bind="fieldProps"
                   @input="matchTags(field)" v-if="loadField('select')" @filter="filterSelectOptions"
-                  @clear="val => field.props.multiple ? responseValue = [] : ''" :class="`${field.help ? 'select-dynamic-field' : ''}`">
+                  @clear="val => field.props.multiple ? responseValue = [] : ''"
+                  :class="`${field.help ? 'select-dynamic-field' : ''}`">
           <!--No options slot-->
           <template v-slot:no-option v-if="!fieldProps.hideDropdownIcon">
             <slot name="before-options"/>
@@ -256,7 +257,8 @@
           <upload-image v-model="responseValue" v-bind="fieldProps.field"/>
         </q-field>
         <!--Media-->
-        <q-field v-model="responseValue" v-if="loadField('media')" label="" class="field-no-padding no-border media-dinamyc-field"
+        <q-field v-model="responseValue" v-if="loadField('media')" label=""
+                 class="field-no-padding no-border media-dinamyc-field"
                  v-bind="fieldProps.fieldComponent">
           <!--<media v-model="responseValue" class="bg-white" v-bind="fieldProps.field" />-->
           <select-media v-model="responseValue" class="bg-white" v-bind="fieldProps.field"/>
@@ -274,7 +276,8 @@
         </div>
         <!--input color-->
         <q-input v-model="responseValue" :label="fieldLabel" v-if="loadField('inputColor')" v-bind="fieldProps.field"
-                 @click="$refs.qColorProxi.show()" :ref="`inputColor-${fieldKey}`" :class="`${field.help ? 'input-color-dynamic-field' : ''}`">
+                 @click="$refs.qColorProxi.show()" :ref="`inputColor-${fieldKey}`"
+                 :class="`${field.help ? 'input-color-dynamic-field' : ''}`">
           <template v-slot:append>
             <!--Icon-->
             <q-icon name="fa-light fa-droplet" class="cursor-pointer"/>
@@ -308,7 +311,8 @@
           <q-rating v-model="responseValue" v-bind="fieldProps.field" class="q-mt-sm"/>
         </q-field>
         <!--icon select-->
-        <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps" class="q-mb-md" :class="`${field.help ? 'select-icon-dinamyc-field' : ''}`"/>
+        <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps" class="q-mb-md"
+                     :class="`${field.help ? 'select-icon-dinamyc-field' : ''}`"/>
         <!--optionGroup-->
         <q-field v-model="responseValue" v-if="loadField('optionGroup')" v-bind="fieldProps.fieldComponent">
           <q-option-group class="q-pt-md" v-model="responseValue" v-bind="fieldProps.field"/>
@@ -362,7 +366,7 @@
             :fieldProps="fieldProps"
             :options="formatOptions"
             :class="`${field.help ? 'expression-dinamyc-field' : ''}`"
-          />
+        />
         <!-- Expression end-->
       </div>
     </div>
@@ -1519,13 +1523,18 @@ export default {
             //Instance request params
             let requestParams = {
               refresh: true,
-              params: {filter: {field: fieldSelect.id}}
+              params: {
+                ...(loadOptions.requestParams || {}),
+                filter: {
+                  ...(loadOptions.requestParams?.filter || {}),
+                  id: (this.responseValue.id || this.responseValue.value || this.responseValue)
+                }
+              }
             }
-            //Instance the criteria
-            const criteria = this.responseValue.id || this.responseValue.value || this.responseValue
+
             //Request
-            this.$crud.show(loadOptions.apiRoute, criteria, requestParams).then(response => {
-              this.rootOptions = this.$array.select([response.data], fieldSelect)
+            this.$crud.index(loadOptions.apiRoute, requestParams).then(response => {
+              this.rootOptions = this.$array.select(response.data, fieldSelect)
             })
           }
         }
@@ -1536,9 +1545,10 @@ export default {
 </script>
 <style lang="stylus">
 #dynamicFieldComponent
-  .crud-dynamic-field, .input-dynamic-field, .search-dynamic-field, .select-dynamic-field, .date-dynamic-field, .hour-dynamic-field, .full-date-dynamic-field, .treeselect-dynamic-field, .input-color-dynamic-field, .select-icon-dinamyc-field, .expression-dinamyc-field{
+  .crud-dynamic-field, .input-dynamic-field, .search-dynamic-field, .select-dynamic-field, .date-dynamic-field, .hour-dynamic-field, .full-date-dynamic-field, .treeselect-dynamic-field, .input-color-dynamic-field, .select-icon-dinamyc-field, .expression-dinamyc-field {
     width: calc(100% - 40px)
   }
+
   .jsoneditor-vue
     width: 100%;
     height: 400px;
