@@ -1,9 +1,9 @@
 <template>
   <div class="step-categories">
-    <h2 class="step-title">¿Cuál es la temática de tu página web?</h2>
+    <h2 class="step-title">{{stepContent.title}}</h2>
 
     <div class="tw-px-6 tw-pb-6 tw-mt-4">
-      <dynamic-field :field="formFields.category" />
+      <dynamic-field v-model="name" :field="formFields.category" @input="searchCategory()"/>
     </div>
 
     <div class="tw-px-6 row">
@@ -14,7 +14,7 @@
                  :ratio="4/3"
                  class="tw-rounded tw-w-full"
           >
-            <div class="item-category-name absolute-bottom text-subtitle1 text-center">
+            <div class="item-category-name absolute-bottom tw-text-sm text-center">
               {{item.name}}
             </div>
           </q-img>
@@ -24,14 +24,9 @@
     </div>
 
     <div class="step-sidebar">
-      <div class="select-category tw-max-w-md" v-if="selected">
-        <p class="tw-text-base tw-mb-8">{{stepContent.summary}}</p>
-          <div class="text-center tw-text-lg tw-font-bold tw-mb-3">  {{ selected.name }} </div>
-          <div class="text-center tw-text-md" v-html="selected.description"></div>  
-      </div>
-      <div class="categories-text tw-max-w-sm" v-else>
+      <div class="categories-text tw-max-w-sm">
         <p class="tw-text-sm tw-mb-8 text-center">{{stepContent.summary}}</p>
-          <img src="./images/select_option.svg"/>
+        <img :src="stepContent.image" />
       </div>
     </div>
 
@@ -44,15 +39,12 @@ export default {
     return {
       stepContent: {
         title: '¿Cuál es la temática de tu página web?',
-        summary: 'Con la seleccion de la categoria conoceremos la temática de tu sitio web, y podremos proporcionarte las plantillas con los textos y la estructura que más se adapten a tu proyecto o negocio.',
-        image: './images/select_option.svg',
+        summary: 'Con la seleccion de la categoria conoceremos la temática de tu sitio web, y podremos proporcionarte las plantillas con los textos y la estructura que más se adapten a tu negocio.',
+        image: 'http://imgfz.com/i/R8AYr5e.png',
       },
+      name:"",
       selected: "",
-      categories: [
-        { id: 1, name:'Tienda', image: 'http://imgfz.com/i/z2Er0Rq.jpeg', description: 'Descripcion de la Categoria Tienda'},
-        { id: 2, name:'Arquitectura', image: 'http://imgfz.com/i/G9N74Sv.jpeg', description: 'Descripcion de la Categoria Arquitectura'},
-        { id: 3, name:'Viajes', image: 'http://imgfz.com/i/UpxX59i.jpeg', description: 'Descripcion de la Categoria Viajes'}
-      ],
+      categories: [],
     }
   },
   mounted() {
@@ -65,14 +57,13 @@ export default {
       return {
         category: {
           value: "",
-          type: "input",
+          type: "search",
           props: {
             label: "Buscar",
-            icon: "search",
             color: "primary",
             rounded: true,
             dense: false
-          },
+          }
         },
       };
     },
@@ -88,6 +79,19 @@ export default {
         this.$emit("update", true, this.selected.id);
       }else {
         this.$emit("update", false);
+      }
+    },
+    searchCategory(){
+      console.log(this.name.length);
+      if(this.name!==''){
+        console.log('Llamado de las categorias');
+        this.categories = [
+          { id: 1, name:'Tienda', image: 'http://imgfz.com/i/z2Er0Rq.jpeg', description: 'Descripcion de la Categoria Tienda'},
+          { id: 2, name:'Arquitectura', image: 'http://imgfz.com/i/G9N74Sv.jpeg', description: 'Descripcion de la Categoria Arquitectura'},
+          { id: 3, name:'Viajes', image: 'http://imgfz.com/i/UpxX59i.jpeg', description: 'Descripcion de la Categoria Viajes'}
+        ];
+      } else {
+        this.categories = [];
       }
     }
   }
@@ -116,12 +120,8 @@ export default {
   @apply tw--top-1.5 tw--right-1.5 tw--bottom-1.5 tw--left-1.5;
   border-color: var(--q-color-primary);
 }
-.step-categories .select-category {
-  -webkit-animation: slide-tr 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-	        animation: slide-tr 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-}
-.step-categories .categories-text {
-  -webkit-animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-	        animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+.step-categories .select-category, .step-categories .categories-text {
+  -webkit-animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+	animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
 </style>

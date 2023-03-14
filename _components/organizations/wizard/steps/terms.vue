@@ -1,22 +1,23 @@
 <template>
-  <div class="step-sterm">
-    <h2 class="step-title-1">{{stepContent.title}}</h2>
+  <div class="step-terms">
+    <h2 class="step-title">{{stepContent.title}}</h2>
     
 
-    <div class=" tw-px-12">
- 
-        <div class="tw-flex tw-overflow-hidden">
+    <div class="tw-px-12 tw-text-md">
+        <div class="tw-flex tw-overflow-hidden tw-mb-3">
             <q-checkbox dense v-model="buttonTerms" color="primary" />
-            <div class="tw-pl-3">
+            <div class="tw-pl-3 ">
                 Se aplican las Condiciones de uso de Wygo. Se aplica la <a href="#" target="_blank" class="text-primary">Política de privacidad</a> de Wygo.
             </div>
         </div>
-
     </div>
 
 
     <div class="step-sidebar ">
-      
+      <div class="terms-text tw-max-w-sm">
+        <p class="tw-text-sm tw-mb-8 text-center">{{stepContent.summary}}</p>
+        <img :src="stepContent.image" />
+      </div>
         
     </div>
 
@@ -32,7 +33,7 @@ export default {
       stepContent: {
         title: 'Condiciones de uso',
         summary: '',
-        image: '',
+        image: 'http://imgfz.com/i/5E7Qrbq.png',
       }
     }
   },
@@ -60,17 +61,8 @@ export default {
 }
 </script>
 <style>
-.step-categories .q-radio {
-  margin-bottom: 10px;
-}
-.select-project {
+.step-terms .terms-text {
   -webkit-animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 	animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-}
-.step-categories .q-option-group--inline > div {
-    width: 32%;
-}
-.step-categories .q-radio__label {
-  color: #000;
 }
 </style>

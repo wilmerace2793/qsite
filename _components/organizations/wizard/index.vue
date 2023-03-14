@@ -3,6 +3,7 @@
     <q-stepper
         v-model="pace"
         ref="stepper"
+        keep-alive
     >
      
       <q-step
@@ -17,15 +18,15 @@
       </q-step>
 
       <template v-slot:navigation>
-        <q-stepper-navigation>
+        <q-stepper-navigation v-if="pace > 1">
           <div class="tw-px-4 tw-pt-4 tw-pb-1">
             <div class="row justify-between">
               <div class="col-4">
-                <q-btn rounded no-caps v-if="pace > 1"  icon="fas fa-arrow-left" color="primary" @click="stepperPrevious()" label="Anterior"
+                <q-btn rounded no-caps v-if="pace > 3"  icon="fas fa-arrow-left" color="primary" @click="stepperPrevious()" label="Anterior"
                        class="q-ml-sm"/>
               </div>
               <div class="col-4 text-right">
-                <q-btn :disabled="!isActive" rounded no-caps @click="stepperNext()" icon-right="fas fa-arrow-right"  color="primary" :label="pace === steps.length ? 'Finalizar' : 'Continuar'"/>
+                <q-btn :disabled="!isActive"  rounded no-caps @click="stepperNext()" icon-right="fas fa-arrow-right"  color="primary" :label="pace === (steps.length + 1) ? 'Finalizar' : 'Continuar'"/>
               </div>
             </div>
           </div>
@@ -43,7 +44,7 @@ export default {
   components: {},
   data() {
     return {
-      pace: 1,
+      pace: 2,
       slider: 0,
       steps: modelSteps,
       sliderPercent:0,
@@ -77,16 +78,16 @@ export default {
         this.slider = this.slider + this.sliderPercent;
         
         // si llega al final y todo esta lleno envia la info
-        if (this.pace === this.steps.length) {
+        if (this.pace === (this.steps.length +1)) {
           if(this.dataCheck.terms && 
             (this.dataCheck.category!== null) && 
             (this.dataCheck.layout!== null) && 
             (this.dataCheck.plan!== null) && 
             (this.dataCheck.organization!== '')) {
             console.log('enviar los datos');
+            console.log(this.dataCheck);
           }
         }
-        console.log(this.dataCheck); 
         this.$refs.stepper.next();
 
       } catch (error) {
@@ -100,22 +101,22 @@ export default {
       this.isActive = current.done;
 
       // si es terminos y condiciones el valor del check actualiza la data
-      if(current.id==1){
+      if(current.id==2){
         this.dataCheck.terms = value;
       }
 
       // si es un step distinto a terminos y condiciones lo evalua y guarda la info
       if (info!==undefined){
-        if(current.id==2){ // company
+        if(current.id==3){ // company
           this.dataCheck.organization = info;
         }
-        if(current.id==3){ // Category
+        if(current.id==4){ // Category
           this.dataCheck.category = info;
         }
-        if(current.id==4){ // Layout
+        if(current.id==5){ // Layout
           this.dataCheck.layout = info;
         }
-        if(current.id==5){ // plan
+        if(current.id==6){ // plan
           this.dataCheck.plan = info;
         }
       }

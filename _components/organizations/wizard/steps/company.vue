@@ -1,15 +1,15 @@
 <template>
   <div class="step-company">
-    <h2 class="step-title-1">{{stepContent.title}}</h2>
-    <p class="tw-text-sm tw-px-10 tw-text-center tw-mb-10">{{ stepContent.summary }}</p>
+    <h2 class="step-title">{{stepContent.title}}</h2>
+    <p class="tw-text-md tw-px-10 tw-text-center tw-mb-10">{{ stepContent.summary }}</p>
 
     <div class="tw-px-10 tw-mb-8">
       <dynamic-field v-model="name" :field="formFields.nameOrganizations" />
     </div>
 
     <div class="step-sidebar ">
-      <div class="select-project tw-max-w-md">
-        <img src="./images/project.svg"/>
+      <div class="select-company tw-max-w-md">
+        <img :src="stepContent.image"/>
       </div>
     </div>
 
@@ -24,7 +24,7 @@ export default {
       stepContent: {
         title: '¿Cuál es el nombre de tu negocio o proyecto?',
         summary: 'El nombre de tu negocio o proyecto es la base para armar tu sitio web, sera el elemento que se usara para identificarlo.',
-        image: './images/project.svg',
+        image: 'http://imgfz.com/i/8jznp2c.png',
       }
     }
   },
@@ -61,22 +61,13 @@ export default {
       }else {
         this.$emit("update", false);
       }
-    }
+    },
   }
 }
 </script>
 <style>
-.step-categories .q-radio {
-  margin-bottom: 10px;
-}
-.select-project {
+.select-company {
   -webkit-animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 	animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-}
-.step-categories .q-option-group--inline > div {
-    width: 32%;
-}
-.step-categories .q-radio__label {
-  color: #000;
 }
 </style>

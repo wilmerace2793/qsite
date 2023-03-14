@@ -12,27 +12,19 @@
     ">
       <img :src="logo" class="tw-h-10 tw-w-auto" />
     </div>
-    <div class="page-register" v-if="register">
-      
-      <q-btn color="white" @click="viewWizard()" text-color="black" label="Wizard" />
-      <auth></auth>
-                    
-    </div>
-    <div class="page-wizard tw-w-full tw-relative" v-if="wizard">
+    <div class="page-wizard tw-w-full tw-relative">
       <stepper></stepper>
     </div>
   </div>
 </template>
 <script>
-import auth from "@imagina/qsite/_pages/admin/organizations/stepper/auth.vue";
-import stepper from "@imagina/qsite/_pages/admin/organizations/stepper/index.vue";
+import stepper from "@imagina/qsite/_components/organizations/wizard/index.vue";
 
 export default {
   beforeDestroy() {
   },
   props: {},
   components: {
-    auth,
     stepper
   },
   watch: {},
@@ -42,18 +34,12 @@ export default {
       loading: false,
       data: [],
       logo: this.$store.state.qsiteApp.logo,
-      register: false,
-      wizard: true,
     }
   },
   mounted() {},
   methods: {
     init() {
       //this.getData()
-    },
-    viewWizard() {
-      this.register = false;
-      this.wizard= true;
     },
     //Get data
     getData(refresh = false) {
@@ -84,9 +70,6 @@ export default {
   @apply tw-bg-white;
   transition: all .4s ease-out;
   box-shadow: 0 0 6px -2px #8d8d8d;
-}
-#wizardOrganization .card-terms .q-btn .q-icon {
-  @apply tw-text-sm;
 }
 @-webkit-keyframes fade-in-left {
   0% {

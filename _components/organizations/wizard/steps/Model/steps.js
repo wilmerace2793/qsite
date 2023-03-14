@@ -3,40 +3,48 @@ import company from '../company';
 import plans from '../plans';
 import themes from '../themes';
 import terms from '../terms';
+import register from '../register';
 
 export default [
-    {
+    /*{
         id: 1,
-        title: 'Terms',
+        title: 'Register',
         prefix: 1,
+        component: register,
+        done: false,
+    },*/
+    {
+        id: 2,
+        title: 'Terms',
+        prefix: 2,
         component: terms,
         done: false,
     },
     {
-        id: 2,
+        id: 3,
         title: 'Company',
-        prefix: 2,
+        prefix: 3,
         component: company,
         done: false,
     },
     {
-        id: 3,
+        id: 4,
         title: 'Categories',
-        prefix: 3,
+        prefix: 4,
         component: categories,
         done: false,
     },
     {
-        id: 4,
+        id: 5,
         title: 'Themes',
-        prefix: 4,
+        prefix: 5,
         component: themes,
         done: false,
     },
     {
-        id: 5,
+        id: 6,
         title: 'Plans',
-        prefix: 5,
+        prefix: 6,
         component: plans,
         done: false,
     },

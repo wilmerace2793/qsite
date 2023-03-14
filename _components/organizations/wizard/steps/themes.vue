@@ -10,22 +10,16 @@
                  :ratio="1/1"
                  class="tw-rounded tw-border tw-w-full"
           >
-            <!--<div class="item-theme-name absolute-bottom text-subtitle1 text-center">
-              {{ item.name }}
-            </div>-->
           </q-img>
         </div>
       </div>
     </div>
-    <div class="step-sidebar" v-if="selected">
-      <div class="select-card tw-max-w-md" >
-        <!--<div class="tw-text-sm text-center tw-pb-3 tw-capitalize tw-font-semibold">{{ selected.name }}</div>-->
-        <img :src="selected.image" style="height: 300px;"/>
+    <div class="step-sidebar" >
+      <div class="select-card tw-max-w-md" v-if="selected">
+        <img contain :src="selected.image" style="height: 400px;"/>
       </div>
-    </div>
-    <div class="step-sidebar" v-else>
-      <div class="select-card tw-max-w-md" >
-          <img src="./images/composition.svg"/>
+      <div class="select-card tw-max-w-md" v-else>
+          <img :src="stepContent.image" />
       </div>
     </div>
   </div>
@@ -38,16 +32,16 @@ export default {
       stepContent: {
         title: 'Selecciona la plantilla que mas te gusta',
         summary: 'Despues de elegir tu plantilla, podras cambiar el color y el contenido de tu sitio siempre que lo desees',
-        image: './images/composition.svg',
+        image: 'http://imgfz.com/i/ku9vSNs.png',
       },
       selected: "",
       themes: [
         {id: 1, name: 'uno', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
-        {id: 2, name: 'dos', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
+        {id: 2, name: 'dos', image: 'http://imgfz.com/i/E31POp2.jpeg'},
         {id: 3, name: 'tres', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
-        {id: 4, name: 'unod', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
+        {id: 4, name: 'unod', image: 'http://imgfz.com/i/E31POp2.jpeg'},
         {id: 5, name: 'dosd', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
-        {id: 6, name: 'tresd', image: 'http://imgfz.com/i/ckeaMRb.jpeg'}
+        {id: 6, name: 'tresd', image: 'http://imgfz.com/i/E31POp2.jpeg'}
       ]
     }
   },

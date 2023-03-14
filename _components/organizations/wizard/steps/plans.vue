@@ -49,7 +49,7 @@
       </q-card>
 
       <div class="select-card tw-max-w-md" v-else>
-        <img src="./images/plans.svg"/>
+        <img :src="stepContent.image"/>
       </div>
     </div>
 
@@ -62,7 +62,7 @@ export default {
       stepContent: {
         title: 'Selecciona tu Plan Wygo ',
         summary: '',
-        image: '',
+        image: 'http://imgfz.com/i/5QUbYWt.png',
       },
       selected: { 
           id: 1,
