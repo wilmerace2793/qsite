@@ -62,10 +62,10 @@ import  {
 } from '@imagina/qsite/_components/organizations/wizard/steps/Model/constant.js';
 
 const infoMappings = {
-    3: 'organization',
-    4: 'category',
-    STEP_THEMES: 'layout',
-    STEP_PLANS: 'plan'
+  [STEP_COMPANY]: 'organization',
+  [STEP_CATEGORIES]: 'category',
+  [STEP_THEMES]: 'layout',
+  [STEP_PLANS]: 'plan'
 };
 
 export default {
@@ -80,7 +80,7 @@ export default {
       loading: false,
       data: [],
       logo: this.$store.state.qsiteApp.logo,
-      pace: 2,
+      pace: 1,
       slider: 0,
       steps: modelSteps,
       sliderPercent:0,
@@ -156,7 +156,7 @@ export default {
       current.done=value.active;
       this.isActive = current.done;
 
-      // si es registro normal continua (duda como funciona google y facebook)
+      // si es registro normal continua 
       if(current.id==STEP_REGISTER){
         this.stepperNext();
       }
@@ -166,23 +166,6 @@ export default {
         this.dataCheck.terms = value.active;
       }
 
-      // si es un step distinto a terminos y condiciones lo evalua y guarda la info
-      /*if (value.info!==undefined){
-        if(current.id==3){ // company
-          this.dataCheck.organization = value.info;
-        }
-        if(current.id==4){ // Category
-          this.dataCheck.category = value.info;
-        }
-        if(current.id==5){ // Layout
-          this.dataCheck.layout = value.info;
-        }
-        if(current.id==6){ // plan
-          this.dataCheck.plan = value.info;
-        }
-      }*/
-
-      
       if (value.info!==undefined) {
         const mappedProp = infoMappings[current.id];
         if (mappedProp) {
