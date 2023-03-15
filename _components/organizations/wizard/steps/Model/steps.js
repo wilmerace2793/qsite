@@ -4,47 +4,56 @@ import plans from '../plans';
 import themes from '../themes';
 import terms from '../terms';
 import register from '../register';
+import { 
+    STEP_REGISTER,
+    STEP_TERMS,
+    STEP_COMPANY,
+    STEP_CATEGORY,
+    STEP_THEMES,
+    STEP_PLANS,
+    infoMappings,
+  } from '@imagina/qsite/_components/organizations/wizard/steps/Model/constant.js';
 
 export default [
-    /*{
-        id: 1,
+    {
+        id: STEP_REGISTER,
         title: 'Register',
-        prefix: 1,
+        prefix: STEP_REGISTER,
         component: register,
         done: false,
-    },*/
+    },
     {
-        id: 2,
+        id: STEP_TERMS,
         title: 'Terms',
-        prefix: 2,
+        prefix: STEP_TERMS,
         component: terms,
         done: false,
     },
     {
-        id: 3,
+        id: STEP_COMPANY ,
         title: 'Company',
-        prefix: 3,
+        prefix: STEP_COMPANY,
         component: company,
         done: false,
     },
     {
-        id: 4,
+        id: STEP_CATEGORY,
         title: 'Categories',
-        prefix: 4,
+        prefix: STEP_CATEGORY,
         component: categories,
         done: false,
     },
     {
-        id: 5,
+        id: STEP_THEMES,
         title: 'Themes',
-        prefix: 5,
+        prefix: STEP_THEMES,
         component: themes,
         done: false,
     },
     {
-        id: 6,
+        id: STEP_PLANS,
         title: 'Plans',
-        prefix: 6,
+        prefix: STEP_PLANS,
         component: plans,
         done: false,
     },

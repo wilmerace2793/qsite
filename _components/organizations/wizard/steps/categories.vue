@@ -74,11 +74,10 @@ export default {
       this.navNext();
     },
     navNext() {
-      console.log('category');
       if(this.selected!==''){
-        this.$emit("update", true, this.selected.id);
+        this.$emit("update",  { active: true, info: this.selected.id});
       }else {
-        this.$emit("update", false);
+        this.$emit("update", { active: false});
       }
     },
     searchCategory(){

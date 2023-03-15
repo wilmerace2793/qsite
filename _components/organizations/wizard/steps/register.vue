@@ -2,7 +2,7 @@
   <div class="step-register">
     <h2 class="step-title-1">{{stepContent.title}}</h2>
     
-    <div class="auth-register border tw-flex tw-mx-auto tw-flex-col">
+    <div class="auth-register  tw-flex tw-mx-auto tw-flex-col">
         <!--Auth Type-->
         <div class="">
             <!--Register-->
@@ -13,7 +13,7 @@
         <!--Auth social-->
         <!--<div style="min-height: auto" v-if="withAuthSocial"> -->
         <div style="min-height: auto">
-            <q-separator class="tw-my-4"/>
+            <q-separator class="tw-mb-6"/>
             <!--Actions-->
             <div class="row justify-center q-gutter-sm">
             <google-auth/>
@@ -105,16 +105,7 @@ export default {
     },
     //Redirect after user be logged
     redirectAfterLogin() {
-      //sino hace el resto
-      //Get workSapce assigned from user Role. if not found it, set `iadmin` as default
-      let windowLastRoute = this.$route.query.redirectTo || false
-      let settingsProfile = this.$store.state.quserAuth.settings
-      let workSpace = settingsProfile.workSpace || '/site/organizations-wizard'
-
-      //Redirect to same workSpace
-      if (windowLastRoute || (workSpace == config('app.mode'))) this.$router.push({name: 'app.home'})
-      //Redirect to assigned workSpace
-      else this.$helper.openExternalURL(`${this.$store.state.qsiteApp.baseUrl}/${workSpace}`, false)
+      this.$emit("update", { active: true });
     }
   }
 }
@@ -124,13 +115,21 @@ export default {
   -webkit-animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 	animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
-#step-register .box {
+.step-register .box {
   @apply tw-shadow-none;
 }
-#step-register .box-title {
+.step-register .box-title {
   color: var(--q-color-blue-grey-9);
 }
 .step-register .auth-register {
   max-width: 300px;
+}
+.step-register .auth-register .q-stepper__content  {
+  width: auto !important;
+  min-height: auto !important;
+  display: contents;
+}
+#formContent + .text-center.full-width {
+  display: none;
 }
 </style>

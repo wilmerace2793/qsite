@@ -81,7 +81,7 @@ export default {
           description: '<ul><li>Plantillas con diseño profesional Blog</li><li>Dominio gratis por un año</li><li>Certificado SSL</li></ul>',
           price: '$75.000',
           period: '1 Mes',
-          expanded: true
+          expanded: false
         },
         { 
           id: 2,
@@ -126,9 +126,9 @@ export default {
     },
     navNext() {
       if(this.selected!==''){
-        this.$emit("update", true, this.selected.id);
+        this.$emit("update", { active: true, info: this.selected.id});
       }else {
-        this.$emit("update", false);
+        this.$emit("update", { active: false});
       }
     }
   }

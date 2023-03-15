@@ -1,7 +1,7 @@
 <template>
   <div class="step-company">
     <h2 class="step-title">{{stepContent.title}}</h2>
-    <p class="tw-text-md tw-px-10 tw-text-center tw-mb-10">{{ stepContent.summary }}</p>
+    <p class="tw-text-base tw-px-14 tw-text-center tw-mb-10">{{ stepContent.summary }}</p>
 
     <div class="tw-px-10 tw-mb-8">
       <dynamic-field v-model="name" :field="formFields.nameOrganizations" />
@@ -22,8 +22,8 @@ export default {
     return {
       name:'',
       stepContent: {
-        title: '¿Cuál es el nombre de tu negocio o proyecto?',
-        summary: 'El nombre de tu negocio o proyecto es la base para armar tu sitio web, sera el elemento que se usara para identificarlo.',
+        title: '¿Cuál es el nombre de tu negocio?',
+        summary: 'El nombre de tu negocio es la base para armar tu sitio web, sera el elemento que se usara para identificarlo.',
         image: 'http://imgfz.com/i/8jznp2c.png',
       }
     }
@@ -56,10 +56,10 @@ export default {
   },
   methods: {
     navNext() {
-      if(this.name!==''){
-        this.$emit("update", true, this.name);
+      if(this.name.length>5){
+        this.$emit("update", { active: true, info: this.name});
       }else {
-        this.$emit("update", false);
+        this.$emit("update", { active: false});
       }
     },
   }

@@ -1,10 +1,18 @@
 <template>
   <div class="step-themes">
     <h2 class="step-title">{{stepContent.title}}</h2>
-    <p class="tw-text-sm tw-px-12 tw-text-center tw-mb-9">{{stepContent.summary}}</p>
-    <div class="row">
-      <div class="col-6 col-md-4 tw-mb-2 tw-p-3 tw-cursor-pointer" v-for="(item, index) in themes" @click="selectData(item)">
-        <div class="item-theme" :class="{ activeClass : item.name === selected.name }">
+    <p class="tw-text-sm 
+              tw-px-12 
+              tw-text-center 
+              tw-mb-9">
+              {{stepContent.summary}}
+    </p>
+    <div class="row tw-px-4 tw-mb-6">
+      <div class="col-6 col-md-4 tw-mb-2 tw-p-3 tw-cursor-pointer" 
+          v-for="(item, index) in themes">
+        <div class="item-theme" 
+            :class="{ activeClass : item.name === selected.name }"
+            @click="selectData(item)">
           <q-img 
                  :src="item.image"
                  :ratio="1/1"
@@ -16,7 +24,7 @@
     </div>
     <div class="step-sidebar" >
       <div class="select-card tw-max-w-md" v-if="selected">
-        <img contain :src="selected.image" style="height: 400px;"/>
+        <img class="img-themes" :src="selected.image"  />
       </div>
       <div class="select-card tw-max-w-md" v-else>
           <img :src="stepContent.image" />
@@ -42,7 +50,7 @@ export default {
         {id: 4, name: 'unod', image: 'http://imgfz.com/i/E31POp2.jpeg'},
         {id: 5, name: 'dosd', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
         {id: 6, name: 'tresd', image: 'http://imgfz.com/i/E31POp2.jpeg'}
-      ]
+      ],
     }
   },
   mounted() {
@@ -57,9 +65,9 @@ export default {
     },
     navNext() {
       if(this.selected!==''){
-        this.$emit("update", true, this.selected.id);
+        this.$emit("update", { active: true, info: this.selected.id});
       }else {
-        this.$emit("update", false);
+        this.$emit("update", { active: false});
       }
     }
   }
@@ -95,4 +103,8 @@ export default {
 .step-themes .step-sidebar-stretch {
   @apply tw-items-stretch !important;
 } 
+.step-themes .img-themes {
+  object-fit: contain;
+  height: 80vh;
+}
 </style>

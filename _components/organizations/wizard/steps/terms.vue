@@ -1,9 +1,7 @@
 <template>
   <div class="step-terms">
     <h2 class="step-title">{{stepContent.title}}</h2>
-    
-
-    <div class="tw-px-12 tw-text-md">
+    <div class="tw-px-12 tw-text-base">
         <div class="tw-flex tw-overflow-hidden tw-mb-3">
             <q-checkbox dense v-model="buttonTerms" color="primary" />
             <div class="tw-pl-3 ">
@@ -11,18 +9,12 @@
             </div>
         </div>
     </div>
-
-
     <div class="step-sidebar ">
       <div class="terms-text tw-max-w-sm">
         <p class="tw-text-sm tw-mb-8 text-center">{{stepContent.summary}}</p>
         <img :src="stepContent.image" />
       </div>
-        
     </div>
-
-
-
   </div>
 </template>
 <script>
@@ -55,7 +47,7 @@ export default {
   },
   watch: {
     buttonTerms(newTerms, oldTerms) {
-      this.$emit("update", newTerms);
+      this.$emit("update",  { active: newTerms });
     }
   },
 }
