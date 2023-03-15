@@ -55,8 +55,18 @@ import modelSteps from '@imagina/qsite/_components/organizations/wizard/steps/Mo
 import  { 
   STEP_REGISTER,
   STEP_TERMS,
-  infoMappings,
+  STEP_COMPANY,
+  STEP_CATEGORIES,
+  STEP_THEMES,
+  STEP_PLANS
 } from '@imagina/qsite/_components/organizations/wizard/steps/Model/constant.js';
+
+const infoMappings = {
+    3: 'organization',
+    4: 'category',
+    STEP_THEMES: 'layout',
+    STEP_PLANS: 'plan'
+};
 
 export default {
   beforeDestroy() {
@@ -157,7 +167,7 @@ export default {
       }
 
       // si es un step distinto a terminos y condiciones lo evalua y guarda la info
-      if (value.info!==undefined){
+      /*if (value.info!==undefined){
         if(current.id==3){ // company
           this.dataCheck.organization = value.info;
         }
@@ -170,16 +180,15 @@ export default {
         if(current.id==6){ // plan
           this.dataCheck.plan = value.info;
         }
-      }
+      }*/
 
-      /*
+      
       if (value.info!==undefined) {
         const mappedProp = infoMappings[current.id];
-        console.log(mappedProp);
         if (mappedProp) {
           this.dataCheck[mappedProp] = value.info;
         }
-      }*/
+      }
 
 
     },

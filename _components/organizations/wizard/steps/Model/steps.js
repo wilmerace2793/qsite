@@ -8,10 +8,9 @@ import {
     STEP_REGISTER,
     STEP_TERMS,
     STEP_COMPANY,
-    STEP_CATEGORY,
+    STEP_CATEGORIES,
     STEP_THEMES,
     STEP_PLANS,
-    infoMappings,
   } from '@imagina/qsite/_components/organizations/wizard/steps/Model/constant.js';
 
 export default [
@@ -37,9 +36,9 @@ export default [
         done: false,
     },
     {
-        id: STEP_CATEGORY,
+        id: STEP_CATEGORIES,
         title: 'Categories',
-        prefix: STEP_CATEGORY,
+        prefix: STEP_CATEGORIES,
         component: categories,
         done: false,
     },
