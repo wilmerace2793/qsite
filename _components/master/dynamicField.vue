@@ -498,7 +498,7 @@ export default {
           ['quote', 'unordered', 'ordered'],
           ['fullscreen']
         ]
-      },
+      }
     }
   },
   computed: {
@@ -1010,9 +1010,10 @@ export default {
         //response
         return items
       }
-
-      //response
-      return toString(this.$clone(this.options))
+      //Filter the unique options
+      var response = toString(this.$clone(this.options))
+      //response the unique options
+      return [...new Map(response.map(item => [item['value'], item])).values()]
     },
     //Return info fields readOnly
     infoReadOnly() {
@@ -1336,13 +1337,18 @@ export default {
     //Get options if is load options
     getOptions(query = false) {
       return new Promise((resolve, reject) => {
-        let loadOptions = this.$clone(this.field.loadOptions || {})
-        let defaultOptions = this.$clone(this.field.props?.options || [])//Instance default options
         this.loading = true//Open loading
+        let loadOptions = this.$clone(this.field.loadOptions || {})
+        //Instance default options keeping the options for the selected values
+        let defaultOptions = this.$clone([
+            ...(this.field.props?.options || []),
+            ...this.rootOptions.filter(opt => this.responseValue.includes((opt.value || opt.id).toString()))
+        ])
 
         //==== Request options
         if (loadOptions.apiRoute) {
-          this.rootOptions = []//Reset options
+          //Reset options
+          this.rootOptions = defaultOptions
           let fieldSelect = {label: 'title', id: 'id'}
 
           //enable cache by isite setting
@@ -1517,8 +1523,14 @@ export default {
       if (this.loadField('select')) {
         let loadOptions = this.field.loadOptions
         if (loadOptions && loadOptions.apiRoute) {
+          //Valudate if the response values is not in the root options
+          let responseValueTmp = (this.responseValue || [])
+          responseValueTmp = Array.isArray(responseValueTmp) ? responseValueTmp : [responseValueTmp]
+          const includeAll = responseValueTmp.every(val =>
+              this.rootOptions.map(val => (val.value || val.id).toString()).includes(val.toString())
+          )
           //Validate if there is the option for the value
-          if (loadOptions.filterByQuery && this.responseValue && !this.options.length) {
+          if (loadOptions.filterByQuery && !includeAll) {
             let fieldSelect = loadOptions.select || {label: 'title', id: 'id'}
             //Instance request params
             let requestParams = {
@@ -1527,14 +1539,17 @@ export default {
                 ...(loadOptions.requestParams || {}),
                 filter: {
                   ...(loadOptions.requestParams?.filter || {}),
-                  id: (this.responseValue.id || this.responseValue.value || this.responseValue)
+                  [fieldSelect.id]: (this.responseValue.id || this.responseValue.value || this.responseValue)
                 }
               }
             }
 
             //Request
             this.$crud.index(loadOptions.apiRoute, requestParams).then(response => {
-              this.rootOptions = this.$array.select(response.data, fieldSelect)
+              this.rootOptions = [
+                ...this.rootOptions,
+                ...this.$array.select(response.data, fieldSelect)
+              ]
             })
           }
         }
