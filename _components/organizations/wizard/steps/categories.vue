@@ -1,21 +1,42 @@
 <template>
   <div class="step-categories">
-    <h2 class="step-title">{{stepContent.title}}</h2>
+    <h2 class="step-title">{{stepContent.title}} {{ selected.id }}</h2>
 
     <div class="tw-px-6 tw-pb-6 tw-mt-4">
-      <dynamic-field v-model="name" :field="formFields.category" @input="searchCategory()"/>
+      <dynamic-field v-model="name" :field="formFields.category"/>
+    </div>
+
+    <div class="tw-px-6 row" >
+      <div class="col-12 col-sm-6 col-md-4 tw-mb-3 tw-cursor-pointer">
+        <div class="text-category tw-truncate tw-text-base" 
+            @click="getDataBase" 
+            :class="{ 'text-primary tw-font-bold' : selected == '' }">
+            Todas las categorias
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-4 tw-mb-3 tw-cursor-pointer" 
+          v-for="(item, index) in filteredCategories" 
+          @click="selectData(item)">
+        <div class="text-category tw-truncate tw-text-base" 
+            :class="{ 'text-primary tw-font-bold' : item.id === selected.id }">
+            {{item.title}}
+        </div>
+      </div>
     </div>
 
     <div class="tw-px-6 row">
-      <div class="col-6 col-md-4 tw-mb-2 tw-p-3 tw-cursor-pointer" v-for="(item, index) in categories" @click="selectData(item)">
-        <div class="item-category" :class="{ activeClass : item.name === selected.name }">
+      <div class="col-6 col-md-4 tw-mb-2 tw-p-2 tw-cursor-pointer" v-for="(item, index) in filteredCategories" @click="selectData(item)">
+        <div class="item-category" :class="{ activeClass : item.id === selected.id }">
           <q-img 
-                 :src="item.image"
+                 :src="item.mediaFiles.mainimage.smallThumb"
                  :ratio="4/3"
-                 class="tw-rounded tw-w-full"
+                 class="tw-rounded-md tw-w-full"
           >
-            <div class="item-category-name absolute-bottom tw-text-sm text-center">
-              {{item.name}}
+            <div class="item-category-name absolute-bottom tw-text-xs text-center tw-truncate">
+              {{item.title}}
+              <q-tooltip>
+                {{item.title}}
+              </q-tooltip>
             </div>
           </q-img>
         </div>
@@ -25,7 +46,7 @@
 
     <div class="step-sidebar">
       <div class="categories-text tw-max-w-sm">
-        <p class="tw-text-sm tw-mb-8 text-center">{{stepContent.summary}}</p>
+        <p class="tw-text-base tw-mb-8 text-center">{{stepContent.summary}}</p>
         <img :src="stepContent.image" />
       </div>
     </div>
@@ -33,13 +54,14 @@
   </div>
 </template>
 <script>
-
+import { THEME_BASE_ID } from './Model/constant.js';
 export default {
   data() {
     return {
+      loading: true,
       stepContent: {
-        title: '¿Cuál es la temática de tu página web?',
-        summary: 'Con la seleccion de la categoria conoceremos la temática de tu sitio web, y podremos proporcionarte las plantillas con los textos y la estructura que más se adapten a tu negocio.',
+        title: '¿Cuál es la categoría de tu página web?',
+        summary: 'Con la selección de la categoría conoceremos la temática de tu sitio web, y podremos proporcionarte las plantillas con la estructura que más se adapten a tu negocio.',
         image: 'http://imgfz.com/i/R8AYr5e.png',
       },
       name:"",
@@ -49,10 +71,22 @@ export default {
   },
   mounted() {
     this.$nextTick(async function () {
-      this.navNext()
+      this.navNext();
+      this.getData();
     })
   },
+  inject:['infoBase'],
+  created() {
+    console.warn(this.infoBase) // injected value
+  },
   computed: {
+    filteredCategories(){
+      if(!this.name) { return this.categories }
+      this.deselectCategory(this.name);
+      return this.categories.filter((cate) => {
+        return cate.title.toLowerCase().includes(this.name.toLowerCase());
+      })
+    },
     formFields() {
       return {
         category: {
@@ -74,24 +108,82 @@ export default {
       this.navNext();
     },
     navNext() {
-      if(this.selected!==''){
+      if(this.selected){
         this.$emit("update",  { active: true, info: this.selected.id});
       }else {
         this.$emit("update", { active: false});
       }
     },
-    searchCategory(){
-      console.log(this.name.length);
-      if(this.name!==''){
-        console.log('Llamado de las categorias');
-        this.categories = [
-          { id: 1, name:'Tienda', image: 'http://imgfz.com/i/z2Er0Rq.jpeg', description: 'Descripcion de la Categoria Tienda'},
-          { id: 2, name:'Arquitectura', image: 'http://imgfz.com/i/G9N74Sv.jpeg', description: 'Descripcion de la Categoria Arquitectura'},
-          { id: 3, name:'Viajes', image: 'http://imgfz.com/i/UpxX59i.jpeg', description: 'Descripcion de la Categoria Viajes'}
-        ];
-      } else {
-        this.categories = [];
+    // busca info de una categoria especifica
+    getData() {
+      try {        
+        // reviso si viene una categoria seleccionada y deberia trae una
+        if(this.infoBase.category) {
+          const id = this.infoBase.category;
+          const params = {
+            filter: {
+              id
+            }
+          }
+          this.$crud
+          .index('apiRoutes.qcommerce.categories', {refresh : true, params})
+          .then((response) => {
+            const data = response.data;
+            // si llega una id de categoria que no existe, limpia la base y llama a la categoria general
+            if(data.length==0) {
+              this.$alert.error({ message: "data vacia" });
+              this.$emit("update",  { active: true, info: null});
+              this.getDataBase();
+            } else {
+               this.categories = data;
+               // si devuelve solo una entonces esa se selecciona automaticamente
+               if(data.length==1) {
+                this.selected = data[0];
+                this.$emit("update",  { active: true, info: data[0].id});
+               }
+            }
+            console.log(data);
+            //this.loading = false;
+          })
+          .catch((error) => {
+            this.$alert.error({ message: "No se cargo la info" });
+            console.log(error);
+          });
+
+        } else {
+          this.getDataBase();
+        }
+      } catch (error) {
+        console.log(error);
       }
+    },
+    // busca las categorias de la plantilla base
+    getDataBase() {
+      try {
+        const params = {
+          filter: {
+            parentId: THEME_BASE_ID
+          }
+        };
+        this.$crud
+          .index('apiRoutes.qcommerce.categories', {refresh : true, params})
+          .then((response) => {
+            const data = response.data;
+            this.categories = data;
+            //this.loading = false;
+          })
+          .catch((error) => {
+            this.$alert.error({ message: "No se cargo la info" });
+            console.log(error);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    deselectCategory(value) {
+      this.selected="";
+      this.name=value;
+      this.navNext();
     }
   }
 }
@@ -111,7 +203,7 @@ export default {
   @apply tw-shadow-lg;
 }
 .step-categories .item-category:after {
-  @apply tw-absolute tw-top-0 tw-right-0 tw-bottom-0 tw-left-0 tw-border tw-border-transparent tw-rounded;
+  @apply tw-absolute tw-top-0 tw-right-0 tw-bottom-0 tw-left-0 tw-border tw-border-transparent tw-rounded-md;
   transition: border-color .2s,top .2s,right .2s,bottom .2s,left .2s;
   content: "";
 }

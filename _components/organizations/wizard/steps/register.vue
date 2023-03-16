@@ -2,26 +2,23 @@
   <div class="step-register">
     <h2 class="step-title-1">{{stepContent.title}}</h2>
     
-    <div class="auth-register  tw-flex tw-mx-auto tw-flex-col">
+    <div class="auth-register tw-flex tw-mx-auto tw-flex-col">
         <!--Auth Type-->
-        <div class="">
+        <div class="auth-register-internal">
             <!--Register-->
             <register-form @logged="checkAfterLogin()" class="full-width"/>
-
-    
         </div>
         <!--Auth social-->
-        <!--<div style="min-height: auto" v-if="withAuthSocial"> -->
-        <div style="min-height: auto">
+        <div class="auth-register-social h-auto" v-if="withAuthSocial"> 
             <q-separator class="tw-mb-6"/>
             <!--Actions-->
             <div class="row justify-center q-gutter-sm">
-            <google-auth/>
-            <facebook-auth/>
-            <microsoftAuth @logged="checkAfterLogin()" />
+              <google-auth />
+              <facebook-auth />
+              <!-- <microsoftAuth @logged="checkAfterLogin()" />-->
             </div>
         </div>
-      </div>
+    </div>
     
     <div class="step-sidebar ">
       <div class="step-register-text">  
@@ -82,6 +79,7 @@ export default {
   },
   data() {
     return {
+      withAuthSocial: true,
       stepContent: {
         title: '',
         summary: '',

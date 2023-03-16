@@ -5,7 +5,7 @@
     <q-list
       bordered 
       separator 
-      class="tw-mb-4 cursor-pointer tw-rounded-md item-plan"
+      class="tw-mb-4 cursor-pointer tw-rounded-md item-plan tw-mx-6"
       @click="selectPlan(item)"  
       :class="{ activePlan : item.name === selected.name }"
       v-for="(item, index) in plans" :key="index">
@@ -23,7 +23,7 @@
 
           <q-item-section side>
             <div class="row items-center ">
-              <span class="tw-font-bold">{{item.price}}</span> / {{item.period}}
+              <span class="tw-font-bold">{{item.formattedPrice}}</span> 
             </div>
           </q-item-section>
         </template>
@@ -34,14 +34,13 @@
       </q-expansion-item>
     </q-list>
 
-
     <div class="step-sidebar">
       <q-card class="select-card tw-border-t-8 tw-max-w-lg" flat bordered v-if="selected">
         <q-card-section>
           <div class="text-h5 q-mb-xs">{{selected.name}}</div>
            <div class="text-caption text-grey overflow-ellipsis overflow-hidden">{{selected.summary }}</div>
-          <div class="text-right q-mt-sm">
-            <span class="text-h6 tw-font-bold text-primary ">{{selected.price}}</span> / {{selected.period}}
+          <div class="text-right">
+            <span class="text-h6 tw-font-bold text-primary ">{{selected.formattedPrice}}</span> 
           </div>  
         </q-card-section>
         <q-separator />
@@ -49,6 +48,7 @@
       </q-card>
 
       <div class="select-card tw-max-w-md" v-else>
+        <p class="tw-text-base tw-mb-8 text-center">{{stepContent.summary}}</p>
         <img :src="stepContent.image"/>
       </div>
     </div>
@@ -56,66 +56,27 @@
   </div>
 </template>
 <script>
+import { PLAN_BASE_ID, CATEGORY_ECOMMERCE_ID } from './Model/constant.js';
 export default {
   data() {
     return {
       stepContent: {
-        title: 'Selecciona tu Plan Wygo ',
+        title: 'Elige la frecuencia de tu Plan Wygo ',
         summary: '',
         image: 'http://imgfz.com/i/5QUbYWt.png',
       },
-      selected: { 
-          id: 1,
-          name:'Wygo Basic 1', 
-          summary: 'Tu página web profesional',
-          description: '<ul><li>Plantillas con diseño profesional Blog</li><li>Dominio gratis por un año</li><li>Certificado SSL</li></ul>',
-          price: '$75.000',
-          period: '1 Mes',
-          expanded: true
-      },
-      plans: [
-        { 
-          id: 1,
-          name:'Wygo Basic 1', 
-          summary: 'Tu página web profesional',
-          description: '<ul><li>Plantillas con diseño profesional Blog</li><li>Dominio gratis por un año</li><li>Certificado SSL</li></ul>',
-          price: '$75.000',
-          period: '1 Mes',
-          expanded: false
-        },
-        { 
-          id: 2,
-          name:'Wygo Basic 2', 
-          summary: 'Tu página web profesional',
-          description: '<ul><li>Plantillas con diseño profesional Blog</li><li>Dominio gratis por un año</li><li>Certificado SSL</li></ul>',
-          price: '$455.000',
-          period: '12 Meses',
-          expanded: false
-        },
-        { 
-          id: 3,
-          name:'Wygo eCommerce 1', 
-          summary: 'Tu tienda online profesional',
-          description: '<ul><li>Plantillas con diseño profesional Blog</li><li>Dominio gratis por un año</li><li>Certificado SSL</li></ul>',
-          price: '$75.000',
-          period: '1 Mes',
-          expanded: false
-        },
-        { 
-          id: 4,
-          name:'Wygo eCommerce 2', 
-          summary: 'Tu tienda online profesional',
-          description: '<ul><li>Plantillas con diseño profesional</li>	<li>Dominio gratis por un año</li>	<li>Certificado SSL</li>	<li>Productos ilimitados</li>	<li>Carrito de compras</li>	<li>Todas las funciones de Ecommerce</li>	<li>No cobramos comisión</li>	<li>Chat de WhatsApp</li>	<li>Cupones de descuento</li>	<li>Gestión de inventario</li>	<li>Multiples pasarela de pagos</li>	<li>Gestión&nbsp;de pedidos</li>	<li>Notificaciones automáticas por correo</li>	<li>SEO disponible</li>	<li>Pixel facebook Google analytics Google tag manager</li>	<li>Ancho de banda: ilimitado</li>	<li>Espacio de almacenamiento 60 GB</li>	<li>Cuentas de correo electronico incluido</li>	<li>10 productos configurados por nuestro equipo&nbsp; <strong><a data-toggle="tooltip" title="" data-original-title="Un especilista en proyectos es asignado a tu sitio web para realizar la carga inicial de la información de tu empresa en el sitio web de acuerdo a la estructura web seleccionada">(?)</a></strong></li></ul>',
-          price: '$650.000',
-          period: '12 Meses',
-          expanded: false
-        },
-      ],
+      selected:"",
+      plans: [],
     }
+  },
+  inject:['infoBase'],
+  created() {
+    console.warn(this.infoBase) // injected value
   },
   mounted() {
     this.$nextTick(async function () {
-      this.navNext()
+      this.navNext();
+      this.getData();
     })
   },
   methods: {
@@ -130,7 +91,34 @@ export default {
       }else {
         this.$emit("update", { active: false});
       }
-    }
+    },
+    getData() {
+      try {
+
+        const params = {
+          filter: {
+            categories: PLAN_BASE_ID
+          }
+        };
+        this.$crud
+          .index('apiRoutes.qcommerce.products', {refresh : true, params})
+          .then((response) => {
+            const data = response.data;
+            this.plans = data.map((item) => ({
+              ...item,
+              expanded: false,
+            }));
+            console.warn(data);
+            //this.loading = false;
+          })
+          .catch((error) => {
+            this.$alert.error({ message: "No se cargo la info" });
+            console.log(error);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
   }
 }
 </script>

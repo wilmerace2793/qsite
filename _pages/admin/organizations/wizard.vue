@@ -80,7 +80,7 @@ export default {
       loading: false,
       data: [],
       logo: this.$store.state.qsiteApp.logo,
-      pace: 1,
+      pace: 2,
       slider: 0,
       steps: modelSteps,
       sliderPercent:0,
@@ -92,6 +92,11 @@ export default {
         plan: null,
         organization: '',
       }
+    }
+  },
+  provide() {
+    return {
+      infoBase: this.dataCheck
     }
   },
   mounted() {
@@ -128,11 +133,11 @@ export default {
     stepperPrevious(){
       this.$refs.stepper.previous();
       this.slider = this.slider - this.sliderPercent;
+      this.verifyStep();
     },
     async stepperNext(){
       try {
         this.slider = this.slider + this.sliderPercent;
-        console.log(this.dataCheck);
         // si llega al final y todo esta lleno envia la info
         if (this.pace === this.steps.length) {
           if(this.dataCheck.terms && 
@@ -151,30 +156,36 @@ export default {
       }
     },
     navNext(value) {
-      // ubico el step actual para activar el boton next dependiento del emit
-      const current = this.steps.find((item) => item.id === this.pace);
-      current.done=value.active;
-      this.isActive = current.done;
+      try {
+        // ubico el step actual para activar el boton next dependiento del emit
+        const current = this.steps.find((item) => item.id === this.pace);
+        current.done=value.active;
+        this.isActive = current.done;
 
-      // si es registro normal continua 
-      if(current.id==STEP_REGISTER){
-        this.stepperNext();
-      }
-
-      // si es terminos y condiciones el valor del check actualiza la data
-      if(current.id==STEP_TERMS){
-        this.dataCheck.terms = value.active;
-      }
-
-      if (value.info!==undefined) {
-        const mappedProp = infoMappings[current.id];
-        if (mappedProp) {
-          this.dataCheck[mappedProp] = value.info;
+        // si es registro normal continua 
+        if(current.id==STEP_REGISTER){
+          this.stepperNext();
         }
+
+        // si es terminos y condiciones el valor del check actualiza la data
+        if(current.id==STEP_TERMS){
+          this.dataCheck.terms = value.active;
+        }
+
+        if (value.info!==undefined) {
+          const mappedProp = infoMappings[current.id];
+          if (mappedProp) {
+            this.dataCheck[mappedProp] = value.info;
+          }
+        }
+      } catch (error) {
+        console.log(error);
       }
-
-
     },
+    verifyStep(){
+      const current = this.steps.find((item) => item.id === this.pace);
+      this.isActive = current.done;
+    }
   }
 }
 </script>

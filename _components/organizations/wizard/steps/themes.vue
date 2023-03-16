@@ -1,33 +1,32 @@
 <template>
   <div class="step-themes">
     <h2 class="step-title">{{stepContent.title}}</h2>
-    <p class="tw-text-sm 
-              tw-px-12 
-              tw-text-center 
-              tw-mb-9">
-              {{stepContent.summary}}
-    </p>
     <div class="row tw-px-4 tw-mb-6">
       <div class="col-6 col-md-4 tw-mb-2 tw-p-3 tw-cursor-pointer" 
-          v-for="(item, index) in themes">
+          v-for="(item, index) in themes" v-if="themes.length>0">
         <div class="item-theme" 
-            :class="{ activeClass : item.name === selected.name }"
+            :class="{ activeClass : item.id === selected.id }"
             @click="selectData(item)">
           <q-img 
-                 :src="item.image"
+                 :src="item.mediaFiles.mainimage.smallThumb"
                  :ratio="1/1"
                  class="tw-rounded tw-border tw-w-full"
           >
           </q-img>
         </div>
       </div>
+      <div class="col-12 tw-text-base" v-else>
+        No hay plantillas
+      </div>
+
     </div>
     <div class="step-sidebar" >
       <div class="select-card tw-max-w-md" v-if="selected">
-        <img class="img-themes" :src="selected.image"  />
+        <img class="img-themes" :src="selected.mediaFiles.mainimage.extraLargeThumb"  />
       </div>
       <div class="select-card tw-max-w-md" v-else>
-          <img :src="stepContent.image" />
+        <p class="tw-text-base tw-mb-8 text-center">{{stepContent.summary}}</p>
+        <img :src="stepContent.image" />
       </div>
     </div>
   </div>
@@ -37,25 +36,24 @@
 export default {
   data() {
     return {
+      loading: false,
       stepContent: {
-        title: 'Selecciona la plantilla que mas te gusta',
+        title: 'Elige la plantilla ideal para satisfacer tus necesidades',
         summary: 'Despues de elegir tu plantilla, podras cambiar el color y el contenido de tu sitio siempre que lo desees',
         image: 'http://imgfz.com/i/ku9vSNs.png',
       },
       selected: "",
-      themes: [
-        {id: 1, name: 'uno', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
-        {id: 2, name: 'dos', image: 'http://imgfz.com/i/E31POp2.jpeg'},
-        {id: 3, name: 'tres', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
-        {id: 4, name: 'unod', image: 'http://imgfz.com/i/E31POp2.jpeg'},
-        {id: 5, name: 'dosd', image: 'http://imgfz.com/i/ckeaMRb.jpeg'},
-        {id: 6, name: 'tresd', image: 'http://imgfz.com/i/E31POp2.jpeg'}
-      ],
+      themes: [],
     }
+  },
+  inject:['infoBase'],
+  created() {
+    console.warn(this.infoBase) // injected value
   },
   mounted() {
     this.$nextTick(async function () {
-      this.navNext()
+      this.navNext();
+      this.getData();
     })
   },
   methods: {
@@ -69,7 +67,85 @@ export default {
       }else {
         this.$emit("update", { active: false});
       }
-    }
+    },
+    getData() {
+      try {
+
+        if(this.infoBase.layout) {
+
+          const params = {
+            filter: {
+              id: this.infoBase.layout
+            }
+          };
+          this.loading = true,
+          this.$crud
+            .index('apiRoutes.qcommerce.products', {refresh : true, params})
+            .then((response) => {
+              const data = response.data;
+              // verifico que existe el layout
+              if(data.length>0) {
+                // si existe y tiene la misma categoria guardada quiere decir que no cambio su eleccion
+                if(this.infoBase.category==data[0].categoryId){
+                  this.themes = data;
+                  this.selected = data[0];
+                  this.$emit("update",  { active: true, info: data[0].id});
+                } else {
+                  // sino es igual entonces quiere decir que cambio la categorio en el wizar y se muestra
+                  // todas las plantillas de esa categoria
+                  this.getDataBase();
+                }
+              } else {
+                // si esta aqui es porque no encontro el layout por tanto muestra las plantilas todas
+                // de la categoria seleccionada
+                this.getDataBase();
+              }
+
+
+              console.warn(data);
+              this.loading = false;
+            })
+            .catch((error) => {
+              this.$alert.error({ message: "No se cargo la info ff" });
+              console.log(error);
+            });
+
+        }  else {
+          this.getDataBase();
+        }
+
+        
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    getDataBase() {
+      try {
+        if(this.infoBase.category){
+          console.log(this.infoBase.category);
+          const params = {
+            filter: {
+              categories: this.infoBase.category
+            }
+          };
+          this.loading = true,
+          this.$crud
+            .index('apiRoutes.qcommerce.products', {refresh : true, params})
+            .then((response) => {
+              const data = response.data;
+              this.themes= data;
+              console.warn(data);
+              this.loading = false;
+            })
+            .catch((error) => {
+              this.$alert.error({ message: "No se cargo la info" });
+              console.log(error);
+            });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
   }
 }
 </script>
@@ -98,7 +174,7 @@ export default {
 }
 .step-themes .activeClass:after, .step-themes .item-theme:hover:after {
   @apply tw--top-1.5 tw--right-1.5 tw--bottom-1.5 tw--left-1.5;
-  border-color: var(--q-color-primary);
+  background-color: var(--q-color-primary); z-index:-1;
 }
 .step-themes .step-sidebar-stretch {
   @apply tw-items-stretch !important;

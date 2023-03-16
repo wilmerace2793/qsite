@@ -22,8 +22,8 @@ export default {
     return {
       name:'',
       stepContent: {
-        title: '¿Cuál es el nombre de tu negocio?',
-        summary: 'El nombre de tu negocio es la base para armar tu sitio web, sera el elemento que se usara para identificarlo.',
+        title: '¿Cuál es el nombre de tu proyecto?',
+        summary: 'El nombre de tu proyecto es la base para armar tu sitio web, sera el elemento que se usara para identificarlo.',
         image: 'http://imgfz.com/i/8jznp2c.png',
       }
     }
