@@ -80,7 +80,7 @@ export default {
       loading: false,
       data: [],
       logo: this.$store.state.qsiteApp.logo,
-      pace: 2,
+      pace: 1,
       slider: 0,
       steps: modelSteps,
       sliderPercent:0,
@@ -147,6 +147,19 @@ export default {
             (this.dataCheck.organization!== '')) {
             console.log('enviar los datos');
             console.log(this.dataCheck);
+
+            this.$q
+              .dialog({
+                ok: "Continuar",
+                title: "Completado el proceso con exito",
+                message: "Ya puedes disfrutar de los servicios de wygo",
+                cancel: false,
+                persistent: true,
+              })
+              .onOk(async () => {
+            
+              });
+
           }
         }
         this.$refs.stepper.next();

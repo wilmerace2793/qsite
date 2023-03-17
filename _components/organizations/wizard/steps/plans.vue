@@ -2,49 +2,59 @@
   <div class="step-plan">
     <h2 class="step-title">{{stepContent.title}}</h2>
 
+    <!--
+    <div class="tw-mb-4" v-for="(item, index) in plans" :key="index">
+      {{ item.name }}
+
+      <div class="tw-border tw-p-2 tw-mb-2" v-for="(option, i) in item.optionValues.slice(0, 2)" :key="i">
+        <span class="tw-font-bold">{{option.price}}</span> /{{option.optionValue}}
+      </div>
+    </div>-->
+
+    <div v-if="plans.length>0">
     <q-list
       bordered 
       separator 
-      class="tw-mb-4 cursor-pointer tw-rounded-md item-plan tw-mx-6"
-      @click="selectPlan(item)"  
-      :class="{ activePlan : item.name === selected.name }"
-      v-for="(item, index) in plans" :key="index">
+      class="tw-mb-4 cursor-pointer tw-rounded-md item-plan tw-mx-6" 
+      v-for="(item, index) in plans" :key="index" 
+      :class="{ activePlan : item.id === selected.id &&  item.PlanId === selected.PlanId}"
+      @click="selectPlan(item)"  >
       <q-expansion-item 
-        group="plan"
         expand-icon-toggle
-        v-model="item.expanded"
-        hide-expand-icon
+        v-model="item.active"
       >
         <template v-slot:header>
           <q-item-section>
-            <div class="tw-text-lg tw-font-semibold">{{item.name}}</div>
-            <div class="tw-text-xs">{{ item.summary }}</div>
+            <div class="tw-text-lg tw-font-semibold"> {{item.optionValue}}</div>
+            <div class="tw-text-xs">{{ item.planName }}</div>
           </q-item-section>
 
           <q-item-section side>
             <div class="row items-center ">
-              <span class="tw-font-bold">{{item.formattedPrice}}</span> 
+              <span class="tw-font-bold">{{item.price}}</span> / {{item.optionValue}}
             </div>
           </q-item-section>
         </template>
         <q-card>
           <q-separator />
-          <q-card-section v-html="item.description"></q-card-section>
+          <q-card-section v-html="item.planDescription"></q-card-section>
         </q-card>
       </q-expansion-item>
     </q-list>
+    </div>
 
     <div class="step-sidebar">
+      
       <q-card class="select-card tw-border-t-8 tw-max-w-lg" flat bordered v-if="selected">
         <q-card-section>
-          <div class="text-h5 q-mb-xs">{{selected.name}}</div>
-           <div class="text-caption text-grey overflow-ellipsis overflow-hidden">{{selected.summary }}</div>
+          <div class="text-h5 q-mb-xs">{{selected.planName}}</div>
+           <div class="text-caption text-grey overflow-ellipsis overflow-hidden">{{selected.planSummary }}</div>
           <div class="text-right">
-            <span class="text-h6 tw-font-bold text-primary ">{{selected.formattedPrice}}</span> 
+            <span class="text-h6 tw-font-bold text-primary ">{{selected.price}}</span> / {{selected.optionValue}}  
           </div>  
         </q-card-section>
         <q-separator />
-        <q-card-section class="tw-text-xs" v-html="selected.description"></q-card-section>
+        <q-card-section class="tw-text-xs" v-html="selected.planDescription"></q-card-section>
       </q-card>
 
       <div class="select-card tw-max-w-md" v-else>
@@ -60,6 +70,7 @@ import { PLAN_BASE_ID, CATEGORY_ECOMMERCE_ID } from './Model/constant.js';
 export default {
   data() {
     return {
+      loading: false,
       stepContent: {
         title: 'Elige la frecuencia de tu Plan Wygo ',
         summary: '',
@@ -81,35 +92,59 @@ export default {
   },
   methods: {
     selectPlan(plan) {
-      plan.expanded = true;
+      plan.active=!plan.active;
       this.selected = plan;
       this.navNext();
     },
     navNext() {
       if(this.selected!==''){
-        this.$emit("update", { active: true, info: this.selected.id});
+        this.$emit("update", { active: true, info: this.selected});
       }else {
         this.$emit("update", { active: false});
       }
     },
-    getData() {
+    async getData() {
       try {
-
         const params = {
           filter: {
             categories: PLAN_BASE_ID
-          }
+          },
+          include: 'productOptions,optionValues'
         };
-        this.$crud
+        this.loading=true;
+        await this.$crud
           .index('apiRoutes.qcommerce.products', {refresh : true, params})
           .then((response) => {
             const data = response.data;
-            this.plans = data.map((item) => ({
-              ...item,
-              expanded: false,
-            }));
-            console.warn(data);
-            //this.loading = false;
+            let plan,planFilter=[];
+
+            if(this.infoBase.layout) {
+
+              if(this.infoBase.layout.type === CATEGORY_ECOMMERCE_ID) {
+                plan = data.filter((item)=>item.id == 14);
+                
+              } else {
+                plan = data.filter((item)=>item.id == 13);
+              }
+
+            } else {
+              //falta evaluar este caso cuando llega primero el plan sin layout
+              plan = data;
+            }
+
+            plan.map(function callback(currentValue, index) {
+              const p = currentValue.optionValues.filter((item,index)=>index<2);
+              planFilter = p.map((item) => ({
+                ...item,
+                planId: currentValue.id,
+                planName: currentValue.name,
+                planSummary: currentValue.summary,
+                planDescription: currentValue.description,
+                active: false,
+              }));
+            })
+            this.plans = planFilter;
+            this.loading = false;
           })
           .catch((error) => {
             this.$alert.error({ message: "No se cargo la info" });
@@ -147,7 +182,7 @@ export default {
   border-color: var(--q-color-primary);
 }
 .step-plan .activePlan .q-item__section--side {
-  @apply tw-text-white;
+  @apply tw-text-white tw-z-10;
   transition: color .1s;
 }
 .step-plan .item-plan .q-expansion-item:after {

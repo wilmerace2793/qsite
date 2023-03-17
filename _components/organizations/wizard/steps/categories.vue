@@ -1,27 +1,27 @@
 <template>
   <div class="step-categories">
-    <h2 class="step-title">{{stepContent.title}} {{ selected.id }}</h2>
+    <h2 class="step-title">{{stepContent.title}}</h2>
 
     <div class="tw-px-6 tw-pb-6 tw-mt-4">
       <dynamic-field v-model="name" :field="formFields.category"/>
     </div>
 
     <div class="tw-px-6 row" >
-      <div class="col-12 col-sm-6 col-md-4 tw-mb-3 tw-cursor-pointer">
+      <div class="col-12 tw-mb-3 tw-cursor-pointer">
         <div class="text-category tw-truncate tw-text-base" 
             @click="getDataBase" 
             :class="{ 'text-primary tw-font-bold' : selected == '' }">
             Todas las categorias
         </div>
       </div>
-      <div class="col-12 col-sm-6 col-md-4 tw-mb-3 tw-cursor-pointer" 
+      <!--<div class="col-12 col-sm-6 col-md-4 tw-mb-3 tw-cursor-pointer" 
           v-for="(item, index) in filteredCategories" 
           @click="selectData(item)">
         <div class="text-category tw-truncate tw-text-base" 
             :class="{ 'text-primary tw-font-bold' : item.id === selected.id }">
             {{item.title}}
         </div>
-      </div>
+      </div>-->
     </div>
 
     <div class="tw-px-6 row">
@@ -115,7 +115,7 @@ export default {
       }
     },
     // busca info de una categoria especifica
-    getData() {
+    async getData() {
       try {        
         // reviso si viene una categoria seleccionada y deberia trae una
         if(this.infoBase.category) {
@@ -125,7 +125,7 @@ export default {
               id
             }
           }
-          this.$crud
+          await this.$crud
           .index('apiRoutes.qcommerce.categories', {refresh : true, params})
           .then((response) => {
             const data = response.data;
@@ -158,14 +158,14 @@ export default {
       }
     },
     // busca las categorias de la plantilla base
-    getDataBase() {
+    async getDataBase() {
       try {
         const params = {
           filter: {
             parentId: THEME_BASE_ID
           }
         };
-        this.$crud
+        await this.$crud
           .index('apiRoutes.qcommerce.categories', {refresh : true, params})
           .then((response) => {
             const data = response.data;

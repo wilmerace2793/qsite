@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-
+import { CATEGORY_ECOMMERCE_ID } from './Model/constant.js';
 export default {
   data() {
     return {
@@ -63,23 +63,25 @@ export default {
     },
     navNext() {
       if(this.selected!==''){
-        this.$emit("update", { active: true, info: this.selected.id});
+        let type = this.checkPlan(this.selected.categories);
+        this.$emit("update", { active: true, info: {id: this.selected.id, type}});
       }else {
         this.$emit("update", { active: false});
       }
     },
-    getData() {
+    async getData() {
       try {
 
         if(this.infoBase.layout) {
 
           const params = {
             filter: {
-              id: this.infoBase.layout
-            }
+              id: this.infoBase.layout.id
+            },
+            include: 'categories'
           };
           this.loading = true,
-          this.$crud
+          await this.$crud
             .index('apiRoutes.qcommerce.products', {refresh : true, params})
             .then((response) => {
               const data = response.data;
@@ -89,9 +91,10 @@ export default {
                 if(this.infoBase.category==data[0].categoryId){
                   this.themes = data;
                   this.selected = data[0];
-                  this.$emit("update",  { active: true, info: data[0].id});
+                  const type = checkPlan(data[0].categories);
+                  this.$emit("update",  { active: true, info: {id: data[0].id, type}});
                 } else {
-                  // sino es igual entonces quiere decir que cambio la categorio en el wizar y se muestra
+                  // sino es igual entonces quiere decir que cambio la categoria en el wizard y se muestra
                   // todas las plantillas de esa categoria
                   this.getDataBase();
                 }
@@ -119,17 +122,18 @@ export default {
         console.log(error);
       }
     },
-    getDataBase() {
+    async getDataBase() {
       try {
         if(this.infoBase.category){
           console.log(this.infoBase.category);
           const params = {
             filter: {
               categories: this.infoBase.category
-            }
+            },
+            include: 'categories'
           };
           this.loading = true,
-          this.$crud
+          await this.$crud
             .index('apiRoutes.qcommerce.products', {refresh : true, params})
             .then((response) => {
               const data = response.data;
@@ -146,6 +150,15 @@ export default {
         console.log(error);
       }
     },
+    checkPlan(data) {
+      let type = null;
+      data.filter((cate) => {
+        if (cate.id == CATEGORY_ECOMMERCE_ID) {
+          type = CATEGORY_ECOMMERCE_ID;
+        }
+      })
+      return type
+    }
   }
 }
 </script>
