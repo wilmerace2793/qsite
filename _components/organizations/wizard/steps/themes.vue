@@ -47,9 +47,6 @@ export default {
     }
   },
   inject:['infoBase'],
-  created() {
-    console.warn(this.infoBase) // injected value
-  },
   mounted() {
     this.$nextTick(async function () {
       this.navNext();

@@ -37,9 +37,6 @@ export default {
     }
   },
   inject:['infoBase'],
-  created() {
-    console.warn(this.infoBase) // injected value
-  },
   computed: {
     formFields() {
       return {
@@ -55,6 +52,11 @@ export default {
         }
       };
     },
+  },
+  mounted() {
+    this.$nextTick(async function () {
+      this.getData();
+    })
   },
   watch: {
     buttonTerms(newTerms, oldTerms) {
@@ -72,5 +74,9 @@ export default {
 .step-terms .terms-text {
   -webkit-animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 	animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+.step-terms {
+  @apply tw-flex tw-min-h-screen tw-flex-col tw-justify-center;
+  margin-top: -95px;
 }
 </style>

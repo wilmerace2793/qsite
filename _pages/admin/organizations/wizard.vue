@@ -10,9 +10,11 @@
                 tw-w-full
                 tw-h-16
     ">
-      <img :src="logo" class="tw-h-10 tw-w-auto" />
+      <img :src="logo" class="tw-h-10 tw-w-auto" /> 
+      <q-slider class="slider-header" v-model="slider" thumb-path="" readonly :min="0" :max="100"/>
     </div>
-    <!--  keep-alive :class="{'page-register' : pace==1}" -->
+    
+    <!--  keep-alive  :class="{'page-register' : pace == STEP_REGISTER }" -->
     <div class="page-wizard tw-w-full tw-relative">
       <q-stepper
         v-model="pace"
@@ -42,7 +44,7 @@
               </div>
             </div>
           </div>
-          <q-slider v-model="slider" thumb-path="" readonly :min="0" :max="100"/>
+          <!--<q-slider v-model="slider" thumb-path="" readonly :min="0" :max="100"/>-->
         </q-stepper-navigation>
       </template>
 
@@ -148,17 +150,7 @@ export default {
             console.log('enviar los datos');
             console.log(this.dataCheck);
 
-            this.$q
-              .dialog({
-                ok: "Continuar",
-                title: "Completado el proceso con exito",
-                message: "Ya puedes disfrutar de los servicios de wygo",
-                cancel: false,
-                persistent: true,
-              })
-              .onOk(async () => {
-            
-              });
+            this.messageEnd();
 
           }
         }
@@ -198,6 +190,19 @@ export default {
     verifyStep(){
       const current = this.steps.find((item) => item.id === this.pace);
       this.isActive = current.done;
+    },
+    messageEnd(){
+      this.$q
+        .dialog({
+          ok: "Continuar",
+          title: "Registro Exitoso",
+          message: "A partir de ahora puedes disfrutar de los servicios que wygo",
+          cancel: false,
+          persistent: true,
+        })
+        .onOk(async () => {
+      
+        });
     }
   }
 }
@@ -227,9 +232,8 @@ export default {
 .page-wizard .q-stepper__nav {
   @apply tw-w-2/4 tw-z-10 tw-left-0 tw-bottom-0 tw-fixed tw-bg-white tw-border-t-2;
   @apply tw-border-gray-300 tw-border-opacity-50;
-  @apply tw-p-0 !important;
   transition: transform .4s ease-out, width .4s ease-out;
-  margin-bottom: -5px;
+  padding-bottom: 15px;
 }
 .page-wizard .q-stepper__nav .q-btn .q-icon {
   @apply tw-text-sm;
@@ -277,12 +281,20 @@ export default {
 .page-wizard .step-title-1 {
   @apply tw-text-xl lg:tw-text-2xl tw-px-10 tw-text-center tw-pb-6 tw-font-bold;
 }
-
 .page-register .q-stepper__content {
-    padding: 90px 20px 20px;
+  padding: 90px 20px 20px;
   transition: left .4s ease-out, width .4s ease-out;
   background: -webkit-linear-gradient(right,#fff,#e4e2f2);
   width: 100% !important;
+}
+
+.slider-header {
+  @apply tw-absolute;
+  bottom: -14px;
+}
+
+.q-dialog__message {
+  @apply tw-text-base;
 }
 
 @-webkit-keyframes fade-in-left {

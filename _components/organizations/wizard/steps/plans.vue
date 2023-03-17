@@ -72,7 +72,7 @@ export default {
     return {
       loading: false,
       stepContent: {
-        title: 'Elige la frecuencia de tu Plan Wygo ',
+        title: 'Elige tu Plan Wygo ',
         summary: '',
         image: 'http://imgfz.com/i/5QUbYWt.png',
       },
@@ -81,9 +81,6 @@ export default {
     }
   },
   inject:['infoBase'],
-  created() {
-    console.warn(this.infoBase) // injected value
-  },
   mounted() {
     this.$nextTick(async function () {
       this.navNext();
