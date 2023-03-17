@@ -554,6 +554,10 @@ class Helper {
         .replace('_', '')
     );
   }
+  // validate Url
+  validateUrl(url) {
+    return /^(http|https):\/\/[^\s/$.?#].[^\s]*$/.test(url)
+  }
   //snakeCase to Camel
   async convertStringToObject() {
     try {

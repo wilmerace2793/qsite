@@ -66,7 +66,7 @@ export const VALIDATE_CENTRALIZED_SETTINGS = async ({ state, commit, dispatch },
   const settingCenter = responseMain.data.siteSettings
     .find(item => item.name === 'isite::centralizedBrand');
   if (settingCenter) {
-    const validateUrl = /^(http|https):\/\/[^\s/$.?#].[^\s]*$/.test(settingCenter.value);
+    const validateUrl = helper.validateUrl(settingCenter.value);
     if (validateUrl) {
       try {
         const response = await axios.get(`${settingCenter.value}/api/isite/v1/site/settings`);
@@ -82,7 +82,6 @@ export const GET_CENTRALIZED_SETTINGS = ({ state, commit, dispatch }, response) 
   const brand = siteSettings.filter(item => item.name.split('::')[1].indexOf('brand') !== -1);
   const logo = siteSettings.find(item => item.name === 'isite::logo1');
   const setting = state.settings.filter(item => item.name !== 'isite::logo1');
-  console.log(logo);
   const siteSettingsArray = [...setting, logo, ...brand];
   commit('SET_SITE_SETTINGS', siteSettingsArray);
   dispatch('SET_LOGO_SETTINGS');
