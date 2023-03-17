@@ -3,62 +3,58 @@ import config from '@imagina/qsite/_config/master/index'
 import cache from '@imagina/qsite/_plugins/cache'
 import crud from "@imagina/qcrud/_services/baseService";
 import cloneDeep from 'lodash.clonedeep'
-import {colors, AddressbarColor} from 'quasar'
+import { colors, AddressbarColor } from 'quasar'
 import Quasar from 'quasar'
 import axios from "axios";
-import {Loading} from 'quasar';
+import { Loading } from 'quasar';
 import filter from '@imagina/qsite/_plugins/filter'
 import helper from '@imagina/qsite/_plugins/helper'
 import configApp from "src/config/app"
 import moment from "moment";
 import momentz from "moment-timezone";
-import centralizeModel from '@imagina/qsite/_store/model/centralizeModel.ts'
 
 //Refresh page
-export const REFRESH_PAGE = ({state, commit, dispatch, getters}) => {
+export const REFRESH_PAGE = ({ state, commit, dispatch, getters }) => {
   return new Promise(async (resolve, reject) => {
     let currentRoute = state.currentRoute
     Loading.show()
     commit('LOAD_PAGE', false)
     await cache.restore(config('app.saveCache.refresh'))//Reset cache
     //await dispatch('RESET_STORE')//Reset Vuex
-    await dispatch('quserAuth/AUTH_UPDATE', null, {root: true}).catch(error => {
+    await dispatch('quserAuth/AUTH_UPDATE', null, { root: true }).catch(error => {
     })//Update user data
-    await dispatch('qsiteApp/GET_SITE_SETTINGS', null, {root: true}).catch(error => {
+    await dispatch('qsiteApp/GET_SITE_SETTINGS', null, { root: true }).catch(error => {
     })//update settings sites
-    dispatch('qsiteApp/SET_SITE_COLORS', null, {root: true})//Load colors
+    dispatch('qsiteApp/SET_SITE_COLORS', null, { root: true })//Load colors
     commit('LOAD_PAGE', true)
     Loading.hide()
     resolve(true)
   })
 }
 // get ip addresss
-export const GET_IP_ADDRESS = ({commit}) => {
-  return new Promise(async (resolve, reject)=>{
-    try{
+export const GET_IP_ADDRESS = ({ commit }) => {
+  return new Promise(async (resolve, reject) => {
+    try {
       const res = await fetch('https://api.ipify.org?format=json')
       const data = await res.json()
       commit('SET_IP_ADDRESS', data.ip)
       resolve(true)
-    } catch(err) {
+    } catch (err) {
       console.error('[store-qsite]Error:: Store getting site settings - disable adbloks')
       reject(err)
     }
-})
+  })
 }
 //Get site settings
-export const GET_SITE_SETTINGS = ({commit, dispatch, state, getters}, payload = {}) => {
+export const GET_SITE_SETTINGS = ({ commit, dispatch, state, getters }, payload = {}) => {
   return new Promise((resolve, reject) => {
-    let params = {refresh: true}
+    let params = { refresh: true }
     let configName = 'apiRoutes.qsite.siteSettings';
-    const settingCenter = false;
+
     crud.index(configName, params).then(async response => {
-      const responseMain =  response;
-      dispatch('GET_MAIN_SETTINGS', responseMain);
-      if(settingCenter) {
-        const response = await axios.get('https://components.ozonohosting.com/api/isite/v1/site/settings');
-        await dispatch('GET_CENTRALIZED_SETTINGS', response.data)
-      }
+      const responseMain = response;
+      await dispatch('GET_MAIN_SETTINGS', responseMain);
+      await dispatch('VALIDATE_CENTRALIZED_SETTINGS', responseMain);
       resolve(true)
     }).catch(error => {
       console.error('[store-qsite]Error:: Store getting site settings - ', error)
@@ -66,46 +62,62 @@ export const GET_SITE_SETTINGS = ({commit, dispatch, state, getters}, payload = 
     })
   })
 }
+export const VALIDATE_CENTRALIZED_SETTINGS = async ({ state, commit, dispatch }, responseMain) => {
+  const settingCenter = responseMain.data.siteSettings
+    .find(item => item.name === 'isite::centralizedBrand');
+  if (settingCenter) {
+    const validateUrl = /^(http|https):\/\/[^\s/$.?#].[^\s]*$/.test(settingCenter.value);
+    if (validateUrl) {
+      try {
+        const response = await axios.get(`${settingCenter.value}/api/isite/v1/site/settings`);
+        await dispatch('GET_CENTRALIZED_SETTINGS', response.data);
+      } catch (error) {
+        await dispatch('GET_MAIN_SETTINGS', responseMain);
+      }
+    }
+  }
+}
 export const GET_CENTRALIZED_SETTINGS = ({ state, commit, dispatch }, response) => {
   const { siteSettings } = response.data;
   const brand = siteSettings.filter(item => item.name.split('::')[1].indexOf('brand') !== -1);
   const logo = siteSettings.find(item => item.name === 'isite::logo1');
   const setting = state.settings.filter(item => item.name !== 'isite::logo1');
+  console.log(logo);
   const siteSettingsArray = [...setting, logo, ...brand];
   commit('SET_SITE_SETTINGS', siteSettingsArray);
   dispatch('SET_LOGO_SETTINGS');
 };
 
-export const SET_LOGO_SETTINGS = ({commit, getters}) => {
+export const SET_LOGO_SETTINGS = ({ commit, getters }) => {
   let logo = getters.getSettingMediaByName('isite::logoIadmin')
   if (!logo || !logo.path || logo.path.includes('defaultLogo')) logo = getters.getSettingMediaByName('isite::logo1')
   commit('SET_SITE_LOGO', logo.path)
 }
 
-export const GET_MAIN_SETTINGS = ({commit, dispatch}, response) => {
-      let configApp = config('app');
-      let data = response.data
-      commit('SET_SITE_SETTINGS', data.siteSettings)
-      commit('SET_AVAILABLE_LOCALES', data.availableLocales)
-      commit('SET_AVAILABLE_THEMES', data.availableThemes)
-      commit('SET_DEFAULT_LOCALE', data.defaultLocale)
-      commit('SET_MODULES_DATA', data.modulesEnabled)
-      commit('SET_SELECTED_LOCALES')
-      //Set logo
-      dispatch('SET_LOGO_SETTINGS');
-      //Set filters
-      filter.setFilters(data.filters)
-      //Set setting if is admin
-      axios.defaults.params.setting.fromAdmin = (configApp.mode == 'iadmin' ? true : false)
-      axios.defaults.params.setting.appMode = configApp.mode
+export const GET_MAIN_SETTINGS = ({ commit, dispatch }, response) => {
+  let configApp = config('app');
+  let data = response.data
+  commit('SET_SITE_SETTINGS', data.siteSettings)
+  commit('SET_AVAILABLE_LOCALES', data.availableLocales)
+  commit('SET_AVAILABLE_THEMES', data.availableThemes)
+  commit('SET_DEFAULT_LOCALE', data.defaultLocale)
+  commit('SET_MODULES_DATA', data.modulesEnabled)
+  commit('SET_SELECTED_LOCALES')
+  //Set logo
+  dispatch('SET_LOGO_SETTINGS');
+  //Set filters
+  filter.setFilters(data.filters)
+  //Set setting if is admin
+  axios.defaults.params.setting.fromAdmin = (configApp.mode == 'iadmin' ? true : false)
+  axios.defaults.params.setting.appMode = configApp.mode
 }
 
-export const GET_PAGES = ({commit}) => {
+export const GET_PAGES = ({ commit }) => {
   return new Promise(async resolve => {
     //Request params
-    let requestParams = {refresh: true}
+    let requestParams = { refresh: true }
     //Request data
-    await crud.index('apiRoutes.qpage.pagesCms', requestParams).then(({data}) => {
+    await crud.index('apiRoutes.qpage.pagesCms', requestParams).then(({ data }) => {
       commit('SET_PAGES', data)
       resolve(data)
     }).catch(error => {
@@ -115,7 +127,7 @@ export const GET_PAGES = ({commit}) => {
   })
 }
 
-export const GET_MENU_SIDEBAR = ({commit}) => {
+export const GET_MENU_SIDEBAR = ({ commit }) => {
   return new Promise(async resolve => {
     //Instance criteria
     const criteria = (config('app.mode') == 'iadmin') ? 'cms_admin' : 'cms_panel'
@@ -123,12 +135,12 @@ export const GET_MENU_SIDEBAR = ({commit}) => {
     const params = {
       refresh: true,
       params: {
-        filter: {field: 'name'},
+        filter: { field: 'name' },
         include: 'menuitems'
       }
     }
     //Request
-    await crud.show('apiRoutes.qmenu.menus', criteria, params).then(({data}) => {
+    await crud.show('apiRoutes.qmenu.menus', criteria, params).then(({ data }) => {
       commit('SET_MENU', data.menuitems)
       resolve(data)
     }).catch(error => {
@@ -139,7 +151,7 @@ export const GET_MENU_SIDEBAR = ({commit}) => {
 }
 
 //Set site settins
-export const SET_SITE_COLORS = ({state, commit, dispatch}) => {
+export const SET_SITE_COLORS = ({ state, commit, dispatch }) => {
   let settings = state.settings
   let dataColors = {}
 
@@ -160,9 +172,9 @@ export const SET_SITE_COLORS = ({state, commit, dispatch}) => {
 }
 
 //Set locale
-export const SET_LOCALE = ({commit, dispatch, state}, params = {}) => {
+export const SET_LOCALE = ({ commit, dispatch, state }, params = {}) => {
   return new Promise(async resolve => {
-    params = {locale: false, vue: false, ssrContext: false, ...params}
+    params = { locale: false, vue: false, ssrContext: false, ...params }
     let locale = params.locale
     let currentLocale = locale
     let Vue = params.vue
@@ -193,7 +205,7 @@ export const SET_LOCALE = ({commit, dispatch, state}, params = {}) => {
 
     //Set default language to i18n
     //import(`@imagina/qsite/_i18n/master/index`).then(({default: messages}) => {
-    dispatch('qtranslationMaster/GET_TRANSLATIONS', null, {root: true}).then(({default: messages}) => {
+    dispatch('qtranslationMaster/GET_TRANSLATIONS', null, { root: true }).then(({ default: messages }) => {
       try {
         Vue.i18n.locale = locale
         Vue.i18n.setLocaleMessage(locale, messages[locale])
@@ -220,7 +232,7 @@ export const SET_LOCALE = ({commit, dispatch, state}, params = {}) => {
         routeNameSegments[0] = locale
         nextRoute.name = routeNameSegments.join('.')
       } else {//Add locale
-        nextRoute = {...nextRoute, name: `${locale}.${nextRoute.name}`}
+        nextRoute = { ...nextRoute, name: `${locale}.${nextRoute.name}` }
       }
 
       //Redirect
@@ -232,18 +244,18 @@ export const SET_LOCALE = ({commit, dispatch, state}, params = {}) => {
 }
 
 //Reset values form Store
-export const RESET_STORE = ({commit, dispatch}) => {
+export const RESET_STORE = ({ commit, dispatch }) => {
   return new Promise((resolve, reject) => {
     let stores = config('app.resetStores') || []
-    stores.forEach(name => commit(name, null, {root: true}))
+    stores.forEach(name => commit(name, null, { root: true }))
     resolve(true)
   })
 }
 
 //Set extra
-export const SET_EXTRA = ({state, commit, dispatch}, params = false) => {
+export const SET_EXTRA = ({ state, commit, dispatch }, params = false) => {
   return new Promise(async (resolve, reject) => {
-    let extraData = params ? {...state.extra, ...params} : await cache.get.item('app.state.extra')
+    let extraData = params ? { ...state.extra, ...params } : await cache.get.item('app.state.extra')
 
     //Save extra
     await cache.set('app.state.extra', extraData)
@@ -253,10 +265,10 @@ export const SET_EXTRA = ({state, commit, dispatch}, params = false) => {
 }
 
 //Get module configs
-export const GET_MODULE_CONFIGS = ({commit, dispatch, state}) => {
+export const GET_MODULE_CONFIGS = ({ commit, dispatch, state }) => {
   return new Promise((resolve, reject) => {
     //Request params
-    let requestParams = {refresh: true, params: {filter: {configNameByModule: 'config'}}}
+    let requestParams = { refresh: true, params: { filter: { configNameByModule: 'config' } } }
     //Request
     crud.index('apiRoutes.qsite.configs', requestParams).then(async response => {
       commit('SET_MODULE_CONFIGS', response.data)
@@ -269,10 +281,10 @@ export const GET_MODULE_CONFIGS = ({commit, dispatch, state}) => {
 }
 
 //Get site hooks
-export const GET_SITE_HOOKS = ({commit, dispatch, state}) => {
+export const GET_SITE_HOOKS = ({ commit, dispatch, state }) => {
   return new Promise((resolve, reject) => {
     //Request params
-    let requestParams = {refresh: true, params: {filter: {configNameByModule: 'config.frontendHooks'}}}
+    let requestParams = { refresh: true, params: { filter: { configNameByModule: 'config.frontendHooks' } } }
     //Request
     crud.index('apiRoutes.qsite.configs', requestParams).then(async response => {
       commit('SET_SITE_HOOKS', response.data)
@@ -285,12 +297,12 @@ export const GET_SITE_HOOKS = ({commit, dispatch, state}) => {
 }
 
 //Set the navigator timezone into the azios settings payload
-export const SET_AXIOS_TIMEZONE = ({commit, dispatch, state}) => {
+export const SET_AXIOS_TIMEZONE = ({ commit, dispatch, state }) => {
   return new Promise((resolve, reject) => {
-    try{
+    try {
       axios.defaults.params.setting.timezone = moment.tz.guess()
       resolve(true)
-    }catch(error){
+    } catch (error) {
       console.error('[store-qsite]Error:: Store SET_AXIOS_TIMEZONE - ', error)
       reject(error)
     }
