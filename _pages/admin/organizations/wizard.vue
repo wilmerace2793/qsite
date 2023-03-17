@@ -12,11 +12,11 @@
     ">
       <img :src="logo" class="tw-h-10 tw-w-auto" />
     </div>
+    <!--  keep-alive :class="{'page-register' : pace==1}" -->
     <div class="page-wizard tw-w-full tw-relative">
       <q-stepper
         v-model="pace"
         ref="stepper"
-        keep-alive
       >
       <q-step
         v-for="step in steps"
@@ -26,7 +26,7 @@
         :title="step.title"
         :done="step.done"
         >
-        <component :is="step.component" @update="navNext"/>
+        <component :is="step.component" @update="navNext" />
       </q-step>
 
       <template v-slot:navigation>
@@ -276,6 +276,13 @@ export default {
 }
 .page-wizard .step-title-1 {
   @apply tw-text-xl lg:tw-text-2xl tw-px-10 tw-text-center tw-pb-6 tw-font-bold;
+}
+
+.page-register .q-stepper__content {
+    padding: 90px 20px 20px;
+  transition: left .4s ease-out, width .4s ease-out;
+  background: -webkit-linear-gradient(right,#fff,#e4e2f2);
+  width: 100% !important;
 }
 
 @-webkit-keyframes fade-in-left {

@@ -28,9 +28,14 @@ export default {
       }
     }
   },
+  inject:['infoBase'],
+  created() {
+    console.warn(this.infoBase) // injected value
+  },
   mounted() {
     this.$nextTick(async function () {
-      this.navNext()
+      this.getData();
+      this.navNext();
     })
   },
   watch: {
@@ -55,6 +60,9 @@ export default {
     },
   },
   methods: {
+    getData(){
+      this.name = this.infoBase.organization;
+    },
     navNext() {
       if(this.name.length>5){
         this.$emit("update", { active: true, info: this.name});

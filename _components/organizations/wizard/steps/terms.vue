@@ -36,6 +36,10 @@ export default {
       }
     }
   },
+  inject:['infoBase'],
+  created() {
+    console.warn(this.infoBase) // injected value
+  },
   computed: {
     formFields() {
       return {
@@ -57,6 +61,11 @@ export default {
       this.$emit("update",  { active: newTerms });
     }
   },
+  methods: {
+    getData(){
+      this.buttonTerms = this.infoBase.terms;
+    },
+  }
 }
 </script>
 <style>
