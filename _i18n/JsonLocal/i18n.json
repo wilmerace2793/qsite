@@ -344,6 +344,7 @@
         "updateBlock": "Update Block",
         "deleteBlock": "Delete Block",
         "replyTo": "Field to reply to",
+        "replyToName" : "Name to reply",
         "form": {
           "label": "Label",
           "placeholder": "Placeholder",
@@ -2219,6 +2220,7 @@
         "updateBlock": "Actualizar bloque",
         "deleteBlock": "Eliminar bloque",
         "replyTo": "Campo para responder",
+        "replyToName" : "Nombre para responder",
         "form": {
           "label": "Etiqueta",
           "placeholder": "Placeholder",
