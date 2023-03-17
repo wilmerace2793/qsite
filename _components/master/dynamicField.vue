@@ -24,7 +24,7 @@
           <q-btn size="xs" class="after-field"
                  :style="'margin:'+helpLoad.margin"
                  round color="info"
-                 icon="fal fa-question-circle"
+                 icon="fa-light fa-info"
                  unelevated
           >
             <q-menu id="dynamicFieldMenuHelp" v-model="tooltip" anchor="top right" self="top right">
@@ -156,7 +156,8 @@
         <!--Select-->
         <q-select v-model="responseValue" :options="formatOptions" :label="fieldLabel" use-input v-bind="fieldProps"
                   @input="matchTags(field)" v-if="loadField('select')" @filter="filterSelectOptions"
-                  @clear="val => field.props.multiple ? responseValue = [] : ''" :class="`${field.help ? 'select-dynamic-field' : ''}`">
+                  @clear="val => field.props.multiple ? responseValue = [] : ''"
+                  :class="`${field.help ? 'select-dynamic-field' : ''}`">
           <!--No options slot-->
           <template v-slot:no-option v-if="!fieldProps.hideDropdownIcon">
             <slot name="before-options"/>
@@ -256,7 +257,8 @@
           <upload-image v-model="responseValue" v-bind="fieldProps.field"/>
         </q-field>
         <!--Media-->
-        <q-field v-model="responseValue" v-if="loadField('media')" label="" class="field-no-padding no-border media-dinamyc-field"
+        <q-field v-model="responseValue" v-if="loadField('media')" label=""
+                 class="field-no-padding no-border media-dinamyc-field"
                  v-bind="fieldProps.fieldComponent">
           <!--<media v-model="responseValue" class="bg-white" v-bind="fieldProps.field" />-->
           <select-media v-model="responseValue" class="bg-white" v-bind="fieldProps.field"/>
@@ -274,7 +276,8 @@
         </div>
         <!--input color-->
         <q-input v-model="responseValue" :label="fieldLabel" v-if="loadField('inputColor')" v-bind="fieldProps.field"
-                 @click="$refs.qColorProxi.show()" :ref="`inputColor-${fieldKey}`" :class="`${field.help ? 'input-color-dynamic-field' : ''}`">
+                 @click="$refs.qColorProxi.show()" :ref="`inputColor-${fieldKey}`"
+                 :class="`${field.help ? 'input-color-dynamic-field' : ''}`">
           <template v-slot:append>
             <!--Icon-->
             <q-icon name="fa-light fa-droplet" class="cursor-pointer"/>
@@ -308,7 +311,8 @@
           <q-rating v-model="responseValue" v-bind="fieldProps.field" class="q-mt-sm"/>
         </q-field>
         <!--icon select-->
-        <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps" class="q-mb-md" :class="`${field.help ? 'select-icon-dinamyc-field' : ''}`"/>
+        <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps" class="q-mb-md"
+                     :class="`${field.help ? 'select-icon-dinamyc-field' : ''}`"/>
         <!--optionGroup-->
         <q-field v-model="responseValue" v-if="loadField('optionGroup')" v-bind="fieldProps.fieldComponent">
           <q-option-group class="q-pt-md" v-model="responseValue" v-bind="fieldProps.field"/>
@@ -362,7 +366,7 @@
             :fieldProps="fieldProps"
             :options="formatOptions"
             :class="`${field.help ? 'expression-dinamyc-field' : ''}`"
-          />
+        />
         <!-- Expression end-->
       </div>
     </div>
@@ -494,7 +498,7 @@ export default {
           ['quote', 'unordered', 'ordered'],
           ['fullscreen']
         ]
-      },
+      }
     }
   },
   computed: {
@@ -1006,9 +1010,10 @@ export default {
         //response
         return items
       }
-
-      //response
-      return toString(this.$clone(this.options))
+      //Filter the unique options
+      var response = toString(this.$clone(this.options))
+      //response the unique options
+      return [...new Map(response.map(item => [item['value'], item])).values()]
     },
     //Return info fields readOnly
     infoReadOnly() {
@@ -1332,13 +1337,18 @@ export default {
     //Get options if is load options
     getOptions(query = false) {
       return new Promise((resolve, reject) => {
-        let loadOptions = this.$clone(this.field.loadOptions || {})
-        let defaultOptions = this.$clone(this.field.props?.options || [])//Instance default options
         this.loading = true//Open loading
+        let loadOptions = this.$clone(this.field.loadOptions || {})
+        //Instance default options keeping the options for the selected values
+        let defaultOptions = this.$clone([
+            ...(this.field.props?.options || []),
+            ...this.rootOptions.filter(opt => this.responseValue.includes((opt.value || opt.id).toString()))
+        ])
 
         //==== Request options
         if (loadOptions.apiRoute) {
-          this.rootOptions = []//Reset options
+          //Reset options
+          this.rootOptions = defaultOptions
           let fieldSelect = {label: 'title', id: 'id'}
 
           //enable cache by isite setting
@@ -1513,19 +1523,33 @@ export default {
       if (this.loadField('select')) {
         let loadOptions = this.field.loadOptions
         if (loadOptions && loadOptions.apiRoute) {
+          //Valudate if the response values is not in the root options
+          let responseValueTmp = (this.responseValue || [])
+          responseValueTmp = Array.isArray(responseValueTmp) ? responseValueTmp : [responseValueTmp]
+          const includeAll = responseValueTmp.every(val =>
+              this.rootOptions.map(val => (val.value || val.id).toString()).includes(val.toString())
+          )
           //Validate if there is the option for the value
-          if (loadOptions.filterByQuery && this.responseValue && !this.options.length) {
+          if (loadOptions.filterByQuery && !includeAll) {
             let fieldSelect = loadOptions.select || {label: 'title', id: 'id'}
             //Instance request params
             let requestParams = {
               refresh: true,
-              params: {filter: {field: fieldSelect.id}}
+              params: {
+                ...(loadOptions.requestParams || {}),
+                filter: {
+                  ...(loadOptions.requestParams?.filter || {}),
+                  [fieldSelect.id]: (this.responseValue.id || this.responseValue.value || this.responseValue)
+                }
+              }
             }
-            //Instance the criteria
-            const criteria = this.responseValue.id || this.responseValue.value || this.responseValue
+
             //Request
-            this.$crud.show(loadOptions.apiRoute, criteria, requestParams).then(response => {
-              this.rootOptions = this.$array.select([response.data], fieldSelect)
+            this.$crud.index(loadOptions.apiRoute, requestParams).then(response => {
+              this.rootOptions = [
+                ...this.rootOptions,
+                ...this.$array.select(response.data, fieldSelect)
+              ]
             })
           }
         }
@@ -1536,9 +1560,10 @@ export default {
 </script>
 <style lang="stylus">
 #dynamicFieldComponent
-  .crud-dynamic-field, .input-dynamic-field, .search-dynamic-field, .select-dynamic-field, .date-dynamic-field, .hour-dynamic-field, .full-date-dynamic-field, .treeselect-dynamic-field, .input-color-dynamic-field, .select-icon-dinamyc-field, .expression-dinamyc-field{
+  .crud-dynamic-field, .input-dynamic-field, .search-dynamic-field, .select-dynamic-field, .date-dynamic-field, .hour-dynamic-field, .full-date-dynamic-field, .treeselect-dynamic-field, .input-color-dynamic-field, .select-icon-dinamyc-field, .expression-dinamyc-field {
     width: calc(100% - 40px)
   }
+
   .jsoneditor-vue
     width: 100%;
     height: 400px;
