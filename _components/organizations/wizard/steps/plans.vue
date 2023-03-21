@@ -2,15 +2,6 @@
   <div class="step-plan">
     <h2 class="step-title">{{stepContent.title}}</h2>
 
-    <!--
-    <div class="tw-mb-4" v-for="(item, index) in plans" :key="index">
-      {{ item.name }}
-
-      <div class="tw-border tw-p-2 tw-mb-2" v-for="(option, i) in item.optionValues.slice(0, 2)" :key="i">
-        <span class="tw-font-bold">{{option.price}}</span> /{{option.optionValue}}
-      </div>
-    </div>-->
-
     <div v-if="plans.length>0">
     <q-list
       bordered 
@@ -66,7 +57,7 @@
   </div>
 </template>
 <script>
-import { PLAN_BASE_ID, CATEGORY_ECOMMERCE_ID } from './Model/constant.js';
+import { PLAN_BASE_ID } from './Model/constant.js';
 export default {
   data() {
     return {
@@ -102,34 +93,33 @@ export default {
     },
     async getData() {
       try {
-        const params = {
+        
+        if(this.infoBase.plan) {
+          this.selected = this.infoBase.plan;
+          this.$emit("update",  { active: true, info: this.selected});
+        }
+        this.getPlanBase();
+        
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getPlanBase(){
+      const params = {
           filter: {
-            categories: PLAN_BASE_ID
+            categories: PLAN_BASE_ID,
           },
-          include: 'productOptions,optionValues'
+          include: 'productOptions,optionValues,relatedProducts'
         };
         this.loading=true;
         await this.$crud
           .index('apiRoutes.qcommerce.products', {refresh : true, params})
           .then((response) => {
             const data = response.data;
-            let plan,planFilter=[];
+            console.log(data);
+            let plan=[],planFilter=[];
 
-            if(this.infoBase.layout) {
-
-              if(this.infoBase.layout.type === CATEGORY_ECOMMERCE_ID) {
-                plan = data.filter((item)=>item.id == 14);
-                
-              } else {
-                plan = data.filter((item)=>item.id == 13);
-              }
-
-            } else {
-              //falta evaluar este caso cuando llega primero el plan sin layout
-              plan = data;
-            }
-
-            plan.map(function callback(currentValue, index) {
+            data.map(function callback(currentValue, index) {
               const p = currentValue.optionValues.filter((item,index)=>index<2);
               planFilter = p.map((item) => ({
                 ...item,
@@ -137,19 +127,18 @@ export default {
                 planName: currentValue.name,
                 planSummary: currentValue.summary,
                 planDescription: currentValue.description,
+                planRelatedProducts: currentValue.relatedProducts,
                 active: false,
               }));
+              plan.unshift(planFilter);
             })
-            this.plans = planFilter;
+   
+            this.plans = plan.flatMap(item => item);
             this.loading = false;
           })
           .catch((error) => {
-            this.$alert.error({ message: "No se cargo la info" });
             console.log(error);
           });
-      } catch (error) {
-        console.log(error);
-      }
     },
   }
 }

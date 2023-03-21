@@ -43,17 +43,17 @@ export default [
         done: false,
     },
     {
-        id: STEP_THEMES,
-        title: 'Themes',
-        prefix: STEP_THEMES,
-        component: themes,
-        done: false,
-    },
-    {
         id: STEP_PLANS,
         title: 'Plans',
         prefix: STEP_PLANS,
         component: plans,
+        done: false,
+    },
+    {
+        id: STEP_THEMES,
+        title: 'Themes',
+        prefix: STEP_THEMES,
+        component: themes,
         done: false,
     },
 ];

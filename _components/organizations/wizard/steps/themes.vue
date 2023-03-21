@@ -1,7 +1,7 @@
 <template>
   <div class="step-themes">
     <h2 class="step-title">{{stepContent.title}}</h2>
-    <div class="row tw-px-4 tw-mb-6">
+    <div class="row tw-justify-center tw-px-4 tw-mb-6">
       <div class="col-6 col-md-4 tw-mb-2 tw-p-3 tw-cursor-pointer" 
           v-for="(item, index) in themes" v-if="themes.length>0">
         <div class="item-theme" 
@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="col-12 tw-text-base" v-else>
-        No hay plantillas
+        No hay plantillas relacionadas a este plan
       </div>
 
     </div>
@@ -56,105 +56,32 @@ export default {
   methods: {
     selectData(item) {
       this.selected=item;
+      console.log(item);
       this.navNext();
     },
     navNext() {
       if(this.selected!==''){
-        let type = this.checkPlan(this.selected.categories);
-        this.$emit("update", { active: true, info: {id: this.selected.id, type}});
+        this.$emit("update", { active: true, info: this.selected });
       }else {
         this.$emit("update", { active: false});
       }
     },
     async getData() {
       try {
-
-        if(this.infoBase.layout) {
-
-          const params = {
-            filter: {
-              id: this.infoBase.layout.id
-            },
-            include: 'categories'
-          };
-          this.loading = true,
-          await this.$crud
-            .index('apiRoutes.qcommerce.products', {refresh : true, params})
-            .then((response) => {
-              const data = response.data;
-              // verifico que existe el layout
-              if(data.length>0) {
-                // si existe y tiene la misma categoria guardada quiere decir que no cambio su eleccion
-                if(this.infoBase.category==data[0].categoryId){
-                  this.themes = data;
-                  this.selected = data[0];
-                  const type = checkPlan(data[0].categories);
-                  this.$emit("update",  { active: true, info: {id: data[0].id, type}});
-                } else {
-                  // sino es igual entonces quiere decir que cambio la categoria en el wizard y se muestra
-                  // todas las plantillas de esa categoria
-                  this.getDataBase();
-                }
-              } else {
-                // si esta aqui es porque no encontro el layout por tanto muestra las plantilas todas
-                // de la categoria seleccionada
-                this.getDataBase();
-              }
-
-
-              console.warn(data);
-              this.loading = false;
-            })
-            .catch((error) => {
-              this.$alert.error({ message: "No se cargo la info ff" });
-              console.log(error);
-            });
-
-        }  else {
-          this.getDataBase();
-        }
-
-        
+       if(this.infoBase.plan.planRelatedProducts.length>0) {
+          let themes = this.infoBase.plan.planRelatedProducts;
+          this.themes = themes;
+          if (this.infoBase.layout) {
+            const found = themes.find(item => item.id == this.infoBase.layout.id);
+            if(found){
+              this.selected=this.infoBase.layout;
+            } 
+            this.navNext();
+          }
+       }
       } catch (error) {
         console.log(error);
       }
-    },
-    async getDataBase() {
-      try {
-        if(this.infoBase.category){
-          console.log(this.infoBase.category);
-          const params = {
-            filter: {
-              categories: this.infoBase.category
-            },
-            include: 'categories'
-          };
-          this.loading = true,
-          await this.$crud
-            .index('apiRoutes.qcommerce.products', {refresh : true, params})
-            .then((response) => {
-              const data = response.data;
-              this.themes= data;
-              console.warn(data);
-              this.loading = false;
-            })
-            .catch((error) => {
-              this.$alert.error({ message: "No se cargo la info" });
-              console.log(error);
-            });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    checkPlan(data) {
-      let type = null;
-      data.filter((cate) => {
-        if (cate.id == CATEGORY_ECOMMERCE_ID) {
-          type = CATEGORY_ECOMMERCE_ID;
-        }
-      })
-      return type
     }
   }
 }

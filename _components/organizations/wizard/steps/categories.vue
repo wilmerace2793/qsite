@@ -7,23 +7,16 @@
     </div>
 
     <div class="tw-px-6 row" >
-      <div class="col-12 tw-mb-3 tw-cursor-pointer">
-        <div class="text-category tw-truncate tw-text-base" 
-            @click="getDataBase" 
-            :class="{ 'text-primary tw-font-bold' : selected == '' }">
-            Todas las categorias
-        </div>
-      </div>
-      <!--<div class="col-12 col-sm-6 col-md-4 tw-mb-3 tw-cursor-pointer" 
+      <div class="col-12 col-sm-6 col-md-4 tw-mb-3 tw-cursor-pointer" 
           v-for="(item, index) in filteredCategories" 
           @click="selectData(item)">
         <div class="text-category tw-truncate tw-text-base" 
             :class="{ 'text-primary tw-font-bold' : item.id === selected.id }">
             {{item.title}}
         </div>
-      </div>-->
+      </div>
     </div>
-
+    <!--
     <div class="tw-px-6 row">
       <div class="col-6 col-md-4 tw-mb-2 tw-p-2 tw-cursor-pointer" v-for="(item, index) in filteredCategories" @click="selectData(item)">
         <div class="item-category" :class="{ activeClass : item.id === selected.id }">
@@ -42,7 +35,7 @@
         </div>
       </div>
 
-    </div>
+    </div>-->
 
     <div class="step-sidebar">
       <div class="categories-text tw-max-w-sm">
@@ -109,55 +102,22 @@ export default {
     },
     navNext() {
       if(this.selected){
-        this.$emit("update",  { active: true, info: this.selected.id});
+        this.$emit("update",  { active: true, info: this.selected});
       }else {
         this.$emit("update", { active: false});
       }
     },
-    // busca info de una categoria especifica
     async getData() {
       try {        
-        // reviso si viene una categoria seleccionada y deberia trae una
         if(this.infoBase.category) {
-          const id = this.infoBase.category;
-          const params = {
-            filter: {
-              id
-            }
-          }
-          await this.$crud
-          .index('apiRoutes.qcommerce.categories', {refresh : true, params})
-          .then((response) => {
-            const data = response.data;
-            // si llega una id de categoria que no existe, limpia la base y llama a la categoria general
-            if(data.length==0) {
-              this.$alert.error({ message: "data vacia" });
-              this.$emit("update",  { active: true, info: null});
-              this.getDataBase();
-            } else {
-               this.categories = data;
-               // si devuelve solo una entonces esa se selecciona automaticamente
-               if(data.length==1) {
-                this.selected = data[0];
-                this.$emit("update",  { active: true, info: data[0].id});
-               }
-            }
-            console.log(data);
-            //this.loading = false;
-          })
-          .catch((error) => {
-            this.$alert.error({ message: "No se cargo la info" });
-            console.log(error);
-          });
-
-        } else {
-          this.getDataBase();
+          this.selected=this.infoBase.category;
+          this.$emit("update",  { active: true, info: this.selected});
         }
+        this.getDataBase();
       } catch (error) {
         console.log(error);
       }
     },
-    // busca las categorias de la plantilla base
     async getDataBase() {
       try {
         const params = {
@@ -165,15 +125,17 @@ export default {
             parentId: THEME_BASE_ID
           }
         };
+        this.loading=true;
         await this.$crud
-          .index('apiRoutes.qcommerce.categories', {refresh : true, params})
+          //.index('apiRoutes.qcommerce.categories', {refresh : true, params})
+          .index('apiRoutes.qsite.categories', {refresh : true})
           .then((response) => {
             const data = response.data;
+            console.log(data);
             this.categories = data;
             //this.loading = false;
           })
           .catch((error) => {
-            this.$alert.error({ message: "No se cargo la info" });
             console.log(error);
           });
       } catch (error) {

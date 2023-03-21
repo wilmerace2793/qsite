@@ -10,7 +10,7 @@
                 tw-w-full
                 tw-h-16
     ">
-      <img :src="logo" class="tw-h-10 tw-w-auto" /> 
+      <a :href="urlBase" target="_blank"> <img :src="logo" class="tw-h-10 tw-w-auto" /> </a>
       <q-slider class="slider-header" v-model="slider" thumb-path="" readonly :min="0" :max="100"/>
     </div>
     
@@ -82,11 +82,12 @@ export default {
       loading: false,
       data: [],
       logo: this.$store.state.qsiteApp.logo,
-      pace: 1,
+      pace: 2,
       slider: 0,
       steps: modelSteps,
       sliderPercent:0,
       isActive: false,
+      urlBase: this.$store.state.qsiteApp.baseUrl,
       dataCheck: {
         terms: false,
         category: null,
@@ -196,7 +197,7 @@ export default {
         .dialog({
           ok: "Continuar",
           title: "Registro Exitoso",
-          message: "A partir de ahora puedes disfrutar de los servicios que wygo",
+          message: "A partir de ahora puedes disfrutar de los servicios que wygo te ofrece",
           cancel: false,
           persistent: true,
         })
