@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import usePromise from '@imagina/qsite/_components/master/promised/usePromise';
+import usePromised from '@imagina/qsite/_components/master/promised/usePromised.ts';
 export default defineComponent({
     props: {
     isLoading: {
@@ -31,7 +31,7 @@ export default defineComponent({
   },
   setup(props, { slots }) {
     return {
-      ...usePromise(props)
+      ...usePromised(props)
     }
   }
 })
