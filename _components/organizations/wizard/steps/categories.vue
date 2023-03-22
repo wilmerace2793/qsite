@@ -1,7 +1,7 @@
 <template>
   <div class="step-categories">
     <h2 class="step-title">{{stepContent.title}}</h2>
-    <div class="tw-px-6 tw-pb-6 tw-mt-4">
+    <div class="tw-px-6 tw-pb-6 tw-mt-4 tw-mb-2">
       <dynamic-field v-model="name" :field="formFields.category"/>
     </div>
     <div class="step-loading" v-if="loading"><div></div><div></div></div>
@@ -157,15 +157,7 @@ export default {
       this.navNext();
     },
     orderArray(array) {
-      array.sort(function (a, b) {
-        if (a.title > b.title) {
-          return 1;
-        }
-        if (a.title < b.title) {
-          return -1;
-        }
-        return 0;
-      });
+      array.sort((a, b) => a.title.localeCompare(b.title));
       return array;
     }
   }
