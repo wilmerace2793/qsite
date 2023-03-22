@@ -6,15 +6,20 @@
     </div>
     <div class="step-loading" v-if="loading"><div></div><div></div></div>
     <div class="tw-px-6" v-else>
-      <div class="row q-gutter-md tw-mb-4">
-      <div class="col-auto tw-cursor-pointer" 
-          v-for="(item, index) in filteredCategories" 
-          @click="selectData(item)">
-        <div class="text-category tw-text-sm tw-rounded-lg tw-px-3 tw-py-1" 
-            :class="{ 'text-active-cate' : item.id === selected.id }">
-            {{item.title}}
+      <div class="row q-gutter-sm justify-between tw-mb-4">
+        <div class="col-auto tw-mb-3" 
+            v-for="(item, index) in filteredCategories" 
+            @click="selectData(item)">
+          <div class="text-category 
+                      tw-text-sm 
+                      tw-rounded-lg 
+                      tw-px-3 
+                      tw-py-1 
+                      tw-cursor-pointer" 
+              :class="{ 'text-active-cate' : item.id === selected.id }">
+              {{item.title}}
+          </div>
         </div>
-      </div>
       </div>
     </div>
 
@@ -102,6 +107,7 @@ export default {
   methods: {
     selectData(item) {
       this.selected=item;
+      console.log('hola');
       this.navNext();
     },
     navNext() {
@@ -135,7 +141,7 @@ export default {
           .index('apiRoutes.qsite.categories', {refresh : true})
           .then((response) => {
             const data = response.data;
-            this.categories = data;
+            this.categories = this.orderArray(data);
             this.loading = false;
           })
           .catch((error) => {
@@ -149,6 +155,18 @@ export default {
       this.selected="";
       this.name=value;
       this.navNext();
+    },
+    orderArray(array) {
+      array.sort(function (a, b) {
+        if (a.title > b.title) {
+          return 1;
+        }
+        if (a.title < b.title) {
+          return -1;
+        }
+        return 0;
+      });
+      return array;
     }
   }
 }
