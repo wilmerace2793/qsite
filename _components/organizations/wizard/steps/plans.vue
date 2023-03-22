@@ -1,7 +1,57 @@
 <template>
   <div class="step-plan">
     <h2 class="step-title">{{stepContent.title}}</h2>
+    <div class="step-loading" v-if="loading"><div></div><div></div></div>
+    <div v-else> 
+      <q-tabs
+        v-model="tabActive"
+        active-color="primary"
+        indicator-color="primary"
+        narrow-indicator
+        class="tw-mb-4"
+      >
+        <q-tab :name="item.optionValue" :label="item.optionValue" v-for="(item, index) in tab.slice(0,2)" :key="index" /> 
+      </q-tabs>
+      <q-tab-panels v-model="tabActive" animated>
+        <q-tab-panel :name="element.optionValue" v-for="(element, i) in tab.slice(0,2)" :key="i" >
 
+          <q-list
+            bordered 
+            separator 
+            class="tw-mb-4 cursor-pointer tw-rounded-md item-plan tw-mx-6" 
+            v-for="(item, index) in plans" :key="index" 
+            v-if="item.optionValue == element.optionValue"
+            :class="{ activePlan : item.id === selected.id &&  item.PlanId === selected.PlanId}"
+            @click="selectPlan(item)"  >
+            <q-expansion-item 
+              expand-icon-toggle
+              :group="item.planName"
+              v-model="item.active"
+            >
+              <template v-slot:header>
+                <q-item-section>
+                  <div class="tw-text-lg tw-font-semibold"> {{ item.planName }}</div>
+                  <div class="tw-text-xs">{{ item.planName }}</div>
+                </q-item-section>
+
+                <q-item-section side>
+                  <div class="row items-center ">
+                    <span class="tw-font-bold">{{item.price}}</span> / {{item.optionValue}}
+                  </div>
+                </q-item-section>
+              </template>
+              <q-card>
+                <q-separator />
+                <q-card-section v-html="item.planDescription"></q-card-section>
+              </q-card>
+            </q-expansion-item>
+          </q-list>
+
+        </q-tab-panel>
+      </q-tab-panels>
+    </div>
+
+    <!--
     <div v-if="plans.length>0">
     <q-list
       bordered 
@@ -9,9 +59,10 @@
       class="tw-mb-4 cursor-pointer tw-rounded-md item-plan tw-mx-6" 
       v-for="(item, index) in plans" :key="index" 
       :class="{ activePlan : item.id === selected.id &&  item.PlanId === selected.PlanId}"
-      @click="selectPlan(item)"  >
+      @click="selectPlan(item)">
       <q-expansion-item 
         expand-icon-toggle
+        :group="item.planName"
         v-model="item.active"
       >
         <template v-slot:header>
@@ -32,7 +83,7 @@
         </q-card>
       </q-expansion-item>
     </q-list>
-    </div>
+    </div>-->
 
     <div class="step-sidebar">
       
@@ -67,11 +118,18 @@ export default {
         summary: '',
         image: 'http://imgfz.com/i/5QUbYWt.png',
       },
+      tabActive: "",
+      tab: [],
       selected:"",
       plans: [],
     }
   },
-  inject:['infoBase'],
+  inject: {
+    infoBase: {
+      type: Object,
+      default: () => {},
+    },
+  },
   mounted() {
     this.$nextTick(async function () {
       this.navNext();
@@ -91,20 +149,7 @@ export default {
         this.$emit("update", { active: false});
       }
     },
-    async getData() {
-      try {
-        
-        if(this.infoBase.plan) {
-          this.selected = this.infoBase.plan;
-          this.$emit("update",  { active: true, info: this.selected});
-        }
-        this.getPlanBase();
-        
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async getPlanBase(){
+    async getData(){
       const params = {
           filter: {
             categories: PLAN_BASE_ID,
@@ -116,7 +161,8 @@ export default {
           .index('apiRoutes.qcommerce.products', {refresh : true, params})
           .then((response) => {
             const data = response.data;
-            console.log(data);
+            this.tab = data[0].optionValues;
+            this.tabActive = this.tab[0].optionValue;            
             let plan=[],planFilter=[];
 
             data.map(function callback(currentValue, index) {
@@ -130,10 +176,25 @@ export default {
                 planRelatedProducts: currentValue.relatedProducts,
                 active: false,
               }));
+
               plan.unshift(planFilter);
             })
    
             this.plans = plan.flatMap(item => item);
+
+
+
+            if(this.infoBase.plan) {
+              const found = this.plans.find((value, index) => {
+                if(value.id === this.infoBase.plan.id && value.planId == this.infoBase.plan.planId) {
+                  value.active=true;
+                  this.tabActive = value.optionValue; 
+                }
+              });
+              this.selectPlan(this.infoBase.plan);
+            }
+
+
             this.loading = false;
           })
           .catch((error) => {

@@ -1,21 +1,23 @@
 <template>
   <div class="step-categories">
     <h2 class="step-title">{{stepContent.title}}</h2>
-
     <div class="tw-px-6 tw-pb-6 tw-mt-4">
       <dynamic-field v-model="name" :field="formFields.category"/>
     </div>
-
-    <div class="tw-px-6 row" >
-      <div class="col-12 col-sm-6 col-md-4 tw-mb-3 tw-cursor-pointer" 
+    <div class="step-loading" v-if="loading"><div></div><div></div></div>
+    <div class="tw-px-6" v-else>
+      <div class="row q-gutter-md tw-mb-4">
+      <div class="col-auto tw-cursor-pointer" 
           v-for="(item, index) in filteredCategories" 
           @click="selectData(item)">
-        <div class="text-category tw-truncate tw-text-base" 
-            :class="{ 'text-primary tw-font-bold' : item.id === selected.id }">
+        <div class="text-category tw-text-sm tw-rounded-lg tw-px-3 tw-py-1" 
+            :class="{ 'text-active-cate' : item.id === selected.id }">
             {{item.title}}
         </div>
       </div>
+      </div>
     </div>
+
     <!--
     <div class="tw-px-6 row">
       <div class="col-6 col-md-4 tw-mb-2 tw-p-2 tw-cursor-pointer" v-for="(item, index) in filteredCategories" @click="selectData(item)">
@@ -51,7 +53,7 @@ import { THEME_BASE_ID } from './Model/constant.js';
 export default {
   data() {
     return {
-      loading: true,
+      loading: false,
       stepContent: {
         title: '¿Cuál es la categoría de tu página web?',
         summary: 'Con la selección de la categoría conoceremos la temática de tu sitio web, y podremos proporcionarte las plantillas con la estructura que más se adapten a tu negocio.',
@@ -68,9 +70,11 @@ export default {
       this.getData();
     })
   },
-  inject:['infoBase'],
-  created() {
-    console.warn(this.infoBase) // injected value
+  inject: {
+    infoBase: {
+      type: Object,
+      default: () => {},
+    },
   },
   computed: {
     filteredCategories(){
@@ -131,9 +135,8 @@ export default {
           .index('apiRoutes.qsite.categories', {refresh : true})
           .then((response) => {
             const data = response.data;
-            console.log(data);
             this.categories = data;
-            //this.loading = false;
+            this.loading = false;
           })
           .catch((error) => {
             console.log(error);
@@ -176,5 +179,25 @@ export default {
 .step-categories .select-category, .step-categories .categories-text {
   -webkit-animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 	animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+.step-categories .text-category {
+  @apply tw-relative;
+  border-width: 1px; border-color: var(--q-color-primary);
+}
+
+.step-categories .text-category:after {
+  @apply tw-rounded-lg tw-absolute tw-top-0 tw-right-0 tw-bottom-0 tw-left-0 tw-border tw-border-transparent;
+  transition: border-color .2s,top .2s,right .2s,bottom .2s,left .2s;
+  z-index: -1;
+  content: "";
+}
+.step-categories .text-active-cate,
+.step-categories .text-category:hover {
+  @apply tw-text-white;
+}
+.step-categories .text-active-cate:after, 
+.step-categories .text-category:hover:after {
+  @apply tw--top-1 tw--right-1 tw--bottom-1 tw--left-1;
+  background: var(--q-color-primary);
 }
 </style>

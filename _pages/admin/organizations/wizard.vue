@@ -218,31 +218,30 @@ export default {
   transition: all .4s ease-out;
   box-shadow: 0 0 6px -2px #8d8d8d;
 }
-
-.page-wizard .q-stepper__header {
+#wizardOrganization .page-wizard .q-stepper__header {
   @apply tw-hidden;
 }
-.page-wizard .q-stepper {
+#wizardOrganization .page-wizard .q-stepper {
   @apply tw-rounded-none tw-shadow-none;
 }
-.page-wizard .q-stepper__content {
+#wizardOrganization .page-wizard .q-stepper__content {
   @apply tw-min-h-screen tw-z-10 tw-flex tw-flex-col tw-bg-white tw-box-border tw-w-2/4;
   padding: 95px 0 75px;
   transition: transform .4s ease-out, width .4s ease-out;
 }
-.page-wizard .q-stepper__nav {
+#wizardOrganization .page-wizard .q-stepper__nav {
   @apply tw-w-2/4 tw-z-10 tw-left-0 tw-bottom-0 tw-fixed tw-bg-white tw-border-t-2;
   @apply tw-border-gray-300 tw-border-opacity-50;
   transition: transform .4s ease-out, width .4s ease-out;
   padding-bottom: 15px;
 }
-.page-wizard .q-stepper__nav .q-btn .q-icon {
+#wizardOrganization .page-wizard .q-stepper__nav .q-btn .q-icon {
   @apply tw-text-sm;
 }
-.page-wizard .q-stepper--horizontal .q-stepper__step-inner {
+#wizardOrganization .page-wizard .q-stepper--horizontal .q-stepper__step-inner {
   padding: 0 15px;
 }
-.page-wizard .step-sidebar {
+#wizardOrganization .page-wizard .step-sidebar {
   @apply tw-py-20 tw-flex tw-justify-center tw-items-center tw-flex-col;
   @apply tw-h-full tw-left-1/2 tw-right-0 tw-top-0 tw-fixed;
   contain: strict;
@@ -251,35 +250,35 @@ export default {
   background: -webkit-linear-gradient(right,#fff,#e4e2f2);
 }
 @media only screen and (max-width: 1439px) {
-  .page-wizard .q-stepper__content,
-  .page-wizard .q-stepper__nav {
+  #wizardOrganization .page-wizard .q-stepper__content,
+  #wizardOrganization .page-wizard .q-stepper__nav {
     /*width: 700px;*/
     width: 50%;
   }
-  .page-wizard .step-sidebar {
+  #wizardOrganization .page-wizard .step-sidebar {
     @apply tw-left-auto;
     /*width: calc(100% - 700px);*/
     width: 50%;
   }
 }
 @media only screen and (max-width: 1023px) {
-  .page-wizard .q-stepper__content {
+  #wizardOrganization .page-wizard .q-stepper__content {
     @apply tw-w-full tw-pb-24;
   }
-  .page-wizard .step-sidebar {
+  #wizardOrganization .page-wizard .step-sidebar {
     @apply tw-w-0 tw-p-0;
   }
-  .page-wizard .q-stepper__nav {
+  #wizardOrganization .page-wizard .q-stepper__nav {
     @apply tw-w-full;
   }
 }
-.page-wizard .q-slider__track-container--h {
+#wizardOrganization .page-wizard .q-slider__track-container--h {
   @apply tw-p-0;
 }
-.page-wizard .step-title {
+#wizardOrganization .page-wizard .step-title {
   @apply tw-text-xl lg:tw-text-3xl tw-px-12 tw-text-center tw-pb-8 tw-font-bold;
 }
-.page-wizard .step-title-1 {
+#wizardOrganization .page-wizard .step-title-1 {
   @apply tw-text-xl lg:tw-text-2xl tw-px-10 tw-text-center tw-pb-6 tw-font-bold;
 }
 .page-register .q-stepper__content {
@@ -288,16 +287,13 @@ export default {
   background: -webkit-linear-gradient(right,#fff,#e4e2f2);
   width: 100% !important;
 }
-
-.slider-header {
+#wizardOrganization .slider-header {
   @apply tw-absolute;
   bottom: -14px;
 }
-
-.q-dialog__message {
+#wizardOrganization .q-dialog__message {
   @apply tw-text-base;
 }
-
 @-webkit-keyframes fade-in-left {
   0% {
     -webkit-transform: translateX(-50px);
@@ -320,6 +316,48 @@ export default {
     -webkit-transform: translateX(0);
             transform: translateX(0);
     opacity: 1;
+  }
+}
+
+#wizardOrganization .step-loading {
+  @apply tw-relative tw-flex tw-w-20 tw-h-20 tw-mx-auto;
+}
+#wizardOrganization .step-loading div {
+  @apply tw-absolute tw-opacity-100 tw-rounded-full;
+  border: 4px solid var(--q-color-primary);
+  animation: step-loading 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+#wizardOrganization .step-loading div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes step-loading {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  4.9% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  5% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
   }
 }
 </style>

@@ -28,7 +28,12 @@ export default {
       }
     }
   },
-  inject:['infoBase'],
+  inject: {
+    infoBase: {
+      type: Object,
+      default: () => {},
+    },
+  },
   mounted() {
     this.$nextTick(async function () {
       this.getData();

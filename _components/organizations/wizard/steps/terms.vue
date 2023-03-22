@@ -36,7 +36,12 @@ export default {
       }
     }
   },
-  inject:['infoBase'],
+  inject: {
+    infoBase: {
+      type: Object,
+      default: () => {},
+    },
+  },
   computed: {
     formFields() {
       return {

@@ -1,7 +1,9 @@
 <template>
   <div class="step-themes">
     <h2 class="step-title">{{stepContent.title}}</h2>
-    <div class="row tw-justify-center tw-px-4 tw-mb-6">
+
+    <div class="step-loading" v-if="loading"><div></div><div></div></div>
+    <div class="row tw-justify-center tw-px-4 tw-mb-6" v-else>
       <div class="col-6 col-md-4 tw-mb-2 tw-p-3 tw-cursor-pointer" 
           v-for="(item, index) in themes" v-if="themes.length>0">
         <div class="item-theme" 
@@ -20,6 +22,7 @@
       </div>
 
     </div>
+
     <div class="step-sidebar" >
       <div class="select-card tw-max-w-md" v-if="selected">
         <img class="img-themes" :src="selected.mediaFiles.mainimage.extraLargeThumb"  />
@@ -46,7 +49,12 @@ export default {
       themes: [],
     }
   },
-  inject:['infoBase'],
+  inject: {
+    infoBase: {
+      type: Object,
+      default: () => {},
+    },
+  },
   mounted() {
     this.$nextTick(async function () {
       this.navNext();
