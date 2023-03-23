@@ -31,10 +31,8 @@
         <!-- Tooltip -->
         <q-tooltip>{{ btn.label }}</q-tooltip>
       </q-btn>
-      <!-- Help Center -->
-      <activities system-name="help_center" mode="button" :btn-props="defaultButtonProps"/>
       <!--Auth section-->
-      <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" rounded no-caps
+      <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" id="profile-button" rounded no-caps
              padding="2px 8px" color="white" unelevated>
         <div id="profileImage" class="img-as-bg"
              :style="`background-image: url('${quserState.userData.mainImage}')`"></div>
@@ -74,10 +72,6 @@
   </div>
 </template>
 <script>
-import storeMicrosoft from '@imagina/quser/_store/storeMicrosoft.js'
-import axios from 'axios';
-import activities from '@imagina/qgamification/_components/activities'
-
 export default {
   beforeDestroy() {
     this.$eventBus.$off('header.badge.manage')
@@ -86,7 +80,7 @@ export default {
     gutter: {type: String, default: 'sm'},
     size: {type: String, default: 'small'},
   },
-  components: {activities},
+  components: {},
   watch: {},
   mounted() {
     this.$nextTick(function () {
@@ -101,7 +95,7 @@ export default {
         notification: false
       },
       defaultButtonProps: {
-        round: true,
+        round : true,
         dense: true,
         color: "white",
         unelevated: true,
@@ -134,7 +128,7 @@ export default {
       //define the organization url if there're someone selected
       if (this.quserState.organizationId) {
         let organizationSelected = this.quserState.organizations.find(organization => organization.id == this.quserState.organizationId)
-        goToSiteUrl = organizationSelected.url
+        if(organizationSelected) goToSiteUrl = organizationSelected.url
       }
 
       return {
@@ -171,7 +165,7 @@ export default {
           {
             name: 'chat',
             label: 'Chat',
-            vIf: (config('app.mode') == 'iadmin') && this.$auth.hasAccess('ichat.conversations.index'),
+            vIf: false && (config('app.mode') == 'iadmin') && this.$auth.hasAccess('ichat.conversations.index'),
             props: {
               ...this.defaultButtonProps,
               icon: 'fa-light fa-message-lines',
@@ -210,7 +204,7 @@ export default {
                 }
               ]
             }
-          }
+          },
         ],
         menu: [
           //Profile
@@ -222,7 +216,8 @@ export default {
               icon: 'fa-light fa-circle-user',
               round: false,
               rounded: true,
-              align: "left"
+              align: "left",
+              id: 'profile-button'
             },
             action: () => (this.$route.name != 'user.profile.me') ? this.$router.push({name: 'user.profile.me'}) : null
           },
@@ -266,11 +261,6 @@ export default {
       })
     },
     logout() {
-      const authProvider = axios.defaults.params.setting.authProvider;
-      if (authProvider === 'microsoft') {
-        storeMicrosoft().signOut();
-        return;
-      }
       this.$router.push({name: 'auth.logout'});
     },
   }

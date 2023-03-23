@@ -46,7 +46,8 @@ export default {
     'qauction',
     'qbuilder',
     'qsite',
-    'qcredit'
+    'qcredit',
+    'qoffline'
   ],
   //Cache
   saveCache: {

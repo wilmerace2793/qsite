@@ -36,7 +36,7 @@ export default {
   watch: {
     'form.categoryId'() {
       this.changeKey = this.$uid()
-      this.form.recipient = null
+      if(!this.loading) this.form.recipient = null;
       if (this.categorySelected) this.form.name = this.$clone(this.categorySelected.title)
     }
   },
@@ -47,6 +47,7 @@ export default {
       loading: false,
       statusId: null,
       categories: [],
+      automationId: null,
       form: {
         categoryId: null,
         name: null,
@@ -54,7 +55,8 @@ export default {
         run: {},
         categoryFields: {},
       },
-      changeKey: this.$uid()
+      changeKey: this.$uid(),
+      TELEGRAM: 14,
     };
   },
   computed: {
@@ -174,15 +176,20 @@ export default {
     }
   },
   methods: {
-    openModal(statusId, title) {
+    async openModal(statusId, title, id = null) {
+      this.automationId = id;
+      this.loading = true
+      let response = false;
       this.statusId = statusId;
       this.modalTitle = `${this.$tr('requestable.cms.newRule')} - ${title}`
       this.show = true;
-      this.getCategories()
+      if(id) {
+        response = await this.showAutomation(id);
+      }
+      await this.getCategories(response);
     },
-    getCategories() {
+    getCategories(data = false) {
       return new Promise(resolve => {
-        this.loading = true
         //Request params
         const requestParams = {
           refresh: true,
@@ -191,13 +198,45 @@ export default {
           }
         }
         //Request
-        this.$crud.index('apiRoutes.qrequestable.categoriesRule', requestParams).then(response => {
-          this.categories = this.$clone(response.data)
+        this.$crud.index('apiRoutes.qrequestable.categoriesRule', requestParams).then(async response => {
+          const categoriesRule = this.$clone(response.data);
+          if(data) {
+            const category = await categoriesRule.find(item => item.id === data.categoryRuleId);
+            await data.fields.forEach(item => {
+              if(category.formFields[item.name]) {
+                category.formFields[item.name].value = item.value;
+              }
+            })
+          }
+          // telegram is hidden until the functionality remains
+          this.categories = await this.$clone(categoriesRule).filter(item => item.id !== this.TELEGRAM);
           this.loading = false
-        }).catch(error => this.loading = true)
+        }).catch(error => {console.log(error); this.loading = true })
       })
     },
+    async showAutomation(id) {
+      try {
+        const requestParams = {
+          refresh: true,
+          params: {
+            filter: { statusId: this.statusId, categoryId: this.$filter.values.categoryId}
+          }
+        }
+        const response = await this.$crud.show('apiRoutes.qrequestable.automationRule',id, requestParams);
+        this.form.categoryId = response.data.categoryRuleId;
+        this.form.name = response.data.name;
+        const when = response.data.runType ? {when: response.data.runType } : {};
+        this.form.run = {...when, ...response.data.runConfig};
+        setTimeout(() => {
+          this.form.recipient = response.data.to;
+        }, 1000);
+        return response.data;
+      } catch (error) {
+        this.loading = true
+      }
+    },
     submitData() {
+      const route = 'apiRoutes.qrequestable.automationRule';
       this.loading = true
       //Instance the rule data
       var ruleData = {
@@ -220,15 +259,19 @@ export default {
           date: this.form.run.date
         }
       }
-
+      const crud = this.automationId 
+        ? this.$crud.update(route, this.automationId ,ruleData) 
+        : this.$crud.create(route, ruleData);
       //Request
-      this.$crud.create('apiRoutes.qrequestable.automationRule', ruleData).then(response => {
+      crud.then(response => {
         this.loading = false
         this.addCard(this.statusId)
+        this.resetForm();
         this.show = false
       }).catch(error => this.loading = false)
     },
     resetForm() {
+      this.categories = [];
       this.form = {
         categoryId: null,
         run: {},

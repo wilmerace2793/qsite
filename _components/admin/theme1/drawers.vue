@@ -25,10 +25,10 @@
     </q-drawer>
 
     <!-- Chat -->
-    <q-drawer bordered id="chatMaster" overlay v-model="drawer.chat" side="right"
-              v-if="$auth.hasAccess('ichat.conversations.index')">
-      <chat-list/>
-    </q-drawer>
+<!--    <q-drawer bordered id="chatMaster" overlay v-model="drawer.chat" side="right"-->
+<!--              v-if="$auth.hasAccess('ichat.conversations.index')">-->
+<!--      <chat-list/>-->
+<!--    </q-drawer>-->
 
     <!--Master filter-->
     <q-drawer bordered id="drawerFilterMaster" v-model="drawer.filter" side="right" v-if="filter.load" :overlay="false">
@@ -78,8 +78,7 @@ export default {
     return {
       windowHeight: window.innerHeight,
       windowWith: window.innerWidth,
-      projectName: this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name'),
-      logo: this.$store.state.qsiteApp.logo,
+      projectName: this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name'),     
       miniState: this.windowSize == 'mobile' ? false : true,
       drawer: {
         menu: this.windowSize == 'mobile' ? false : true,
@@ -105,6 +104,9 @@ export default {
     //Version app text
     versionText() {
       return 'v' + config('app.version')
+    },
+    logo() {
+      return this.$store.state.qsiteApp.logo;
     },
   },
   methods: {

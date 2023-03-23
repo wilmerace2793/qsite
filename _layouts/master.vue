@@ -28,14 +28,20 @@
       <!--Router view-->
       <div id="routerPageContent" class="layout-padding">
         <router-view v-if="appState.loadPage"/>
+        <Alert/>
       </div>
     </q-page-container>
 
     <!---Cropper-->
     <cropper-component ref="cropperComponent"/>
 
-    <!-- Help Center -->
-    <help-center/>
+    <!-- Activities -->
+    <activities v-for="(activity, keyACt) in globalActivities" :key="keyACt" v-bind="activity"/>
+
+    <!-- Activities Actions -->
+    <activities-actions/>
+
+    
 
     <!-- FOOTER -->
     <component :is="components.footer"/>
@@ -57,7 +63,8 @@ import drawersPanel from '@imagina/qsite/_components/panel/drawers'
 import footerPanel from '@imagina/qsite/_components/panel/footer'
 //Components
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
-import helpCenter from '@imagina/qsite/_components/master/helpCenter.vue'
+import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
+import Alert from '@imagina/qoffline/_components/Alert.vue'
 
 export default {
   name: "MasterLayout",
@@ -79,7 +86,7 @@ export default {
   components: {
     chat,
     cropperComponent,
-    helpCenter,
+    activitiesActions,
     //Admin
     headerAdminTheme1,
     headerAdminTheme2,
@@ -90,7 +97,9 @@ export default {
     //Panel
     headerPanel,
     drawersPanel,
-    footerPanel
+    footerPanel,
+    //Offline
+    Alert
   },
   watch: {
     shouldChangePassword(data) {
@@ -99,6 +108,11 @@ export default {
         data.messages.forEach(item => {
           this.$alert[item.type || 'info'](item)
         })
+      }
+    },
+    $route (to, from){
+      if (this.$tour.tour) {
+        this.$tour?.complete();
       }
     }
   },
@@ -198,6 +212,28 @@ export default {
     //Should change password state
     shouldChangePassword() {
       return this.$store.state.quserAuth.shouldChangePassword
+    },
+    //Activities
+    globalActivities() {
+      const activities = [
+        {
+          systemName: 'help_center',
+          view: 'button',
+          style: {
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px'
+          },
+          btnProps: {
+            color: 'info'
+          }
+        },
+        {
+          systemName: 'admin_popup',
+          view: 'popup'
+        }
+      ]
+      return activities
     }
   },
   methods: {
@@ -249,7 +285,9 @@ export default {
 
 <style lang="stylus">
 #layoutMaster {
-
+  #routerPageContent{
+    position: relative;
+  }
   #routeInformationContent {
     width: 100%;
     position: fixed;

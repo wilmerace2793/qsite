@@ -254,7 +254,6 @@ export default {
       set(value) {
         this.setResetPage();
         this.funnelSelected = value;
-        this.getColumns();
       },
     },
     checkIfFunnelExists() {
@@ -265,9 +264,10 @@ export default {
     },
   },
   methods: {
-    async init() {
+    async init(refresh = false) {
+      this.kanbanColumns = [];
       await this.getFunnel();
-      await this.getColumns();
+      await this.getColumns(refresh);
     },
     async getFunnel() {
       try {
@@ -305,28 +305,31 @@ export default {
         item.position = index;
       });
     },
-    async getColumns() {
+    async getColumns(refresh = false) {
       try {
         if(!this.routes.column) return;
         this.loading = true;
         const route = this.routes.column;
-        const parameters = { params: {}, refresh: true };
+        const parameters = { params: {}, refresh };
         parameters.params.include = route.include;
         const id =  { id: this.$filter.values.statusId } || {};
         parameters.params.filter = {
           [route.filter.name]: this.funnelSelectedComputed, ...id
         };
         const response = await this.$crud.index(route.apiRoute, parameters);
-        const kanbanColumn = this.getKanbanColumns(response.data);
+        const kanbanColumn = this.getKanbanColumns(response.data, refresh);
         this.kanbanColumns = kanbanColumn;
-        this.loading = false;
+        setTimeout(() => {
+          this.loading = false;
+        }, 100);
+        
       } catch (error) {
         this.loading = false;
         this.kanbanColumns = [];
         console.log(error);
       }
     },
-    getKanbanColumns(data) {
+    getKanbanColumns(data, refresh = false) {
       const kanbanColumn = data.map((item, index) => {
         return {
           id: item.id,
@@ -341,7 +344,7 @@ export default {
         };
       });
       kanbanColumn.forEach(async (column) => {
-        const kanbanCard = await this.getKanbanCard(column);
+        const kanbanCard = await this.getKanbanCard(column, 1 ,refresh);
         column.data = kanbanCard.data;
         column.loading = false;
         column.total = kanbanCard.total;
@@ -351,29 +354,29 @@ export default {
     async addCard(columnId) {
       const column = this.kanbanColumns.find(item => item.id === columnId);
       if(column) {
-        const kanbanCard = await this.getKanbanCard(column);
+        const kanbanCard = await this.getKanbanCard(column, 1, true);
         column.data = kanbanCard.data;
         column.loading = false;
         column.total = kanbanCard.total;
       }
     },
-    async getKanbanCard(column, page = 1) {
+    async getKanbanCard(column, page = 1, refresh = false) {
       try {
         column.loading = true;
-        return await this.getKanbanCardList(column, page);
+        return await this.getKanbanCardList(column, page, refresh);
       } catch (error) {
         column.loading = false;
         console.log(error);
       }
     },
-    async getKanbanCardList(column, page) {
+    async getKanbanCardList(column, page, refresh = false) {
       try {
         const nameRoute = this.automation ? 'automation' : 'card';
         if(!this.routes[nameRoute]) {
           return { total: 0, data: [] };
         }
         const route = this.routes[nameRoute];
-        const parameters = { params: {}, refresh: true };
+        const parameters = { params: {}, refresh };
         const search = this.automation ? {} : { search: this.search };
         parameters.params.include = route.include;
         parameters.params.filter = { [route.filter.name]: column.id, ...this.$filter.values, ...search};
@@ -430,7 +433,7 @@ export default {
               const column = this.kanbanColumns.find(column => column.id === item.statusId);
               if(column) column.loading = true;
               await this.$crud.delete(route.apiRoute, item.id);
-              const kanbanCard = await this.getKanbanCard(this.automation ? column : item.status);
+              const kanbanCard = await this.getKanbanCard(this.automation ? column : item.status, 1, true);
               if(column) {
                 column.data = kanbanCard.data || [];
                 setTimeout(() => {
@@ -527,9 +530,9 @@ export default {
     openAutomationRulesModal() {
       if(this.$refs.automationRules) this.$refs.automationRules.openModal();
     },
-    openFormComponentModal(statusId, title) {
+    openFormComponentModal(statusId, title, id = null) {
       if (this.automation) {
-        if (this.$refs.formRules) this.$refs.formRules.openModal(statusId, title);
+        if (this.$refs.formRules) this.$refs.formRules.openModal(statusId, title, id);
       } else {
         if (this.$refs.formComponent) this.$refs.formComponent.openModal(statusId, title);
       }

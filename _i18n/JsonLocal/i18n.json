@@ -320,7 +320,11 @@
         "newActivity": "New Activity",
         "updateActivity": "Update Activity",
         "newCategory": "New Category",
-        "updateCategory": "Update Category"
+        "updateCategory": "Update Category",
+        "label": {
+          "tourElement": "Element Id",
+          "tourElementPosition": "Element Position"
+        }
       }
     },
     "iforms": {
@@ -340,6 +344,7 @@
         "updateBlock": "Update Block",
         "deleteBlock": "Delete Block",
         "replyTo": "Field to reply to",
+        "replyToName" : "Name to reply",
         "form": {
           "label": "Label",
           "placeholder": "Placeholder",
@@ -810,6 +815,7 @@
           "warnAddDiscount": "To add discounts, you must first create the product",
           "viewProduct": "View product",
           "advanceEdit": "Advanced Edit",
+          "quickEdit": "Quick Edit",
           "btnAddProduct": "Add Product",
           "chooseProduct": "Choose Product",
           "productSetup": "Product Setup",
@@ -832,7 +838,8 @@
         "quickCard": {
           "lastOrders": "Commerce - Last Orders",
           "productsToSoldOut": "Tienda - Products to sold out"
-        }
+        },
+        "advancedSummary": "Advanced Summary"
       }
     },
     "icredit": {
@@ -1234,7 +1241,9 @@
           "adminGroup": "Site",
           "adminIndex": "Settings",
           "adminDynamicForm": "Dynamic Form",
-          "adminOrganization": "Organizations List",
+          "adminOrganizationAll": "Sites List",
+          "adminOrganizationWizard": "New Organization",
+          "adminOrganization": "My Site",
           "adminCategories": "Categories",
           "adminIcruds": "Icruds",
           "adminAuditLog": "Audit Log",
@@ -1281,11 +1290,16 @@
         "perzonalizationTitle": "Welcome to the editor of your website",
         "perzonalizationDescription": "Easily change the logo, colors and the main information of your website",
         "label": {
+          "top": "Top",
+          "bottom": "Bottom",
+          "left": "Left",
+          "right": "Right",
+          "backgroundImage": "Background Image",
           "noActivities": "There is no activities to display",
           "copyDisclosureLink": "Disclosure Copy",
           "faq": "Frequent Questions",
           "helpCenter": "Help Center",
-          "activities": "Activities",
+          "activity": "Activity | Activities",
           "advanceOptions": "Advance Options",
           "responsive": "Responsive",
           "mobile": "Mobile",
@@ -1622,6 +1636,7 @@
           "refreshEveryMinutes": "Refresh every {min} minutes"
         },
         "message": {
+          "appOffline": "You have lost connection to the internet. This app is offline.",
           "activitiesDescription": "Select the activity you want",
           "descriptionHelpCenter": "Choose the option you want to solve your doubts",
           "editFormProduct": "In this form you can edit your product in a simple way, if you want to edit your product with more advanced options, click on the following button to go to the advanced form.",
@@ -2181,7 +2196,11 @@
         "newActivity": "Nueva Actividad",
         "updateActivity": "Actualizar Actividad",
         "newCategory": "Nueva Categoría",
-        "updateCategory": "Actualizar Categoría"
+        "updateCategory": "Actualizar Categoría",
+        "label": {
+          "tourElement": "ID del elemento",
+          "tourElementPosition": "Pocisión del Elemento"
+        }
       }
     },
     "iforms": {
@@ -2201,6 +2220,7 @@
         "updateBlock": "Actualizar bloque",
         "deleteBlock": "Eliminar bloque",
         "replyTo": "Campo para responder",
+        "replyToName" : "Nombre para responder",
         "form": {
           "label": "Etiqueta",
           "placeholder": "Placeholder",
@@ -2671,6 +2691,7 @@
           "warnAddDiscount": "Para agregar descuentos, primero debe crear el producto",
           "viewProduct": "Ver producto",
           "advanceEdit": "Edición Avanzada",
+          "quickEdit": "Edición Rapida",
           "btnAddProduct": "Agregar Producto",
           "chooseProduct": "Elegir Producto",
           "productSetup": "Configuración de Producto",
@@ -2693,7 +2714,8 @@
         "quickCard": {
           "lastOrders": "Tienda - Ultimas Ordenes",
           "productsToSoldOut": "Tienda - Productos por agotar"
-        }
+        },
+        "advancedSummary": "Resumen Avanzado"
       }
     },
     "icredit": {
@@ -2966,7 +2988,9 @@
           "adminGroup": "Sitio",
           "adminIndex": "Ajustes",
           "adminDynamicForm": "Formulario Dinámico",
-          "adminOrganization": "Lista de Organizaciónes",
+          "adminOrganizationAll": "Lista de sitios",
+          "adminOrganizationWizard": "Nueva Organización",
+          "adminOrganization": "Mi sitio",
           "adminCategories": "Categorias",
           "adminIcruds": "Icruds",
           "adminAuditLog": "Audit Log",
@@ -3013,11 +3037,16 @@
         "perzonalizationTitle": "Bienvenid@ al editor de tu sitio web",
         "perzonalizationDescription": "De manera fácil, cambia el logo, colores y la información principal de tu página web",
         "label": {
+          "top": "Arriba",
+          "bottom": "Abajo",
+          "left": "Izquierda",
+          "right": "Derecha",
+          "backgroundImage": "Imagen de fondo",
           "noActivities": "No hay actividades para mostrar",
           "copyDisclosureLink": "Copia de Divulgación",
           "faq": "Preguntas Frecuentes",
           "helpCenter": "Centro de Ayuda",
-          "activities": "Actividades",
+          "activity": "Actividad | Actividades",
           "advanceOptions": "Opciones Avanzadas",
           "discardChanges": "Descartar Cambios",
           "responsive": "Responsivo",
@@ -3353,6 +3382,7 @@
           "refreshEveryMinutes": "Refrescar cada {min} minutos"
         },
         "message": {
+          "appOffline": "Has perdido la conexión a internet. La aplicación está offline.",
           "activitiesDescription": "Seleeciona la actividad que desees.",
           "descriptionHelpCenter": "Elige la opción que deseas para resolver tus dudas",
           "editFormProduct": "En este formulario podrás editar tu producto de manera sencilla, si quieres editar tu producto con opciones más avanzadas, da click en el siguiente botón para ir a el formulario avanzado.",

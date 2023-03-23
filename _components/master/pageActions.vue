@@ -13,7 +13,7 @@
                v-if="extraActions && extraActions.includes('search') && searchAction"
                @input="$emit('search', $clone(search))">
         <template v-slot:prepend>
-          <q-icon color="tertiary" name="fa-duotone fa-magnifying-glass"/>
+          <q-icon color="tertiary" size="xs" name="fa-duotone fa-magnifying-glass"/>
         </template>
       </q-input>
       <!--Button Actions-->
@@ -173,7 +173,8 @@ export default {
           label: this.$tr('isite.cms.label.filter'),
           vIf: (this.filter.load && !excludeActions.includes('filter')),
           props: {
-            icon: 'fa-duotone fa-filter'
+            icon: 'fa-duotone fa-filter',
+            id: 'filter-button-crud',
           },
           action: () => this.$eventBus.$emit('toggleMasterDrawer', 'filter')
         },
@@ -183,7 +184,8 @@ export default {
           type: this.multipleRefresh ? 'btn-dropdown' : '',
           vIf: (this.params.refresh && !excludeActions.includes('refresh')),
           props: {
-            icon: 'fa-duotone fa-rotate-right'
+            icon: 'fa-duotone fa-rotate-right',
+            id: 'refresh-button-crud'
           },
           items: [
             {
@@ -225,7 +227,8 @@ export default {
               color: "primary",
               round: false,
               rounded: true,
-              padding: '3px 15px'
+              padding: '3px 15px',
+              id: 'new-button-crud'
             },
             action: () => this.$emit('new')
           })

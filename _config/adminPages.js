@@ -14,14 +14,40 @@ export default {
       refresh: true,
     }
   },
+  //organization Wizard
+  organizationWizard: {
+    //permission: null,
+    //authenticated: true,
+    activated: true,
+    path: '/site/organizations-wizard',
+    name: 'qsite.admin.organizations.wizard',
+    page: () => import('@imagina/qsite/_pages/admin/organizations/wizard'),
+    layout: () => import('@imagina/qsite/_layouts/blank.vue'),
+    title: 'isite.cms.sidebar.adminOrganizationWizard',
+    icon: 'fal fa-crown'
+  },
   //Organization Page
-  organizations: {
-    permission: 'isite.organizations.manage',
+  organizationsAll: {
+    permission: 'isite.organizations.index-all',
     activated: true,
     path: '/site/organizations',
-    name: 'qsite.admin.organizations.index',
+    name: 'qsite.admin.organizations.index-all',
     crud: import('@imagina/qsite/_crud/organizations'),
     page: () => import('@imagina/qcrud/_pages/admin/crudPage'),
+    layout: () => import('@imagina/qsite/_layouts/master.vue'),
+    title: 'isite.cms.sidebar.adminOrganizationAll',
+    icon: 'fal fa-crown',
+    authenticated: true,
+    subHeader: {
+      refresh: true,
+    }
+  },
+  organizations: {
+    permission: 'isite.organizations.index',
+    activated: true,
+    path: '/site/my-organizations',
+    name: 'qsite.admin.organizations.index',
+    page: () => import('@imagina/qsite/_pages/admin/organizations/index'),
     layout: () => import('@imagina/qsite/_layouts/master.vue'),
     title: 'isite.cms.sidebar.adminOrganization',
     icon: 'fal fa-crown',
@@ -30,7 +56,7 @@ export default {
       refresh: true,
     }
   },
-  //Organization Page
+  //Organization form
   organizationForm: {
     permission: 'isite.organizations.edit',
     activated: true,

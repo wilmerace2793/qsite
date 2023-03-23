@@ -6,19 +6,16 @@
         <img style="max-width: 30vw; margin: auto" :src="$store.state.qsiteApp.logo">
       </div>
       <!--Activities-->
-      <activities system-name="panel_home" @loaded="loading = false"/>
+      <activities-list system-name="panel_home" @loaded="loading = false"/>
       <!--inner-loading-->
       <inner-loading :visible="loading"/>
     </div>
   </q-page>
 </template>
 <script>
-//Components
-import activities from '@imagina/qgamification/_components/activities'
-
 export default {
   props: {},
-  components: {activities},
+  components: {},
   watch: {},
   mounted() {
     this.$nextTick(function () {

@@ -6,17 +6,21 @@
     </div>
 
     <!--Quick cards-->
-    <div id="quickCardsContent" v-if="quickCards.list1.length">
+    <div v-if="quickCards.list1.length">
       <div class="row q-col-gutter-x-md">
         <!--Activities-->
         <div class="col-12 q-mb-md">
-          <activities system-name="admin_home" @loaded="loading = false"/>
+          <activities system-name="admin_home" @loaded="loading = false" view="cardImage"/>
         </div>
         <!-- QuickCards -->
-        <div v-for="(groupQuickCard, key) in quickCards" :key="key" class="col-12 col-lg-6">
-          <div class="row q-col-gutter-y-md full-width">
-            <div v-for="(item, keyItem) in groupQuickCard" :key="keyItem" class="col-12">
-              <component :is="item.component" :key="`component${keyItem}`" v-bind="item.props || {}"/>
+        <div id="quickCardsContent" class="col-12">
+          <div class="row q-col-gutter-x-md">
+            <div v-for="(groupQuickCard, key) in quickCards" :key="key" class="col-12 col-lg-6">
+              <div class="row q-col-gutter-y-md full-width">
+                <div v-for="(item, keyItem) in groupQuickCard" :key="keyItem" class="col-12">
+                  <component :is="item.component" :key="`component${keyItem}`" v-bind="item.props || {}"/>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -28,12 +32,8 @@
   </div>
 </template>
 <script>
-//Components
-import activities from '@imagina/qgamification/_components/activities'
-
 export default {
   props: {},
-  components: {activities},
   watch: {},
   created() {
     this.loading = true;

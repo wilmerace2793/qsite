@@ -37,10 +37,11 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import useExpressionField from "./useExpressionField.js";
 export default defineComponent({
   props: {
+    value: null,
     fieldProps: {
       type: Object,
       default: () => {},

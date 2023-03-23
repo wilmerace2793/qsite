@@ -159,7 +159,7 @@ export default {
               label: this.$tr('isite.cms.label.add') + ' ' + this.$tr('isite.cms.form.hour'),
               icon: 'fas fa-plus-circle',
               color: 'blue',
-              outline : true
+              outline: true
             },
             action: () => {
               this.dayEdit.schedules.push({from: '08:00', to: '10:00'})
@@ -238,19 +238,19 @@ export default {
       this.$emit('input', scheduleClone)//Emit response
     },
     parserDate(date) {
-       return this.$moment(date).isValid() ? this.$moment(date) : this.$moment(this.currentDate + ' ' + date);
+      return this.$moment(date).isValid() ? this.$moment(date) : this.$moment(this.currentDate + ' ' + date);
     },
     mapSchedule(data) {
       let schedule = this.$clone(data);
       schedule.forEach(item => {
-        if(item.schedules != 1) {
+        if (!["0", "1", 0, 1].includes(item.schedules)) {
           item.schedules = item.schedules.map((item) => {
-             const from = this.parserDate(item.from).format('YYYY-MM-DD HH:mm');
-             const to = this.parserDate(item.to).format('YYYY-MM-DD HH:mm');
-             return {
+            const from = this.parserDate(item.from).format('YYYY-MM-DD HH:mm');
+            const to = this.parserDate(item.to).format('YYYY-MM-DD HH:mm');
+            return {
               from,
               to,
-             }
+            }
           })
         }
       });
