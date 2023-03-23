@@ -31,10 +31,8 @@
         <!-- Tooltip -->
         <q-tooltip>{{ btn.label }}</q-tooltip>
       </q-btn>
-      <!-- Help Center -->
-      <!-- <activities-list system-name="help_center" view="button" :btn-props="defaultButtonProps"/> -->
       <!--Auth section-->
-      <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" rounded no-caps
+      <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" id="profile-button" rounded no-caps
              padding="2px 8px" color="white" unelevated>
         <div id="profileImage" class="img-as-bg"
              :style="`background-image: url('${quserState.userData.mainImage}')`"></div>
@@ -97,7 +95,7 @@ export default {
         notification: false
       },
       defaultButtonProps: {
-        round: true,
+        round : true,
         dense: true,
         color: "white",
         unelevated: true,
@@ -130,7 +128,7 @@ export default {
       //define the organization url if there're someone selected
       if (this.quserState.organizationId) {
         let organizationSelected = this.quserState.organizations.find(organization => organization.id == this.quserState.organizationId)
-        goToSiteUrl = organizationSelected.url
+        if(organizationSelected) goToSiteUrl = organizationSelected.url
       }
 
       return {
@@ -206,7 +204,7 @@ export default {
                 }
               ]
             }
-          }
+          },
         ],
         menu: [
           //Profile
@@ -218,7 +216,8 @@ export default {
               icon: 'fa-light fa-circle-user',
               round: false,
               rounded: true,
-              align: "left"
+              align: "left",
+              id: 'profile-button'
             },
             action: () => (this.$route.name != 'user.profile.me') ? this.$router.push({name: 'user.profile.me'}) : null
           },

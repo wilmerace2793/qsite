@@ -71,6 +71,19 @@ class PluginEmbed {
                       `;
                                 return;
                             }
+                            if (url.includes(availableUrls.twitter)) {
+                                fetch(`https://publish.twitter.com/oembed?url=${url}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    const html = document.createRange().createContextualFragment(data.html)
+                                    iframe.appendChild(html);
+                                })
+                                .catch(error => {
+                                    console.error(error);
+                                    iframe.textContent = "Type embed is not supported";
+                                });
+                                return;
+                            }
                             iframe.textContent = "Type embed is not supported";
                         }
                     }

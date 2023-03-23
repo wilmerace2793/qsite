@@ -15,11 +15,11 @@
           <!-- name -->
           <div class="col-6 row q-py-xs blue-green items-center">
             <div class="q-px-xs" :class="{'q-py-md': item.subTitle }">
-              <q-icon class="cursor-pointer q-px-sm" color="blue-grey" name="fas fa-grip-vertical"/>
+              <q-icon class="cursor-pointer q-px-sm" color="blue-grey" name="fa-light fa-bars"/>
             </div>
             <div class="text-subtitle2 text-weight-light" :class="{'q-py-xs': item.subTitle}">
               {{ item.title }}
-              <span v-if="!!item.subTitle" class="block text-caption">
+              <span v-if="!!item.subTitle" class="block text-caption text-grey-8">
                 {{ item.subTitle }}
               </span>
             </div>

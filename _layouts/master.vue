@@ -37,6 +37,14 @@
 
     <!-- Offline Request -->
     <Progressrequest />
+    <!-- Activities -->
+    <activities v-for="(activity, keyACt) in globalActivities" :key="keyACt" v-bind="activity"/>
+
+    <!-- Activities Actions -->
+    <activities-actions/>
+
+    
+
     <!-- FOOTER -->
     <component :is="components.footer"/>
   </q-layout>
@@ -105,12 +113,16 @@ export default {
           this.$alert[item.type || 'info'](item)
         })
       }
+    },
+    $route (to, from){
+      if (this.$tour.tour) {
+        this.$tour?.complete();
+      }
     }
   },
   mounted() {
     this.$nextTick(async function () {
       this.init()
-      console.log(this.$store.state.qofflineMaster.isAppOffline);
     })
   },
   data() {
@@ -204,6 +216,28 @@ export default {
     //Should change password state
     shouldChangePassword() {
       return this.$store.state.quserAuth.shouldChangePassword
+    },
+    //Activities
+    globalActivities() {
+      const activities = [
+        {
+          systemName: 'help_center',
+          view: 'button',
+          style: {
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px'
+          },
+          btnProps: {
+            color: 'info'
+          }
+        },
+        {
+          systemName: 'admin_popup',
+          view: 'popup'
+        }
+      ]
+      return activities
     }
   },
   methods: {
