@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import usePromised, { UsePromisedContract } from '@imagina/qsite/_components/master/promised/usePromised.ts';
+import usePromised, { UsePromisedContract } from '@imagina/qsite/_components/master/promiseTemplate/usePromisedTemplate.ts';
 export default defineComponent({
     props: {
     isLoading: {
@@ -25,7 +25,6 @@ export default defineComponent({
         default: () => false,
     },    
     promise: {
-      type: Promise,
       required: true
     }
   },
