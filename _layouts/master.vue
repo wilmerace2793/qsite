@@ -35,9 +35,8 @@
     <!---Cropper-->
     <cropper-component ref="cropperComponent"/>
 
-    <!-- Activities Actions -->
-    <activities-actions/>
-
+    <!-- Offline Request -->
+    <Progressrequest />
     <!-- FOOTER -->
     <component :is="components.footer"/>
   </q-layout>
@@ -58,8 +57,9 @@ import drawersPanel from '@imagina/qsite/_components/panel/drawers'
 import footerPanel from '@imagina/qsite/_components/panel/footer'
 //Components
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
-import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
+//import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
 import Alert from '@imagina/qoffline/_components/Alert.vue'
+import Progressrequest from '@imagina/qoffline/_components/Progressrequest.vue'
 
 export default {
   name: "MasterLayout",
@@ -81,7 +81,7 @@ export default {
   components: {
     chat,
     cropperComponent,
-    activitiesActions,
+    //activitiesActions,
     //Admin
     headerAdminTheme1,
     headerAdminTheme2,
@@ -94,7 +94,8 @@ export default {
     drawersPanel,
     footerPanel,
     //Offline
-    Alert
+    Alert,
+    Progressrequest
   },
   watch: {
     shouldChangePassword(data) {

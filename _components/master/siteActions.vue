@@ -32,7 +32,7 @@
         <q-tooltip>{{ btn.label }}</q-tooltip>
       </q-btn>
       <!-- Help Center -->
-      <activities-list system-name="help_center" view="button" :btn-props="defaultButtonProps"/>
+      <!-- <activities-list system-name="help_center" view="button" :btn-props="defaultButtonProps"/> -->
       <!--Auth section-->
       <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" rounded no-caps
              padding="2px 8px" color="white" unelevated>
