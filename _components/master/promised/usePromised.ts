@@ -32,10 +32,8 @@ export default function usePromised(props: PropsContract): UsePromisedContract {
   * @returns {Promise<void>} A promise that resolves when the data has been fetched.
   */
   async function getPromise(): Promise<void> {
-    setTimeout(async () => {
       const response = await props.promise;
       data.value = response;
-    }, 100);
   }
   /**
    * Watches the changes in the props object and refetches the data accordingly.
