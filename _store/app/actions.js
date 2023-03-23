@@ -54,7 +54,7 @@ export const GET_SITE_SETTINGS = ({commit, dispatch, state, getters}, params = {
     let requestParams = {refresh: true}
     let configName = 'apiRoutes.qsite.siteSettings'
     let configApp = config('app')
-    
+
     //Request main settings
     crud.index(configName, requestParams).then(async response => {
       let data = response.data
@@ -96,16 +96,15 @@ export const GET_CENTRALIZED_BRAND = ({state}, siteSettings) => {
     if (!centralizedBrand) return resolve(siteSettings)
     //Request the centralized brand
     axios.get(`${centralizedBrand.value}/api/isite/v1/site/settings`).then(response => {
-      const {siteSettings} = response.data.data;
       //Get brand settings values
       const brandSettingNames = ["isite::logoIadmin", "isite::logo1", "core::site-name"];
-      const centralizedBrandSettings = siteSettings.filter(item =>
+      const centralizedBrandSettings = response.data.data.siteSettings.filter(item =>
         item.name.includes('brand') || brandSettingNames.includes(item.name)
       );
       //Replace the settings
       centralizedBrandSettings.forEach(newSetting => {
         const indexToReplace = siteSettings.findIndex(item => item.name == newSetting.name)
-        if (indexToReplace >= 0) siteSettings.splice(indexToReplace, 1, newSetting)
+        if (indexToReplace >= 0) siteSettings[indexToReplace] = newSetting
       })
       //Return the new siteSettings
       resolve(siteSettings)
