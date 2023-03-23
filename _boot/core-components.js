@@ -19,6 +19,7 @@ import pageActions from '@imagina/qsite/_components/master/pageActions'
 import crudComponent from '@imagina/qcrud/_components/v2/crud'
 import kanban from '@imagina/qsite/_components/master/kanban/index.vue';
 import folders from '@imagina/qsite/_components/master/folders/index.vue';
+import promiseTemplate from '@imagina/qsite/_components/master/promiseTemplate/index.vue';
 
 
 export default ({app, router, store, Vue}) => {
@@ -43,7 +44,8 @@ export default ({app, router, store, Vue}) => {
     {name: 'page-actions', component: pageActions},
     {name: 'crud-component', component: crudComponent},
     {name: 'kanban', component: kanban},
-    {name: 'folders', component: folders}
+    {name: 'folders', component: folders},
+    {name: 'promiseTemplate', component: promiseTemplate}
   ]
 
   //Register components

@@ -1,9 +1,9 @@
 import { onMounted, ref, computed, watch, WritableComputedRef } from 'vue';
 export interface PropsContract {
   isLoading: boolean;
-  promise: Promise<void>;
+  promise: any;
 }
-export interface UsePromisedContract {
+export interface UsePromisedTemplateContract {
     data: any;
     isLoading: WritableComputedRef<boolean>;
 }
@@ -15,7 +15,7 @@ export interface UsePromisedContract {
  * @returns {Object} An object containing reactive `isLoading` and `data` properties.
  */
 
-export default function usePromised(props: PropsContract): UsePromisedContract {
+export default function usePromisedTemplate(props: PropsContract): UsePromisedTemplateContract {
   /**
     * Computed Boolean Reference that indicates if the props are currently loading.
     * @type {WritableComputedRef<boolean>}
