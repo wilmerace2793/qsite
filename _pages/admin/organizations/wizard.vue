@@ -82,7 +82,7 @@ export default {
       loading: false,
       data: [],
       logo: this.$store.state.qsiteApp.logo,
-      pace: 2,
+      pace: 1,
       slider: 0,
       steps: modelSteps,
       sliderPercent:0,

@@ -1,7 +1,6 @@
 <template>
   <div class="step-register">
-    <h2 class="step-title-1">{{stepContent.title}}</h2>
-    
+
     <div class="auth-register tw-flex tw-mx-auto tw-flex-col">
         <!--Auth Type-->
         <div class="auth-register-internal">
@@ -15,7 +14,7 @@
             <div class="row justify-center q-gutter-sm">
               <google-auth />
               <facebook-auth />
-              <!-- <microsoftAuth @logged="checkAfterLogin()" />-->
+              <microsoftAuth @logged="checkAfterLogin()" />
             </div>
         </div>
     </div>
@@ -24,44 +23,22 @@
       <div class="step-register-text">  
         
           <div class="tw-text-xl lg:tw-text-3xl xl:tw-text-4xl tw-px-6 tw-text-center tw-pb-6 tw-font-bold">
-            Crea tu cuenta de Wygo 
+            {{stepContent.title}}
           </div>
-          <div class="tw-text-md xl:tw-text-lg tw-pb-4 tw-text-justify">
-            Registra tu cuenta gratis hoy mismo y podrás disfrutar de:
+          <div class="register-description tw-text-md xl:tw-text-lg tw-pb-4 tw-text-justify" 
+              v-html="stepContent.description">
           </div>  
-
-          <q-list dense class="tw-text-md xl:tw-text-lg tw-text-justify">
-            <q-item>
-              <q-item-section avatar class="tw-min-w-min">
-                <q-icon color="primary" name="check" />
-              </q-item-section>
-              <q-item-section>Tu página web, tu tienda online</q-item-section>
-            </q-item>
-            <q-item>
-              <q-item-section avatar class="tw-min-w-min">
-                <q-icon color="primary" name="check" />
-              </q-item-section>
-              <q-item-section>Una galería repleta de imágenes libres de derechos</q-item-section>
-            </q-item>
-            <q-item>
-              <q-item-section avatar class="tw-min-w-min">
-                <q-icon color="primary" name="check" />
-              </q-item-section>
-              <q-item-section>Consejos prácticos sobre cómo gestionar tu negocio</q-item-section>
-            </q-item>
-            <q-item>
-              <q-item-section avatar class="tw-min-w-min">
-                <q-icon color="primary" name="check" />
-              </q-item-section>
-              <q-item-section>Atención al cliente personalizada de nuestro equipo</q-item-section>
-            </q-item>
-          </q-list>
+       
       </div>
     </div>
 
   </div>
 </template>
 <script>
+import storeStepWizard from './store/index.ts';
+import { 
+  STEP_NAME_REGISTER,
+  ID_CATE_ACTIVITIES } from './Model/constant.js';
 import registerForm from '@imagina/quser/_components/auth/register'
 import facebookAuth from '@imagina/quser/_components/socialAuth/facebook'
 import googleAuth from '@imagina/quser/_components/socialAuth/google'
@@ -80,12 +57,13 @@ export default {
   data() {
     return {
       withAuthSocial: true,
-      stepContent: {
-        title: '',
-        summary: '',
-        image: '',
-      }
+      stepContent: '',
     }
+  },
+  mounted() {
+    this.$nextTick(async function () {
+      this.getStepInfo();
+    })
   },
   methods: {
     checkAfterLogin(){
@@ -104,7 +82,10 @@ export default {
     //Redirect after user be logged
     redirectAfterLogin() {
       this.$emit("update", { active: true });
-    }
+    },
+    async getStepInfo() {
+      this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_REGISTER);
+    },
   }
 }
 </script>
@@ -129,5 +110,21 @@ export default {
 }
 #formContent + .text-center.full-width {
   display: none;
+}
+.step-register .q-stepper__content.q-panel-parent {
+  padding: 0!important;
+}
+.step-register .register-description ul {
+  @apply tw-ml-3 tw-mt-3;
+}
+.step-register .register-description ul li {
+  @apply tw-flex tw-mb-2;
+}
+.step-register .register-description ul li:before {
+  content:'\e5ca';
+  margin-right: 10px;
+  font-size: 24px;
+  font-family: "Material Icons";
+  color: var(--q-color-primary);
 }
 </style>
