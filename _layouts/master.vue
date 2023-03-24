@@ -65,7 +65,7 @@ import drawersPanel from '@imagina/qsite/_components/panel/drawers'
 import footerPanel from '@imagina/qsite/_components/panel/footer'
 //Components
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
-//import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
+import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
 import Alert from '@imagina/qoffline/_components/Alert.vue'
 import Progressrequest from '@imagina/qoffline/_components/Progressrequest.vue'
 
@@ -89,7 +89,7 @@ export default {
   components: {
     chat,
     cropperComponent,
-    //activitiesActions,
+    activitiesActions,
     //Admin
     headerAdminTheme1,
     headerAdminTheme2,

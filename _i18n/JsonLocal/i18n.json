@@ -1633,7 +1633,8 @@
           "endPoint": "End Point",
           "token": "Token",
           "refreshAtOnce": "Refresh",
-          "refreshEveryMinutes": "Refresh every {min} minutes"
+          "refreshEveryMinutes": "Refresh every {min} minutes",
+          "offline": "Offline"
         },
         "message": {
           "appOffline": "It seems you have no connection. Some actions may not work.",
@@ -3379,7 +3380,8 @@
           "endPoint": "Punto Final",
           "token": "Token",
           "refreshAtOnce": "Refrescar de una vez",
-          "refreshEveryMinutes": "Refrescar cada {min} minutos"
+          "refreshEveryMinutes": "Refrescar cada {min} minutos",
+          "offline": "Sin conexión"
         },
         "message": {
           "appOffline": "Parece que no tienes conexión. Es posible no que no funcionen algunas acciones.",

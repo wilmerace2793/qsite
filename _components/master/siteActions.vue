@@ -1,5 +1,14 @@
 <template>
-  <div id="siteActionscomponent">
+  <div id="siteActionscomponent" class="tw-flex">
+    <div 
+      v-if="$store.state.qofflineMaster.isAppOffline"
+      class="tw-py-1 tw-text-black">
+      <i class="fa-light fa-cloud-slash tw-py-4" >
+        <q-tooltip content-class="bg-amber text-black shadow-4" :offset="[10, 10]">
+          {{ $tr('isite.cms.label.offline')}}
+        </q-tooltip>
+      </i>
+    </div>
     <div :class="`row q-gutter-${gutter}`">
       <!--Actions-->
       <q-btn v-for="(btn, keyAction) in actions.buttons" :key="keyAction" v-bind="btn.props"
