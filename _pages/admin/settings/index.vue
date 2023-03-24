@@ -70,7 +70,8 @@ export default {
       groupSelected: false,
       settingsToEdit: [],
       deprecatedSettings: [],
-      groupsName: {}
+      groupsName: {},
+      allSiteSettings: this.$store.state.qsiteApp.settings
     }
   },
   computed: {
@@ -162,11 +163,13 @@ export default {
       this.getColorContrast()
       return new Promise(async resolve => {
         this.loading = true
-        await Promise.all([
-          this.$store.dispatch('qsiteApp/GET_SITE_SETTINGS', {refresh: true}),//Get settings
+        const response = await Promise.all([
+          this.$store.dispatch('qsiteApp/GET_SITE_SETTINGS', {centralizedBrand: false, setToSite: false}),//Get settings
           this.getSettingFields(),//Get setting fields
           this.getDeprecatedSettings()//Get seprecated settings
         ])
+        //Set local site settings data
+        this.allSiteSettings = this.$clone(response[0].siteSettings || [])
         //Set Default selected
         if (!this.moduleSelected && this.dataSettings) {
           this.moduleSelected = Object.keys(this.settingsGroup)[0]//Set module selected
@@ -182,10 +185,10 @@ export default {
     //get color contrast
     getColorContrast() {
       const master = document.querySelector('#masterDrawers')
-      if(!master) return false;
+      if (!master) return false;
       const bgColor = getComputedStyle(master).getPropertyValue('--q-color-primary')
       const contrast = this.$helper.pickTextColor(bgColor)
-      master.style.setProperty('--q-color-contrast',contrast)
+      master.style.setProperty('--q-color-contrast', contrast)
     },
     //Get settings Fields
     getSettingFields() {
@@ -239,7 +242,7 @@ export default {
     //Set form Data
     setFormData() {
       let formData = {}//instance form data
-      let settingValues = this.$clone(this.$store.state.qsiteApp.settings)//Get all setting values
+      let settingValues = this.$clone(this.allSiteSettings)//Get all setting values
       let defaultLocale = this.$clone(this.$store.state.qsiteApp.defaultLocale)//Get selected locales
       let selectedLocales = this.$clone(this.$store.state.qsiteApp.selectedLocales)//Get selected locales
       selectedLocales.forEach(item => formData[item] = {})//set locales to formData
@@ -269,7 +272,7 @@ export default {
       //Get setting name
       let settingName = field.fakeFieldName || field.name || key
       //Get all setting values
-      let settingValue = this.$store.state.qsiteApp.settings.find(item => item.name == settingName)
+      let settingValue = this.allSiteSettings.find(item => item.name == settingName)
       //Response
       return settingValue ? settingValue.id : null
     },

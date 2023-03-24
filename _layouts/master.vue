@@ -43,7 +43,7 @@
     <!-- Activities Actions -->
     <activities-actions/>
 
-    
+
 
     <!-- FOOTER -->
     <component :is="components.footer"/>
@@ -112,11 +112,6 @@ export default {
         data.messages.forEach(item => {
           this.$alert[item.type || 'info'](item)
         })
-      }
-    },
-    $route (to, from){
-      if (this.$tour.tour) {
-        this.$tour?.complete();
       }
     }
   },

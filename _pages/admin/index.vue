@@ -42,6 +42,7 @@ export default {
     this.$nextTick(function () {
       setTimeout(() => {
         this.loading = false;
+        this.$tour.start("admin_home_tour")
       }, 1000);
     })
   },
