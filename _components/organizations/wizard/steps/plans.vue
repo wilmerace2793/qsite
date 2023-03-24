@@ -111,6 +111,7 @@
   </div>
 </template>
 <script>
+import storeStepWizard from './store/index.ts';
 import { 
   PLAN_BASE_ID, 
   STEP_NAME_PLANS,
@@ -210,20 +211,8 @@ export default {
           });
     },
     async getStepInfo() {
-      try {
-        await this.$crud
-          .show('apiRoutes.qgamification.categories', ID_CATE_ACTIVITIES, {refresh : true, params : {include:"activities"}})
-          .then((response) => {
-            const data = response.data.activities;
-            this.stepContent = data.find((item) => item.systemName === STEP_NAME_PLANS);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } catch (error) { 
-        console.log(error);
-      }  
-    }
+      this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_PLANS);
+    },
   }
 }
 </script>

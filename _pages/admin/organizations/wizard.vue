@@ -110,7 +110,6 @@ export default {
   },
   methods: {
     init() {
-      this.getStepInfo();
       this.sliderPercent = 100/this.steps.length;
       this.slider = this.sliderPercent;
     },
