@@ -28,7 +28,7 @@
         :title="step.title"
         :done="step.done"
         >
-        <component :is="step.component" @update="navNext" />
+        <component :is="step.component" @update="navNext"/>
       </q-step>
 
       <template v-slot:navigation>
@@ -88,6 +88,7 @@ export default {
       sliderPercent:0,
       isActive: false,
       urlBase: this.$store.state.qsiteApp.baseUrl,
+      dataText: [],
       dataCheck: {
         terms: false,
         category: null,
@@ -99,7 +100,7 @@ export default {
   },
   provide() {
     return {
-      infoBase: this.dataCheck
+      infoBase: this.dataCheck,
     }
   },
   mounted() {
@@ -109,7 +110,9 @@ export default {
   },
   methods: {
     init() {
-      //this.getData()
+      this.getStepInfo();
+      this.sliderPercent = 100/this.steps.length;
+      this.slider = this.sliderPercent;
     },
     //Get data
     getData(refresh = false) {
@@ -127,11 +130,6 @@ export default {
           this.loading = false
         })
       })
-    },
-    init() {
-      //this.getData()
-      this.sliderPercent = 100/this.steps.length;
-      this.slider = this.sliderPercent;
     },
     stepperPrevious(){
       this.$refs.stepper.previous();
@@ -204,7 +202,7 @@ export default {
         .onOk(async () => {
       
         });
-    }
+    },
   }
 }
 </script>

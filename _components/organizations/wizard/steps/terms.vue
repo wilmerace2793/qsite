@@ -15,25 +15,32 @@
             </div>
         </div>
     </div>
-    <div class="step-sidebar ">
-      <div class="terms-text tw-max-w-sm">
-        <p class="tw-text-base tw-mb-8 text-center">{{stepContent.summary}}</p>
-        <img :src="stepContent.image" />
+    <div class="step-sidebar">
+      <div class="terms-text tw-max-w-sm tw-w-full">
+        <div class="tw-text-base tw-mb-8 text-center" v-html="stepContent.description"></div>
+        <q-img v-if="stepContent.mediaFiles" contain
+                :src="stepContent.mediaFiles.mainimage.extraLargeThumb"
+                :ratio="1/1"
+          />
       </div>
     </div>
   </div>
 </template>
 <script>
+import { 
+  STEP_NAME_TERMS,
+  ID_CATE_ACTIVITIES } from './Model/constant.js';
 export default {
   data() {
     return {
       buttonEmail: false,
       buttonTerms: false,
-      stepContent: {
+      /*stepContent: {
         title: 'Condiciones de uso',
         summary: 'Acepta nuestras Condiciones de uso para disfrutar de todas las bondades que tiene Wygo para ti',
         image: 'http://imgfz.com/i/5E7Qrbq.png',
-      }
+      },*/
+      stepContent: '',
     }
   },
   inject: {
@@ -42,25 +49,10 @@ export default {
       default: () => {},
     },
   },
-  computed: {
-    formFields() {
-      return {
-        nameOrganizations: {
-          type: "input",
-          props: {
-            icon: "corporate_fare",
-            label: "Nombre",
-            color: "primary",
-            rounded: true,
-            dense: false
-          },
-        }
-      };
-    },
-  },
   mounted() {
     this.$nextTick(async function () {
       this.getData();
+      this.getStepInfo();
     })
   },
   watch: {
@@ -72,6 +64,21 @@ export default {
     getData(){
       this.buttonTerms = this.infoBase.terms;
     },
+    async getStepInfo() {
+      try {
+        await this.$crud
+          .show('apiRoutes.qgamification.categories', ID_CATE_ACTIVITIES, {refresh : true, params : {include:"activities"}})
+          .then((response) => {
+            const data = response.data.activities;
+            this.stepContent = data.find((item) => item.systemName === STEP_NAME_TERMS);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch (error) { 
+        console.log(error);
+      }  
+    }
   }
 }
 </script>

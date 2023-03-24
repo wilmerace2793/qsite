@@ -9,10 +9,10 @@
         <div class="item-theme" 
             :class="{ activeClass : item.id === selected.id }"
             @click="selectData(item)">
-          <q-img 
+          <q-img contain
                  :src="item.mediaFiles.mainimage.smallThumb"
                  :ratio="1/1"
-                 class="tw-rounded tw-border tw-w-full"
+                 class="tw-rounded tw-border tw-w-full tw-bg-white"
           >
           </q-img>
         </div>
@@ -24,28 +24,37 @@
     </div>
 
     <div class="step-sidebar" >
-      <div class="select-card tw-max-w-md" v-if="selected">
-        <img class="img-themes" :src="selected.mediaFiles.mainimage.extraLargeThumb"  />
+      <div class="select-card tw-max-w-md tw-w-full" v-if="selected">
+        <q-img class="img-themes" contain
+                :src="selected.mediaFiles.mainimage.extraLargeThumb"
+        />
       </div>
-      <div class="select-card tw-max-w-md" v-else>
-        <p class="tw-text-base tw-mb-8 text-center">{{stepContent.summary}}</p>
-        <img :src="stepContent.image" />
+      <div class="select-card tw-max-w-md tw-w-full" v-else>
+        <div class="tw-text-base tw-mb-8 text-center" v-html="stepContent.description"></div>
+        <q-img v-if="stepContent.mediaFiles" contain
+                :src="stepContent.mediaFiles.mainimage.extraLargeThumb"
+                :ratio="1/1"
+          />
       </div>
     </div>
   </div>
 </template>
 <script>
-import { CATEGORY_ECOMMERCE_ID } from './Model/constant.js';
+import { 
+  CATEGORY_ECOMMERCE_ID, 
+  STEP_NAME_THEMES,
+  ID_CATE_ACTIVITIES } from './Model/constant.js';
 export default {
   data() {
     return {
       loading: false,
-      stepContent: {
+      /*stepContent: {
         title: 'Elige la plantilla ideal para satisfacer tus necesidades',
         summary: 'Despues de elegir tu plantilla, podras cambiar el color y el contenido de tu sitio siempre que lo desees',
         image: 'http://imgfz.com/i/ku9vSNs.png',
-      },
-      selected: "",
+      },*/
+      stepContent: '',
+      selected: '',
       themes: [],
     }
   },
@@ -59,6 +68,7 @@ export default {
     this.$nextTick(async function () {
       this.navNext();
       this.getData();
+      this.getStepInfo();
     })
   },
   methods: {
@@ -90,6 +100,21 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    async getStepInfo() {
+      try {
+        await this.$crud
+          .show('apiRoutes.qgamification.categories', ID_CATE_ACTIVITIES, {refresh : true, params : {include:"activities"}})
+          .then((response) => {
+            const data = response.data.activities;
+            this.stepContent = data.find((item) => item.systemName === STEP_NAME_THEMES);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch (error) { 
+        console.log(error);
+      }  
     }
   }
 }

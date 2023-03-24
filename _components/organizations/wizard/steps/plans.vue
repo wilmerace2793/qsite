@@ -99,25 +99,32 @@
         <q-card-section class="tw-text-xs" v-html="selected.planDescription"></q-card-section>
       </q-card>
 
-      <div class="select-card tw-max-w-md" v-else>
-        <p class="tw-text-base tw-mb-8 text-center">{{stepContent.summary}}</p>
-        <img :src="stepContent.image"/>
+      <div class="select-card tw-max-w-md  tw-w-full" v-else>
+        <div class="tw-text-base tw-mb-8 text-center" v-html="stepContent.description"></div>
+        <q-img v-if="stepContent.mediaFiles" contain
+                :src="stepContent.mediaFiles.mainimage.extraLargeThumb"
+                :ratio="1/1"
+          />
       </div>
     </div>
 
   </div>
 </template>
 <script>
-import { PLAN_BASE_ID } from './Model/constant.js';
+import { 
+  PLAN_BASE_ID, 
+  STEP_NAME_PLANS,
+  ID_CATE_ACTIVITIES } from './Model/constant.js';
 export default {
   data() {
     return {
       loading: false,
-      stepContent: {
+      /*stepContent: {
         title: 'Elige tu Plan Wygo ',
         summary: '',
         image: 'http://imgfz.com/i/5QUbYWt.png',
-      },
+      },*/
+      stepContent: '',
       tabActive: "",
       tab: [],
       selected:"",
@@ -134,6 +141,7 @@ export default {
     this.$nextTick(async function () {
       this.navNext();
       this.getData();
+      this.getStepInfo();
     })
   },
   methods: {
@@ -201,6 +209,21 @@ export default {
             console.log(error);
           });
     },
+    async getStepInfo() {
+      try {
+        await this.$crud
+          .show('apiRoutes.qgamification.categories', ID_CATE_ACTIVITIES, {refresh : true, params : {include:"activities"}})
+          .then((response) => {
+            const data = response.data.activities;
+            this.stepContent = data.find((item) => item.systemName === STEP_NAME_PLANS);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch (error) { 
+        console.log(error);
+      }  
+    }
   }
 }
 </script>
