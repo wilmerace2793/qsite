@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import usePromised, { UsePromisedTemplateContract } from './usePromisedTemplate';
+import usePromised, { UsePromisedTemplateContract } from '@imagina/qsite/_components/master/promiseTemplate/usePromisedTemplate';
 export default defineComponent({
     props: {
     isLoading: {
