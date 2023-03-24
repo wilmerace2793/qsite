@@ -6,7 +6,7 @@
         <img style="max-width: 30vw; margin: auto" :src="$store.state.qsiteApp.logo">
       </div>
       <!--Activities-->
-      <activities-list system-name="panel_home" @loaded="loading = false"/>
+      <activities system-name="panel_home" @loaded="loading = false"/>
       <!--inner-loading-->
       <inner-loading :visible="loading"/>
     </div>
