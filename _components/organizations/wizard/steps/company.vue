@@ -88,7 +88,6 @@ export default {
     },
     getStepInfo() {
       this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_COMPANY);
-      //this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_COMPANY);
     },
   }
 }

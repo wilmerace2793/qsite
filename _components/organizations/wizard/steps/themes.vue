@@ -73,8 +73,7 @@ export default {
   methods: {
     selectData(item) {
       this.selected=item;
-      console.log(item);
-      this.navNext();
+      this.navNext(this.infoBase);
     },
     navNext() {
       if(this.selected!==''){
@@ -93,6 +92,7 @@ export default {
             if(found){
               this.selected=this.infoBase.layout;
             } 
+
             this.navNext();
           }
        }
@@ -102,7 +102,6 @@ export default {
     },
     getStepInfo() {
       this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_THEMES);
-      //this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_THEMES);
     },
   }
 }

@@ -60,7 +60,6 @@ export default {
   },
   data() {
     return {
-      withAuthSocial: true,
       stepContent: '',
     }
   },
@@ -68,6 +67,16 @@ export default {
     this.$nextTick(async function () {
       this.getStepInfo();
     })
+  },
+  computed: {
+    //Validate if load social auth
+    withAuthSocial() {
+      let hasSetting = parseInt(this.$store.getters['qsiteApp/getSettingValueByName']('iprofile::registerUsersWithSocialNetworks'))
+      return hasSetting/* && (config('app.mode') == 'ipanel'))*/ ? true : false
+    },
+    microsoftClient() {
+      return this.$store.getters['qsiteApp/getSettingValueByName']('isite::microsoftClientId')
+    },
   },
   methods: {
     checkAfterLogin(){
@@ -85,11 +94,17 @@ export default {
     },
     //Redirect after user be logged
     redirectAfterLogin() {
-      this.$emit("update", { active: true });
+      try {
+        const user = this.$store.getters["quserAuth/user"];
+        if(user.firstName && user.email){
+          this.$emit("update", { active: true, info: { name: user.firstName, email: user.email} });
+        }
+      } catch (error) {
+        console.log('error en user');
+      }
     },
     getStepInfo() {
       this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_REGISTER);
-      //this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_REGISTER);
     },
   }
 }

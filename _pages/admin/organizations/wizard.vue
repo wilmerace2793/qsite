@@ -15,11 +15,11 @@
     </div>
 
     <div class="step-loading"><div></div><div></div></div>
+    <!-- keep-alive -->
     <div class="page-wizard tw-w-full tw-relative">
       <q-stepper
         v-model="pace"
         ref="stepper"
-        keep-alive
         v-if="dataText.length>0"
       >
       <q-step
@@ -46,7 +46,6 @@
               </div>
             </div>
           </div>
-          <!--<q-slider v-model="slider" thumb-path="" readonly :min="0" :max="100"/>-->
         </q-stepper-navigation>
       </template>
 
@@ -94,6 +93,7 @@ export default {
       urlBase: this.$store.state.qsiteApp.baseUrl,
       dataText: [],
       dataCheck: {
+        user: null,
         terms: false,
         category: null,
         layout: null,
@@ -145,15 +145,15 @@ export default {
         this.slider = this.slider + this.sliderPercent;
         // si llega al final y todo esta lleno envia la info
         if (this.pace === this.steps.length) {
-          if(this.dataCheck.terms && 
+          if((this.dataCheck.user!== null) && 
+            this.dataCheck.terms && 
             (this.dataCheck.category!== null) && 
             (this.dataCheck.layout!== null) && 
             (this.dataCheck.plan!== null) && 
             (this.dataCheck.organization!== '')) {
-            console.log('enviar los datos');
-            console.log(this.dataCheck);
 
-            this.messageEnd();
+              const url = `${this.dataCheck.plan.planUrl}?billingcycle=$time&layoutId=${this.dataCheck.layout.id}&organizationName=${this.dataCheck.organization}&email=${this.dataCheck.user.email}&time=${this.dataCheck.plan.optionValue.toLowerCase()}`;
+              this.redirectAfterWizard(url);
 
           }
         }
@@ -165,17 +165,17 @@ export default {
     },
     navNext(value) {
       try {
-        // ubico el step actual para activar el boton next dependiento del emit
+        // locate the current step to activate the next button depending on the emit
         const current = this.steps.find((item) => item.id === this.pace);
         current.done=value.active;
         this.isActive = current.done;
 
-        // si es registro normal continua 
         if(current.id==STEP_REGISTER){
+          this.dataCheck.user = value.info;
           this.stepperNext();
         }
 
-        // si es terminos y condiciones el valor del check actualiza la data
+        // if it is terms and conditions the value of the check updates the data
         if(current.id==STEP_TERMS){
           this.dataCheck.terms = value.active;
         }
@@ -194,18 +194,8 @@ export default {
       const current = this.steps.find((item) => item.id === this.pace);
       this.isActive = current.done;
     },
-    messageEnd(){
-      this.$q
-        .dialog({
-          ok: "Continuar",
-          title: "Registro Exitoso",
-          message: "A partir de ahora puedes disfrutar de los servicios que wygo te ofrece",
-          cancel: false,
-          persistent: true,
-        })
-        .onOk(async () => {
-      
-        });
+    redirectAfterWizard(url){
+      this.$helper.openExternalURL(url, false)
     },
     async getInfo() {
       this.dataText = await storeStepWizard().getInfoWizard(ID_CATE_ACTIVITIES);

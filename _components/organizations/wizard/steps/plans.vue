@@ -170,6 +170,7 @@ export default {
           .index('apiRoutes.qcommerce.products', {refresh : true, params})
           .then((response) => {
             const data = response.data;
+            console.log(data);
             this.tab = data[0].optionValues;
             this.tabActive = this.tab[0].optionValue;            
             let plan=[],planFilter=[];
@@ -183,6 +184,7 @@ export default {
                 planSummary: currentValue.summary,
                 planDescription: currentValue.description,
                 planRelatedProducts: currentValue.relatedProducts,
+                planUrl: currentValue.url,
                 active: false,
               }));
 
@@ -209,7 +211,6 @@ export default {
     },
     async getStepInfo() {
       this.stepContent = await this.info.find((item) => item.systemName === STEP_NAME_PLANS);
-      // this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_PLANS);
     },
   }
 }

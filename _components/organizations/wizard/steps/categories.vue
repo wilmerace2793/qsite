@@ -163,14 +163,18 @@ export default {
         if(this.name.length>3) {
           this.deselectCategory(this.name);
           const params = {
-            filter: {}
+            filter: {
+              search: this.name
+            }
           };
           this.loading=true;
           await this.$crud
             //.index('apiRoutes.qcommerce.categories', {refresh : true, params})
-            .index('apiRoutes.qsite.categories', {refresh : true})
+            .index('apiRoutes.qsite.categories', {refresh : true, params})
             .then((response) => {
               const data = response.data;
+              console.log(data);
+              console.log('hola');
               this.categories = this.orderArray(data);
               this.loading = false;
             })
@@ -194,7 +198,6 @@ export default {
     },
     async getStepInfo() {
       this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_CATEGORIES);
-      //this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_CATEGORIES);
     },
   }
 }
