@@ -13,12 +13,14 @@
       <a :href="urlBase" target="_blank"> <img :src="logo" class="tw-h-10 tw-w-auto" /> </a>
       <q-slider class="slider-header" v-model="slider" thumb-path="" readonly :min="0" :max="100"/>
     </div>
-    
-    <!--  keep-alive  :class="{'page-register' : pace == STEP_REGISTER }" -->
+
+    <div class="step-loading"><div></div><div></div></div>
     <div class="page-wizard tw-w-full tw-relative">
       <q-stepper
         v-model="pace"
         ref="stepper"
+        keep-alive
+        v-if="dataText.length>0"
       >
       <q-step
         v-for="step in steps"
@@ -28,7 +30,7 @@
         :title="step.title"
         :done="step.done"
         >
-        <component :is="step.component" @update="navNext"/>
+        <component :is="step.component" @update="navNext" :info.async="dataText"/>
       </q-step>
 
       <template v-slot:navigation>
@@ -53,15 +55,17 @@
   </div>
 </template>
 <script>
-import modelSteps from '@imagina/qsite/_components/organizations/wizard/steps/Model/steps.js';
+import modelSteps from '@imagina/qsite/_components/organizations/wizard/steps/model/steps.js';
+import storeStepWizard from '@imagina/qsite/_components/organizations/wizard/steps/store/index.ts';
 import  { 
   STEP_REGISTER,
   STEP_TERMS,
   STEP_COMPANY,
   STEP_CATEGORIES,
   STEP_THEMES,
-  STEP_PLANS
-} from '@imagina/qsite/_components/organizations/wizard/steps/Model/constant.js';
+  STEP_PLANS,
+  ID_CATE_ACTIVITIES
+} from '@imagina/qsite/_components/organizations/wizard/steps/model/constant.js';
 
 const infoMappings = {
   [STEP_COMPANY]: 'organization',
@@ -95,12 +99,12 @@ export default {
         layout: null,
         plan: null,
         organization: '',
-      }
+      },
     }
   },
   provide() {
     return {
-      infoBase: this.dataCheck,
+      infoBase: this.dataCheck
     }
   },
   mounted() {
@@ -110,6 +114,7 @@ export default {
   },
   methods: {
     init() {
+      this.getInfo();
       this.sliderPercent = 100/this.steps.length;
       this.slider = this.sliderPercent;
     },
@@ -201,6 +206,9 @@ export default {
         .onOk(async () => {
       
         });
+    },
+    async getInfo() {
+      this.dataText = await storeStepWizard().getInfoWizard(ID_CATE_ACTIVITIES);
     },
   }
 }
@@ -317,7 +325,8 @@ export default {
 }
 
 #wizardOrganization .step-loading {
-  @apply tw-relative tw-flex tw-w-20 tw-h-20 tw-mx-auto;
+  @apply tw-absolute tw-w-20 tw-h-20 tw-top-1/2 tw-left-1/2;
+  transform: translate(-50%, -50%);
 }
 #wizardOrganization .step-loading div {
   @apply tw-absolute tw-opacity-100 tw-rounded-full;

@@ -114,17 +114,17 @@
 import storeStepWizard from './store/index.ts';
 import { 
   PLAN_BASE_ID, 
-  STEP_NAME_PLANS,
-  ID_CATE_ACTIVITIES } from './Model/constant.js';
+  STEP_NAME_PLANS } from './model/constant.js';
 export default {
+  props: {
+    info: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       loading: false,
-      /*stepContent: {
-        title: 'Elige tu Plan Wygo ',
-        summary: '',
-        image: 'http://imgfz.com/i/5QUbYWt.png',
-      },*/
       stepContent: '',
       tabActive: "",
       tab: [],
@@ -191,8 +191,6 @@ export default {
    
             this.plans = plan.flatMap(item => item);
 
-
-
             if(this.infoBase.plan) {
               const found = this.plans.find((value, index) => {
                 if(value.id === this.infoBase.plan.id && value.planId == this.infoBase.plan.planId) {
@@ -203,7 +201,6 @@ export default {
               this.selectPlan(this.infoBase.plan);
             }
 
-
             this.loading = false;
           })
           .catch((error) => {
@@ -211,7 +208,8 @@ export default {
           });
     },
     async getStepInfo() {
-      this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_PLANS);
+      this.stepContent = await this.info.find((item) => item.systemName === STEP_NAME_PLANS);
+      // this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_PLANS);
     },
   }
 }

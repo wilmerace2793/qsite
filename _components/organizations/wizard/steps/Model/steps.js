@@ -11,7 +11,7 @@ import {
     STEP_CATEGORIES,
     STEP_THEMES,
     STEP_PLANS,
-  } from '@imagina/qsite/_components/organizations/wizard/steps/Model/constant.js';
+  } from '@imagina/qsite/_components/organizations/wizard/steps/model/constant.js';
 
 export default [
     {

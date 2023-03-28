@@ -23,7 +23,7 @@
 
     </div>
 
-    <div class="step-sidebar" >
+    <div class="step-sidebar">
       <div class="select-card tw-max-w-md tw-w-full" v-if="selected">
         <q-img class="img-themes" contain
                 :src="selected.mediaFiles.mainimage.extraLargeThumb"
@@ -41,19 +41,17 @@
 </template>
 <script>
 import storeStepWizard from './store/index.ts';
-import { 
-  CATEGORY_ECOMMERCE_ID, 
-  STEP_NAME_THEMES,
-  ID_CATE_ACTIVITIES } from './Model/constant.js';
+import { STEP_NAME_THEMES } from './model/constant.js';
 export default {
+  props: {
+    info: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       loading: false,
-      /*stepContent: {
-        title: 'Elige la plantilla ideal para satisfacer tus necesidades',
-        summary: 'Despues de elegir tu plantilla, podras cambiar el color y el contenido de tu sitio siempre que lo desees',
-        image: 'http://imgfz.com/i/ku9vSNs.png',
-      },*/
       stepContent: '',
       selected: '',
       themes: [],
@@ -102,8 +100,9 @@ export default {
         console.log(error);
       }
     },
-    async getStepInfo() {
-      this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_THEMES);
+    getStepInfo() {
+      this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_THEMES);
+      //this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_THEMES);
     },
   }
 }

@@ -36,9 +36,7 @@
 </template>
 <script>
 import storeStepWizard from './store/index.ts';
-import { 
-  STEP_NAME_REGISTER,
-  ID_CATE_ACTIVITIES } from './Model/constant.js';
+import { STEP_NAME_REGISTER } from './model/constant.js';
 import registerForm from '@imagina/quser/_components/auth/register'
 import facebookAuth from '@imagina/quser/_components/socialAuth/facebook'
 import googleAuth from '@imagina/quser/_components/socialAuth/google'
@@ -53,6 +51,12 @@ export default {
     facebookAuth, 
     googleAuth, 
     microsoftAuth,
+  },
+  props: {
+    info: {
+      type: Array,
+      default: () => [],
+    },
   },
   data() {
     return {
@@ -83,8 +87,9 @@ export default {
     redirectAfterLogin() {
       this.$emit("update", { active: true });
     },
-    async getStepInfo() {
-      this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_REGISTER);
+    getStepInfo() {
+      this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_REGISTER);
+      //this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_REGISTER);
     },
   }
 }

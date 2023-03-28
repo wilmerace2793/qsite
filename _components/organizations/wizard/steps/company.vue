@@ -20,10 +20,14 @@
 </template>
 <script>
 import storeStepWizard from './store/index.ts';
-import { 
-  STEP_NAME_COMPANY,
-  ID_CATE_ACTIVITIES } from './Model/constant.js';
+import { STEP_NAME_COMPANY } from './model/constant.js';
 export default {
+  props: {
+    info: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       name:'',
@@ -82,8 +86,9 @@ export default {
         this.$emit("update", { active: false});
       }
     },
-    async getStepInfo() {
-      this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_COMPANY);
+    getStepInfo() {
+      this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_COMPANY);
+      //this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_COMPANY);
     },
   }
 }

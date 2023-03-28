@@ -1,14 +1,17 @@
 <template>
   <div class="step-categories">
+    <div class="step-loading" v-if="loading"><div></div><div></div></div>
+
+    <div v-else>
     <h2 class="step-title">{{stepContent.title}}</h2>
     <div class="tw-px-6 tw-pb-6 tw-mt-4 tw-mb-2">
-      <dynamic-field v-model="name" :field="formFields.category"/>
+      <dynamic-field v-model="name" :field="formFields.category" @input="getCategoriesName"/>
     </div>
-    <div class="step-loading" v-if="loading"><div></div><div></div></div>
-    <div class="tw-px-6" v-else>
+    
+    <div class="tw-px-6">
       <div class="row q-gutter-sm justify-between tw-mb-4">
         <div class="col-auto tw-mb-3" 
-            v-for="(item, index) in filteredCategories" 
+            v-for="(item, index) in categories" 
             @click="selectData(item)">
           <div class="text-category 
                       tw-text-sm 
@@ -22,6 +25,7 @@
         </div>
       </div>
     </div>
+  </div>
 
     <!--
     <div class="tw-px-6 row">
@@ -45,7 +49,8 @@
     </div>-->
 
     <div class="step-sidebar">
-      <div class="categories-text tw-max-w-sm tw-w-full">
+      <div class="step-loading" v-if="loadingSidebar"><div></div><div></div></div>
+      <div class="categories-text tw-max-w-sm tw-w-full" v-else>
         <div class="tw-text-base tw-mb-8 text-center" v-html="stepContent.description"></div>
         <q-img v-if="stepContent.mediaFiles" contain
                 :src="stepContent.mediaFiles.mainimage.extraLargeThumb"
@@ -60,17 +65,18 @@
 import storeStepWizard from './store/index.ts';
 import { 
   THEME_BASE_ID, 
-  STEP_NAME_CATEGORIES,
-  ID_CATE_ACTIVITIES } from './Model/constant.js';
+  STEP_NAME_CATEGORIES } from './model/constant.js';
 export default {
+  props: {
+    info: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
     return {
       loading: false,
-      /*stepContent: {
-        title: '¿Cuál es la categoría de tu página web?',
-        summary: 'Con la selección de la categoría conoceremos la temática de tu sitio web, y podremos proporcionarte las plantillas con la estructura que más se adapten a tu negocio.',
-        image: 'http://imgfz.com/i/R8AYr5e.png',
-      },*/
+      loadingSidebar: false,
       stepContent: '',
       name:'',
       selected: '',
@@ -91,13 +97,6 @@ export default {
     },
   },
   computed: {
-    filteredCategories(){
-      if(!this.name) { return this.categories }
-      this.deselectCategory(this.name);
-      return this.categories.filter((cate) => {
-        return cate.title.toLowerCase().includes(this.name.toLowerCase());
-      })
-    },
     formFields() {
       return {
         category: {
@@ -116,7 +115,6 @@ export default {
   methods: {
     selectData(item) {
       this.selected=item;
-      console.log('hola');
       this.navNext();
     },
     navNext() {
@@ -141,7 +139,7 @@ export default {
       try {
         const params = {
           filter: {
-            parentId: THEME_BASE_ID
+            title: THEME_BASE_ID
           }
         };
         this.loading=true;
@@ -160,6 +158,31 @@ export default {
         console.log(error);
       }
     },
+    async getCategoriesName() {
+      try {
+        if(this.name.length>3) {
+          this.deselectCategory(this.name);
+          const params = {
+            filter: {}
+          };
+          this.loading=true;
+          await this.$crud
+            //.index('apiRoutes.qcommerce.categories', {refresh : true, params})
+            .index('apiRoutes.qsite.categories', {refresh : true})
+            .then((response) => {
+              const data = response.data;
+              this.categories = this.orderArray(data);
+              this.loading = false;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+
+      } catch (error) {
+        console.log(error);
+      }
+    },
     deselectCategory(value) {
       this.selected="";
       this.name=value;
@@ -170,7 +193,8 @@ export default {
       return array;
     },
     async getStepInfo() {
-      this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_CATEGORIES);
+      this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_CATEGORIES);
+      //this.stepContent = await storeStepWizard().getInfoStep(ID_CATE_ACTIVITIES,STEP_NAME_CATEGORIES);
     },
   }
 }
