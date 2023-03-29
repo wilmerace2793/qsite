@@ -19,8 +19,7 @@
       </div>
     </div>
     <div class="step-sidebar">
-      <div class="step-loading" v-if="loadingSidebar"><div></div><div></div></div>
-      <div class="terms-text tw-max-w-sm tw-w-full" v-else>
+      <div class="terms-text tw-max-w-sm tw-w-full">
         <div class="tw-text-base tw-mb-8 text-center" v-html="stepContent.description"></div>
         <q-img v-if="stepContent.mediaFiles" contain
                 :src="stepContent.mediaFiles.mainimage.extraLargeThumb"
@@ -43,7 +42,6 @@ export default {
   data() {
     return {
       loading: false,
-      loadingSidebar: false,
       buttonEmail: false,
       buttonTerms: false,
       stepContent: '',
@@ -69,11 +67,10 @@ export default {
   methods: {
     getData(){
       this.buttonTerms = this.infoBase.terms;
+      this.$emit("update",  { active: this.buttonTerms });
     },
     async getStepInfo() {
-      this.loadingSidebar = true;
       this.stepContent = await this.info.find((item) => item.systemName === STEP_NAME_TERMS);
-      this.loadingSidebar = false;
     },
   }
 }
