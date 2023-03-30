@@ -35,14 +35,31 @@
 
       <template v-slot:navigation>
         <q-stepper-navigation v-if="pace > 1">
-          <div class="tw-px-4 tw-pt-4 tw-pb-1">
+          <div class="tw-pt-3 md:tw-pt-4 tw-pb-1">
             <div class="row justify-between">
               <div class="col-4">
-                <q-btn rounded no-caps v-if="pace > 2"  icon="fas fa-arrow-left" color="primary" @click="stepperPrevious()" label="Anterior"
-                       class="q-ml-sm"/>
+                <q-btn  rounded 
+                        no-caps 
+                        v-if="pace > 2"  
+                        color="primary" 
+                        icon="fas fa-arrow-left tw-mr-0 sm:tw-mr-2"
+                        @click="stepperPrevious()">
+                  <div class="tw-hidden sm:tw-inline-block">
+                    Anterior
+                  </div>      
+                </q-btn>
               </div>
               <div class="col-4 text-right">
-                <q-btn :disabled="!isActive" rounded no-caps @click="stepperNext()" icon-right="fas fa-arrow-right"  color="primary" :label="pace === steps.length ? 'Finalizar' : 'Continuar'"/>
+                <q-btn  :disabled="!isActive" 
+                        rounded 
+                        no-caps 
+                        icon-right="fas fa-arrow-right tw-ml-0 sm:tw-ml-2"
+                        @click="stepperNext(pace)" 
+                        color="primary">
+                  <div class="tw-hidden sm:tw-inline-block">
+                    {{ pace === steps.length ? 'Finalizar' : 'Continuar' }}
+                  </div>       
+                </q-btn>        
               </div>
             </div>
           </div>
@@ -63,7 +80,8 @@ import  {
   STEP_CATEGORIES,
   STEP_THEMES,
   STEP_PLANS,
-  ID_CATE_ACTIVITIES
+  ID_CATE_ACTIVITIES,
+  PLAN_BASE_ID
 } from '@imagina/qsite/_components/organizations/wizard/steps/model/constant.js';
 
 const infoMappings = {
@@ -85,7 +103,7 @@ export default {
       loading: false,
       data: [],
       logo: this.$store.state.qsiteApp.logo,
-      pace: 1,
+      pace: null,
       slider: 0,
       steps: modelSteps,
       sliderPercent:0,
@@ -114,7 +132,14 @@ export default {
   },
   methods: {
     init() {
+     this.$cache.remove('org-wizard-step');
+      this.$cache.remove('org-wizard-categories');
+      this.$cache.remove('org-wizard-plans');
+      this.$cache.remove('org-wizard-data'); /**/
       this.getInfo();
+      this.configSlider();
+    },
+    configSlider(){
       this.sliderPercent = 100/this.steps.length;
       this.slider = this.sliderPercent;
     },
@@ -136,13 +161,14 @@ export default {
       })
     },
     stepperPrevious(){
-      this.$refs.stepper.previous();
-      this.slider = this.slider - this.sliderPercent;
       this.verifyStep();
+      this.slider = this.slider - this.sliderPercent;
+      this.$refs.stepper.previous();
     },
-    async stepperNext(){
+    async stepperNext(step){
       try {
         this.slider = this.slider + this.sliderPercent;
+        this.setCacheInfo(this.dataCheck);
         // si llega al final y todo esta lleno envia la info
         if (this.pace === this.steps.length) {
           if((this.dataCheck.user!== null) && 
@@ -153,17 +179,26 @@ export default {
             (this.dataCheck.organization!== '')) {
 
               const url = `${this.dataCheck.plan.planUrl}?billingcycle=${this.dataCheck.plan.optionValue.toLowerCase()}&layoutId=${this.dataCheck.layout.id}&organizationName=${this.dataCheck.organization}&categoryId=${this.dataCheck.category.id}&email=${this.dataCheck.user.email}`;
+              //Clear cache
+              this.$cache.remove('org-wizard-step');
+              this.$cache.remove('org-wizard-categories');
+              this.$cache.remove('org-wizard-plans');
+              this.$cache.remove('org-wizard-data');
+              // enviar a url de pago
               this.redirectAfterWizard(url);
 
           }
-        }
+        } 
+
         this.$refs.stepper.next();
+        this.setCacheStep(step+1);
+
 
       } catch (error) {
         console.log(error);
       }
     },
-    navNext(value) {
+    async navNext(value) {
       try {
         // locate the current step to activate the next button depending on the emit
         const current = this.steps.find((item) => item.id === this.pace);
@@ -172,7 +207,7 @@ export default {
 
         if(current.id==STEP_REGISTER){
           this.dataCheck.user = value.info;
-          this.stepperNext();
+          this.stepperNext(current.id);
         }
 
         // if it is terms and conditions the value of the check updates the data
@@ -186,6 +221,7 @@ export default {
             this.dataCheck[mappedProp] = value.info;
           }
         }
+
       } catch (error) {
         console.log(error);
       }
@@ -193,13 +229,46 @@ export default {
     verifyStep(){
       const current = this.steps.find((item) => item.id === this.pace);
       this.isActive = current.done;
+      this.setCacheStep(current.id-1);
     },
     redirectAfterWizard(url){
       this.$helper.openExternalURL(url, false)
     },
     async getInfo() {
       this.dataText = await storeStepWizard().getInfoWizard(ID_CATE_ACTIVITIES);
+      // busco la info
+      const categories = await storeStepWizard().getCategories();
+      const plans = await storeStepWizard().getPlans(PLAN_BASE_ID);
+      // se guarda en cache
+      await this.$cache.set('org-wizard-categories',  categories );
+      await this.$cache.set('org-wizard-plans',  plans );
+
+      // verifico en que step se quedo antes de recargar
+      const step = await this.$cache.get.item('org-wizard-step');
+      // verifico que info tenia guardada antes de recargar
+      const info = await this.$cache.get.item('org-wizard-data');
+      console.log('getInfo',info);
+
+      if(step) {        
+        this.pace = step;
+      } else {
+        // importante sino hay data entonces si asignarle el valor
+        this.pace = 1;
+      }
+
+      if(info != null) {     
+        this.dataCheck = info;
+      } 
+      
     },
+    async setCacheStep(step){
+      await this.$cache.set('org-wizard-step',  step );
+      const step1 = await this.$cache.get.item('org-wizard-step');
+    },
+    async setCacheInfo(data){
+      await this.$cache.set('org-wizard-data',  data );
+      const info = await this.$cache.get.item('org-wizard-data');
+    }
   }
 }
 </script>
@@ -226,9 +295,9 @@ export default {
 }
 #wizardOrganization .page-wizard .q-stepper__nav {
   @apply tw-w-2/4 tw-z-10 tw-left-0 tw-bottom-0 tw-fixed tw-bg-white tw-border-t-2;
-  @apply tw-border-gray-300 tw-border-opacity-50;
+  @apply tw-border-gray-300 tw-border-opacity-50 tw-pb-3 md:tw-pb-4;
   transition: transform .4s ease-out, width .4s ease-out;
-  padding-bottom: 15px;
+  /*padding-bottom: 15px;*/
 }
 #wizardOrganization .page-wizard .q-stepper__nav .q-btn .q-icon {
   @apply tw-text-sm;
@@ -271,7 +340,7 @@ export default {
   @apply tw-p-0;
 }
 #wizardOrganization .page-wizard .step-title {
-  @apply tw-text-xl lg:tw-text-3xl tw-px-12 tw-text-center tw-pb-8 tw-font-bold;
+  @apply tw-text-xl lg:tw-text-3xl tw-px-4 md:tw-px-12 tw-text-center tw-pb-4 lg:tw-pb-8 tw-font-bold;
 }
 #wizardOrganization .page-wizard .step-title-1 {
   @apply tw-text-xl lg:tw-text-2xl tw-px-10 tw-text-center tw-pb-6 tw-font-bold;

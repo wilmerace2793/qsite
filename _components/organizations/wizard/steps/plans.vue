@@ -10,15 +10,15 @@
         narrow-indicator
         class="tw-mb-4"
       >
-        <q-tab :name="item.optionValue" :label="item.optionValue" v-for="(item, index) in tab.slice(0,2)" :key="index" /> 
+        <q-tab :name="item.optionValue" :label="item.optionValue" v-for="(item, index) in tab" :key="index" /> 
       </q-tabs>
       <q-tab-panels v-model="tabActive" animated>
-        <q-tab-panel :name="element.optionValue" v-for="(element, i) in tab.slice(0,2)" :key="i" >
+        <q-tab-panel :name="element.optionValue" v-for="(element, i) in tab" :key="i" >
 
           <q-list
             bordered 
             separator 
-            class="tw-mb-4 cursor-pointer tw-rounded-md item-plan tw-mx-6" 
+            class="tw-mb-4 cursor-pointer tw-rounded-md item-plan tw-mx-2 md:tw-mx-6" 
             v-for="(item, index) in plans" :key="index" 
             v-if="item.optionValue == element.optionValue"
             :class="{ activePlan : item.id === selected.id &&  item.PlanId === selected.PlanId}"
@@ -50,40 +50,6 @@
         </q-tab-panel>
       </q-tab-panels>
     </div>
-
-    <!--
-    <div v-if="plans.length>0">
-    <q-list
-      bordered 
-      separator 
-      class="tw-mb-4 cursor-pointer tw-rounded-md item-plan tw-mx-6" 
-      v-for="(item, index) in plans" :key="index" 
-      :class="{ activePlan : item.id === selected.id &&  item.PlanId === selected.PlanId}"
-      @click="selectPlan(item)">
-      <q-expansion-item 
-        expand-icon-toggle
-        :group="item.planName"
-        v-model="item.active"
-      >
-        <template v-slot:header>
-          <q-item-section>
-            <div class="tw-text-lg tw-font-semibold"> {{item.optionValue}}</div>
-            <div class="tw-text-xs">{{ item.planName }}</div>
-          </q-item-section>
-
-          <q-item-section side>
-            <div class="row items-center ">
-              <span class="tw-font-bold">{{item.price}}</span> / {{item.optionValue}}
-            </div>
-          </q-item-section>
-        </template>
-        <q-card>
-          <q-separator />
-          <q-card-section v-html="item.planDescription"></q-card-section>
-        </q-card>
-      </q-expansion-item>
-    </q-list>
-    </div>-->
 
     <div class="step-sidebar">
       
@@ -142,6 +108,7 @@ export default {
     this.$nextTick(async function () {
       this.navNext();
       this.getData();
+      this.getPlanSelected();
       this.getStepInfo();
     })
   },
@@ -149,6 +116,7 @@ export default {
     selectPlan(plan) {
       plan.active=!plan.active;
       this.selected = plan;
+      console.log(plan);
       this.navNext();
     },
     navNext() {
@@ -158,56 +126,63 @@ export default {
         this.$emit("update", { active: false});
       }
     },
-    async getData(){
-      const params = {
-          filter: {
-            categories: PLAN_BASE_ID,
-          },
-          include: 'productOptions,optionValues,relatedProducts'
-        };
-        this.loading=true;
-        await this.$crud
-          .index('apiRoutes.qcommerce.products', {refresh : true, params})
-          .then((response) => {
-            const data = response.data;
-            console.log(data);
-            this.tab = data[0].optionValues;
-            this.tabActive = this.tab[0].optionValue;            
-            let plan=[],planFilter=[];
+    async getPlanSelected() {
+      try {    
+        if(this.infoBase && (this.infoBase.plan !== null)) {
+          this.selected=this.infoBase.plan;
+          this.tabActive = this.selected.optionValue;
+        } else {
+          // Sino hay nada es porque recargo entonces verifico que tiene cache
+          const info = await this.$cache.get.item('org-wizard-data');
+          if(info != null && info.plan !== null) { 
+            this.selected=info.plan;
+            this.tabActive = this.selected.optionValue;
+            this.$emit("update", { active: true, info: this.selected});
+          } else {
+            this.$emit("update",  { active: false });
+          }
+        }
+       
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    mapInfoPlan(plans){
+      this.tab = plans[0].optionValues.slice(0,2); // los dos primeros planes
+      if(!this.tabActive) {
+        this.tabActive = this.tab[0].optionValue;  
+      }         
+      let plan=[],planFilter=[];
 
-            data.map(function callback(currentValue, index) {
-              const p = currentValue.optionValues.filter((item,index)=>index<2);
-              planFilter = p.map((item) => ({
-                ...item,
-                planId: currentValue.id,
-                planName: currentValue.name,
-                planSummary: currentValue.summary,
-                planDescription: currentValue.description,
-                planRelatedProducts: currentValue.relatedProducts,
-                planUrl: currentValue.url,
-                active: false,
-              }));
+      plans.map(function callback(currentValue, index) {
+        const p = currentValue.optionValues.filter((item,index)=>index<2);
+        planFilter = p.map((item) => ({
+          ...item,
+          planId: currentValue.id,
+          planName: currentValue.name,
+          planSummary: currentValue.summary,
+          planDescription: currentValue.description,
+          planRelatedProducts: currentValue.relatedProducts,
+          planUrl: currentValue.url,
+          active: false,
+        }));
 
-              plan.unshift(planFilter);
-            })
+        plan.unshift(planFilter);
+      })
    
-            this.plans = plan.flatMap(item => item);
+      return plan.flatMap(item => item);
+    },
+    async getData(){
 
-            if(this.infoBase.plan) {
-              const found = this.plans.find((value, index) => {
-                if(value.id === this.infoBase.plan.id && value.planId == this.infoBase.plan.planId) {
-                  value.active=true;
-                  this.tabActive = value.optionValue; 
-                }
-              });
-              this.selectPlan(this.infoBase.plan);
-            }
-
-            this.loading = false;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      const plans = await this.$cache.get.item('org-wizard-plans');
+      if(plans.length>0){
+        this.plans = this.mapInfoPlan(plans);
+      } else {
+        // quiere decir que borraron el cache entonces, lo busco y guardo nuevamente
+        const plansNew = await storeStepWizard().getPlans(PLAN_BASE_ID);
+        await this.$cache.set('org-wizard-plans',  plansNew );
+        this.plans = this.mapInfoPlan(plansNew);
+      } 
     },
     async getStepInfo() {
       this.stepContent = await this.info.find((item) => item.systemName === STEP_NAME_PLANS);

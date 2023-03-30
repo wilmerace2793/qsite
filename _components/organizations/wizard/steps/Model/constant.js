@@ -13,4 +13,5 @@ export const STEP_NAME_CATEGORIES = 'step_categories';
 export const STEP_NAME_THEMES = 'step_themes';
 export const STEP_NAME_PLANS = 'step_plans';
 export const ID_CATE_ACTIVITIES = 2;
+export const LIMIT_PAGE = 30; 
 
