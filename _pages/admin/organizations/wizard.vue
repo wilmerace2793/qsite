@@ -132,10 +132,10 @@ export default {
   },
   methods: {
     init() {
-     this.$cache.remove('org-wizard-step');
+      /*this.$cache.remove('org-wizard-step');
       this.$cache.remove('org-wizard-categories');
       this.$cache.remove('org-wizard-plans');
-      this.$cache.remove('org-wizard-data'); /**/
+      this.$cache.remove('org-wizard-data');*/
       this.getInfo();
       this.configSlider();
     },
