@@ -3,8 +3,8 @@
     <h2 class="step-title">{{stepContent.title}}</h2>
 
     <div class="step-loading" v-if="loading"><div></div><div></div></div>
-    <div class="row tw-justify-center tw-px-4 tw-mb-6" v-else>
-      <div class="col-6 col-md-4 tw-mb-2 tw-p-3 tw-cursor-pointer" 
+    <div class="row tw-justify-center tw-px-2 md:tw-px-4 tw-mb-6" v-else>
+      <div class="col-6 col-sm-3  tw-mb-2 tw-p-3 tw-cursor-pointer" 
           v-for="(item, index) in themes" v-if="themes.length>0">
         <div class="item-theme" 
             :class="{ activeClass : item.id === selected.id }"
@@ -66,36 +66,67 @@ export default {
   mounted() {
     this.$nextTick(async function () {
       this.navNext();
-      this.getData();
+      this.getThemeSelected();
+      this.getThemes();
       this.getStepInfo();
     })
   },
   methods: {
     selectData(item) {
-      this.selected=item;
+      this.selected= item;
       this.navNext(this.infoBase);
     },
     navNext() {
       if(this.selected!==''){
         this.$emit("update", { active: true, info: this.selected });
       }else {
-        this.$emit("update", { active: false});
+        this.$emit("update", { active: false });
       }
     },
-    async getData() {
-      try {
-       if(this.infoBase.plan.planRelatedProducts.length>0) {
-          let themes = this.infoBase.plan.planRelatedProducts;
-          this.themes = themes;
-          if (this.infoBase.layout) {
-            const found = themes.find(item => item.id == this.infoBase.layout.id);
-            if(found){
-              this.selected=this.infoBase.layout;
-            } 
-
-            this.navNext();
+    async getThemeSelected() {
+      try {  
+        if(this.infoBase && (this.infoBase.layout !== null)) {
+          if(this.infoBase.layout.planId == this.infoBase.plan.planId) {
+            this.selected=this.infoBase.layout;
           }
+        } else {
+          // Sino hay nada es porque recargo entonces verifico que tiene cache
+          const info = await this.$cache.get.item('org-wizard-data');
+          if(info != null && info.layout !== null) { 
+            if(info.layout.planId == info.plan.planId) {
+              this.selected=info.layout;
+              this.$emit("update", { active: true, info: this.selected});
+            }
+          } else {
+            this.$emit("update",  { active: false });
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getThemes() {
+      try {
+       if(this.infoBase && this.infoBase.plan !== null) {
+          let themes = this.infoBase.plan.planRelatedProducts;
+          this.themes = themes.map((item) => ({
+            ...item,
+            planId: this.infoBase.plan.planId
+          }));
+       } else {
+        // Sino hay nada es porque recargo entonces verifico que tiene cache
+        const info = await this.$cache.get.item('org-wizard-data');
+        if(info != null && info.plan !== null) { 
+          let themes = info.plan.planRelatedProducts;
+          this.themes = themes.map((item) => ({
+            ...item,
+            planId: info.plan.planId
+          }));
+        } 
        }
+
+
+
       } catch (error) {
         console.log(error);
       }

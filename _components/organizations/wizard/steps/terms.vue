@@ -65,9 +65,21 @@ export default {
     }
   },
   methods: {
-    getData(){
-      this.buttonTerms = this.infoBase.terms;
-      this.$emit("update",  { active: this.buttonTerms });
+    async getData(){
+      console.log(this.infoBase);
+      if(this.infoBase && this.infoBase.terms) {
+        this.buttonTerms = this.infoBase.terms;
+      } else {
+        // Sino hay nada es porque recargo entonces verifico que tiene cache
+        const info = await this.$cache.get.item('org-wizard-data');
+        if(info != null && info.terms) { 
+          this.buttonTerms = info.terms;
+          this.$emit("update",  { active: info.terms });
+        } else {
+          this.$emit("update",  { active: false });
+        }
+      }
+
     },
     async getStepInfo() {
       this.stepContent = await this.info.find((item) => item.systemName === STEP_NAME_TERMS);
