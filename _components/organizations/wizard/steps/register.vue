@@ -96,8 +96,8 @@ export default {
     redirectAfterLogin() {
       try {
         const user = this.$store.getters["quserAuth/user"];
-        if(user.firstName && user.email){
-          this.$emit("update", { active: true, info: { name: user.firstName, email: user.email} });
+        if(user.email){
+          this.$emit("update", { active: true, info: { email: user.email} });
         }
       } catch (error) {
         console.log('error en user');
