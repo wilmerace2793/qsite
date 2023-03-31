@@ -13,12 +13,11 @@ import messagesLocal from '@imagina/qsite/_i18n/JsonLocal/i18n.json'
 
 Vue.use(VueI18n)
 
-export default async ({ router, app, Vue, store, ssrContext }) => {
+export default async ({router, app, Vue, store, ssrContext}) => {
   //Request messages
-  const useLegacyStructure = parseInt(store.getters['qsiteApp/getSettingValueByName']('isite::legacyStructureCMS') || 0)
-  const legacyStructure = useLegacyStructure === 1  || false
-  const messagesServer = await store.dispatch('qtranslationMaster/GET_TRANSLATIONS')
-  let messages = legacyStructure ? messagesLocal : messagesServer
+  const useLocalTranslations = config('app.useLocalTranslations')
+  const messagesServer = useLocalTranslations ? {} : await store.dispatch('qtranslationMaster/GET_TRANSLATIONS')
+  let messages = useLocalTranslations ? messagesLocal : messagesServer
   //===== Get default language
   //From URL
   let defaultLanguage = helper.getLocaleRoutePath(ssrContext ? ssrContext.url : window.location.hash)
@@ -64,7 +63,7 @@ export default async ({ router, app, Vue, store, ssrContext }) => {
     return app.i18n.tc(key, 2, params)
   }
   //Date translate
-  Vue.prototype.$trd = (date, params = { type: 'short', fromUTC: false }) => {
+  Vue.prototype.$trd = (date, params = {type: 'short', fromUTC: false}) => {
     //Transform date from UTC
     if (params.fromUTC) date = moment(date).local().format('YYYY-MM-DD HH:mm:ss')
     //Repsonse

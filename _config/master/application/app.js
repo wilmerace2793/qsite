@@ -73,5 +73,7 @@ export default {
     icon: 'fas fa-home',
     color: 'primary',
     route: 'app.home'
-  }
+  },
+  //Define from where use the translations
+  useLocalTranslations: false
 }
