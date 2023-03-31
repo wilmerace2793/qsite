@@ -1,17 +1,20 @@
 <template>
   <div class="step-categories">
-    <div class="step-loading" v-if="loading"><div></div><div></div></div>
-
-    <div v-else>
-    <h2 class="step-title">{{stepContent.title}}</h2>
-    <div class="tw-px-6 tw-pb-6 tw-mt-4 tw-mb-2">
-      <dynamic-field v-model="name" :field="formFields.category" @input="getCategoriesName"/>
-    </div>
     
-    <div class="tw-px-6">
-      <div class="row q-gutter-sm justify-between tw-mb-4">
+    <h2 class="step-title">{{stepContent.title}}</h2>
+    <div class="tw-px-2 md:tw-px-6 tw-pb-6 tw-mt-4 tw-mb-2">
+      <dynamic-field v-model="name" :field="formFields.category" @input="getCategoriesSearch"/>
+      <div class="tw-text-xs tw-mt-2" v-show="selected">
+          Categoria seleccionada: <span class="tw-font-bold"> {{selected.title}}</span>
+      </div>
+    </div>
+    <div class="step-loading" v-if="loading"><div></div><div></div></div>
+    <div v-else>
+    <div class="tw-px-2 md:tw-px-6" v-if="categories.length>=1">
+      <div class="row q-gutter-sm items-stars justify-between tw-mb-4">
+        <!-- v-for="(item, index) in categories"   -->
         <div class="col-auto tw-mb-3" 
-            v-for="(item, index) in categories" 
+            v-for="(item, index) in categories" v-show="(pag - 1) * limitPage <= index  && pag * limitPage > index"
             @click="selectData(item)">
           <div class="text-category 
                       tw-text-sm 
@@ -24,6 +27,20 @@
           </div>
         </div>
       </div>
+      <div class="row q-gutter-sm justify-center">
+        <div class="col-12" v-show="pag != 1">
+          <hr class="tw-my-3 tw-w-1/2 tw-mx-auto">
+        </div>
+        <div class="col-auto">
+          <q-btn padding="none" round flat color="primary" icon="arrow_circle_left" v-show="pag != 1" @click.prevent="pag -= 1" />
+        </div>
+        <div class="col-auto">
+          <q-btn padding="none" round flat color="primary" icon="arrow_circle_right" v-show="pag * limitPage / categories.length < 1" @click.prevent="pag += 1"/>
+        </div>
+      </div>
+    </div>
+    <div class="tw-px-2 md:tw-px-6" v-else>
+      No existen categorias 
     </div>
   </div>
 
@@ -49,8 +66,7 @@
     </div>-->
 
     <div class="step-sidebar">
-      <div class="step-loading" v-if="loadingSidebar"><div></div><div></div></div>
-      <div class="categories-text tw-max-w-sm tw-w-full" v-else>
+      <div class="categories-text tw-max-w-sm tw-w-full">
         <div class="tw-text-base tw-mb-8 text-center" v-html="stepContent.description"></div>
         <q-img v-if="stepContent.mediaFiles" contain
                 :src="stepContent.mediaFiles.mainimage.extraLargeThumb"
@@ -64,8 +80,9 @@
 <script>
 import storeStepWizard from './store/index.ts';
 import { 
-  THEME_BASE_ID, 
+  LIMIT_PAGE,
   STEP_NAME_CATEGORIES } from './model/constant.js';
+import { urlToHttpOptions } from 'url';
 export default {
   props: {
     info: {
@@ -76,7 +93,8 @@ export default {
   data() {
     return {
       loading: false,
-      loadingSidebar: false,
+      limitPage: LIMIT_PAGE,
+      pag: 1, 
       stepContent: '',
       name:'',
       selected: '',
@@ -85,8 +103,9 @@ export default {
   },
   mounted() {
     this.$nextTick(async function () {
+      this.getDataBase();
+      this.getCategorySelected();
       this.navNext();
-      this.getData();
       this.getStepInfo();
     })
   },
@@ -94,7 +113,7 @@ export default {
     infoBase: {
       type: Object,
       default: () => {},
-    },
+    }
   },
   computed: {
     formFields() {
@@ -124,63 +143,50 @@ export default {
         this.$emit("update", { active: false});
       }
     },
-    async getData() {
-      try {        
-        if(this.infoBase.category) {
+    async getCategorySelected() {
+      try {     
+        if(this.infoBase && this.infoBase.category !== null) {
           this.selected=this.infoBase.category;
-          this.$emit("update",  { active: true, info: this.selected});
+        } else {
+          // Sino hay nada es porque recargo entonces verifico que tiene cache
+          const info = await this.$cache.get.item('org-wizard-data');
+          if(info != null && info.category !== null) { 
+            this.selected=info.category;
+            this.$emit("update", { active: true, info: this.selected});
+          } else {
+            this.$emit("update",  { active: false });
+          }
         }
-        this.getDataBase();
+
       } catch (error) {
         console.log(error);
       }
     },
     async getDataBase() {
       try {
-        const params = {
-          filter: {
-            title: THEME_BASE_ID
-          }
-        };
-        this.loading=true;
-        await this.$crud
-          //.index('apiRoutes.qcommerce.categories', {refresh : true, params})
-          .index('apiRoutes.qsite.categories', {refresh : true})
-          .then((response) => {
-            const data = response.data;
-            this.categories = this.orderArray(data);
-            this.loading = false;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        const categories = await this.$cache.get.item('org-wizard-categories');
+        if(categories.length>0){
+          this.categories= categories; 
+        } else {
+          // por si borraron el cache
+          this.categoryCache()
+        }  
+        
       } catch (error) {
         console.log(error);
       }
     },
-    async getCategoriesName() {
+    async getCategoriesSearch() {
       try {
-        if(this.name.length>3) {
+        if((this.name!==null) && this.name.length>3) {
           this.deselectCategory(this.name);
-          const params = {
-            filter: {
-              search: this.name
-            }
-          };
-          this.loading=true;
-          await this.$crud
-            //.index('apiRoutes.qcommerce.categories', {refresh : true, params})
-            .index('apiRoutes.qsite.categories', {refresh : true, params})
-            .then((response) => {
-              const data = response.data;
-              console.log(data);
-              console.log('hola');
-              this.categories = this.orderArray(data);
-              this.loading = false;
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+          this.loading = true;
+          const categories = await storeStepWizard().getCategoriesSearch(this.name);
+          this.loading = false;
+          this.categories = categories;
+          
+        } else {
+          this.getDataBase();
         }
 
       } catch (error) {
@@ -192,13 +198,14 @@ export default {
       this.name=value;
       this.navNext();
     },
-    orderArray(array) {
-      array.sort((a, b) => a.title.localeCompare(b.title));
-      return array;
-    },
     async getStepInfo() {
       this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_CATEGORIES);
     },
+    async categoryCache(){
+      const categoriesNew = await this.$cache.set('org-wizard-categories',  categories );
+      await this.$cache.set('org-wizard-categories',  categoriesNew );
+      this.categories= categoriesNew; 
+    }
   }
 }
 </script>
