@@ -263,11 +263,9 @@ export default {
     },
     async setCacheStep(step){
       await this.$cache.set('org-wizard-step',  step );
-      const step1 = await this.$cache.get.item('org-wizard-step');
     },
     async setCacheInfo(data){
       await this.$cache.set('org-wizard-data',  data );
-      const info = await this.$cache.get.item('org-wizard-data');
     }
   }
 }
