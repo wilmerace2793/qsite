@@ -377,7 +377,7 @@ export default {
         }
         const route = this.routes[nameRoute];
         const parameters = { params: {}, refresh };
-        const search = this.automation ? {} : { search: this.search };
+        const search = this.automation && !this.search ? {} : { search: this.search };
         parameters.params.include = route.include;
         parameters.params.filter = { [route.filter.name]: column.id, ...this.$filter.values, ...search};
         parameters.params.page = page;
@@ -554,7 +554,7 @@ export default {
       }
     },
     setSearch(value) {
-      this.search = value;
+      this.search = value && value !== '' ? value : null;
     },
     scrollLeft() {
       const content = this.scroll;

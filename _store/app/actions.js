@@ -93,7 +93,7 @@ export const GET_CENTRALIZED_BRAND = ({state}, siteSettings) => {
     //Search the centralized brand setting
     const centralizedBrand = siteSettings.find(item => item.name === 'isite::centralizedBrand');
     //Validate if exist the setting
-    if (!centralizedBrand) return resolve(siteSettings)
+    if (!centralizedBrand || !centralizedBrand.value) return resolve(siteSettings)
     //Request the centralized brand
     axios.get(`${centralizedBrand.value}/api/isite/v1/site/settings`).then(response => {
       //Get brand settings values
