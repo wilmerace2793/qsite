@@ -13,7 +13,7 @@
         </div>
       </div>
       <!--List iadmin-->
-      <q-scroll-area :style="`height: calc(100vh - 146px`">
+      <q-scroll-area id="adminMenu" :style="`height: calc(100vh - 146px`">
         <!--Menu-->
         <menu-list ref="menuList" group :translatable="menuTranslatable" :menu="menuSelect"/>
       </q-scroll-area>
@@ -25,10 +25,10 @@
     </q-drawer>
 
     <!-- Chat -->
-<!--    <q-drawer bordered id="chatMaster" overlay v-model="drawer.chat" side="right"-->
-<!--              v-if="$auth.hasAccess('ichat.conversations.index')">-->
-<!--      <chat-list/>-->
-<!--    </q-drawer>-->
+    <!--    <q-drawer bordered id="chatMaster" overlay v-model="drawer.chat" side="right"-->
+    <!--              v-if="$auth.hasAccess('ichat.conversations.index')">-->
+    <!--      <chat-list/>-->
+    <!--    </q-drawer>-->
 
     <!--Master filter-->
     <q-drawer bordered id="drawerFilterMaster" v-model="drawer.filter" side="right" v-if="filter.load" :overlay="false">
@@ -36,7 +36,8 @@
     </q-drawer>
 
     <!--Recommendation-->
-    <q-drawer id="drawerRecommendationMaster" v-model="drawer.recommendation" side="right" behavior="mobile" :overlay="true"
+    <q-drawer id="drawerRecommendationMaster" v-model="drawer.recommendation" side="right" behavior="mobile"
+              :overlay="true"
               v-if="routeSubHeader.recommendations ? true : false">
       <master-recommendation/>
     </q-drawer>
@@ -65,7 +66,7 @@ export default {
     this.$eventBus.$off('toggleMasterDrawer')
     this.$eventBus.$off('openMasterDrawer')
   },
-  mixins:[sidebarMixins],
+  mixins: [sidebarMixins],
   props: {},
   components: {menuList, configList, chatList, masterFilter, checkin, masterRecommendation, masterNotifications},
   watch: {},
@@ -78,7 +79,7 @@ export default {
     return {
       windowHeight: window.innerHeight,
       windowWith: window.innerWidth,
-      projectName: this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name'),     
+      projectName: this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name'),
       miniState: this.windowSize == 'mobile' ? false : true,
       drawer: {
         menu: this.windowSize == 'mobile' ? false : true,
@@ -157,6 +158,7 @@ export default {
 
 #masterDrawers1
   background-color $custom-accent-color !important
+
   #drawerRecomendationMaster
     .q-drawer
       max-height max-content
@@ -168,6 +170,7 @@ export default {
     aside
       background $primary
       background-color $custom-accent-color !important
+
     #logoSite
       padding 20px 25px 26px 25px
       height 120px
@@ -184,10 +187,12 @@ export default {
       .q-expansion-item__content
         padding 0 0 0 2px
         border-left 15px solid $custom-accent-color
+
     .q-item
       padding-left 0
       min-height 40px
       color $blue-grey
+
       .q-item__section--avatar
         padding 0 18px !important
 
@@ -205,6 +210,7 @@ export default {
 
       &.item-is-active
         background-color $custom-accent-color
+
         .q-item__section, .q-icon
           color $primary
 

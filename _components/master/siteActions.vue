@@ -41,7 +41,7 @@
         <q-tooltip>{{ btn.label }}</q-tooltip>
       </q-btn>
       <!--Auth section-->
-      <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" id="profile-button" rounded no-caps
+      <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" id="profileButton" rounded no-caps
              padding="2px 8px" color="white" unelevated>
         <div id="profileImage" class="img-as-bg"
              :style="`background-image: url('${quserState.userData.mainImage}')`"></div>
@@ -151,6 +151,7 @@ export default {
               ...this.defaultButtonProps,
               label: this.$tr('isite.cms.showSite'),
               type: 'a',
+              id: 'siteActionGoToSite',
               href: goToSiteUrl,
               target: '_blank',
               round: false,
@@ -226,7 +227,7 @@ export default {
               round: false,
               rounded: true,
               align: "left",
-              id: 'profile-button'
+              id: 'profileButton'
             },
             action: () => (this.$route.name != 'user.profile.me') ? this.$router.push({name: 'user.profile.me'}) : null
           },
