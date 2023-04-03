@@ -1,7 +1,9 @@
 import axios from 'axios'
 import alert from '@imagina/qsite/_plugins/alert'
+import cache from '@imagina/qsite/_plugins/cache'
 
 export default function ({app, router, store, Vue, ssrContext}) {
+  const databaseOffline = new PouchDB('offline-core');
   //=========== Set base url to axios
   let baseUrl = config('app.baseUrl')
   let tagsToParceHost = ['http://', 'https://', ':8080', ':3000', 'www.']
@@ -30,9 +32,39 @@ export default function ({app, router, store, Vue, ssrContext}) {
       }
     })
   }
+  function addRequestDB(request) {
+    const objReq = {
+        _id: new Date().toISOString(),
+        ...request
+    };
+    databaseOffline.put(objReq, (error, result) => {
+        if (!error) {
+            console.log("Request Saved Successfully");
+        }
+    })
+}
   //========== Request interceptor
-  axios.interceptors.request.use(function (config) {
+  axios.interceptors.request.use(async function (config) {
     // Do something before request is sent
+    if (!navigator.onLine){
+      const titleOffline = config.data.titleOffline || config.params.titleOffline;
+      const user = await cache.get.item('sessionData');
+      const request = {
+        url: config.baseURL + config.url,
+        headers: config.headers,
+        method: config.method,
+        body: JSON.stringify(config.data),
+        createdAt: new Date().getTime(),
+        userId: user.userData.id,
+        status: 'pending',
+        httpStatus: 0,
+        errorLog: '',
+        params: config.params,
+        titleOffline,
+      };
+      addRequestDB(request);
+    }
+
     store.dispatch('quserAuth/REFRESH_TOKEN');
     return config;
   }, function (error) {
