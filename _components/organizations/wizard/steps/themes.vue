@@ -88,6 +88,7 @@ export default {
         if(this.infoBase && (this.infoBase.layout !== null)) {
           if(this.infoBase.layout.planId == this.infoBase.plan.planId) {
             this.selected=this.infoBase.layout;
+            this.$emit("update", { active: true, info: this.selected});
           }
         } else {
           // Sino hay nada es porque recargo entonces verifico que tiene cache
@@ -124,8 +125,6 @@ export default {
           }));
         } 
        }
-
-
 
       } catch (error) {
         console.log(error);

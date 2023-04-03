@@ -116,7 +116,6 @@ export default {
     selectPlan(plan) {
       plan.active=!plan.active;
       this.selected = plan;
-      console.log(plan);
       this.navNext();
     },
     navNext() {
@@ -131,6 +130,7 @@ export default {
         if(this.infoBase && (this.infoBase.plan !== null)) {
           this.selected=this.infoBase.plan;
           this.tabActive = this.selected.optionValue;
+          this.navNext();
         } else {
           // Sino hay nada es porque recargo entonces verifico que tiene cache
           const info = await this.$cache.get.item('org-wizard-data');
@@ -148,9 +148,9 @@ export default {
       }
     },
     mapInfoPlan(plans){
-      this.tab = plans[0].optionValues.slice(0,2); // los dos primeros planes
+      this.tab = plans[0].optionValues.slice(0,2).sort((a, b) => a.optionValue.localeCompare(b.optionValue));
       if(!this.tabActive) {
-        this.tabActive = this.tab[0].optionValue;  
+        this.tabActive = this.tab[0];  
       }         
       let plan=[],planFilter=[];
 
