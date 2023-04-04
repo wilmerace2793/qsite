@@ -324,6 +324,10 @@
         "label": {
           "tourElement": "Element Id",
           "tourElementPosition": "Element Position"
+        },
+        "activities": {
+          "repeatAction": "Tour",
+          "repeatActionDescription": "From here you can repeat this tour whenever you want"
         }
       }
     },
@@ -344,7 +348,7 @@
         "updateBlock": "Update Block",
         "deleteBlock": "Delete Block",
         "replyTo": "Field to reply to",
-        "replyToName" : "Name to reply",
+        "replyToName": "Name to reply",
         "form": {
           "label": "Label",
           "placeholder": "Placeholder",
@@ -2200,6 +2204,10 @@
         "label": {
           "tourElement": "ID del elemento",
           "tourElementPosition": "Pocisión del Elemento"
+        },
+        "activities": {
+          "repeatAction": "Tour",
+          "repeatActionDescription": "Desde aquí puedes repetir este tour cuando quieras"
         }
       }
     },
@@ -2220,7 +2228,7 @@
         "updateBlock": "Actualizar bloque",
         "deleteBlock": "Eliminar bloque",
         "replyTo": "Campo para responder",
-        "replyToName" : "Nombre para responder",
+        "replyToName": "Nombre para responder",
         "form": {
           "label": "Etiqueta",
           "placeholder": "Placeholder",
