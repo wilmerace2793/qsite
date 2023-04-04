@@ -11,7 +11,7 @@
                 tw-h-16
     ">
       <a :href="urlBase"> <img :src="logo" class="tw-h-10 tw-w-auto" /> </a>
-      <q-slider class="slider-header" v-model="slider" thumb-path="" readonly :min="0" :max="100"/>
+      <q-linear-progress :value="progress"  class="linear-progress-header" />
     </div>
 
     <div class="step-loading"><div></div><div></div></div>
@@ -104,9 +104,9 @@ export default {
       data: [],
       logo: this.$store.state.qsiteApp.logo,
       pace: null,
-      slider: 0,
+      progress: 0,
       steps: modelSteps,
-      sliderPercent:0,
+      progressPercent:0,
       isActive: false,
       urlBase: this.$store.state.qsiteApp.baseUrl,
       dataText: [],
@@ -144,13 +144,13 @@ export default {
       this.$cache.remove('org-wizard-plans');
       this.$cache.remove('org-wizard-data');*/
       this.getInfo();
-      this.configSlider();
+      this.configProgress();
       
     },
-    async configSlider(){
-      this.sliderPercent = 100/this.steps.length;
+    async configProgress(){
+      this.progressPercent = 1/this.steps.length;
       const step = await this.$cache.get.item('org-wizard-step');
-      this.slider = this.sliderPercent * step;
+      this.progress = this.progressPercent * step;
     },
     //Get data
     getData(refresh = false) {
@@ -171,7 +171,7 @@ export default {
     },
     stepperPrevious(){
       this.verifyStep();
-      this.slider = this.slider - this.sliderPercent;
+      this.progress = this.progress - this.progressPercent;
       this.$refs.stepper.previous();
     },
     async stepperNext(step){
@@ -196,7 +196,7 @@ export default {
 
           }
         } else {
-          this.slider = this.slider + this.sliderPercent;
+          this.progress = this.progress + this.progressPercent;
           this.setCacheInfo(this.dataCheck);
           this.$refs.stepper.next();
           this.setCacheStep(step+1);
@@ -432,9 +432,9 @@ export default {
   background: -webkit-linear-gradient(right,#fff,#e4e2f2);
   width: 100% !important;
 }
-#wizardOrganization .slider-header {
+#wizardOrganization .linear-progress-header {
   @apply tw-absolute;
-  bottom: -14px;
+  bottom: -7px;
 }
 #wizardOrganization .q-dialog__message {
   @apply tw-text-base;
