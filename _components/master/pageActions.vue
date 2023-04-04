@@ -22,14 +22,14 @@
         <q-btn-dropdown split v-bind="{...buttonProps}"
                         v-if="btn.type == 'btn-dropdown'" outline
         >
-        <template v-slot:label>
-          <div class="row items-center no-wrap" @click="refreshByTime(timeRefresh)">
-            <q-icon left :name="btn.props.icon" />
-            <div class="text-center" v-if="multipleRefresh">
-              {{ titleRefresh }}
+          <template v-slot:label>
+            <div class="row items-center no-wrap" @click="refreshByTime(timeRefresh)">
+              <q-icon left :name="btn.props.icon"/>
+              <div class="text-center" v-if="multipleRefresh">
+                {{ titleRefresh }}
+              </div>
             </div>
-          </div>
-        </template>
+          </template>
           <q-list>
             <q-item v-for="(item, index) in btn.items" :key="index" clickable v-close-popup
                     @click="item.action != undefined ? item.action() : null" class="tw-px-4">
@@ -42,7 +42,8 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <q-btn v-else-if="btn.type === 'recommendation'" class="animated" v-bind="{...buttonProps, ...btn.props}" @click="btn.action !=    undefined ? btn.action() : null">
+        <q-btn v-else-if="btn.type === 'recommendation'" class="animated" v-bind="{...buttonProps, ...btn.props}"
+               @click="btn.action !=    undefined ? btn.action() : null">
           <q-tooltip v-if="btn.label">{{ btn.label }}</q-tooltip>
         </q-btn>
         <q-btn v-else v-bind="{...buttonProps, ...btn.props}" @click="btn.action != undefined ? btn.action() : null">
@@ -59,20 +60,20 @@
         <q-icon name="fa-light fa-filter" class="q-mr-xs" color="amber" size="18px"/>
         <b>{{ $trp('isite.cms.label.filter') }}:</b>
         <label
-          v-for="(item, itemKey) in filter.readValues"
-          :key="itemKey"
-          v-if="item.value && item.label !== ''"
-               class="q-ml-xs text-grey-7">
+            v-for="(item, itemKey) in filter.readValues"
+            :key="itemKey"
+            v-if="item.value && item.label !== ''"
+            class="q-ml-xs text-grey-7">
           {{ item.label }} {{ item.value }},
         </label>
       </div>
       <!-- Quick Filters-->
       <div v-if="Object.keys(quickFilters).length" class="row q-col-gutter-md q-pt-sm">
         <dynamic-field v-for="(field, keyField) in quickFilters" :key="keyField" :field="field"
-            v-model="filterData[keyField]"
-            :class="field.colClass"
-            @input="emitFilter"
-            :keyField="keyField"
+                       v-model="filterData[keyField]"
+                       :class="field.colClass"
+                       @input="emitFilter"
+                       :keyField="keyField"
         />
       </div>
     </div>
@@ -266,12 +267,12 @@ export default {
     refreshByTime(time) {
       this.timeRefresh = time;
       this.titleRefresh = time === 0
-      ? this.$tr('isite.cms.label.refreshAtOnce')
-      : this.$tr('isite.cms.label.refreshEveryMinutes', {min: time});
+          ? this.$tr('isite.cms.label.refreshAtOnce')
+          : this.$tr('isite.cms.label.refreshEveryMinutes', {min: time});
       this.clearInterval();
       const interval = 1000 * 60 * time;
       this.emitRefresh();
-      if(time > 0) {
+      if (time > 0) {
         this.refreshIntervalId = setInterval(() => {
           this.emitRefresh();
         }, interval);
@@ -292,7 +293,7 @@ export default {
       if (this.filter && this.filter.callBack) this.filter.callBack(this.filter)
     },
     clearInterval() {
-      if(this.refreshIntervalId) {
+      if (this.refreshIntervalId) {
         clearInterval(this.refreshIntervalId);
         this.refreshIntervalId = null;
       }
@@ -306,7 +307,7 @@ export default {
     font-size 20px
 
   .animated {
-      animation: ring 10s .7s ease-in-out infinite;
+    animation: ring 10s .7s ease-in-out infinite;
   }
 
   .title-content
@@ -338,47 +339,100 @@ export default {
   #dynamicFieldComponent
     .q-field.q-field--float .q-field__label
       color: $primary
+
     .q-field__control
       .q-field__append .q-icon
         color: $tertiary
+
       .q-field__append:last-child .q-icon
         color: $primary
+
 .q-menu
   .q-list
     .q-item
       padding: 3px 10px 3px 3px;
+
       .q-item__section--avatar
         min-width: 50px;
         padding-right 10px
         color $primary
+
         i
           font-size 16px
 
 @keyframes ring {
-  0% { transform: rotate(0); }
-  1% { transform: rotate(30deg); }
-  3% { transform: rotate(-28deg); }
-  5% { transform: rotate(34deg); }
-  7% { transform: rotate(-32deg); }
-  9% { transform: rotate(30deg); }
-  11% { transform: rotate(-28deg); }
-  13% { transform: rotate(26deg); }
-  15% { transform: rotate(-24deg); }
-  17% { transform: rotate(22deg); }
-  19% { transform: rotate(-20deg); }
-  21% { transform: rotate(18deg); }
-  23% { transform: rotate(-16deg); }
-  25% { transform: rotate(14deg); }
-  27% { transform: rotate(-12deg); }
-  29% { transform: rotate(10deg); }
-  31% { transform: rotate(-8deg); }
-  33% { transform: rotate(6deg); }
-  35% { transform: rotate(-4deg); }
-  37% { transform: rotate(2deg); }
-  39% { transform: rotate(-1deg); }
-  41% { transform: rotate(1deg); }
+  0% {
+    transform: rotate(0);
+  }
+  1% {
+    transform: rotate(30deg);
+  }
+  3% {
+    transform: rotate(-28deg);
+  }
+  5% {
+    transform: rotate(34deg);
+  }
+  7% {
+    transform: rotate(-32deg);
+  }
+  9% {
+    transform: rotate(30deg);
+  }
+  11% {
+    transform: rotate(-28deg);
+  }
+  13% {
+    transform: rotate(26deg);
+  }
+  15% {
+    transform: rotate(-24deg);
+  }
+  17% {
+    transform: rotate(22deg);
+  }
+  19% {
+    transform: rotate(-20deg);
+  }
+  21% {
+    transform: rotate(18deg);
+  }
+  23% {
+    transform: rotate(-16deg);
+  }
+  25% {
+    transform: rotate(14deg);
+  }
+  27% {
+    transform: rotate(-12deg);
+  }
+  29% {
+    transform: rotate(10deg);
+  }
+  31% {
+    transform: rotate(-8deg);
+  }
+  33% {
+    transform: rotate(6deg);
+  }
+  35% {
+    transform: rotate(-4deg);
+  }
+  37% {
+    transform: rotate(2deg);
+  }
+  39% {
+    transform: rotate(-1deg);
+  }
+  41% {
+    transform: rotate(1deg);
+  }
 
-  43% { transform: rotate(0); }
-  100% { transform: rotate(0); }
+  43% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(0);
+  }
 }
 </style>
