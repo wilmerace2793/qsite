@@ -150,8 +150,8 @@ export default {
     mapInfoPlan(plans){
       this.tab = plans[0].optionValues.slice(0,2).sort((a, b) => a.optionValue.localeCompare(b.optionValue));
       if(!this.tabActive) {
-        this.tabActive = this.tab[0];  
-      }         
+        this.tabActive = this.tab[0].optionValue;  
+      }     
       let plan=[],planFilter=[];
 
       plans.map(function callback(currentValue, index) {

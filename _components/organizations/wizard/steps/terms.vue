@@ -66,7 +66,6 @@ export default {
   },
   methods: {
     async getData(){
-      console.log(this.infoBase);
       if(this.infoBase && this.infoBase.terms) {
         this.buttonTerms = this.infoBase.terms;
       } else {
