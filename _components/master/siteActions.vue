@@ -1,5 +1,14 @@
 <template>
-  <div id="siteActionscomponent">
+  <div id="siteActionscomponent" class="tw-flex">
+    <div 
+      v-if="$store.state.qofflineMaster.isAppOffline"
+      class="tw-py-1 tw-text-black">
+      <i class="fa-light fa-cloud-slash tw-py-4" >
+        <q-tooltip content-class="bg-amber text-black shadow-4" :offset="[10, 10]">
+          {{ $tr('isite.cms.label.offline')}}
+        </q-tooltip>
+      </i>
+    </div>
     <div :class="`row q-gutter-${gutter}`">
       <!--Actions-->
       <q-btn v-for="(btn, keyAction) in actions.buttons" :key="keyAction" v-bind="btn.props"
@@ -32,7 +41,7 @@
         <q-tooltip>{{ btn.label }}</q-tooltip>
       </q-btn>
       <!--Auth section-->
-      <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" id="profile-button" rounded no-caps
+      <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" id="profileButton" rounded no-caps
              padding="2px 8px" color="white" unelevated>
         <div id="profileImage" class="img-as-bg"
              :style="`background-image: url('${quserState.userData.mainImage}')`"></div>
@@ -142,6 +151,7 @@ export default {
               ...this.defaultButtonProps,
               label: this.$tr('isite.cms.showSite'),
               type: 'a',
+              id: 'siteActionGoToSite',
               href: goToSiteUrl,
               target: '_blank',
               round: false,
@@ -217,7 +227,7 @@ export default {
               round: false,
               rounded: true,
               align: "left",
-              id: 'profile-button'
+              id: 'profileButton'
             },
             action: () => (this.$route.name != 'user.profile.me') ? this.$router.push({name: 'user.profile.me'}) : null
           },

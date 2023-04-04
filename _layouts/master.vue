@@ -35,6 +35,8 @@
     <!---Cropper-->
     <cropper-component ref="cropperComponent"/>
 
+    <!-- Offline Request -->
+    <Progressrequest />
     <!-- Activities -->
     <activities v-for="(activity, keyACt) in globalActivities" :key="keyACt" v-bind="activity"/>
 
@@ -65,6 +67,7 @@ import footerPanel from '@imagina/qsite/_components/panel/footer'
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
 import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
 import Alert from '@imagina/qoffline/_components/Alert.vue'
+import Progressrequest from '@imagina/qoffline/_components/Progressrequest.vue'
 
 export default {
   name: "MasterLayout",
@@ -99,7 +102,8 @@ export default {
     drawersPanel,
     footerPanel,
     //Offline
-    Alert
+    Alert,
+    Progressrequest
   },
   watch: {
     shouldChangePassword(data) {

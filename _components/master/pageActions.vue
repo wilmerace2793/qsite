@@ -121,6 +121,9 @@ export default {
     }
   },
   computed: {
+    isAppOffline() {
+      return this.$store.state.qofflineMaster.isAppOffline;
+    },
     //Return filter data
     filter() {
       this.filterData = this.$clone(this.$filter.values)
@@ -152,7 +155,7 @@ export default {
         //Export
         {
           label: this.$tr('isite.cms.label.export'),
-          vIf: (this.exportParams && !excludeActions.includes('export')),
+          vIf: (this.exportParams && !excludeActions.includes('export') && !this.isAppOffline),
           props: {
             icon: 'fa-duotone fa-file-arrow-down'
           },
@@ -182,7 +185,7 @@ export default {
         {
           label: this.$trp('isite.cms.label.refresh'),
           type: this.multipleRefresh ? 'btn-dropdown' : '',
-          vIf: (this.params.refresh && !excludeActions.includes('refresh')),
+          vIf: (this.params.refresh && !excludeActions.includes('refresh') && !this.isAppOffline),
           props: {
             icon: 'fa-duotone fa-rotate-right',
             id: 'refresh-button-crud'
