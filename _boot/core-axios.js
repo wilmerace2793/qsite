@@ -1,5 +1,6 @@
 import axios from 'axios'
 import alert from '@imagina/qsite/_plugins/alert'
+import cache from '@imagina/qsite/_plugins/cache'
 
 export default function ({app, router, store, Vue, ssrContext}) {
   //=========== Set base url to axios
@@ -30,9 +31,36 @@ export default function ({app, router, store, Vue, ssrContext}) {
       }
     })
   }
+  async function addRequestDB(request) {
+    const objReq = {
+        _id: new Date().toISOString(),
+        ...request
+    };
+    const allRequests = await cache.get.item('requests') || [];
+    allRequests.push(objReq);
+    cache.set('requests', allRequests)
+}
   //========== Request interceptor
-  axios.interceptors.request.use(function (config) {
+  axios.interceptors.request.use(async function (config) {
     // Do something before request is sent
+    if (!navigator.onLine){
+      const titleOffline = config.data.titleOffline || config.params.titleOffline;
+      const user = await cache.get.item('sessionData');
+      const request = {
+        url: config.baseURL + config.url,
+        headers: config.headers,
+        method: config.method,
+        body: JSON.stringify(config.data),
+        createdAt: new Date().getTime(),
+        userId: user.userData.id,
+        status: 'pending',
+        httpStatus: 0,
+        errorLog: '',
+        params: config.params,
+        titleOffline,
+      };
+      addRequestDB(request);
+    }
     store.dispatch('quserAuth/REFRESH_TOKEN');
     return config;
   }, function (error) {

@@ -1,7 +1,7 @@
 import LocalForage from 'localforage'
 
 class localCache {
-  constructor() {
+  constructor(cacheName, storage) {
     if (process.env.CLIENT) {
       //Order config to localForage
       let configDrivers = () => {
@@ -16,9 +16,9 @@ class localCache {
       //Config for LocalForage
       LocalForage.config({
         driver: configDrivers(),
-        name: this.nameDB(),
+        name: cacheName || this.nameDB(),
         version: 1,
-        storeName: 'storage',
+        storeName: storage || 'storage',
       })
     }
 
