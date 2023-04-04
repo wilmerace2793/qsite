@@ -274,8 +274,6 @@ export default {
       this.$root.$on('page.data.filter.read', (readValues) => {
         this.$set(this.filter, 'readValues', readValues)
       })
-      //Start tour if exits
-      if (this.tourName) this.startTour()
     },
     refreshByTime(time) {
       this.timeRefresh = time;

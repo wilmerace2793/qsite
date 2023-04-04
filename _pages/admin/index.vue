@@ -2,9 +2,7 @@
   <div id="indexMasterPage" class="relative-position">
     <!--Page Actions-->
     <div class="q-mb-md">
-      <page-actions :title="$tr($route.meta.title)"
-                    :excludeActions="['refresh']"
-                    :tour-name="$q.platform.is.desktop ? 'admin_home_tour' : 'admin_home_tour_mobile'"/>
+      <page-actions :title="$tr($route.meta.title)" :excludeActions="['refresh']" :tour-name="tourName"/>
     </div>
 
     <!--Activities-->
@@ -45,6 +43,7 @@ export default {
     this.$nextTick(function () {
       setTimeout(() => {
         this.loading = false;
+        this.$tour.start(this.tourName)
       }, 1000);
     })
   },
@@ -52,6 +51,7 @@ export default {
     return {
       testSchedule: false,
       loading: false,
+      tourName: this.$q.platform.is.desktop ? 'admin_home_tour' : 'admin_home_tour_mobile'
     }
   },
   computed: {
