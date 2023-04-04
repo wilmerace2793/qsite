@@ -82,7 +82,7 @@ export default {
       projectName: this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name'),
       miniState: this.windowSize == 'mobile' ? false : true,
       drawer: {
-        menu: this.windowSize == 'mobile' ? false : true,
+        menu: this.$q.platform.is.mobile ? false : true,
         config: false,
         chat: false,
         filter: false,

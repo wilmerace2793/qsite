@@ -42,7 +42,7 @@ export default {
     this.$nextTick(function () {
       setTimeout(() => {
         this.loading = false;
-        this.$tour.start("admin_home_tour")
+        this.$tour.start(this.$q.platform.is.desktop ? "admin_home_tour" : "admin_home_tour_mobile")
       }, 1000);
     })
   },
