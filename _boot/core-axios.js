@@ -61,7 +61,6 @@ export default function ({app, router, store, Vue, ssrContext}) {
       };
       addRequestDB(request);
     }
-
     store.dispatch('quserAuth/REFRESH_TOKEN');
     return config;
   }, function (error) {
