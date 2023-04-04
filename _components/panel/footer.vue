@@ -3,7 +3,7 @@
     <!-- === FOOTER === -->
     <q-footer class="bg-white">
       <!--Footer admin-->
-      <div id="footerContent" class="row q-md-hide items-center" v-if="appConfig.mode == 'iadmin'">
+      <div id="panelFooterContent" class="row q-md-hide items-center" v-if="appConfig.mode == 'iadmin'">
         <!-- Menu -->
         <div class="item-footer col cursor-pointer" @click="$eventBus.$emit('toggleMasterDrawer','menu')">
           <q-icon class="item-icon" name="fas fa-bars"/>
@@ -209,7 +209,7 @@ export default {
 }
 </script>
 <style lang="stylus">
-#footerContent
+#panelFooterContent
   background-color white
   color $grey-7
 

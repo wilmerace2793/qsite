@@ -1,16 +1,17 @@
 <template>
   <div id="masterFooter">
     <!-- === FOOTER === -->
-    <q-footer class="bg-white">
+    <q-footer class="bg-primary shadow-2">
       <!--Footer admin-->
       <div id="footerContent" class="row q-md-hide items-center" v-if="appConfig.mode == 'iadmin'">
         <!-- Menu -->
-        <div class="item-footer col cursor-pointer" @click="$eventBus.$emit('toggleMasterDrawer','menu')">
+        <div id="footerMobileMenu" class="item-footer col cursor-pointer"
+             @click="$eventBus.$emit('toggleMasterDrawer','menu')">
           <q-icon class="item-icon" name="fas fa-bars"/>
           <div>Menu</div>
         </div>
         <!-- Profile -->
-        <div class="item-footer col cursor-pointer">
+        <div id="footerMobileProfile" class="item-footer col cursor-pointer">
           <q-btn :to="{name: 'user.profile.me'}" flat no-caps v-if="quserState.authenticated"
                  class="item-icon" padding="none">
             <q-avatar size="20px">
@@ -20,18 +21,19 @@
           <div>{{ $tr('isite.cms.label.profile') }}</div>
         </div>
         <!-- Main -->
-        <div class="col" @click="doMainAction()">
-          <div id="item-main" :class="`cursor-pointer row items-center justify-center bg-${mainAction.color}`">
-            <q-icon class="item-icon" :name="mainAction.icon"/>
+        <div id="footerMobileMain" class="col" @click="doMainAction()">
+          <div id="item-main" :class="`cursor-pointer row items-center justify-center bg-white`">
+            <q-icon class="item-icon" color="primary" :name="mainAction.icon"/>
           </div>
         </div>
-        <!-- Settings -->
-        <div class="item-footer col cursor-pointer" @click="$eventBus.$emit('toggleMasterDrawer','config')">
-          <q-icon class="item-icon" name="fas fa-cog"/>
-          <div>{{ $tr('isite.cms.label.setting') }}</div>
+        <!-- go to site -->
+        <div id="footerMobileGoToSite" class="item-footer col cursor-pointer bg"
+             @click="$helper.openExternalURL($store.state.qsiteApp.baseUrl)">
+          <q-icon class="item-icon" name="fa-light fa-eye"/>
+          <div>{{ $tr('isite.cms.configList.goToSite') }}</div>
         </div>
         <!-- Others -->
-        <div class="item-footer col cursor-pointer" @click="modal.show = true">
+        <div id="footerMobileOthers" class="item-footer col cursor-pointer" @click="modal.show = true">
           <q-icon class="item-icon" name="fas fa-ellipsis-h"/>
           <div>{{ $trp('isite.cms.label.other') }}</div>
         </div>
@@ -59,12 +61,12 @@
 
         <q-card-section class="row items-center no-wrap q-pa-none">
           <q-list separator class="full-width" v-close-popup>
-            <!--Go to site action-->
-            <q-item clickable v-ripple @click.native="$helper.openExternalURL($store.state.qsiteApp.baseUrl)">
+            <!--Settings-->
+            <q-item clickable v-ripple @click.native="$eventBus.$emit('toggleMasterDrawer','config')">
               <q-item-section avatar>
-                <q-icon color="primary" name="far fa-eye"/>
+                <q-icon color="primary" name="fa-light fa-folder-gear"/>
               </q-item-section>
-              <q-item-section class="ellipsis">{{ $tr('isite.cms.configList.goToSite') }}</q-item-section>
+              <q-item-section class="ellipsis">{{ $tr('isite.cms.label.setting') }}</q-item-section>
             </q-item>
             <!--Chat action-->
             <q-item clickable v-ripple v-if="$auth.hasAccess('ichat.conversations.index')"
@@ -94,7 +96,7 @@
             <q-item clickable v-ripple @click.native="$eventBus.$emit('toggleMasterDrawer','notification')"
                     v-if="$auth.hasAccess('notification.notifications.manage')">
               <q-item-section avatar>
-                <q-icon color="primary" name="fas fa-bell"/>
+                <q-icon color="primary" name="fa-light fa-bell"/>
               </q-item-section>
               <q-item-section class="ellipsis">{{ $trp('isite.cms.label.notification') }}</q-item-section>
             </q-item>
@@ -182,11 +184,11 @@ export default {
 
           //Load weeb component
           window.customElements.define('embedded-footer-ipanel', class EmbeddedWebview extends HTMLElement {
-              connectedCallback() {
-                const shadow = this.attachShadow({mode: 'open'});
-                shadow.appendChild(document.importNode(template.content, true))
+                connectedCallback() {
+                  const shadow = this.attachShadow({mode: 'open'});
+                  shadow.appendChild(document.importNode(template.content, true))
+                }
               }
-            }
           );
 
           //Allow load header web component
@@ -210,8 +212,8 @@ export default {
 </script>
 <style lang="stylus">
 #footerContent
-  background-color white
-  color $grey-7
+  background-color $primary
+  color white
 
   .item-footer
     text-align center
