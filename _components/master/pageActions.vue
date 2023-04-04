@@ -102,7 +102,8 @@ export default {
     multipleRefresh: {
       type: Boolean,
       default: () => false,
-    }
+    },
+    tourName: {default: null}
   },
   components: {masterExport},
   watch: {},
@@ -118,7 +119,7 @@ export default {
       filterData: {},
       refreshIntervalId: null,
       titleRefresh: this.$tr('isite.cms.label.refreshAtOnce'),
-      timeRefresh: 0,
+      timeRefresh: 0
     }
   },
   computed: {
@@ -158,6 +159,16 @@ export default {
             icon: 'fa-duotone fa-file-arrow-down'
           },
           action: () => this.$refs.exportComponent.showReport()
+        },
+        //Tour
+        {
+          label: 'Tour',
+          vIf: this.tourName,
+          props: {
+            icon: 'fa-duotone fa-shoe-prints',
+            id: 'actionStartTour'
+          },
+          action: () => this.startTour(true)
         },
         //recommendations
         {
@@ -263,6 +274,8 @@ export default {
       this.$root.$on('page.data.filter.read', (readValues) => {
         this.$set(this.filter, 'readValues', readValues)
       })
+      //Start tour if exits
+      if (this.tourName) this.startTour()
     },
     refreshByTime(time) {
       this.timeRefresh = time;
@@ -298,6 +311,21 @@ export default {
         this.refreshIntervalId = null;
       }
     },
+    //Handle start tour
+    startTour(forceStart) {
+      this.$tour.start(this.tourName, {
+        forceStart,
+        extraSteps: [
+          {
+            icon: 'fa-duotone fa-shoe-prints',
+            title: this.$tr('igamification.cms.activities.repeatAction'),
+            content: this.$tr('igamification.cms.activities.repeatActionDescription'),
+            element: '#actionStartTour',
+            position: 'top',
+          }
+        ]
+      })
+    }
   }
 }
 </script>
