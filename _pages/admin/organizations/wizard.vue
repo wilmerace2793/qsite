@@ -10,8 +10,8 @@
                 tw-w-full
                 tw-h-16
     ">
-      <a :href="urlBase" target="_blank"> <img :src="logo" class="tw-h-10 tw-w-auto" /> </a>
-      <q-slider class="slider-header" v-model="slider" thumb-path="" readonly :min="0" :max="100"/>
+      <a :href="urlBase"> <img :src="logo" class="tw-h-10 tw-w-auto" /> </a>
+      <q-linear-progress :value="progress"  class="linear-progress-header" />
     </div>
 
     <div class="step-loading"><div></div><div></div></div>
@@ -104,20 +104,26 @@ export default {
       data: [],
       logo: this.$store.state.qsiteApp.logo,
       pace: null,
-      slider: 0,
+      progress: 0,
       steps: modelSteps,
-      sliderPercent:0,
+      progressPercent:0,
       isActive: false,
       urlBase: this.$store.state.qsiteApp.baseUrl,
       dataText: [],
-      dataCheck: {
+      dataUrl:  { // datos que vienen de la url
+        planId: '',
+        billingCycle: '',
+        layoutId: '',
+      },
+      dataCheck: null,
+      /*dataCheck: {
         user: null,
         terms: false,
         category: null,
         layout: null,
         plan: null,
         organization: '',
-      },
+      }*/
     }
   },
   provide() {
@@ -130,6 +136,7 @@ export default {
       this.init();
     })
   },
+  created() {},
   methods: {
     init() {
       /*this.$cache.remove('org-wizard-step');
@@ -137,11 +144,13 @@ export default {
       this.$cache.remove('org-wizard-plans');
       this.$cache.remove('org-wizard-data');*/
       this.getInfo();
-      this.configSlider();
+      this.configProgress();
+      
     },
-    configSlider(){
-      this.sliderPercent = 100/this.steps.length;
-      this.slider = this.sliderPercent;
+    async configProgress(){
+      this.progressPercent = 1/this.steps.length;
+      const step = await this.$cache.get.item('org-wizard-step');
+      this.progress = this.progressPercent * step;
     },
     //Get data
     getData(refresh = false) {
@@ -162,13 +171,11 @@ export default {
     },
     stepperPrevious(){
       this.verifyStep();
-      this.slider = this.slider - this.sliderPercent;
+      this.progress = this.progress - this.progressPercent;
       this.$refs.stepper.previous();
     },
     async stepperNext(step){
       try {
-        this.slider = this.slider + this.sliderPercent;
-        this.setCacheInfo(this.dataCheck);
         // si llega al final y todo esta lleno envia la info
         if (this.pace === this.steps.length) {
           if((this.dataCheck.user!== null) && 
@@ -180,19 +187,20 @@ export default {
 
               const url = `${this.dataCheck.plan.planUrl}?billingcycle=${this.dataCheck.plan.optionValue.toLowerCase()}&layoutId=${this.dataCheck.layout.id}&organizationName=${this.dataCheck.organization}&categoryId=${this.dataCheck.category.id}&email=${this.dataCheck.user.email}`;
               //Clear cache
+              this.$cache.remove('org-wizard-data');
               this.$cache.remove('org-wizard-step');
               this.$cache.remove('org-wizard-categories');
               this.$cache.remove('org-wizard-plans');
-              this.$cache.remove('org-wizard-data');
               // enviar a url de pago
               this.redirectAfterWizard(url);
 
           }
-        } 
-
-        this.$refs.stepper.next();
-        this.setCacheStep(step+1);
-
+        } else {
+          this.progress = this.progress + this.progressPercent;
+          this.setCacheInfo(this.dataCheck);
+          this.$refs.stepper.next();
+          this.setCacheStep(step+1);
+        }
 
       } catch (error) {
         console.log(error);
@@ -239,6 +247,7 @@ export default {
       // busco la info
       const categories = await storeStepWizard().getCategories();
       const plans = await storeStepWizard().getPlans(PLAN_BASE_ID);
+
       // se guarda en cache
       await this.$cache.set('org-wizard-categories',  categories );
       await this.$cache.set('org-wizard-plans',  plans );
@@ -247,7 +256,6 @@ export default {
       const step = await this.$cache.get.item('org-wizard-step');
       // verifico que info tenia guardada antes de recargar
       const info = await this.$cache.get.item('org-wizard-data');
-      console.log('getInfo',info);
 
       if(step) {        
         this.pace = step;
@@ -258,7 +266,9 @@ export default {
 
       if(info != null) {     
         this.dataCheck = info;
-      } 
+      } else {
+        this.getUrl();
+      }
       
     },
     async setCacheStep(step){
@@ -266,6 +276,79 @@ export default {
     },
     async setCacheInfo(data){
       await this.$cache.set('org-wizard-data',  data );
+    },
+    async getUrl() {
+      // verifico que datos me trae la url
+      this.dataUrl = {
+        planId: this.$route.query.planId,
+        billingCycle: this.$route.query.billingcycle,
+        layoutId: this.$route.query.layoutId,
+      };
+      let layout=null; 
+      let planSelected=null;
+      // si no tiene datos se coloca anual
+      if(this.dataUrl.billingCycle === undefined ) {
+        this.dataUrl.billingCycle = 'annually';
+      } else if(this.dataUrl.billingCycle.toLowerCase() !== 'monthly') {
+        this.dataUrl.billingCycle = 'annually';
+      }
+      // datos bases del plan
+      const plans = await storeStepWizard().getPlans(PLAN_BASE_ID);
+      // si existe un layoutId es la prioridad 
+      if(this.dataUrl.layoutId) {
+        // se revisa si el layoutId pertenece algun plan
+        let planBase = plans.find((value, index) => {
+          const related = value.relatedProducts.map((item) => ({
+            ...item,
+            planId: value.id
+          }));
+          layout = related.find((items) => items.id === parseInt(this.dataUrl.layoutId))
+          if(layout) {
+            return value
+          } else {
+            layout = null
+          }
+        });
+        if(planSelected){
+          planSelected = this.getFilterPlan(planBase,this.dataUrl.billingCycle);
+        } else {
+          planSelected = this.getFilterPlan(plans[1],this.dataUrl.billingCycle);
+        }
+
+      } else {
+        if(this.dataUrl.planId) {
+          let plan = plans.find((items) => items.id === parseInt(this.dataUrl.planId))
+          if(plan) {
+            planSelected = this.getFilterPlan(plan,this.dataUrl.billingCycle);
+          }else {
+            planSelected = this.getFilterPlan(plans[1],this.dataUrl.billingCycle);
+          }  
+        } 
+      }
+      this.dataCheck = {
+        user: null,
+        terms: false,
+        category: null,
+        layout: layout,
+        plan: planSelected,
+        organization: '',
+      };
+
+    },
+    getFilterPlan(plan,billingCycle) {
+      const option = plan.optionValues.filter((item,index)=>item.optionValue.toLowerCase() == billingCycle.toLowerCase());
+      // armo el plan   
+      let planFilter = option.map((item) => ({
+        ...item,
+        planId: plan.id,
+        planName: plan.name,
+        planSummary: plan.summary,
+        planDescription: plan.description,
+        planRelatedProducts: plan.relatedProducts,
+        planUrl: plan.url,
+        active: true,
+      }));
+      return planFilter[0]
     }
   }
 }
@@ -349,9 +432,9 @@ export default {
   background: -webkit-linear-gradient(right,#fff,#e4e2f2);
   width: 100% !important;
 }
-#wizardOrganization .slider-header {
+#wizardOrganization .linear-progress-header {
   @apply tw-absolute;
-  bottom: -14px;
+  bottom: -7px;
 }
 #wizardOrganization .q-dialog__message {
   @apply tw-text-base;

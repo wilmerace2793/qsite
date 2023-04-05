@@ -1,17 +1,18 @@
 <template>
   <div id="indexMasterPage" class="relative-position">
-    <!--Logo-->
-    <div v-if="!quickCards.list1.length" id="logoContent" class="flex flex-center">
-      <img style="max-width: 40vw" :src="$store.state.qsiteApp.logo">
+    <!--Page Actions-->
+    <div class="q-mb-md">
+      <page-actions :title="$tr($route.meta.title)" :excludeActions="['refresh']" :tour-name="tourName"/>
+    </div>
+
+    <!--Activities-->
+    <div id="adminHomeActivities" class="col-12 q-mb-md">
+      <activities system-name="admin_home_actions" @loaded="loading = false" view="cardImage"/>
     </div>
 
     <!--Quick cards-->
     <div v-if="quickCards.list1.length">
       <div class="row q-col-gutter-x-md">
-        <!--Activities-->
-        <div id="adminHomeActivities" class="col-12 q-mb-md">
-          <activities system-name="admin_home_actions" @loaded="loading = false" view="cardImage"/>
-        </div>
         <!-- QuickCards -->
         <div id="quickCardsContent" class="col-12">
           <div class="row q-col-gutter-x-md">
@@ -42,7 +43,7 @@ export default {
     this.$nextTick(function () {
       setTimeout(() => {
         this.loading = false;
-        this.$tour.start("admin_home_tour")
+        this.$tour.start(this.tourName)
       }, 1000);
     })
   },
@@ -50,6 +51,7 @@ export default {
     return {
       testSchedule: false,
       loading: false,
+      tourName: this.$q.platform.is.desktop ? 'admin_home_tour' : 'admin_home_tour_mobile'
     }
   },
   computed: {

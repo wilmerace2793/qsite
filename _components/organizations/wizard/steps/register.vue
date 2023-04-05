@@ -147,4 +147,8 @@ export default {
   font-family: "Material Icons";
   color: var(--q-color-primary);
 }
+.step-register {
+  @apply tw-flex tw-min-h-screen tw-flex-col tw-justify-center;
+  margin-top: -95px;
+}
 </style>

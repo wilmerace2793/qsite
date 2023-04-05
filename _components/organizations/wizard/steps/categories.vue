@@ -202,7 +202,7 @@ export default {
       this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_CATEGORIES);
     },
     async categoryCache(){
-      const categoriesNew = await this.$cache.set('org-wizard-categories',  categories );
+      const categoriesNew  = await storeStepWizard().getCategories();
       await this.$cache.set('org-wizard-categories',  categoriesNew );
       this.categories= categoriesNew; 
     }

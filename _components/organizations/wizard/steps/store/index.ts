@@ -52,7 +52,22 @@ export default function storeStepWizard() {
     }
   }
 
+  async function getPlan(planId:number){
+    try {
+      const params = {
+        filter: {
+          id: planId,
+        },
+        include: 'productOptions,optionValues,relatedProducts,categories'
+      };
+      let response = await baseService.index('apiRoutes.qcommerce.products', {refresh : true, params});
+      return response.data;    
+    } catch (error) {
+      console.log('Error al cargar los planes');
+    }
+  }
 
-  return { getInfoWizard, getCategories, getCategoriesSearch, getPlans }
+
+  return { getInfoWizard, getCategories, getCategoriesSearch, getPlans, getPlan }
 }
 

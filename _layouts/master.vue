@@ -43,8 +43,6 @@
     <!-- Activities Actions -->
     <activities-actions/>
 
-
-
     <!-- FOOTER -->
     <component :is="components.footer"/>
   </q-layout>
@@ -218,6 +216,7 @@ export default {
         {
           systemName: 'help_center',
           view: 'button',
+          vIf: this.$q.platform.is.desktop,
           style: {
             position: 'fixed',
             bottom: '20px',
@@ -231,7 +230,8 @@ export default {
           systemName: 'admin_popup',
           view: 'popup'
         }
-      ]
+      ].filter(act => act.vIf)
+
       return activities
     }
   },
@@ -284,9 +284,10 @@ export default {
 
 <style lang="stylus">
 #layoutMaster {
-  #routerPageContent{
+  #routerPageContent {
     position: relative;
   }
+
   #routeInformationContent {
     width: 100%;
     position: fixed;
