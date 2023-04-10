@@ -43,8 +43,7 @@ export default function ({app, router, store, Vue, ssrContext}) {
   //========== Request interceptor
   axios.interceptors.request.use(async function (config) {
     // Do something before request is sent
-    if (!navigator.onLine){
-      console.log(config);
+    if (!navigator.onLine && config.method !== 'get'){
       const titleOffline = config.data ? config.data.titleOffline || config.params.titleOffline : config.params.titleOffline;
       const user = await cache.get.item('sessionData');
       const request = {

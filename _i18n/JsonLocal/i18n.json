@@ -1638,7 +1638,8 @@
           "token": "Token",
           "refreshAtOnce": "Refresh",
           "refreshEveryMinutes": "Refresh every {min} minutes",
-          "offline": "Offline"
+          "offline": "Offline",
+          "offlineRequests": "Offline Requests"
         },
         "message": {
           "appOffline": "It seems you have no connection. Some actions may not work.",

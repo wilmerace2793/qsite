@@ -1,14 +1,5 @@
 <template>
   <div id="siteActionscomponent" class="tw-flex">
-    <div 
-      v-if="$store.state.qofflineMaster.isAppOffline"
-      class="tw-py-1 tw-text-black">
-      <i class="fa-light fa-cloud-slash tw-py-4" >
-        <q-tooltip content-class="bg-amber text-black shadow-4" :offset="[10, 10]">
-          {{ $tr('isite.cms.label.offline')}}
-        </q-tooltip>
-      </i>
-    </div>
     <div :class="`row q-gutter-${gutter}`">
       <!--Actions-->
       <q-btn v-for="(btn, keyAction) in actions.buttons" :key="keyAction" v-bind="btn.props"
@@ -39,6 +30,8 @@
         </q-menu>
         <!-- Tooltip -->
         <q-tooltip>{{ btn.label }}</q-tooltip>
+        <!-- Badge -->
+        <q-badge v-if="btn.badgeLabel" :color="btn.badgeColor || 'orange'" rounded floating>{{ btn.badgeLabel }}</q-badge>
       </q-btn>
       <!--Auth section-->
       <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" id="profileButton" rounded no-caps
@@ -142,6 +135,21 @@ export default {
 
       return {
         buttons: [
+          //Offline
+          {
+            vIf: true,
+            name: 'offline',
+            label: this.$tr('isite.cms.label.offline'),
+            badgeColor: 'orange',
+            badgeLabel: this.$store.state.qofflineMaster.totalRequests,
+            props: {
+              ...this.defaultButtonProps,
+              icon: 'fa-light fa-cloud-slash',
+
+              class: `btn-small ${this.badge.notification ? 'active-badge' : ''}`
+            },
+            action: () => this.$eventBus.$emit('toggleMasterDrawer', 'offline')
+          },
           //Go To Site
           {
             vIf: this.showGoToSiteButton,
