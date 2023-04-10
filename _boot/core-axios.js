@@ -26,7 +26,7 @@ export default function ({app, router, store, Vue, ssrContext}) {
   //========== Show alert from interceptor
   function showMessages(messages = []) {
     messages.forEach(item => {
-      if(item.message !== '') { 
+      if (item.message !== '') {
         alert[item.type || 'info'](item)
       }
     })
@@ -39,7 +39,20 @@ export default function ({app, router, store, Vue, ssrContext}) {
     const allRequests = await cache.get.item('requests') || [];
     allRequests.push(objReq);
     cache.set('requests', allRequests)
-}
+  }
+
+  //========== Handle the AbortController
+  let abortController = null;
+  router.beforeEach(async (to, from, next) => {
+    // cancel any ongoing requests
+    if (abortController) abortController.abort();
+    //Set new abortController
+    abortController = new AbortController();
+    axios.defaults.signal = abortController.signal;
+    // continue to the next route
+    next();
+  })
+
   //========== Request interceptor
   axios.interceptors.request.use(async function (config) {
     // Do something before request is sent
@@ -63,6 +76,9 @@ export default function ({app, router, store, Vue, ssrContext}) {
       addRequestDB(request);
     }
     store.dispatch('quserAuth/REFRESH_TOKEN');
+    //Set abortController for the GET methods
+    if (config.method == "get") config.signal = abortController ? abortController.signal : null
+    //Return config
     return config;
   }, function (error) {
     // Do something with request error
@@ -75,34 +91,38 @@ export default function ({app, router, store, Vue, ssrContext}) {
     //Response
     return response;
   }, (error) => {
-    //Show messages
-    if (error.response.data && error.response.data.messages) showMessages(error.response.data.messages)
-    //Response
-    if (error.response) {
-      let status = error.response.status;
-      switch (status) {
-        case 401:
-          let routeName = router.currentRoute.name
-          //Logout
-          if ((routeName != 'auth.login') && (routeName != 'auth.change.password'))
-            router.push({name: 'auth.logout'})
-          break;
-        case 400://Intercep request errors to show alert message
-          if (error.response.data && error.response.data.errors) {
-            //Get messages
-            let errorsRequest = JSON.parse(error.response.data.errors)
-            //Instance alert message
-            if (Object.keys(errorsRequest).length) {
-              showMessages([{
-                type: 'error',
-                message: Object.values(errorsRequest).map(item => `<div>• ${item.join(',')}</div>`).join('')
-              }])
+    //if (axios.isCancel(error)) return Promise.reject('axiosIsCancel');
+    if (!axios.isCancel(error)) {
+      //Show messages
+      if (error.response.data && error.response.data.messages) showMessages(error.response.data.messages)
+      //Response
+      if (error.response) {
+        let status = error.response.status;
+        switch (status) {
+          case 401:
+            let routeName = router.currentRoute.name
+            //Logout
+            if ((routeName != 'auth.login') && (routeName != 'auth.change.password'))
+              router.push({name: 'auth.logout'})
+            break;
+          case 400://Intercep request errors to show alert message
+            if (error.response.data && error.response.data.errors) {
+              //Get messages
+              let errorsRequest = JSON.parse(error.response.data.errors)
+              //Instance alert message
+              if (Object.keys(errorsRequest).length) {
+                showMessages([{
+                  type: 'error',
+                  message: Object.values(errorsRequest).map(item => `<div>• ${item.join(',')}</div>`).join('')
+                }])
+              }
             }
-          }
-          break;
+            break;
+        }
       }
     }
-    return Promise.reject(error);//Return response error
+    //Return response error
+    return Promise.reject(error);
   })
 
   //============ Set ignore SSL

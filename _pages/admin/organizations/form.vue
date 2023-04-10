@@ -114,7 +114,11 @@ export default {
             layoutStore().setSelectedLayout(response.data.layoutId);
             resolve(response.data)
           }, 800)
-        }).catch(error => reject(error))
+        }).catch(error => {
+          this.$apiResponse.handleError(error, () => {
+            reject(error)
+          })
+        })
       })
     },
     //get crud data
@@ -131,7 +135,11 @@ export default {
         this.$crud.index('apiRoutes.qsite.icruds', requestParams).then(response => {
           this.crudData = response.data.length ? response.data[0].projectCrud : false
           resolve(response.data)
-        }).catch(error => reject(error))
+        }).catch(error => {
+          this.$apiResponse.handleError(error, () => {
+            reject(error)
+          })
+        })
       })
     },
     //Syn organization data
