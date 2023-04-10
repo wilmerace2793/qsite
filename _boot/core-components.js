@@ -21,6 +21,7 @@ import kanban from '@imagina/qsite/_components/master/kanban/index.vue';
 import folders from '@imagina/qsite/_components/master/folders/index.vue';
 import promiseTemplate from '@imagina/qsite/_components/master/promiseTemplate/index.vue';
 import activities from '@imagina/qgamification/_components/categoryView/index.vue';
+import helpText from '@imagina/qsite/_components/master/helpText.vue';
 
 
 export default ({app, router, store, Vue}) => {
@@ -48,6 +49,7 @@ export default ({app, router, store, Vue}) => {
     {name: 'folders', component: folders},
     {name: 'promiseTemplate', component: promiseTemplate},
     {name: 'activities', component: activities},
+    {name: 'help-text', component: helpText},
   ]
 
   //Register components
