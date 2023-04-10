@@ -50,7 +50,7 @@
 
     <!--Offline-->
     <q-drawer bordered id="drawerOfflineMaster" v-model="drawer.offline" side="right" overlay
-              v-if="$store.getters['qsiteApp/getSettingValueByName']('isite::offline') || true">
+              v-if="$store.getters['qsiteApp/getSettingValueByName']('isite::offline')">
       <offline/>
     </q-drawer>
   </div>
