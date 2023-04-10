@@ -137,7 +137,7 @@ export default {
         buttons: [
           //Offline
           {
-            vIf: $store.getters['qsiteApp/getSettingValueByName']('isite::offline'),
+            vIf: this.$store.getters['qsiteApp/getSettingValueByName']('isite::offline'),
             name: 'offline',
             label: this.$tr('isite.cms.label.offline'),
             badgeColor: 'orange',
