@@ -166,7 +166,7 @@ export default {
         //Tour
         {
           label: 'Tour',
-          vIf: this.tourName,
+          vIf: (this.tourName && !config("app.disableTours")),
           props: {
             icon: 'fa-duotone fa-shoe-prints',
             id: 'actionStartTour'

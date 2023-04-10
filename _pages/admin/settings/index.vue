@@ -216,8 +216,10 @@ export default {
           if (Object.keys(settingsFields).length) this.dataSettings = settingsFields
           resolve(response.data)
         }).catch(e => {
-          this.$alert.error(this.$tr('isite.cms.message.errorRequest'))
-          resolve([])
+          this.$apiResponse.handleError(error, () => {
+            this.$alert.error(this.$tr('isite.cms.message.errorRequest'))
+            resolve([])
+          })
         })
       })
     },
@@ -234,8 +236,10 @@ export default {
           this.deprecatedSettings = this.$clone(response.data)
           resolve(response.data)
         }).catch(e => {
-          this.$alert.error(this.$tr('isite.cms.message.errorRequest'))
-          resolve([])
+          this.$apiResponse.handleError(error, () => {
+            this.$alert.error(this.$tr('isite.cms.message.errorRequest'))
+            resolve([])
+          })
         })
       })
     },

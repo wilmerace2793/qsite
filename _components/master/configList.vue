@@ -342,8 +342,10 @@ export default {
           this.userList = this.$clone(options)
         })
       }).catch(error => {
-        update(() => {
-          this.userList = []
+        this.$apiResponse.handleError(error, () => {
+          update(() => {
+            this.userList = []
+          })
         })
       })
     },

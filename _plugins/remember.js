@@ -51,7 +51,6 @@ class Remember {
           //Save in cache
           await cache.set(params.key, responseData)
         }).catch(error => {
-          console.error('[remember-async-callback]Error::', error)
           dataError = error
         })
       }
