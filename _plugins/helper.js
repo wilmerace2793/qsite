@@ -554,10 +554,12 @@ class Helper {
         .replace('_', '')
     );
   }
+
   // validate Url
   validateUrl(url) {
     return /^(http|https):\/\/[^\s/$.?#].[^\s]*$/.test(url)
   }
+
   //snakeCase to Camel
   async convertStringToObject() {
     try {
@@ -582,6 +584,18 @@ class Helper {
     } catch (error) {
       Vue.prototype.$alert.error('The filter url is misspelled');
       console.log(error);
+    }
+  }
+
+  //Return the module and entity name from permission string
+  getInfoFromPermission(permission) {
+    if (!permission) return null
+    //Parse Route Permission
+    let splitPermission = permission.split('.')
+    //Instance the response
+    return {
+      module: (splitPermission[0] == 'profile') ? 'iprofile' : splitPermission[0],
+      entity: splitPermission[1]
     }
   }
 }
