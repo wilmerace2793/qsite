@@ -1395,9 +1395,11 @@ export default {
             this.loading = false
             resolve(true)
           }).catch(error => {
-            this.$alert.error({message: this.$tr('isite.cms.message.errorRequest'), pos: 'bottom'})
-            this.loading = false
-            reject(true)
+            this.$apiResponse.handleError(error, () => {
+              this.$alert.error({message: this.$tr('isite.cms.message.errorRequest'), pos: 'bottom'})
+              this.loading = false
+              reject(true)
+            })
           })
           //==== Delayed loading options
         } else if (loadOptions.delayed) {
@@ -1495,8 +1497,10 @@ export default {
           }
           resolve(ruleResponse)
         }).catch(error => {
-          console.error(error)
-          resolve(ruleResponse)
+          this.$apiResponse.handleError(error, () => {
+            console.error(error)
+            resolve(ruleResponse)
+          })
         })
       })
     },
@@ -1550,6 +1554,8 @@ export default {
                 ...this.rootOptions,
                 ...this.$array.select(response.data, fieldSelect)
               ]
+            }).catch(error => {
+              this.$apiResponse.handleError(error, () => {})
             })
           }
         }

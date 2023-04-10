@@ -573,7 +573,11 @@ export default {
           this.formBlocks = response.data
           this.$emit('obtainedForm', this.$clone(response.data))
           resolve(response.data)
-        }).catch(error => reject(error))
+        }).catch(error => {
+          this.$apiResponse.handleError(error, () => {
+            reject(error)
+          })
+        })
       })
     },
     //set locale form data

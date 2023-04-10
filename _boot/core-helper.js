@@ -16,6 +16,7 @@ import filter from '@imagina/qsite/_plugins/filter'
 import VueSignaturePad from 'vue-signature-pad';
 import notificationPlugin from '@imagina/qnotification/_plugins/notification'
 import {tour} from '@imagina/qgamification/_plugins/tour'
+import apiResponse from '@imagina/qcrud/_plugins/apiResponse'
 
 export default function ({app, router, store, Vue, ssrContext}) {
   Vue.prototype.$alert = alert
@@ -49,6 +50,7 @@ export default function ({app, router, store, Vue, ssrContext}) {
     },
   }
   Vue.prototype.$uid = uid
+  Vue.prototype.$apiResponse = apiResponse
   Vue.use(moment)
   Vue.use(Vuelidate)
   Vue.use(VueSignaturePad)

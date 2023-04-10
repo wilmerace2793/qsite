@@ -176,7 +176,11 @@ export default {
           this.loading = false
           this.items = response.data
           resolve(response.data)
-        }).catch(error => this.loading = false)
+        }).catch(error => {
+          this.$apiResponse.handleError(error, () => {
+            this.loading = false
+          })
+        })
       })
     },
   }

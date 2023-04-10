@@ -428,7 +428,9 @@ export default {
           this.table.pagination.descending = this.$clone(pagination.descending)
           this.loading = false
         }).catch(error => {
-          this.loading = false
+          this.$apiResponse.handleError(error, () => {
+            this.loading = false
+          })
         })
       })
     },

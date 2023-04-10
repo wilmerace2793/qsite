@@ -232,7 +232,9 @@ export default {
         }, 1000);
         return response.data;
       } catch (error) {
-        this.loading = true
+        this.$apiResponse.handleError(error, () => {
+          this.loading = true
+        })
       }
     },
     submitData() {
@@ -259,8 +261,8 @@ export default {
           date: this.form.run.date
         }
       }
-      const crud = this.automationId 
-        ? this.$crud.update(route, this.automationId ,ruleData) 
+      const crud = this.automationId
+        ? this.$crud.update(route, this.automationId ,ruleData)
         : this.$crud.create(route, ruleData);
       //Request
       crud.then(response => {
