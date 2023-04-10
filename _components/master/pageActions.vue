@@ -1,9 +1,11 @@
 <template>
   <div id="pageActionscomponent" class="row q-col-gutter-y-sm full-width items-center justify-between">
     <!--Title-->
-    <div :class="`text-primary text-weight-bold ellipsis title-content`">
+    <div :class="`row text-primary text-weight-bold ellipsis title-content items-center`">
       <q-icon v-if="icon" :name="icon" size="22px" class="q-mr-sm"/>
       <label id="titleCrudTable" v-if="title">{{ title }}</label>
+      <!--Help Text: Page documentation-->
+      <help-text v-if="pageDocumentation" v-bind="pageDocumentation"/>
     </div>
     <!--Actions-->
     <div :class="`actions-content row q-gutter-${gutter} items-center justify-end items-start`">
@@ -267,6 +269,25 @@ export default {
       }
       //Response
       return response
+    },
+    //Page Documentation
+    pageDocumentation() {
+      let response = null
+      //Get params from page permission
+      let params = this.$helper.getInfoFromPermission(this.$route.meta.permission)
+      if (params) {
+        //instance the config name
+        let configName = `${params.module}.documentation.${params.entity}`
+        //Search the config
+        response = this.$store.getters['qsiteApp/getConfigApp'](configName)
+      }
+      //Response
+      return !response ? null : {
+        title: this.title,
+        description: response,
+        icon: this.$route.meta.icon,
+        class: 'q-ml-sm'
+      }
     }
   },
   methods: {
