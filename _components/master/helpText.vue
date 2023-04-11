@@ -16,7 +16,7 @@
       <!--Icon and title-->
       <div class="text-center">
         <q-icon :name="icon || defaultIcon" :color="defaultColor" size="25px" class="q-mb-sm"/>
-        <div v-if="title" class="q-mb-sm text-blue-grey">{{ title }}</div>
+        <div v-if="title" class="q-mb-sm text-blue-grey text-weight-bold">{{ title }}</div>
       </div>
       <q-separator class="q-my-xs"/>
       <!--description-->

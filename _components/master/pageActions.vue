@@ -19,7 +19,7 @@
         </template>
       </q-input>
       <!--Button Actions-->
-      <div v-for="(btn, keyAction) in actions" :key="keyAction" v-if="btn.vIf != undefined ? btn.vIf : true">
+      <div v-for="(btn, keyAction) in actions" :key="keyAction">
         <!-- if the button is dropdown -->
         <q-btn-dropdown split v-bind="{...buttonProps}"
                         v-if="btn.type == 'btn-dropdown'" outline
@@ -249,7 +249,7 @@ export default {
       }
 
       //Response
-      return response
+      return response.filter(item => item.vIf !== undefined ? item.vIf : true)
     },
     //Quick filters
     quickFilters() {
