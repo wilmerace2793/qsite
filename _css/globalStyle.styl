@@ -351,3 +351,30 @@ import('@riophae/vue-treeselect/dist/vue-treeselect.css')
 .tour-secondary
   background-color #f3f3f3 !important
   color rgba(0, 0, 0, .75) !important
+
+
+//Builder
+.text-primary-builder
+  color $primaryBuilder
+
+.bg-primary-builder
+  background-color $primaryBuilder
+
+.text-secondary-builder
+  color $secondaryBuilder
+
+.bg-secondary-builder
+  background-color $secondaryBuilder
+
+.hover-effect-border
+  position relative
+  cursor pointer
+
+  &:hover::after
+    content: ""
+    position: absolute
+    top: -8px
+    left: -8px
+    right: -8px
+    bottom: -8px
+    border 2px solid $primary
