@@ -31,13 +31,18 @@ export default function ({app, router, store, Vue, ssrContext}) {
       }
     })
   }
-  async function addRequestDB(request) {
+  async function addRequestDB(request, userID) {
     const objReq = {
         _id: new Date().toISOString(),
         ...request
     };
-    const allRequests = await cache.get.item('requests') || [];
-    allRequests.push(objReq);
+    const allRequests = await cache.get.item('requests') || {};
+    if (allRequests[userID]) {
+      allRequests[userID].push(objReq)
+    }else{
+      allRequests[userID] = [];
+      allRequests[userID].push(objReq)
+    }
     cache.set('requests', allRequests)
   }
 
@@ -72,7 +77,7 @@ export default function ({app, router, store, Vue, ssrContext}) {
         params: config.params,
         titleOffline,
       };
-      addRequestDB(request);
+      addRequestDB(request, user.userData.id);
     }
     store.dispatch('quserAuth/REFRESH_TOKEN');
     //Set abortController for the GET methods

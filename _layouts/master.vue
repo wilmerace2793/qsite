@@ -41,6 +41,8 @@
     <!-- Activities Actions -->
     <activities-actions/>
 
+    <Progressrequest />
+
     <!-- FOOTER -->
     <component :is="components.footer"/>
   </q-layout>
@@ -63,6 +65,7 @@ import footerPanel from '@imagina/qsite/_components/panel/footer'
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
 import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
 import Alert from '@imagina/qoffline/_components/Alert.vue'
+import Progressrequest from '@imagina/qoffline/_components/Progressrequest.vue'
 
 export default {
   name: "MasterLayout",
@@ -97,7 +100,8 @@ export default {
     drawersPanel,
     footerPanel,
     //Offline
-    Alert
+    Alert,
+    Progressrequest
   },
   watch: {
     shouldChangePassword(data) {
