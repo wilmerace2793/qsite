@@ -21,24 +21,7 @@
         </div>
         <!-- Help btn -->
         <div v-if="helpLoad.load && field.help && field.help.description" :class="helpLoad.class">
-          <q-btn size="xs" class="after-field"
-                 :style="'margin:'+helpLoad.margin"
-                 round color="info"
-                 icon="fa-light fa-info"
-                 unelevated
-          >
-            <q-menu id="dynamicFieldMenuHelp" v-model="tooltip" anchor="top right" self="top right">
-              <!--actions-->
-              <div class="row justify-between items-center">
-                <q-icon name="fas fa-info" color="info"/>
-                <q-btn icon="fas fa-times" v-close-popup color="blue-grey" size="8px" unelevated
-                       round outline padding="xs"/>
-              </div>
-              <q-separator class="q-my-xs"/>
-              <!--description-->
-              <div id="contentHelp" v-html="field.help.description"/>
-            </q-menu>
-          </q-btn>
+          <help-text :title="fieldLabel" :description="field.help.description" :btn-style="`margin:${helpLoad.margin}`"/>
         </div>
         <!--Crud-->
         <crud v-model="responseValue" @created="getOptions" v-bind="fieldProps" :key="field.name"
@@ -477,7 +460,6 @@ export default {
       fieldKey: this.$uid(),
       responseValue: null,//value to response
       showPassword: false,//to show password,
-      tooltip: false,
       options: [],//Options
       rootOptions: [],//Options
       rootOptionsData: [],//Options
@@ -1341,9 +1323,8 @@ export default {
         let loadOptions = this.$clone(this.field.loadOptions || {})
         //Instance default options keeping the options for the selected values
         let defaultOptions = this.$clone([
-            ...(this.field.props?.options || []),
-            ...this.rootOptions.filter(opt => this.responseValue 
-            ? this.responseValue.includes((opt.value || opt.id).toString()): false)
+          ...(this.field.props?.options || []),
+          ...this.rootOptions.filter(opt => this.responseValue.includes((opt.value || opt.id).toString()))
         ])
 
         //==== Request options
@@ -1558,7 +1539,8 @@ export default {
                 ...this.$array.select(response.data, fieldSelect)
               ]
             }).catch(error => {
-              this.$apiResponse.handleError(error, () => {})
+              this.$apiResponse.handleError(error, () => {
+              })
             })
           }
         }
@@ -1613,9 +1595,6 @@ export default {
       .q-icon, .q-field__label, input
         color white
 
-  .after-field
-    z-index 4
-
   #bannerField
     .content
       border-radius $custom-radius-items
@@ -1627,15 +1606,4 @@ export default {
 
 #ckEditorComponent
   width 100%
-
-#dynamicFieldMenuHelp
-  border 2px solid $info
-  padding 10px 15px
-  border-radius $custom-radius-items
-
-  #contentHelp
-    max-width 20em
-    line-height 1.3
-    color $blue-grey
-    text-align justify
 </style>

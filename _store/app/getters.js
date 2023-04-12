@@ -1,4 +1,5 @@
 import array from '@imagina/qsite/_plugins/array'
+import helper from '@imagina/qsite/_plugins/helper'
 import cloneDeep from 'lodash.clonedeep'
 
 export const getExtra = (state) => (name) => {
@@ -93,3 +94,19 @@ export const getSelectedLocalesSelect = (state) => {
   //Return array select form selected languages
   return selectLanguages
 };
+
+export const getConfigApp = (state) => (path) => {
+  let response = state.configs
+  let keys = path.toLowerCase().split(".")
+  //Parse the config object
+  keys.forEach(key => {
+    if (response) {
+      //Search the next key as lowercase
+      let nextKey = Object.keys(response).find(k => k.toLowerCase() === key)
+      //Set the response
+      response = response[nextKey];
+    }
+  })
+  //Response
+  return response
+}
