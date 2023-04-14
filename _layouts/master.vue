@@ -41,8 +41,6 @@
     <!-- Activities Actions -->
     <activities-actions/>
 
-    <Progressrequest />
-
     <!-- FOOTER -->
     <component :is="components.footer"/>
   </q-layout>
