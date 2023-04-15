@@ -2,33 +2,34 @@
   <div class="step-register">
 
     <div class="auth-register tw-flex tw-mx-auto tw-flex-col">
-        <!--Auth Type-->
-        <div class="auth-register-internal">
-            <!--Register-->
-            <register-form @logged="checkAfterLogin()" class="full-width"/>
+      <!--Auth Type-->
+      <div class="auth-register-internal">
+        <!--Register-->
+        <register-form @logged="checkAfterLogin()" class="full-width"
+                       rolesToRegister="iprofile::rolesToRegisterInWizard"/>
+      </div>
+      <!--Auth social-->
+      <div class="auth-register-social h-auto" v-if="withAuthSocial">
+        <q-separator class="tw-mb-6"/>
+        <!--Actions-->
+        <div class="row justify-center q-gutter-sm">
+          <google-auth/>
+          <facebook-auth/>
+          <microsoftAuth @logged="checkAfterLogin()"/>
         </div>
-        <!--Auth social-->
-        <div class="auth-register-social h-auto" v-if="withAuthSocial"> 
-            <q-separator class="tw-mb-6"/>
-            <!--Actions-->
-            <div class="row justify-center q-gutter-sm">
-              <google-auth />
-              <facebook-auth />
-              <microsoftAuth @logged="checkAfterLogin()" />
-            </div>
-        </div>
+      </div>
     </div>
-    
+
     <div class="step-sidebar ">
-      <div class="step-register-text">  
-        
-          <div class="tw-text-xl lg:tw-text-3xl xl:tw-text-4xl tw-px-6 tw-text-center tw-pb-6 tw-font-bold">
-            {{stepContent.title}}
-          </div>
-          <div class="register-description tw-text-md xl:tw-text-lg tw-pb-4 tw-text-justify" 
-              v-html="stepContent.description">
-          </div>  
-       
+      <div class="step-register-text">
+
+        <div class="tw-text-xl lg:tw-text-3xl xl:tw-text-4xl tw-px-6 tw-text-center tw-pb-6 tw-font-bold">
+          {{ stepContent.title }}
+        </div>
+        <div class="register-description tw-text-md xl:tw-text-lg tw-pb-4 tw-text-justify"
+             v-html="stepContent.description">
+        </div>
+
       </div>
     </div>
 
@@ -36,7 +37,7 @@
 </template>
 <script>
 import storeStepWizard from './store/index.ts';
-import { STEP_NAME_REGISTER } from './model/constant.js';
+import {STEP_NAME_REGISTER} from './model/constant.js';
 import registerForm from '@imagina/quser/_components/auth/register'
 import facebookAuth from '@imagina/quser/_components/socialAuth/facebook'
 import googleAuth from '@imagina/quser/_components/socialAuth/google'
@@ -47,9 +48,9 @@ import momenttz from 'moment-timezone';
 
 export default {
   components: {
-    registerForm, 
-    facebookAuth, 
-    googleAuth, 
+    registerForm,
+    facebookAuth,
+    googleAuth,
     microsoftAuth,
   },
   props: {
@@ -79,13 +80,13 @@ export default {
     },
   },
   methods: {
-    checkAfterLogin(){
+    checkAfterLogin() {
       //preguntar por setting para validar timeZone
       this.checkTimeZone()
       //else
       this.redirectAfterLogin()
     },
-    checkTimeZone(){
+    checkTimeZone() {
       //Modal persistent...
       //si no tiene timezone abre modal - Seleccione timezone - requestAsync put actualizando timeZone
       // check si guardo timezone...
@@ -96,8 +97,8 @@ export default {
     redirectAfterLogin() {
       try {
         const user = this.$store.getters["quserAuth/user"];
-        if(user.email){
-          this.$emit("update", { active: true, info: { email: user.email} });
+        if (user.email) {
+          this.$emit("update", {active: true, info: {email: user.email}});
         }
       } catch (error) {
         console.log('error en user');
@@ -112,41 +113,51 @@ export default {
 <style>
 .step-register .step-register-text {
   -webkit-animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-	animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  animation: fade-in-left 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
+
 .step-register .box {
   @apply tw-shadow-none;
 }
+
 .step-register .box-title {
   color: var(--q-color-blue-grey-9);
 }
+
 .step-register .auth-register {
   max-width: 300px;
 }
-.step-register .auth-register .q-stepper__content  {
+
+.step-register .auth-register .q-stepper__content {
   width: auto !important;
   min-height: auto !important;
   display: contents;
 }
+
 #formContent + .text-center.full-width {
   display: none;
 }
+
 .step-register .q-stepper__content.q-panel-parent {
-  padding: 0!important;
+  padding: 0 !important;
 }
+
 .step-register .register-description ul {
   @apply tw-ml-3 tw-mt-3;
 }
+
 .step-register .register-description ul li {
   @apply tw-flex tw-mb-2;
 }
+
 .step-register .register-description ul li:before {
-  content:'\e5ca';
+  content: '\e5ca';
   margin-right: 10px;
   font-size: 24px;
   font-family: "Material Icons";
   color: var(--q-color-primary);
 }
+
 .step-register {
   @apply tw-flex tw-min-h-screen tw-flex-col tw-justify-center;
   margin-top: -95px;
