@@ -176,6 +176,8 @@ export default {
               {label: this.$tr('isite.cms.label.lastYear'), value: 'lastYear'},
               {label: this.$tr('isite.cms.label.numYearsAgo', {numYears: 2}), value: 'twoYearsAgo'},
               {label: this.$tr('isite.cms.label.lastNumYears', {numYears: 2}), value: 'lastTwoYears'},
+              {label: this.$tr('isite.cms.label.daysAroundToday', {numDays: 15 }), value: '15daysAroundToday'},
+              {label: this.$tr('isite.cms.label.daysAroundToday', {numDays: 5 }), value: '5daysAroundToday'}
             ]
           }
         },
