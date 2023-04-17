@@ -191,7 +191,7 @@ export default {
               (this.dataCheck.plan !== null) &&
               (this.dataCheck.organization !== '')) {
 
-            const url = `${this.dataCheck.plan.planUrl}?billingcycle=${this.dataCheck.plan.optionValue.toLowerCase()}&layoutId=${this.dataCheck.layout.id}&organizationName=${this.dataCheck.organization}&categoryId=${this.dataCheck.category.id}&email=${this.dataCheck.user.email}`;
+            const url = `${this.dataCheck.plan.planUrl}&billingcycle=${this.dataCheck.plan.optionValue.toLowerCase()}&layoutId=${this.dataCheck.layout.id}&organizationName=${this.dataCheck.organization}&categoryId=${this.dataCheck.category.id}&email=${this.dataCheck.user.email}`;
             //Clear cache
             this.$cache.remove('org-wizard-data');
             this.$cache.remove('org-wizard-step');
