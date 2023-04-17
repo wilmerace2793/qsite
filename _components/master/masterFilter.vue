@@ -386,6 +386,14 @@ export default {
               fromDate = this.$moment().startOf('year').format('YYYY-MM-DD 00:00:00')
               toDate = this.$moment().endOf('year').format('YYYY-MM-DD 23:59:59')
               break;
+            case '15daysAroundToday':
+                fromDate = this.$moment().subtract(7, 'days').format('YYYY-MM-DD 00:00:00');
+                toDate = this.$moment().add(7, 'days').format('YYYY-MM-DD 23:59:59');
+              break;
+            case '5daysAroundToday':
+                fromDate = this.$moment().subtract(2, 'days').format('YYYY-MM-DD 00:00:00');
+                toDate = this.$moment().add(2, 'days').format('YYYY-MM-DD 23:59:59');
+              break;
             case 'customRange':
               if (fromDate)
                 fromDate = this.$moment(fromDate).format('YYYY-MM-DD 00:00:00')
