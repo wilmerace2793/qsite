@@ -1324,7 +1324,7 @@ export default {
         //Instance default options keeping the options for the selected values
         let defaultOptions = this.$clone([
           ...(this.field.props?.options || []),
-          ...this.rootOptions.filter(opt => this.responseValue.includes((opt.value || opt.id).toString()))
+          ...this.rootOptions.filter(opt => this.responseValue && this.responseValue.includes((opt.value || opt.id).toString()))
         ])
 
         //==== Request options
