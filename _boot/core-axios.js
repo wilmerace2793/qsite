@@ -46,6 +46,13 @@ export default function ({app, router, store, Vue, ssrContext}) {
     cache.set('requests', allRequests)
   }
 
+  function getOfflineTitle(config){
+    if (config.data) {
+      return config.data.titleOffline || config.params.titleOffline;
+    }
+    return config.params.titleOffline;
+  }
+
   //========== Handle the AbortController
   let abortController = null;
   router.beforeEach(async (to, from, next) => {
@@ -62,7 +69,7 @@ export default function ({app, router, store, Vue, ssrContext}) {
   axios.interceptors.request.use(async function (config) {
     // Do something before request is sent
     if (!navigator.onLine && config.method !== 'get'){
-      const titleOffline = config.data ? config.data.titleOffline || config.params.titleOffline : config.params.titleOffline;
+      const titleOffline = getOfflineTitle(config);
       const user = await cache.get.item('sessionData');
       const request = {
         url: config.baseURL + config.url,

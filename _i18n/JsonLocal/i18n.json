@@ -1122,6 +1122,7 @@
           "cargoTotalKilosLoaded": "Kilos Loaded"
         },
         "label": {
+          "workOrders": "Work Oders",
           "scheduled": "scheduled",
           "scheduledDelayed": "scheduled Delayed",
           "active": "active",
@@ -2946,6 +2947,9 @@
           "map": "Map",
           "schedule": "Calendario",
           "scheduleStatus": "Estado del calendario"
+        },
+        "label": {
+          "workOrders": "Work Oders"
         }
       }
     },
