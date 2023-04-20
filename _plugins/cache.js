@@ -144,15 +144,17 @@ class localCache {
   //Remove all items from storage
   clear() {
     return new Promise((resolve, reject) => {
-      if (!process.env.CLIENT) return resolve(undefined) //Validate if is side Server
-      this.keys().then(keys => {
-        keys.forEach(async key => !key.includes("requests") && await this.remove(key));
-      })
+      // if (!process.env.CLIENT) return resolve(undefined) //Validate if is side Server
+      // this.keys().then(keys => {
+      //   keys.forEach(async key => !key.includes("requests") && await this.remove(key));
+      // }).then(() => resolve(true))
 
-      // LocalForage.clear().then(value => {
-      //   resolve(true)
-      // }).catch(error => {
-      // })
+      // console.log('DDDDDDDDDDDDDDDDDDDDDDD')
+
+      LocalForage.clear().then(value => {
+        resolve(true)
+      }).catch(error => {
+      })
     })
   }
 

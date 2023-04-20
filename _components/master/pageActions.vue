@@ -56,7 +56,7 @@
     <!--Description-->
     <div v-if="description" class="ellipsis-2-lines col-12 description-content">{{ description }}</div>
     <!--Filter data-->
-    <div class="col-12 tw-mt-3" v-if="filter.hasValues || Object.keys(quickFilters).length">
+    <div class="col-12 tw-mt-3" v-if="(filter.hasValues || Object.keys(quickFilters).length) && !isAppOffline">
       <!--<q-separator class="q-mb-sm"/>-->
       <div class="text-blue-grey ellipsis text-caption items-center row">
         <q-icon name="fa-light fa-filter" class="q-mr-xs" color="amber" size="18px"/>
@@ -188,7 +188,7 @@ export default {
         //Filter
         {
           label: this.$tr('isite.cms.label.filter'),
-          vIf: (this.filter.load && !excludeActions.includes('filter')),
+          vIf: (this.filter.load && !excludeActions.includes('filter') && !this.isAppOffline),
           props: {
             icon: 'fa-duotone fa-filter',
             id: 'filter-button-crud',
