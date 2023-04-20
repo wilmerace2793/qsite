@@ -13,7 +13,8 @@
       <!--List iadmin-->
       <q-scroll-area id="adminMenu" class="bg-primary" :style="`height: calc(100vh - 146px`">
         <!--Menu-->
-        <menu-list ref="menuList" group :translatable="menuTranslatable" :menu="menuSelect"/>
+        <menu-list ref="menuList" group :translatable="menuTranslatable" :menu="menuSelect"
+                   :with-tooltip="miniState" :tooltip-props="{anchor:'center right'}"/>
       </q-scroll-area>
     </q-drawer>
 
