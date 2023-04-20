@@ -7,15 +7,33 @@ class cacheOffline {
   async addNewRecord(apiRoute, data = {}) {
     const route = `${apiRoute}::offline`;
     const cacheResponse = await cache.get.item(route) || { data: [] };
-    cacheResponse.data.unshift({...data})
-    cache.set(route, cacheResponse);
+    await cacheResponse.data.unshift({...data})
+    await cache.set(route, cacheResponse);
+    return true;
   }
 
   async updateRecord(apiRoute, data = {}){
     const route = `${apiRoute}::offline`;
     const cacheResponse = await cache.get.item(route) || { data: [] };
-    const records = cacheResponse.data.map(WO => WO.id === data.id ? data : WO);
-    cache.set(route, {data: records});
+    const records = await cacheResponse.data.map(WO => WO.id === data.id ? data : WO);
+    await cache.set(route, {data: records});
+    return true;
+  }
+
+  async updateList(apiRoute, data){
+    const route = `${apiRoute}::offline`;
+    await cache.set(route, data);
+    return true;
+  }
+
+  async deleteItem(itemId, apiRoute = 'apiRoutes.qramp.workOrders'){
+    const route = `${apiRoute}::offline`;
+    const cacheResponse = await cache.get.item(route) || { data: [] };
+    const records = await cacheResponse.data.filter(WO => WO.id !== itemId);
+    await cache.set(route, {data: records});
+    const xd = await cache.get.item(route) || { data: [] };
+    console.log(xd);
+    return true;
   }
 }
 
