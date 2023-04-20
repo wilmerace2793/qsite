@@ -3,9 +3,13 @@
     <div id="listMenu">
       <q-no-ssr v-for="(item,key) in menuData" :key="key" :class="`content-item ${inLine ? 'inline-block' : ''}`">
         <!--ToolTip-->
-        <q-tooltip v-if="withTooltip">{{ translatable ? $tr(item.title) : item.title }}</q-tooltip>
+        <q-tooltip v-if="withTooltip" v-bind="tooltipProps || {}">{{
+            translatable ? $tr(item.title) : item.title
+          }}
+        </q-tooltip>
         <!--Single Item-->
-        <q-item :id="`menuItem-${parseIdItem(item.name)}` || `menuItem-${key}`" v-bind="item.itemProps" v-if="item.itemProps.vIf != undefined ? item.itemProps.vIf : true">
+        <q-item :id="`menuItem-${parseIdItem(item.name)}` || `menuItem-${key}`" v-bind="item.itemProps"
+                v-if="item.itemProps.vIf != undefined ? item.itemProps.vIf : true">
           <q-item-section v-if="item.icon && showIcons" avatar>
             <q-icon :name="item.icon"/>
           </q-item-section>
@@ -37,7 +41,8 @@ export default {
     showIcons: {type: Boolean, default: true},
     translatable: {type: Boolean, default: true},
     inLine: {type: Boolean, default: false},
-    group: {type: Boolean, defualt: false}
+    group: {type: Boolean, defualt: false},
+    tooltipProps: {type: Object, default: null}
   },
   watch: {
     menu() {
@@ -51,7 +56,7 @@ export default {
   },
   data() {
     return {
-      showMenu : false,
+      showMenu: false,
       listUid: this.$uid().toString(),
       props: {}
     }
@@ -90,8 +95,9 @@ export default {
       }, 300)
     },
     //Parse Id Item
-    parseIdItem(idItem){
-      return idItem.replaceAll(".", "");;
+    parseIdItem(idItem) {
+      return idItem.replaceAll(".", "");
+      ;
     },
     //Validate if should load single-item
     checkItemSingle(item) {
@@ -151,7 +157,7 @@ export default {
     //Validate if item is same of current page
     getClassItem(item) {
       let response = 'single-item'
-      
+
       if (this.$route.name == item.name) {
         if (JSON.stringify(this.$route.params) == JSON.stringify(item.params || {})) {
           response += ' item-is-active'
