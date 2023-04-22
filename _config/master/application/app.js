@@ -57,11 +57,12 @@ export default {
       'auth.role.id',
       'impersonatorData',
       'app.state.extra',
-      'auth.organization.id'
+      'auth.organization.id',
+      'requests'
     ],
     logout: [
-      'offlineRequests',
       'site.default.locale',
+      'requests'
     ]
   },
   //Reset Store

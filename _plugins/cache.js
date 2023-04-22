@@ -120,7 +120,7 @@ class localCache {
 
       //Remove keys
       keysToRemove.forEach(key => {
-        if (!key.includes('offline') && key !== 'requests') {
+        if (key !== 'requests') {
           LocalForage.removeItem(key)
         }
       })
@@ -144,13 +144,14 @@ class localCache {
   //Remove all items from storage
   clear() {
     return new Promise((resolve, reject) => {
-      // if (!process.env.CLIENT) return resolve(undefined) //Validate if is side Server
+      if (!process.env.CLIENT) return resolve(undefined) //Validate if is side Server
       // this.keys().then(keys => {
       //   keys.forEach(async key => !key.includes("requests") && await this.remove(key));
       // }).then(() => resolve(true))
 
       // console.log('DDDDDDDDDDDDDDDDDDDDDDD')
 
+      console.warn("clearing cache")
       LocalForage.clear().then(value => {
         resolve(true)
       }).catch(error => {
