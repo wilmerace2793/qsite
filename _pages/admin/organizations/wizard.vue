@@ -190,16 +190,13 @@ export default {
               (this.dataCheck.layout !== null) &&
               (this.dataCheck.plan !== null) &&
               (this.dataCheck.organization !== '')) {
-
-            const url = `${this.dataCheck.plan.planUrl}&billingcycle=${this.dataCheck.plan.optionValue.toLowerCase()}&layoutId=${this.dataCheck.layout.id}&organizationName=${this.dataCheck.organization}&categoryId=${this.dataCheck.category.id}&email=${this.dataCheck.user.email}`;
             //Clear cache
             this.$cache.remove('org-wizard-data');
             this.$cache.remove('org-wizard-step');
             this.$cache.remove('org-wizard-categories');
             this.$cache.remove('org-wizard-plans');
             // enviar a url de pago
-            this.redirectAfterWizard(url);
-
+            this.redirectAfterWizard();
           }
         } else {
           this.progress = this.progress + this.progressPercent;
@@ -245,8 +242,39 @@ export default {
       this.isActive = current.done;
       this.setCacheStep(current.id - 1);
     },
-    redirectAfterWizard(url) {
-      this.$helper.openExternalURL(url, false)
+    redirectAfterWizard() {
+      //Instance the url
+      let url = null
+      //Get setting to know the wizard type
+      const wizardType = this.$store.getters['qsiteApp/getSettingValueByName']('isite::wizardTenantType')
+      //Instance the needed params
+      const params = {
+        billingcycle: this.dataCheck.plan.optionValue.toLowerCase(),
+        layoutId: this.dataCheck.layout.id,
+        organizationName: this.dataCheck.organization,
+        categoryId: this.dataCheck.category.id,
+        email: this.dataCheck.user.email,
+        planId: this.dataCheck.plan.product.entity.id //Keep this to works with local type
+      }
+      //Validate and get the url to redirect
+      switch (wizardType) {
+        case 'weygo':
+          //Get the url to redirect from the product
+          url = this.dataCheck.plan.planUrl
+          //Add parameters to the url
+          Object.keys(params).forEach(paramName => url += `&${paramName}=${params[paramName]}`)
+          break
+        default://Local
+          //Request
+          this.$crud.create('apiRoutes.qplan.buy', params).then(response => {
+            if (response.data && response.data.redirectTo) url = response.data.redirectTo
+          }).catch(error => {
+            this.$alert.error({message: `${this.$tr('isite.cms.message.recordNoCreated')}`})
+          })
+          break
+      }
+      //Redirect
+      if (url) this.$helper.openExternalURL(url, false)
     },
     async getInfo() {
       this.dataText = await storeStepWizard().getInfoWizard(ID_CATE_ACTIVITIES);
