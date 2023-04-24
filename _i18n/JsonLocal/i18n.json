@@ -1201,7 +1201,8 @@
           "customers": "Customers",
           "costCenters": "Cost Centers",
           "gates": "Parking Spots",
-          "areas": "Areas"
+          "areas": "Areas",
+          "passengerCarrierStations": "Passenger Carrier Stations"
         },
         "message": {}
       }
