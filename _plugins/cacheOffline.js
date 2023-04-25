@@ -7,6 +7,7 @@ class cacheOffline {
   async addNewRecord(apiRoute, data = {}) {
     const route = `${apiRoute}::offline`;
     const cacheResponse = await cache.get.item(route) || { data: [] };
+    await cache.remove(apiRoute);
     await cacheResponse.data.unshift({...data})
     await cache.set(route, cacheResponse);
     return true;
@@ -31,8 +32,6 @@ class cacheOffline {
     const cacheResponse = await cache.get.item(route) || { data: [] };
     const records = await cacheResponse.data.filter(WO => WO.id !== itemId);
     await cache.set(route, {data: records});
-    const xd = await cache.get.item(route) || { data: [] };
-    console.log(xd);
     return true;
   }
 }
