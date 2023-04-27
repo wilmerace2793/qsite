@@ -179,7 +179,7 @@
           :style="{ height: computedHeight }"
           :force-fallback="true"
           @start="dragColumn = true"
-          :move="move"
+          @end="move"
           @change="countTotalRecords"
         >
           <kanbanCard
@@ -188,6 +188,7 @@
             :cardData="item"
             :colorColumn="columnData.color"
             class="tw-cursor-pointer"
+            :id="item.id"
           />
           <div class="tw-text-center tw-h-5 tw-rounded">
             <q-banner
@@ -385,7 +386,7 @@ export default {
       const nameRoute = this.automation ? 'automation' : 'card';
       const route = this.routes[nameRoute];
       if(!route) return;
-      const data = { id: elm.draggedContext.element.id, [route.filter.name]: elm.to.id };
+      const data = { id: elm.clone.id, [route.filter.name]: elm.to.id };
       this.updateCard(data , route);
     }
   },
