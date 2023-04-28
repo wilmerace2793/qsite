@@ -150,7 +150,6 @@ export default {
             }
             //Crop image
             const extensions = this.settings.allowedImageTypes.map(item => item.toLowerCase())
-            console.warn(">>>>", fileData.extension, extensions)
             if (file.__img && extensions.includes(fileData.extension.toLowerCase())) {
               await new Promise((resolve, reject) => {
                 this.$eventBus.$emit('master.cropper.image', {
