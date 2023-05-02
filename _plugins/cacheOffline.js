@@ -16,7 +16,7 @@ class cacheOffline {
   async updateRecord(apiRoute, data = {}){
     const route = `${apiRoute}::offline`;
     const cacheResponse = await cache.get.item(route) || { data: [] };
-    const records = await cacheResponse.data.map(WO => WO.id === data.id ? data : WO);
+    const records = await cacheResponse.data.map(WO => WO.id === data.id ? {...WO, ...data} : WO);
     await cache.set(route, {data: records});
     return true;
   }
