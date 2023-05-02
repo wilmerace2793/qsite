@@ -4,14 +4,14 @@
     <file-list v-model="filesData" v-bind="fileListParams" v-if="!hideFileList"/>
     <!--Uploader image-->
     <q-uploader
-        ref="qUploaderComponent"
-        v-show="false"
-        :accept="acceptExtensions.withDot.join(',')"
-        @added="setFiles"
-        :max-files="maxFiles - filesData.length"
-        :multiple="maxFiles >= 2 ? true : false"
-        :max-file-size="zoneConfig.maxFileSizeMB * 1000000"
-        @rejected="rejectedCheck"
+      ref="qUploaderComponent"
+      v-show="false"
+      :accept="acceptExtensions.withDot.join(',')"
+      @added="setFiles"
+      :max-files="maxFiles - filesData.length"
+      :multiple="maxFiles >= 2 ? true : false"
+      :max-file-size="zoneConfig.maxFileSizeMB * 1000000"
+      @rejected="rejectedCheck"
     />
   </div>
 </template>
@@ -88,6 +88,11 @@ export default {
           }
         ]
       }
+    },
+    settings() {
+      return {
+        allowedImageTypes: this.$store.getters['qsiteApp/getSettingValueByName']('media::allowedImageTypes'),
+      }
     }
   },
   methods: {
@@ -144,7 +149,8 @@ export default {
               extension: file.name.split('.').pop()
             }
             //Crop image
-            if (file.__img) {
+            const extensions = this.settings.allowedImageTypes.map(item => item.toLowerCase())
+            if (file.__img && extensions.includes(fileData.extension.toLowerCase())) {
               await new Promise((resolve, reject) => {
                 this.$eventBus.$emit('master.cropper.image', {
                   src: base64,
@@ -239,8 +245,8 @@ export default {
         mode: 'modal',
         title: this.$tr('media.cms.messages.failedUploadFiles'),
         message: "<b>" +
-            this.$tr('media.cms.messages.errorMaxFileSize', {size: this.zoneConfig.maxFileSizeMB}) +
-            "</b> <br> - " + maxfileZise.join(" - ")
+          this.$tr('media.cms.messages.errorMaxFileSize', {size: this.zoneConfig.maxFileSizeMB}) +
+          "</b> <br> - " + maxfileZise.join(" - ")
       })
     }
   }
