@@ -3413,7 +3413,8 @@
           "token": "Token",
           "refreshAtOnce": "Refrescar de una vez",
           "refreshEveryMinutes": "Refrescar cada {min} minutos",
-          "offline": "Sin conexión"
+          "offline": "Sin conexión",
+          "offlineRequests": "Peticiones sin conexión"
         },
         "message": {
           "appOffline": "Parece que no tienes conexión. Es posible no que no funcionen algunas acciones.",
