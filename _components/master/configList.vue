@@ -204,7 +204,7 @@
       <!--Logout  -->
       <q-no-ssr>
         <div class="q-px-sm cursor-pointer q-pt-md" @click="$router.push({ name: 'auth.logout' })"
-          v-if="quserState.authenticated">
+          v-if="quserState.authenticated && !this.isAppOffline">
           <q-icon color="red" size="18px" name="fas fa-sign-out-alt" class="q-mr-sm" />
           {{ $t('isite.cms.configList.signOut', { capitalize: true }) }}
         </div>
@@ -253,6 +253,9 @@ export default {
     }
   },
   computed: {
+    isAppOffline() {
+      return this.$store.state.qofflineMaster.isAppOffline;
+    },
     customConfigs() {
       const getCustomConfigs = Object.values(config('main')).map(item => {
         if (item.configList) {

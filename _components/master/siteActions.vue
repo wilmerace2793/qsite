@@ -108,6 +108,9 @@ export default {
     }
   },
   computed: {
+    isAppOffline() {
+      return this.$store.state.qofflineMaster.isAppOffline;
+    },
     //Quser state
     quserState() {
       return this.$store.state.quserAuth
@@ -256,7 +259,7 @@ export default {
           //logout
           {
             name: 'settings',
-            vIf: (config('app.mode') == 'iadmin'),
+            vIf: (config('app.mode') == 'iadmin') && !this.isAppOffline,
             props: {
               ...this.defaultButtonProps,
               label: this.$tr('isite.cms.configList.signOut'),
