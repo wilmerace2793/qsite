@@ -1,12 +1,12 @@
 <template>
   <div class="step-themes">
-    <h2 class="step-title">{{stepContent.title}}</h2>
+    <h2 v-if="stepContent" class="step-title">{{stepContent.title}}</h2>
 
     <div class="step-loading" v-if="loading"><div></div><div></div></div>
     <div class="row tw-justify-center tw-px-2 md:tw-px-4 tw-mb-6" v-else>
-      <div class="col-6 col-sm-3  tw-mb-2 tw-p-3 tw-cursor-pointer" 
+      <div class="col-6 col-sm-3  tw-mb-2 tw-p-3 tw-cursor-pointer"
           v-for="(item, index) in themes" v-if="themes.length>0">
-        <div class="item-theme" 
+        <div class="item-theme"
             :class="{ activeClass : item.id === selected.id }"
             @click="selectData(item)">
           <q-img contain
@@ -23,7 +23,7 @@
 
     </div>
 
-    <div class="step-sidebar">
+    <div v-if="stepContent" class="step-sidebar">
       <div class="select-card tw-max-w-md tw-w-full" v-if="selected">
         <q-img class="img-themes" contain
                 :src="selected.mediaFiles.mainimage.extraLargeThumb"
@@ -84,7 +84,7 @@ export default {
       }
     },
     async getThemeSelected() {
-      try {  
+      try {
         if(this.infoBase && (this.infoBase.layout !== null)) {
           if(this.infoBase.layout.planId == this.infoBase.plan.planId) {
             this.selected=this.infoBase.layout;
@@ -93,7 +93,7 @@ export default {
         } else {
           // Sino hay nada es porque recargo entonces verifico que tiene cache
           const info = await this.$cache.get.item('org-wizard-data');
-          if(info != null && info.layout !== null) { 
+          if(info != null && info.layout !== null) {
             if(info.layout.planId == info.plan.planId) {
               this.selected=info.layout;
               this.$emit("update", { active: true, info: this.selected});
@@ -117,13 +117,13 @@ export default {
        } else {
         // Sino hay nada es porque recargo entonces verifico que tiene cache
         const info = await this.$cache.get.item('org-wizard-data');
-        if(info != null && info.plan !== null) { 
+        if(info != null && info.plan !== null) {
           let themes = info.plan.planRelatedProducts;
           this.themes = themes.map((item) => ({
             ...item,
             planId: info.plan.planId
           }));
-        } 
+        }
        }
 
       } catch (error) {
@@ -147,10 +147,10 @@ export default {
 }
 .step-themes .item-theme-name {
   @apply tw-p-1;
-} 
+}
 .step-themes  .activeClass .item-theme-name {
   background-color: var(--q-color-primary);
-} 
+}
 .step-themes .activeClass .tw-border {
   @apply tw-shadow-lg;
 }
@@ -165,7 +165,7 @@ export default {
 }
 .step-themes .step-sidebar-stretch {
   @apply tw-items-stretch !important;
-} 
+}
 .step-themes .img-themes {
   object-fit: contain;
   height: 80vh;

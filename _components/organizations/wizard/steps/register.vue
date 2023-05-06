@@ -20,19 +20,16 @@
       </div>
     </div>
 
-    <div class="step-sidebar ">
+    <div v-if="stepContent" class="step-sidebar ">
       <div class="step-register-text">
-
         <div class="tw-text-xl lg:tw-text-3xl xl:tw-text-4xl tw-px-6 tw-text-center tw-pb-6 tw-font-bold">
           {{ stepContent.title }}
         </div>
         <div class="register-description tw-text-md xl:tw-text-lg tw-pb-4 tw-text-justify"
              v-html="stepContent.description">
         </div>
-
       </div>
     </div>
-
   </div>
 </template>
 <script>
@@ -105,6 +102,7 @@ export default {
       }
     },
     getStepInfo() {
+      console.warn(STEP_NAME_REGISTER, this.info)
       this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_REGISTER);
     },
   }
