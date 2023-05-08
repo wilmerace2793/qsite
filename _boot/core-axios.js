@@ -1,6 +1,7 @@
 import axios from 'axios'
 import alert from '@imagina/qsite/_plugins/alert'
 import cache from '@imagina/qsite/_plugins/cache'
+import Vue from 'vue';
 
 export default function ({app, router, store, Vue, ssrContext}) {
   //=========== Set base url to axios
@@ -44,6 +45,7 @@ export default function ({app, router, store, Vue, ssrContext}) {
       allRequests[userID].push(objReq)
     }
     cache.set('requests', allRequests)
+    alert.standar({message: Vue.prototype.$tr('isite.cms.message.requestAdded')});
   }
 
   function getOfflineTitle(config){

@@ -9,6 +9,7 @@
     <!-- ROUTER VIEW -->
     <q-page-container>
       <!--Page route-->
+      <offlineAlert v-if="isAppOffline"/>
       <div id="routeInformationContent" v-if="appConfig.mode == 'iadmin'"
            :class="`q-hide q-md-show ${iadminTheme == 1 ? 'bg-primary' : 'bg-white'}`">
         <div id="subContent" class="row items-center">
@@ -64,6 +65,7 @@ import cropperComponent from '@imagina/qsite/_components/master/cropper'
 import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
 import Alert from '@imagina/qoffline/_components/Alert.vue'
 import Progressrequest from '@imagina/qoffline/_components/Progressrequest.vue'
+import offlineAlert from '@imagina/qsite/_components/master/offlineAlert';
 
 export default {
   name: "MasterLayout",
@@ -99,7 +101,8 @@ export default {
     footerPanel,
     //Offline
     Alert,
-    Progressrequest
+    Progressrequest,
+    offlineAlert
   },
   watch: {
     shouldChangePassword(data) {
@@ -126,6 +129,9 @@ export default {
     }
   },
   computed: {
+    isAppOffline() {
+      return this.$store.state.qofflineMaster.isAppOffline;
+    },
     appState() {
       return this.$store.state.qsiteApp
     },

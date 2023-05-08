@@ -1653,6 +1653,7 @@
           "offlineRequests": "Offline Requests"
         },
         "message": {
+          "requestAdded": "Request added to the offline queue successfully",
           "appOffline": "It seems you have no connection. Some actions may not work.",
           "activitiesDescription": "Select the activity you want",
           "descriptionHelpCenter": "Choose the option you want to solve your doubts",
@@ -3413,9 +3414,11 @@
           "token": "Token",
           "refreshAtOnce": "Refrescar de una vez",
           "refreshEveryMinutes": "Refrescar cada {min} minutos",
-          "offline": "Sin conexión"
+          "offline": "Sin conexión",
+          "offlineRequests": "Peticiones sin conexión"
         },
         "message": {
+          "requestAdded": "Petición agregada a la cola sin conexión",
           "appOffline": "Parece que no tienes conexión. Es posible no que no funcionen algunas acciones.",
           "activitiesDescription": "Seleeciona la actividad que desees.",
           "descriptionHelpCenter": "Elige la opción que deseas para resolver tus dudas",
