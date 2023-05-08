@@ -13,10 +13,10 @@
       <div class="relative-position">
         <div class="box box-auto-height q-mb-md">
           <div class="tw-mb-4">
-            <dynamic-field 
-              v-for="(field, keyField) in formFields" 
+            <dynamic-field
+              v-for="(field, keyField) in formFields"
               :key="keyField"
-              v-model="dynamicFieldForm[keyField]" 
+              v-model="dynamicFieldForm[keyField]"
               :field="field"
             />
           </div>
@@ -52,7 +52,8 @@ export default {
     },
     routes: {
       type: Object,
-      default: () => {},
+      default: () => {
+      },
     },
     automation: {
       type: Boolean,
@@ -84,26 +85,39 @@ export default {
     formFields() {
       const userData = this.$store.state.quserAuth.userData;
       return {
+        createdBy: {
+          type: 'select',
+          permission: 'requestable.requestables.edit-created-by',
+          props: {
+            label: this.$tr('isite.cms.label.creator'),
+            clearable: true
+          },
+          loadOptions: {
+            filterByQuery: true,
+            apiRoute: 'apiRoutes.quser.users',
+            select: {label: 'fullName', id: 'id'},
+          }
+        },
         requestedBy: {
-            value: null,
-            type: 'crud',
-            permission: 'requestable.requestables.edit-created-by',
-            props: {
-              crudType: 'select',
-              crudData: import('@imagina/quser/_crud/users'),
-              crudProps: {
-                label: this.$tr('isite.cms.form.requestedBy'),
-                rules: [
-                  val => !!val || this.$tr('isite.cms.message.fieldRequired')
-                ],
-              },
-              config: {
-                filterByQuery: true,
-                options: {
-                  label: 'fullName', value: 'id'
-                }
-              }
+          value: null,
+          type: 'crud',
+          permission: "requestable.requestables.filter-requested-by",
+          props: {
+            crudType: 'select',
+            crudData: import('@imagina/quser/_crud/users'),
+            crudProps: {
+              label: this.$tr('isite.cms.form.requestedBy'),
+              rules: [
+                val => !!val || this.$tr('isite.cms.message.fieldRequired')
+              ],
             },
+            config: {
+              filterByQuery: true,
+              options: {
+                label: 'fullName', value: 'id'
+              }
+            }
+          },
         },
       }
     },
@@ -121,7 +135,7 @@ export default {
       if (funnel) {
         this.funnelForm = funnel.find((item) => item.id == this.funnelId);
       }
-      if(!this.formCategory.vIf) {
+      if (!this.formCategory.vIf) {
         this.$alert.warning({message: 'No existen formulario para esta categoría'})
         return;
       }
@@ -142,7 +156,7 @@ export default {
         await this.$crud.create(route.apiRoute, form);
         await this.addCard(this.statusId);
         this.hideModal();
-        
+
         this.loading = false;
       } catch (error) {
         this.loading = false;
