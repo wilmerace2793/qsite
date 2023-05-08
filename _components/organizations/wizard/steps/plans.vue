@@ -1,23 +1,22 @@
 <template>
   <div class="step-plan">
-    <h2 class="step-title">{{ stepContent.title }}</h2>
+    <h2 v-if="stepContent" class="step-title">{{ stepContent.title }}</h2>
     <div class="step-loading" v-if="loading">
       <div></div>
       <div></div>
     </div>
     <div v-else>
       <q-tabs
-          v-model="tabActive"
-          active-color="primary"
-          indicator-color="primary"
-          narrow-indicator
-          class="tw-mb-4"
+        v-model="tabActive"
+        active-color="primary"
+        indicator-color="primary"
+        narrow-indicator
+        class="tw-mb-4"
       >
         <q-tab :name="item.optionValue" :label="item.optionValue" v-for="(item, index) in tab" :key="index"/>
       </q-tabs>
       <q-tab-panels v-model="tabActive" animated>
         <q-tab-panel :name="element.optionValue" v-for="(element, i) in tab" :key="i">
-
           <q-list
               bordered
               separator
@@ -26,10 +25,13 @@
               v-if="item.optionValue == element.optionValue"
               :class="{ activePlan : item.id === selected.id &&  item.PlanId === selected.PlanId}"
               @click="selectPlan(item)">
+
+            ---> Active: {{item.id === selected.id &&  item.PlanId === selected.PlanId}}
+
             <q-expansion-item
-                expand-icon-toggle
-                :group="item.planName"
-                v-model="item.active"
+              expand-icon-toggle
+              group="plans"
+              v-model="item.active"
             >
               <template v-slot:header>
                 <q-item-section>
@@ -59,7 +61,8 @@
       <q-card class="select-card tw-border-t-8 tw-max-w-lg" flat bordered v-if="selected">
         <q-card-section>
           <div class="text-h5 q-mb-xs">{{ selected.planName }}</div>
-          <div class="text-caption text-grey overflow-ellipsis overflow-hidden">{{ selected.planSummary }}</div>
+          <div class="text-caption text-grey overflow-ellipsis overflow-hidden"
+               v-html="selected.planSummary"/>
           <div class="text-right">
             <span class="text-h6 tw-font-bold text-primary ">{{ selected.price }}</span> / {{ selected.optionValue }}
           </div>
@@ -68,7 +71,7 @@
         <q-card-section class="tw-text-xs" v-html="selected.planDescription"></q-card-section>
       </q-card>
 
-      <div class="select-card tw-max-w-md  tw-w-full" v-else>
+      <div v-else-if="stepContent" class="select-card tw-max-w-md  tw-w-full">
         <div class="tw-text-base tw-mb-8 text-center" v-html="stepContent.description"></div>
         <q-img v-if="stepContent.mediaFiles" contain
                :src="stepContent.mediaFiles.mainimage.extraLargeThumb"

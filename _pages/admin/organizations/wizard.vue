@@ -83,7 +83,6 @@ import {
   STEP_CATEGORIES,
   STEP_THEMES,
   STEP_PLANS,
-  ID_CATE_ACTIVITIES,
   PLAN_BASE_ID
 } from '@imagina/qsite/_components/organizations/wizard/steps/model/constant.js';
 
@@ -277,7 +276,7 @@ export default {
       if (url) this.$helper.openExternalURL(url, false)
     },
     async getInfo() {
-      this.dataText = await storeStepWizard().getInfoWizard(ID_CATE_ACTIVITIES);
+      this.dataText = await storeStepWizard().getInfoWizard();
       // busco la info
       const categories = await storeStepWizard().getCategories();
       const plans = await storeStepWizard().getPlans(PLAN_BASE_ID);

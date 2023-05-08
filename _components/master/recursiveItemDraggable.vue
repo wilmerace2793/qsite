@@ -13,7 +13,7 @@
         <!-- list -->
         <div class="row justify-between items-center q-mb-xs q-mt-xs">
           <!-- name -->
-          <div class="col-6 row q-py-xs blue-green items-center">
+          <div class="col-10 row q-py-xs blue-green items-center">
             <div class="q-px-xs" :class="{'q-py-md': item.subTitle }">
               <q-icon class="cursor-pointer q-px-sm" color="blue-grey" name="fa-light fa-bars"/>
             </div>
@@ -25,7 +25,7 @@
             </div>
           </div>
           <!-- menu actions -->
-          <div class="col-6 text-right q-py-xs relative-position">
+          <div class="col-2 text-right q-py-xs relative-position">
             <btn-menu
                 v-if="item.actions.length"
                 :actions="item.actions"

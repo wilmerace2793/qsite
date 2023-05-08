@@ -2,10 +2,14 @@ import Vue from 'vue';
 import baseService from '@imagina/qcrud/_services/baseService.js';
 
 export default function storeStepWizard() {
-  async function getInfoWizard(categoryId: number) {
+  async function getInfoWizard(systemName: string) {
     try {
-      const response = await baseService.show('apiRoutes.qgamification.categories',
-        categoryId, {refresh: true, params: {include: "activities"}});
+      const response = await baseService.show(
+        'apiRoutes.qgamification.categories',
+        'admin_organization_wizard',
+        {
+          refresh: true, params: {filter: {field: 'system_name'}, include: "activities"}
+        });
       return response.data.activities;
     } catch (error) {
       console.log('Error info general');
@@ -52,6 +56,14 @@ export default function storeStepWizard() {
         }
       };
       let products = await baseService.index('apiRoutes.qcommerce.products', paramsProducts);
+
+      //Validate optionValues (Frequency)
+      products.data.forEach((product, index) => {
+        if (!product.optionValues.length) {
+          let plan = plans.data.find(plan => plan.product.id == product.id)
+          products.data[index].optionValues = [{optionValue: plan.frequency, price: plan.price,}]
+        }
+      })
 
       //Response
       return products.data;

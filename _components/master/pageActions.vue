@@ -5,7 +5,7 @@
       <q-icon v-if="icon" :name="icon" size="22px" class="q-mr-sm"/>
       <label id="titleCrudTable" v-if="title">{{ title }}</label>
       <!--Help Text: Page documentation-->
-      <help-text v-if="pageDocumentation" v-bind="pageDocumentation"/>
+      <help-text v-if="pageDocumentation && title" v-bind="pageDocumentation"/>
     </div>
     <!--Actions-->
     <div :class="`actions-content row q-gutter-${gutter} items-center justify-end items-start`">
