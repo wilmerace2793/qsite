@@ -9,7 +9,7 @@
     <!-- ROUTER VIEW -->
     <q-page-container>
       <!--Page route-->
-      <offlineAlert v-if="isAppOffline"/>
+      <offlineAlert v-if="isAppOffline || forcedShow"/>
       <div id="routeInformationContent" v-if="appConfig.mode == 'iadmin'"
            :class="`q-hide q-md-show ${iadminTheme == 1 ? 'bg-primary' : 'bg-white'}`">
         <div id="subContent" class="row items-center">
@@ -116,7 +116,7 @@ export default {
   },
   mounted() {
     this.$nextTick(async function () {
-      this.init()
+      this.init();
     })
   },
   data() {
@@ -125,10 +125,13 @@ export default {
       homePage: 'isite_cms_main_home',
       modalForce: {
         shouldChangePassword: false
-      }
+      },
     }
   },
   computed: {
+    forcedShow(){
+      if (!navigator.onLine) return true;
+    },
     isAppOffline() {
       return this.$store.state.qofflineMaster.isAppOffline;
     },

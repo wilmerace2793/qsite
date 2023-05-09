@@ -103,7 +103,6 @@ class localCache {
 
   //Remove an item from storage
   remove(index = {}) {
-    console.warn("Remove cache index");
     return new Promise(async (resolve, reject) => {
       if (!index || !process.env.CLIENT || !window.navigator.onLine) return resolve(undefined) //Validate if is side Server
       //Default keys to delete
@@ -144,20 +143,11 @@ class localCache {
 
   //Remove all items from storage
   clear() {
-    console.warn("clear cache");
     return new Promise((resolve, reject) => {
       if (!process.env.CLIENT) return resolve(undefined) //Validate if is side Server
-      // this.keys().then(keys => {
-      //   keys.forEach(async key => !key.includes("requests") && await this.remove(key));
-      // }).then(() => resolve(true))
-
-      // console.log('DDDDDDDDDDDDDDDDDDDDDDD')
-
-      console.warn("clearing cache")
-      LocalForage.clear().then(value => {
-        resolve(true)
-      }).catch(error => {
-      })
+      this.keys().then(keys => {
+        keys.forEach(async key => !key.includes("requests") && await this.remove(key));
+      }).then(() => resolve(true))
     })
   }
 
