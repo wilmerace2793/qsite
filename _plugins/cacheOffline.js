@@ -34,6 +34,13 @@ class cacheOffline {
     await cache.set(route, {data: records});
     return true;
   }
+
+  async getItemById(itemId, apiRoute = 'apiRoutes.qramp.workOrders'){
+    const route = `${apiRoute}::offline`;
+    const cacheResponse = await cache.get.item(route) || { data: [] };
+    const record = await cacheResponse.data.find(WO => WO.id === itemId);
+    return record;
+  }
 }
 
 const cacheOff = new cacheOffline()
