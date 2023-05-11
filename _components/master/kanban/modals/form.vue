@@ -86,17 +86,25 @@ export default {
       const userData = this.$store.state.quserAuth.userData;
       return {
         createdBy: {
-          type: 'select',
+          value: null,
+          type: 'crud',
           permission: 'requestable.requestables.edit-created-by',
           props: {
-            label: this.$tr('isite.cms.label.creator'),
-            clearable: true
+            crudType: 'select',
+            crudData: import('@imagina/quser/_crud/users'),
+            crudProps: {
+              label: this.$tr('isite.cms.form.createdBy'),
+              rules: [
+                val => !!val || this.$tr('isite.cms.message.fieldRequired')
+              ],
+            },
+            config: {
+              filterByQuery: true,
+              options: {
+                label: 'fullName', value: 'id'
+              }
+            }
           },
-          loadOptions: {
-            filterByQuery: true,
-            apiRoute: 'apiRoutes.quser.users',
-            select: {label: 'fullName', id: 'id'},
-          }
         },
         requestedBy: {
           value: null,
