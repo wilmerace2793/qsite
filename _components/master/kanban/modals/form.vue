@@ -159,6 +159,7 @@ export default {
           ...this.form,
           type: this.funnelForm.type,
           statusId: this.statusId,
+          ...this.dynamicFieldForm,
           requestedBy: this.dynamicFieldForm.requestedBy || this.$store.state.quserAuth.userId
         };
         await this.$crud.create(route.apiRoute, form);
