@@ -26,8 +26,6 @@
               :class="{ activePlan : item.id === selected.id &&  item.PlanId === selected.PlanId}"
               @click="selectPlan(item)">
 
-            ---> Active: {{item.id === selected.id &&  item.PlanId === selected.PlanId}}
-
             <q-expansion-item
               expand-icon-toggle
               group="plans"

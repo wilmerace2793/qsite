@@ -45,13 +45,16 @@ export default function storeStepWizard() {
   async function getPlans(planBaseId: number) {
     try {
       //Get plans with product relation
-      const paramsPlans = {refresh: true, params: {include: 'product'}};
+      const paramsPlans = {
+        refresh: true,
+        params: {include: 'product', filter: {internal: false}}
+      };
       let plans = await baseService.index('apiRoutes.qplan.plans', paramsPlans);
 
       // Get full data of products
       const paramsProducts = {
         refresh: true, params: {
-          filter: {id: plans.data.map(plan => plan.product.id)},
+          filter: {id: plans.data.map(plan => plan.product.id), status: true},
           include: 'productOptions,optionValues,relatedProducts'
         }
       };
