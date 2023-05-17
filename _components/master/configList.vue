@@ -225,7 +225,6 @@ export default {
   mounted() {
     this.$nextTick(async function () {
       this.setOptions();
-      console.log(this.customConfigs);
     })
   },
   data() {
