@@ -102,7 +102,6 @@ export default {
       }
     },
     getStepInfo() {
-      console.warn(STEP_NAME_REGISTER, this.info)
       this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_REGISTER);
     },
   }

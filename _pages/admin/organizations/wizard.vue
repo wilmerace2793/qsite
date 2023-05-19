@@ -21,17 +21,17 @@
     <!-- keep-alive -->
     <div class="page-wizard tw-w-full tw-relative">
       <q-stepper
-          v-model="pace"
-          ref="stepper"
-          v-if="dataText.length>0"
+        v-model="pace"
+        ref="stepper"
+        v-if="dataText.length>0"
       >
         <q-step
-            v-for="step in steps"
-            :key="step.id"
-            :name="step.id"
-            :prefix="step.prefix"
-            :title="step.title"
-            :done="step.done"
+          v-for="step in steps"
+          :key="step.id"
+          :name="step.id"
+          :prefix="step.prefix"
+          :title="step.title"
+          :done="step.done"
         >
           <component :is="step.component" @update="navNext" :info.async="dataText"/>
         </q-step>
@@ -184,11 +184,11 @@ export default {
         // si llega al final y todo esta lleno envia la info
         if (this.pace === this.steps.length) {
           if ((this.dataCheck.user !== null) &&
-              this.dataCheck.terms &&
-              (this.dataCheck.category !== null) &&
-              (this.dataCheck.layout !== null) &&
-              (this.dataCheck.plan !== null) &&
-              (this.dataCheck.organization !== '')) {
+            this.dataCheck.terms &&
+            (this.dataCheck.category !== null) &&
+            (this.dataCheck.layout !== null) &&
+            (this.dataCheck.plan !== null) &&
+            (this.dataCheck.organization !== '')) {
             //Clear cache
             this.$cache.remove('org-wizard-data');
             this.$cache.remove('org-wizard-step');
@@ -241,7 +241,7 @@ export default {
       this.isActive = current.done;
       this.setCacheStep(current.id - 1);
     },
-    redirectAfterWizard() {
+    async redirectAfterWizard() {
       //Instance the url
       let url = null
       //Get setting to know the wizard type
@@ -265,13 +265,13 @@ export default {
           break
         default://Local
           //Request
-          this.$crud.create('apiRoutes.qplan.buy', params).then(response => {
-            if (response.data && response.data.redirectTo) url = response.data.redirectTo
-          }).catch(error => {
+          const response = await this.$crud.create('apiRoutes.qplan.buy', params).catch(error => {
             this.$alert.error({message: `${this.$tr('isite.cms.message.recordNoCreated')}`})
           })
+          if (response.data && response.data.redirectTo) url = response.data.redirectTo
           break
       }
+      console.warn(">>>> URL:", url)
       //Redirect
       if (url) this.$helper.openExternalURL(url, false)
     },
