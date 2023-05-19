@@ -40,7 +40,8 @@
                 </div>
                 <!--Fields-->
                 <div class="row q-col-gutter-x-md q-mb-sm">
-                  <div v-for="(field, key) in block.fields" :key="key" v-if="field.type != 'hidden'"
+                  <div v-for="(field, key) in block.fields" :key="key"
+                       v-if="(field.type != 'hidden') && (field.vIf != undefined ? field.vIf : true)"
                        :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)">
                     <!--fake field-->
                     <div v-if="field.type === 'fileList'">
@@ -729,7 +730,7 @@ export default {
       }
     },
     //validate all languages
-    async validateCompleteForm(){
+    async validateCompleteForm() {
       const isValid = await this.$refs.localeComponent.validateForm();
       return isValid;
     },
