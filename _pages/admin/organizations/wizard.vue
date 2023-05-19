@@ -271,7 +271,6 @@ export default {
           if (response.data && response.data.redirectTo) url = response.data.redirectTo
           break
       }
-      console.warn(">>>> URL:", url)
       //Redirect
       if (url) this.$helper.openExternalURL(url, false)
     },
