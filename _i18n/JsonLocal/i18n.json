@@ -1889,7 +1889,8 @@
           "adminTemplates": "Templates"
         },
         "newBlock": "New Block",
-        "updateBlock": "Update Block"
+        "updateBlock": "Update Block",
+        "block": "Block | Blocks"
       }
     }
   },
@@ -3644,7 +3645,10 @@
           "adminTemplates": "Plantillas"
         },
         "newBlock": "Nuevo Bloque",
-        "updateBlock": "Actualizar Bloque"
+        "updateBlock": "Actualizar Bloque",
+        "block": "Bloque | Bloques",
+        "blockDesign": "Diseño del Bloque",
+        "chooseBlock": "Selecciona un bloque"
       }
     }
   }
