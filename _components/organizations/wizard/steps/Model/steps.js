@@ -4,14 +4,16 @@ import plans from '../plans';
 import themes from '../themes';
 import terms from '../terms';
 import register from '../register';
-import { 
+import {
     STEP_REGISTER,
     STEP_TERMS,
     STEP_COMPANY,
     STEP_CATEGORIES,
     STEP_THEMES,
     STEP_PLANS,
-  } from '@imagina/qsite/_components/organizations/wizard/steps/model/constant.js';
+} from '@imagina/qsite/_components/organizations/wizard/steps/model/constant.js';
+
+
 
 export default [
     {
@@ -29,7 +31,7 @@ export default [
         done: false,
     },
     {
-        id: STEP_COMPANY ,
+        id: STEP_COMPANY,
         title: 'Company',
         prefix: STEP_COMPANY,
         component: company,
