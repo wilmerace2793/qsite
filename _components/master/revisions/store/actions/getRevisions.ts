@@ -6,6 +6,10 @@ export default async function getRevisions(page = 1) {
         store.loading = true;
         const params = {
             params: {
+                filter: {
+                    revisionableType: store.revisionableType,
+                    revisionableId: store.revisionableId
+                },
                 page,
                 take: 10,
             }

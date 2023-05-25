@@ -13,6 +13,10 @@ const state = reactive({
         },
     },
     loading: false,
+    revisionable: {
+        type: '',
+        id: 0,
+    }
 });
 
 export default computed(() => ({
@@ -22,10 +26,22 @@ export default computed(() => ({
     set dataTable(value) {
         state.dataTable = value;
     },
-    get loading() {
+    get loading(): boolean {
         return state.loading;
     },
-    set loading(value) {
+    set loading(value: boolean) {
         state.loading = value;
+    },
+    get revisionableType(): string {
+        return state.revisionable.type;
+    },
+    set revisionableType(value: string) {
+        state.revisionable.type = value;
+    },
+    get revisionableId(): number {
+        return state.revisionable.id;
+    },
+    set revisionableId(value: number) {
+        state.revisionable.id = value;
     },
 })).value;

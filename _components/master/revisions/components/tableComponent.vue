@@ -9,6 +9,7 @@
       bordered
       :filter="filter"
       :rows-per-page-options="[0]"
+      hide-bottom
     >
       <template v-slot:top-right>
         <q-input

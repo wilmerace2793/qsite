@@ -23,24 +23,16 @@ export default defineComponent({
   components: {
     tableComponent,
   },
-  props: {
-    revisionableId: {
-      type: Number,
-      default: () => 0,
-    },
-    revisionableType: {
-      type: String,
-      default: () => '',
-    },
-  },
-  setup(props) {
+  setup() {
     const drawerModel = ref(false);
     const drawerWidth = ref("60%");
     function closeModal() {
       drawerModel.value = false;
     }
-    async function openModal() {
+    async function openModal(revisionableType: string, revisionableId: number) {
         drawerModel.value = true;
+        store.revisionableType = revisionableType;
+        store.revisionableId = revisionableId;
         await getRevisions();
     }
     return {
