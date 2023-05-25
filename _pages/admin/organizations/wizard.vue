@@ -84,7 +84,7 @@ import {
   STEP_THEMES,
   STEP_PLANS,
   PLAN_BASE_ID
-} from '@imagina/qsite/_components/organizations/wizard/steps/model/constant.js';
+} from '@imagina/qsite/_components/organizations/wizard/steps/model/constant';
 
 const infoMappings = {
   [STEP_COMPANY]: 'organization',
