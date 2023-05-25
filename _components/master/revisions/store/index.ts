@@ -44,4 +44,17 @@ export default computed(() => ({
     set revisionableId(value: number) {
         state.revisionable.id = value;
     },
+    reset: () => {
+        state.dataTable = {
+            data: [],
+            meta: {
+                page: {
+                    total: 1,
+                    lastPage: 1,
+                    perPage: 10,
+                    currentPage: 1
+                }
+            },
+        }
+    }
 })).value;

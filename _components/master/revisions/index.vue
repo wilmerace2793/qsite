@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onBeforeUnmount } from "vue";
 import tableComponent from "./components/tableComponent.vue";
 import store from './store/index'
 import getRevisions from './store/actions/getRevisions'
@@ -35,6 +35,9 @@ export default defineComponent({
         store.revisionableId = revisionableId;
         await getRevisions();
     }
+    onBeforeUnmount(() => {
+      store.reset();
+    })
     return {
       drawerModel,
       closeModal,
