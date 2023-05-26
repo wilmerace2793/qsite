@@ -1,7 +1,7 @@
 import baseService from '@imagina/qcrud/_services/baseService.js'
 import store from '../index';
 
-export default async function getRevisions(page = 1) {
+export default async function getRevisions(page = 1): Promise<void> {
     try {
         store.loading = true;
         const params = {

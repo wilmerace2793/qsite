@@ -1,7 +1,8 @@
-import Vue, { computed } from "vue";
+import Vue, { computed, ComputedRef } from "vue";
+import {Column} from '../@Contracts/columns.contract'
 
 export default function modelColumns() {
-  const tableColumns = computed(() => [
+  const tableColumns: ComputedRef<Column[]> = computed((): Column[] => [
     {
       name: "createdAt",
       required: true,

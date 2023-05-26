@@ -1,6 +1,6 @@
-import Vue, { reactive, computed, getCurrentInstance } from 'vue';
-
-const state = reactive({
+import Vue, { reactive, computed, ComputedRef } from 'vue';
+import {DataTable, State, Store} from './@contracts/store.contract'
+const state = reactive<State>({
     dataTable: {
         data: [],
         meta: {
@@ -18,12 +18,11 @@ const state = reactive({
         id: 0,
     }
 });
-
-export default computed(() => ({
-    get dataTable() {
+const store: Store = computed((): Store => ({
+    get dataTable(): DataTable {
         return state.dataTable;
     },
-    set dataTable(value) {
+    set dataTable(value: DataTable) {
         state.dataTable = value;
     },
     get loading(): boolean {
@@ -44,7 +43,7 @@ export default computed(() => ({
     set revisionableId(value: number) {
         state.revisionable.id = value;
     },
-    reset: () => {
+    reset: (): void => {
         state.dataTable = {
             data: [],
             meta: {
@@ -58,3 +57,5 @@ export default computed(() => ({
         }
     }
 })).value;
+
+export default store;
