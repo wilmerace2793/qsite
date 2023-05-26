@@ -6,6 +6,7 @@ export default async function getRevisions(page = 1) {
         store.loading = true;
         const params = {
             params: {
+                include: "creator",
                 filter: {
                     revisionableType: store.revisionableType,
                     revisionableId: store.revisionableId
