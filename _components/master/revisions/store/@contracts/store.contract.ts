@@ -19,6 +19,7 @@ export interface State {
     dataTable: DataTable;
     loading: boolean;
     revisionable: Revisionable;
+    revision: any;
 }
 
 export interface Store {
@@ -26,5 +27,6 @@ export interface Store {
     loading: boolean;
     revisionableType: string;
     revisionableId: number;
+    revision: any;
     reset: () => void;
 }  

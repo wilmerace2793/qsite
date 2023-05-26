@@ -16,7 +16,8 @@ const state = reactive<State>({
     revisionable: {
         type: '',
         id: 0,
-    }
+    },
+    revision: {},
 });
 const store: Store = computed((): Store => ({
     get dataTable(): DataTable {
@@ -43,7 +44,14 @@ const store: Store = computed((): Store => ({
     set revisionableId(value: number) {
         state.revisionable.id = value;
     },
+    get revision(): any {
+        return state.revision;
+    },
+    set revision(value: any) {
+        state.revision = value;
+    },
     reset: (): void => {
+        state.revision = {};
         state.dataTable = {
             data: [],
             meta: {
@@ -54,7 +62,7 @@ const store: Store = computed((): Store => ({
                     currentPage: 1
                 }
             },
-        }
+        };
     }
 })).value;
 
