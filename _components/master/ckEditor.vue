@@ -1,6 +1,11 @@
 <template>
   <div id="ckEditorComponent">
-    <ck-editor v-if="true" v-model="responseValue" :config="configEditor" @namespaceloaded="onNamespaceLoaded"/>
+    <ck-editor v-model="responseValue"
+               :config="configEditor"
+               @namespaceloaded="onNamespaceLoaded"
+               :ref="`ref-${internalName}`"
+               :id="`id-${internalName}`"
+    />
   </div>
 </template>
 <script>
@@ -13,7 +18,8 @@ import pluginEmbed from '@imagina/qsite/_plugins/ckEditorPlugins/embed/plugin'
 
 export default {
   props: {
-    value: {default: ''}
+    value: {default: ''},
+    name: {default: null}
   },
   components: {ckEditor: CKEditor.component},
   watch: {
@@ -43,7 +49,11 @@ export default {
       }
     }
   },
-  computed: {},
+  computed: {
+    internalName(){
+      return this.name || this.$uid()
+    }
+  },
   methods: {
     init() {
       this.responseValue = this.$clone(this.value)
