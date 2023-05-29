@@ -10,17 +10,27 @@
   >
     <!--Content-->
     <div :id="id || 'masterModalContent'"  :style="customPosition ? '' : `min-width: ${width}`"
-         v-if="show" class="master-dialog__content round relative-position" :class="customClass">
+        v-if="show" class="master-dialog__content round relative-position" :class="customClass">
       <!--Header-->
       <div :class="`master-dialog__header text-${color} row justify-between items-center`">
         <!--Title-->
         <div class="master-dialog__header-title row items-center">
           <q-icon v-if="icon" :name="icon" class="q-mr-sm" size="20px"/>
           <b>{{ title }}</b>
+          <q-btn
+            v-if="revisionsBtn"
+            outline 
+            color="primary" 
+            icon="fa-light fa-user-magnifying-glass" 
+            size="xs" 
+            class="tw-mx-2" 
+            round
+            @click="openRevisionable"
+          />
         </div>
         <!--Close Button-->
         <q-btn v-close-popup icon="fas fa-times" round color="blue-grey" unelevated class="btn-small" outline
-               v-if="!hideCloseAction"/>
+              v-if="!hideCloseAction"/>
       </div>
       <q-separator inset/>
       <!--Slot content-->
@@ -42,66 +52,74 @@
       </div>
       <!--Loading-->
       <inner-loading :visible="loading"/>
+      <revisions ref="revisions" />
     </div>
   </q-dialog>
 </template>
 
 <script>
 export default {
-  props: {
-    value: {type: Boolean, default: false},
-    loading: {type: Boolean, default: false},
-    persistent: {type: Boolean, default: false},
-    color: {type: String, default: 'blue-grey'},
-    width: {type: String, default: '400px'},
-    title: {type: String},
-    icon: {type: String},
-    actions: {type: Array},
-    id: {type: String},
-    maximized: {type: Boolean, default: false},
-    hideCloseAction: {type: Boolean, default: false},
-    customPosition: {type: Boolean, default: false},
-    modalWidthSize: {type: String, default: '65vw'},
-    customClass: {type: String, default: ''}
-  },
-  components: {},
-  watch: {
-    value(newValue, oldValue) {
-      if (newValue != oldValue) {
-        this.show = this.$clone(newValue)
-      }
-    },
-    show(newValue, oldValue) {
-      if (newValue != oldValue) {
-        this.$emit('input', this.$clone(newValue))
-      }
-    },
-  },
-  mounted() {
-    this.$nextTick(function () {
-    })
-  },
-  data() {
-    return {
-      show: false
+props: {
+  value: {type: Boolean, default: false},
+  loading: {type: Boolean, default: false},
+  persistent: {type: Boolean, default: false},
+  color: {type: String, default: 'blue-grey'},
+  width: {type: String, default: '400px'},
+  title: {type: String},
+  icon: {type: String},
+  actions: {type: Array},
+  id: {type: String},
+  maximized: {type: Boolean, default: false},
+  hideCloseAction: {type: Boolean, default: false},
+  customPosition: {type: Boolean, default: false},
+  modalWidthSize: {type: String, default: '65vw'},
+  customClass: {type: String, default: ''},
+  revisionsBtn: {type: Boolean, default: false},
+  revisionableType: {type: String, default: null},
+  revisionableId: {type: Number, default: null}
+},
+components: {},
+watch: {
+  value(newValue, oldValue) {
+    if (newValue != oldValue) {
+      this.show = this.$clone(newValue)
     }
   },
-  computed: {
-    actionBtnProps() {
-      return {
-        rounded: true,
-        unelevated: true,
-        noCaps: true,
-        class: 'btn-small'
-      }
-    },
-    masterModalWidthSize() {
-      return {
-        '--modal-width-size': this.modalWidthSize,
-      };
-    },
+  show(newValue, oldValue) {
+    if (newValue != oldValue) {
+      this.$emit('input', this.$clone(newValue))
+    }
   },
-  methods: {}
+},
+mounted() {
+  this.$nextTick(function () {
+  })
+},
+data() {
+  return {
+    show: false
+  }
+},
+computed: {
+  actionBtnProps() {
+    return {
+      rounded: true,
+      unelevated: true,
+      noCaps: true,
+      class: 'btn-small'
+    }
+  },
+  masterModalWidthSize() {
+    return {
+      '--modal-width-size': this.modalWidthSize,
+    };
+  },
+},
+methods: {
+  async openRevisionable() {
+    await this.$refs.revisions.openModal(this.revisionableType, this.revisionableId);
+  }
+}
 }
 </script>
 
