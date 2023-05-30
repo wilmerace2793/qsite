@@ -21,6 +21,7 @@ export default defineComponent({
       width="100%"
       customPosition
       title="Revisions"
+      @hide="closeModal"
     >
       <div class="tw-px-4">
         <tableRevisions />

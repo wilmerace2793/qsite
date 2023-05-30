@@ -1,5 +1,5 @@
 import Vue, { reactive, computed, ComputedRef } from 'vue';
-import {DataTable, State, Store} from './@contracts/store.contract'
+import { DataTable, State, Store } from './@contracts/store.contract'
 const state = reactive<State>({
     dataTable: {
         data: [],
@@ -17,8 +17,14 @@ const state = reactive<State>({
         type: '',
         id: 0,
     },
-    revision: {},
+    revision: {
+        oldValue: {},
+        newValue: {},
+    },
     modulesList: [],
+    fields: {},
+    modalFieldComparison: false,
+    loadingModal: false,
 });
 const store: Store = computed((): Store => ({
     get dataTable(): DataTable {
@@ -57,8 +63,42 @@ const store: Store = computed((): Store => ({
     set modulesList(value: any) {
         state.modulesList = value;
     },
+    get fields(): any {
+        return state.fields;
+    },
+    set fields(value: any) {
+        if (value) {
+            for (const key in value) {
+                if (value[key].type !== 'crud' 
+                    && value.hasOwnProperty(key) 
+                    && value[key].hasOwnProperty("props")) {
+                    value[key].props.readonly = true;
+                } else if(value.hasOwnProperty(key) 
+                    && value[key].hasOwnProperty("props") 
+                    && value[key].props.hasOwnProperty("crudProps")) {
+                        value[key].props.crudProps.readonly = true;
+                }
+            }
+            state.fields = value;
+        }
+    },
+    get modalFieldComparison(): boolean {
+        return state.modalFieldComparison;
+    },
+    set modalFieldComparison(value: boolean) {
+        state.modalFieldComparison = value;
+    },
+    get loadingModal(): boolean {
+        return state.loadingModal;
+    },
+    set loadingModal(value: boolean) {
+        state.loadingModal = value;
+    },
     reset: (): void => {
-        state.revision = {};
+        state.revision = {
+            oldValue: {},
+            newValue: {},
+        };
         state.dataTable = {
             data: [],
             meta: {
@@ -70,6 +110,7 @@ const store: Store = computed((): Store => ({
                 }
             },
         };
+        state.modalFieldComparison = false;
     }
 })).value;
 

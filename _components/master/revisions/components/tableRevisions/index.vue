@@ -60,7 +60,7 @@ export default defineComponent({
         active-color="primary"
         max-pages="6" :ellipses="false" 
         :boundary-numbers="false" 
-        @input="handlePagination"
+        @click.prevent="handlePagination"
       />
     </div>
     <inner-loading :visible="loading" />

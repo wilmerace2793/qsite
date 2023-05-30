@@ -1,4 +1,4 @@
-import { ref, onBeforeUnmount } from "vue";
+import { ref } from "vue";
 
 import store from './store/index'
 import getRevisions from './store/actions/getRevisions'
@@ -9,6 +9,7 @@ export default function useRevisions(props = {}) {
     const drawerWidth = ref<string>("60%");
     function closeModal(): void {
       drawerModel.value = false;
+      store.reset();
     }
     async function openModal(revisionableType: string, revisionableId: number): Promise<void> {
         drawerModel.value = true;
@@ -16,9 +17,6 @@ export default function useRevisions(props = {}) {
         store.revisionableId = revisionableId;
         await getRevisions();
     }
-    onBeforeUnmount((): void => {
-      store.reset();
-    })
     return {
       drawerModel,
       closeModal,

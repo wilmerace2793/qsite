@@ -11,7 +11,7 @@ export default function tableRevisions(): TableRevisions {
     const rows: ComputedRef<any> = computed(() => ({...store.dataTable}));
     const maxPagination: ComputedRef<number> = computed(():number => Math.ceil(rows.value.meta.page.total / rows.value.meta.page.perPage))
     const loading:ComputedRef<boolean> = computed(():boolean => store.loading);
-    async function handlePagination(page): Promise<void> {
+    async function handlePagination(page: number): Promise<void> {
       await getRevisions(page);
     }
     return { 

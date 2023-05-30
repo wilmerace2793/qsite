@@ -21,6 +21,9 @@ export interface State {
     revisionable: Revisionable;
     revision: any;
     modulesList: any;
+    fields: any;
+    modalFieldComparison: boolean;
+    loadingModal: boolean;
 }
 
 export interface Store {
@@ -30,5 +33,8 @@ export interface Store {
     revisionableId: number;
     revision: any;
     modulesList: any;
+    fields: any;
+    modalFieldComparison: boolean;
+    loadingModal: boolean;
     reset: () => void;
 }  
