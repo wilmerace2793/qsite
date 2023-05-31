@@ -25,9 +25,10 @@ export default defineComponent({
         <q-input
           borderless
           dense
+          outlined
           debounce="300"
           v-model="filter"
-          placeholder="Search"
+          :placeholder="tr('isite.cms.label.search')"
         >
           <template v-slot:append>
             <q-icon name="search" />

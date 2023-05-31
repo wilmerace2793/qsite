@@ -1,11 +1,14 @@
-import { ref } from "vue";
-
+import { ref, computed } from "vue";
 import store from './store/index'
 import getRevisions from './store/actions/getRevisions'
-import getModulesInfo from './store/actions/getModulesInfo'
 
 export default function useRevisions(props = {}) {
-    const drawerModel = ref<boolean>(false);
+    const drawerModel = computed({
+      get: () => store.drawerModel,
+      set(value: boolean) {
+        store.drawerModel = value;
+      }
+    });
     const drawerWidth = ref<string>("60%");
     function closeModal(): void {
       drawerModel.value = false;

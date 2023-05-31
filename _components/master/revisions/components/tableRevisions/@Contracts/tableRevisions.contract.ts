@@ -9,4 +9,5 @@ export interface TableRevisions {
     maxPagination: ComputedRef<number>;
     handlePagination: (page: any) => Promise<void>;
     loading: ComputedRef<boolean>;
+    tr: any;
 }

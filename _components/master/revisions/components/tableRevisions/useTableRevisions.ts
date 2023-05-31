@@ -5,6 +5,7 @@ import modelColumns from '@imagina/qsite/_components/master/revisions/components
 import modelFieldAccion from '@imagina/qsite/_components/master/revisions/components/tableRevisions/model/fieldAccion'
 import { TableRevisions } from './@Contracts/tableRevisions.contract';
 export default function tableRevisions(): TableRevisions {
+    const tr = computed(() => Vue.prototype.$tr)
     const { tableColumns } = modelColumns();
     const { fieldAccion } = modelFieldAccion();
     const filter = ref<string>("");
@@ -22,5 +23,6 @@ export default function tableRevisions(): TableRevisions {
       maxPagination,
       handlePagination,
       loading,
+      tr,
     };
 }

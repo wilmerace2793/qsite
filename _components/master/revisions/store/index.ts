@@ -25,6 +25,7 @@ const state = reactive<State>({
     fields: {},
     modalFieldComparison: false,
     loadingModal: false,
+    drawerModel: false,
 });
 const store: Store = computed((): Store => ({
     get dataTable(): DataTable {
@@ -93,6 +94,12 @@ const store: Store = computed((): Store => ({
     },
     set loadingModal(value: boolean) {
         state.loadingModal = value;
+    },
+    get drawerModel(): boolean {
+        return state.drawerModel;
+    },
+    set drawerModel(value: boolean) {
+        state.drawerModel = value;
     },
     reset: (): void => {
         state.revision = {

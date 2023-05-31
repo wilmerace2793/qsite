@@ -6,7 +6,7 @@ export default function modelColumns() {
     {
       name: "createdAt",
       required: true,
-      label: "Update date",
+      label: Vue.prototype.$tr('isite.cms.form.updatedAt'),
       field: "createdAt",
       align: "left",
       format: (val) => (val ? Vue.prototype.$trd(val) : "-"),
@@ -14,9 +14,9 @@ export default function modelColumns() {
     {
       name: "creator",
       align: "left",
-      label: "Users",
+      label: Vue.prototype.$tr('isite.cms.form.userName'),
       field: "creator",
-      format: (item) => item ? item.fullName : '-'
+      format: (item) => item ? `${item.firstName} ${item.lastName}` : '-'
     },
     {
       name: "key",

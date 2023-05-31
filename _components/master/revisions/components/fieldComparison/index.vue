@@ -1,12 +1,18 @@
 <script lang="ts">
 import card from "./card.vue";
-import Vue, { defineComponent, computed, WritableComputedRef } from "vue";
+import Vue, {
+  defineComponent,
+  computed,
+  WritableComputedRef,
+  inject,
+} from "vue";
 import store from "../../store/index";
 export default defineComponent({
   components: {
     card,
   },
   setup() {
+    const setForm: any = inject("setForm", false);
     const loading = computed(() => store.loadingModal);
     const fields = computed(() => store.fields);
     const actions = computed(() => [
@@ -14,10 +20,10 @@ export default defineComponent({
         props: {
           color: "primary",
           icon: "fa-thin fa-backward",
-          label: tr.value('isite.cms.returnChanges'),
+          label: tr.value("isite.cms.returnChanges"),
         },
         action: () => {
-          console.log(revision.value.oldValue);
+          setRevisionForm();
         },
       },
     ]);
@@ -32,6 +38,22 @@ export default defineComponent({
         store.modalFieldComparison = value;
       },
     });
+    function setRevisionForm() {
+      Vue.prototype.$q
+        .dialog({
+          ok: tr.value("isite.cms.label.yes"),
+          message: tr.value("isite.cms.message.returnChanges"),
+          cancel: tr.value("isite.cms.label.no"),
+          persistent: true,
+        })
+        .onOk(async () => {
+          modalFieldComparison.value = false;
+          store.drawerModel = false;
+          if (setForm) setForm(revision.value.oldValue);
+          store.reset();
+        })
+        .onCancel(() => {});
+    }
     return {
       revision,
       fields,
@@ -40,6 +62,8 @@ export default defineComponent({
       modalFieldComparison,
       actions,
       loading,
+      setForm,
+      setRevisionForm,
     };
   },
 });
@@ -76,6 +100,7 @@ export default defineComponent({
              tw-rounded-md
              tw-p-2
              horver:tw-shadow-lg"
+             @click="setRevisionForm"
           >
             <q-tooltip>
               {{ tr('isite.cms.returnChanges') }}
@@ -92,5 +117,4 @@ export default defineComponent({
     
 </div></template>
 <style>
-
 </style>

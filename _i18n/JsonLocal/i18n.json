@@ -1709,7 +1709,8 @@
           "hintFilterByQuery": "Type 3 or more characters to search for options",
           "invalidFormat": "Invalid format",
           "specialCharactersAreNotAllowed": "Special characters are not allowed",
-          "configureThisSection": "configure This section"
+          "configureThisSection": "configure This section",
+          "returnChanges": "Are you sure you want to return the changes?"
         },
         "form": {
           "id": "ID",
@@ -3462,7 +3463,8 @@
           "hintFilterByQuery": "Escribe 3 o más caracteres para buscar opciones",
           "invalidFormat": "Formato invalido",
           "specialCharactersAreNotAllowed": "No se permiten caracteres especiales",
-          "configureThisSection": "Configura esta sección"
+          "configureThisSection": "Configura esta sección",
+          "returnChanges": "Seguro quieres regresar los cambios?"
         },
         "form": {
           "id": "ID",

@@ -24,6 +24,7 @@ export interface State {
     fields: any;
     modalFieldComparison: boolean;
     loadingModal: boolean;
+    drawerModel: boolean;
 }
 
 export interface Store {
@@ -36,5 +37,6 @@ export interface Store {
     fields: any;
     modalFieldComparison: boolean;
     loadingModal: boolean;
+    drawerModel: boolean;
     reset: () => void;
 }  
