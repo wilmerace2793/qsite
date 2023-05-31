@@ -13,8 +13,8 @@ export default defineComponent({
       {
         props: {
           color: "primary",
-          icon: "fa-light fa-comment",
-          label: "Regresar cambio",
+          icon: "fa-thin fa-backward",
+          label: tr.value('isite.cms.returnChanges'),
         },
         action: () => {
           console.log(revision.value.oldValue);
@@ -54,11 +54,43 @@ export default defineComponent({
     :loading="loading"
     @hide="modalFieldComparison = false"
   >
-    <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-8">
-        <card :revision="revision.oldValue"/>
-        <card :revision="revision.newValue"/>
+    <div class="tw-flex tw-px-8">
+        <card
+          class="tw-w-1/2"
+          :revision="revision.oldValue"
+          label="isite.cms.label.previous" 
+        />
+        <div 
+          class="
+           tw-flex 
+           tw-items-center 
+           tw-text-2xl 
+           tw-px-4"
+        >
+          <i 
+            class="
+             fa-thin 
+             fa-backward 
+             hover:tw-bg-gray-200
+             tw-cursor-pointer
+             tw-rounded-md
+             tw-p-2
+             horver:tw-shadow-lg"
+          >
+            <q-tooltip>
+              {{ tr('isite.cms.returnChanges') }}
+            </q-tooltip>
+          </i>
+        </div>
+        <card
+          class="tw-w-1/2"  
+          :revision="revision.newValue"
+          label="isite.cms.label.today"  
+        />
     </div>
   </master-modal>
     
 </div></template>
-<style scoped></style>
+<style>
+
+</style>

@@ -8,18 +8,23 @@ export default defineComponent({
             type: Object,
             default: {}
         },
+        label: {
+            type: String,
+            default: '' 
+        }
     },
     setup (props) {
         const fields = computed(() => store.fields);
         const revision = computed(() => props.revision);
         const tr = computed(() => Vue.prototype.$tr);
         const trd = computed(() => Vue.prototype.$trd)
-    
+        const label = computed(() => props.label);
         return {
             fields,
             revision,
             tr,
-            trd
+            trd, 
+            label
         }
     }
 })
@@ -32,7 +37,7 @@ export default defineComponent({
                         {{trd(revision.createdAt)}}
                     </span>
                 </p>
-                <p class="tw-text-xl tw-text-center">{{ tr('isite.cms.label.previous') }}</p>
+                <p class="tw-text-xl tw-text-center">{{ tr(label) }}</p>
             </div>
             <div>
                 <div v-for="(field, keyField) in fields">

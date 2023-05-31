@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import Vue, { defineComponent, computed } from "vue";
 import tableRevisions from "./components/tableRevisions/index.vue";
 import useRevisions from './useRevisions'
 import fieldComparison from './components/fieldComparison/index.vue'
@@ -10,7 +10,8 @@ export default defineComponent({
     fieldComparison
   },
   setup() {
-    return {...useRevisions()}
+    const tr = computed(()=> Vue.prototype.$tr)
+    return {...useRevisions(), tr}
   },
 });
 </script>
@@ -20,7 +21,7 @@ export default defineComponent({
       v-model="drawerModel"
       width="100%"
       customPosition
-      title="Revisions"
+      :title="tr('isite.cms.revision')"
       @hide="closeModal"
     >
       <div class="tw-px-4">

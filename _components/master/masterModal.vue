@@ -26,7 +26,11 @@
             class="tw-mx-2" 
             round
             @click="openRevisionable"
-          />
+          >
+            <q-tooltip>
+              {{ $tr('isite.cms.revision') }}
+            </q-tooltip>
+          </q-btn>
         </div>
         <!--Close Button-->
         <q-btn v-close-popup icon="fas fa-times" round color="blue-grey" unelevated class="btn-small" outline

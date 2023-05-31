@@ -1846,7 +1846,9 @@
         "bottomLeft": "Bottom-Left",
         "bottom": "Bottom",
         "bottomRight": "Bottom-Right",
-        "selectedRows": "{num} selected rows"
+        "selectedRows": "{num} selected rows",
+        "returnChanges": "Return changes",
+        "revision": "revision" 
       }
     },
     "setupagione": {
@@ -3596,7 +3598,9 @@
         "bottomLeft": "Abajo-Izquierda",
         "bottom": "Abajo",
         "bottomRight": "Abajo-Derecha",
-        "selectedRows": "{num} Filas seleccionadas"
+        "selectedRows": "{num} Filas seleccionadas",
+        "returnChanges": "Regresar cambios",
+        "revision": "revisiones" 
       }
     },
     "setupagione": {
