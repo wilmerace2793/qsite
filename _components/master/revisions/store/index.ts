@@ -1,5 +1,5 @@
 import Vue, { reactive, computed, ComputedRef } from 'vue';
-import { DataTable, State, Store } from './@contracts/store.contract'
+import { DataTable, State, Store, Revision } from './@contracts/store.contract';
 const state = reactive<State>({
     dataTable: {
         data: [],
@@ -20,6 +20,17 @@ const state = reactive<State>({
     revision: {
         oldValue: {},
         newValue: {},
+        createdAt: '',
+        createdBy: 0,
+        deletedAt: null,
+        deletedBy: null,
+        id: 0,
+        key: '',
+        organizationId: null,
+        revisionableId: 0,
+        revisionableType: '',
+        updatedAt: '',
+        updatedBy: 0,
     },
     modulesList: [],
     fields: {},
@@ -52,10 +63,10 @@ const store: Store = computed((): Store => ({
     set revisionableId(value: number) {
         state.revisionable.id = value;
     },
-    get revision(): any {
+    get revision(): Revision {
         return state.revision;
     },
-    set revision(value: any) {
+    set revision(value: Revision) {
         state.revision = value;
     },
     get modulesList(): any {
@@ -70,14 +81,14 @@ const store: Store = computed((): Store => ({
     set fields(value: any) {
         if (value) {
             for (const key in value) {
-                if (value[key].type !== 'crud' 
-                    && value.hasOwnProperty(key) 
+                if (value[key].type !== 'crud'
+                    && value.hasOwnProperty(key)
                     && value[key].hasOwnProperty("props")) {
                     value[key].props.readonly = true;
-                } else if(value.hasOwnProperty(key) 
-                    && value[key].hasOwnProperty("props") 
+                } else if (value.hasOwnProperty(key)
+                    && value[key].hasOwnProperty("props")
                     && value[key].props.hasOwnProperty("crudProps")) {
-                        value[key].props.crudProps.readonly = true;
+                    value[key].props.crudProps.readonly = true;
                 }
             }
             state.fields = value;
@@ -105,6 +116,17 @@ const store: Store = computed((): Store => ({
         state.revision = {
             oldValue: {},
             newValue: {},
+            createdAt: '',
+            createdBy: 0,
+            deletedAt: null,
+            deletedBy: null,
+            id: 0,
+            key: '',
+            organizationId: null,
+            revisionableId: 0,
+            revisionableType: '',
+            updatedAt: '',
+            updatedBy: 0,
         };
         state.dataTable = {
             data: [],
