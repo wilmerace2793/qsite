@@ -3,7 +3,7 @@
     <div id="dynamicFieldComponent">
       <!--Read Only-->
       <div v-if="readOnly">
-        <div v-if="infoReadOnly">
+        <div>
           <!--Label-->
           <div class="text-primary">
             <q-icon name="fas fa-circle" size="8px" class="q-mr-xs"/>
@@ -1045,18 +1045,23 @@ export default {
     infoReadOnly() {
       let currenResponse = this.$clone(this.responseValue)
       let response = currenResponse
-
       //Function to get value from select
       let valueFromSelect = () => {
         if (currenResponse && (typeof currenResponse == 'object')) {
           response = []
           currenResponse.forEach(itemValue => {
-            let value = this.formatOptions.find(item => item.value == itemValue)
-            if (value && value.label) response.push(value.label)
+            if (this.field.props.useChips) {
+              response.push(itemValue);
+            } else {
+              const value = this.formatOptions.find(item => item.value == itemValue);
+              response.push(value && value.label ? value.label : null);
+            }
           })
           response = response.length ? response.join(', ') : false
         } else {
-          response = this.formatOptions.find(item => item.value == response)
+          response = this.formatOptions.find(item => {
+            return item.value == response
+          })
           response ? response = response.label : false
         }
       }
