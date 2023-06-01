@@ -1849,7 +1849,8 @@
         "bottomRight": "Bottom-Right",
         "selectedRows": "{num} selected rows",
         "returnChanges": "Return changes",
-        "revision": "revision" 
+        "revision": "revision",
+        "revisionHistory": "Revision history"
       }
     },
     "setupagione": {
@@ -3602,7 +3603,8 @@
         "bottomRight": "Abajo-Derecha",
         "selectedRows": "{num} Filas seleccionadas",
         "returnChanges": "Regresar cambios",
-        "revision": "revisiones" 
+        "revision": "revisiones",
+        "revisionHistory": "Historico de la revision" 
       }
     },
     "setupagione": {

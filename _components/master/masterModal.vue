@@ -17,20 +17,6 @@
         <div class="master-dialog__header-title row items-center">
           <q-icon v-if="icon" :name="icon" class="q-mr-sm" size="20px"/>
           <b>{{ title }}</b>
-          <q-btn
-            v-if="revisionsBtn"
-            outline 
-            color="primary" 
-            icon="fa-light fa-user-magnifying-glass" 
-            size="xs" 
-            class="tw-mx-2" 
-            round
-            @click="openRevisionable"
-          >
-            <q-tooltip>
-              {{ $tr('isite.cms.revision') }}
-            </q-tooltip>
-          </q-btn>
         </div>
         <!--Close Button-->
         <q-btn v-close-popup icon="fas fa-times" round color="blue-grey" unelevated class="btn-small" outline
@@ -56,7 +42,6 @@
       </div>
       <!--Loading-->
       <inner-loading :visible="loading"/>
-      <revisions ref="revisions" />
     </div>
   </q-dialog>
 </template>
@@ -77,10 +62,7 @@ props: {
   hideCloseAction: {type: Boolean, default: false},
   customPosition: {type: Boolean, default: false},
   modalWidthSize: {type: String, default: '65vw'},
-  customClass: {type: String, default: ''},
-  revisionsBtn: {type: Boolean, default: false},
-  revisionableType: {type: String, default: null},
-  revisionableId: {type: Number, default: null}
+  customClass: {type: String, default: ''}
 },
 components: {},
 watch: {
@@ -119,11 +101,7 @@ computed: {
     };
   },
 },
-methods: {
-  async openRevisionable() {
-    await this.$refs.revisions.openModal(this.revisionableType, this.revisionableId);
-  }
-}
+methods: {}
 }
 </script>
 

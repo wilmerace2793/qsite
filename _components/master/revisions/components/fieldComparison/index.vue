@@ -4,22 +4,34 @@ import Vue, {
   defineComponent,
   computed,
   WritableComputedRef,
-  inject,
+  ref, 
+  inject
 } from "vue";
 import store from "../../store/index";
+import updateRevisions from '../../store/actions/updateRevisions'
 export default defineComponent({
   components: {
     card,
   },
   setup() {
-    const setForm: any = inject("setForm", false);
+    const getData: any = inject('getData', false);
     const loading = computed(() => store.loadingModal);
     const fields = computed(() => store.fields);
+    const cardList = ref([
+      {
+        name: 'oldValue',
+        label: 'isite.cms.label.previous',
+      },
+      {
+        name: 'newValue',
+        label: 'isite.cms.label.today',
+      }
+    ]);
     const actions = computed(() => [
       {
         props: {
           color: "primary",
-          icon: "fa-thin fa-backward",
+          icon: "fa-light fa-send-back",
           label: tr.value("isite.cms.returnChanges"),
         },
         action: () => {
@@ -49,7 +61,8 @@ export default defineComponent({
         .onOk(async () => {
           modalFieldComparison.value = false;
           store.drawerModel = false;
-          if (setForm) setForm(revision.value.oldValue);
+          await updateRevisions(store.revision.oldValue);
+          if(getData) await getData(true);
           store.reset();
         })
         .onCancel(() => {});
@@ -62,8 +75,8 @@ export default defineComponent({
       modalFieldComparison,
       actions,
       loading,
-      setForm,
       setRevisionForm,
+      cardList,
     };
   },
 });
@@ -72,45 +85,28 @@ export default defineComponent({
     <master-modal
     v-model="modalFieldComparison"
     :persistent="true"
+    :title="tr('isite.cms.revisionHistory')"
     width="100%"
     :actions="actions"
     :maximized="$q.screen.lt.md"
     :loading="loading"
     @hide="modalFieldComparison = false"
+    customPosition
   >
-    <div class="tw-flex tw-px-8">
+    <div 
+      class="
+        tw-grid 
+        tw-grid-cols-1 
+        md:tw-grid-cols-2 
+        tw-mx-8
+        tw-border tw-rounded-md"
+      >
         <card
-          class="tw-w-1/2"
-          :revision="revision.oldValue"
-          label="isite.cms.label.previous" 
-        />
-        <div 
-          class="
-           tw-flex 
-           tw-items-center 
-           tw-text-2xl 
-           tw-px-4"
-        >
-          <i 
-            class="
-             fa-thin 
-             fa-backward 
-             hover:tw-bg-gray-200
-             tw-cursor-pointer
-             tw-rounded-md
-             tw-p-2
-             horver:tw-shadow-lg"
-             @click="setRevisionForm"
-          >
-            <q-tooltip>
-              {{ tr('isite.cms.returnChanges') }}
-            </q-tooltip>
-          </i>
-        </div>
-        <card
-          class="tw-w-1/2"  
-          :revision="revision.newValue"
-          label="isite.cms.label.today"  
+          v-for="(card, index) in cardList"
+          :key="index"
+          :revision="revision[card.name]"
+          :label="card.label"
+          :class="{'tw-border-l tw-border-gray-200': index === 1}" 
         />
     </div>
   </master-modal>

@@ -41,6 +41,7 @@ export interface State {
     modalFieldComparison: boolean;
     loadingModal: boolean;
     drawerModel: boolean;
+    apiRoute: string;
 }
 
 export interface Store {
@@ -54,5 +55,6 @@ export interface Store {
     modalFieldComparison: boolean;
     loadingModal: boolean;
     drawerModel: boolean;
+    apiRoute: string;
     reset: () => void;
 } 

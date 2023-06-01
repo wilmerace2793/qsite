@@ -37,6 +37,7 @@ const state = reactive<State>({
     modalFieldComparison: false,
     loadingModal: false,
     drawerModel: false,
+    apiRoute: '',
 });
 const store: Store = computed((): Store => ({
     get dataTable(): DataTable {
@@ -80,17 +81,6 @@ const store: Store = computed((): Store => ({
     },
     set fields(value: any) {
         if (value) {
-            for (const key in value) {
-                if (value[key].type !== 'crud'
-                    && value.hasOwnProperty(key)
-                    && value[key].hasOwnProperty("props")) {
-                    value[key].props.readonly = true;
-                } else if (value.hasOwnProperty(key)
-                    && value[key].hasOwnProperty("props")
-                    && value[key].props.hasOwnProperty("crudProps")) {
-                    value[key].props.crudProps.readonly = true;
-                }
-            }
             state.fields = value;
         }
     },
@@ -111,6 +101,12 @@ const store: Store = computed((): Store => ({
     },
     set drawerModel(value: boolean) {
         state.drawerModel = value;
+    },
+    get apiRoute(): string {
+        return state.apiRoute;
+    },
+    set apiRoute(value: string) {
+        state.apiRoute = value;
     },
     reset: (): void => {
         state.revision = {
