@@ -296,7 +296,8 @@ export default {
     'routes',
     'openFormComponentModal',
     'countTotalRecords',
-    'addCard'
+    'addCard',
+    'updateCardColumn',
   ],
   mounted() {
     const parent = document.querySelector(`#kanbanCtn${this.uId}`);
@@ -417,6 +418,7 @@ export default {
       const route = this.routes[nameRoute];
       if(!route) return;
       const data = { id: elm.clone.id, [route.filter.name]: elm.to.id };
+      this.updateCardColumn(Number(elm.to.id));
       this.updateCard(data , route);
     }
   },

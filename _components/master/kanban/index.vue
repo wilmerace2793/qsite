@@ -184,7 +184,8 @@ export default {
       addCard: this.addCard,
       countTotalRecords: this.countTotalRecords,
       crudfieldActions: this.crudfieldActions,
-      deleteKanbanCard: this.deleteKanbanCard
+      deleteKanbanCard: this.deleteKanbanCard,
+      updateCardColumn: this.updateCard,
     };
   },
   inject:['funnelPageAction', 'fieldActions'],
@@ -571,6 +572,16 @@ export default {
       content.scrollLeft += 400;
       this.scrollTotal = content.scrollLeft;
     },
+    updateCard(columId) {
+      this.kanbanColumns.forEach(item => {
+        if(item.id == columId) {
+          item.data.forEach(card => {
+            card.status.id = columId;
+            card.statusId = columId;
+          })
+        }
+      })
+    }
   },
 };
 </script>
