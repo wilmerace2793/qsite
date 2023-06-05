@@ -379,7 +379,12 @@ export default {
         const parameters = { params: {}, refresh };
         const search = this.automation && !this.search ? {} : { search: this.search };
         parameters.params.include = route.include;
-        parameters.params.filter = { [route.filter.name]: column.id, ...this.$filter.values, ...search};
+        parameters.params.filter = { 
+          [route.filter.name]: column.id, 
+          ...this.$filter.values, 
+          ...search,
+          order: {way: 'desc'}
+        };
         parameters.params.page = page;
         parameters.params.take = 10;
         const response = await this.$crud.index(route.apiRoute, parameters);
