@@ -212,8 +212,7 @@
         <!--HTML-->
         <q-field v-model="responseValue" v-if="loadField('html')" label="" class="field-no-padding"
                  v-bind="fieldProps.fieldComponent">
-          <ck-editor v-model="responseValue"/>
-          <q-editor v-if="false" v-model="responseValue" class="full-width" v-bind="fieldProps.field"/>
+          <ck-editor v-model="responseValue" :name="field.name"/>
         </q-field>
         <!--multiSelect-->
         <q-field v-model="responseValue" v-if="loadField('multiSelect')" label="" v-bind="fieldProps.fieldComponent">
