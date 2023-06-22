@@ -1595,7 +1595,13 @@ export default {
 </script>
 <style lang="stylus">
 #dynamicFieldComponent
-  .crud-dynamic-field, .input-dynamic-field, .search-dynamic-field, .select-dynamic-field, .date-dynamic-field, .hour-dynamic-field, .full-date-dynamic-field, .treeselect-dynamic-field, .input-color-dynamic-field, .select-icon-dinamyc-field, .expression-dinamyc-field {
+
+  .q-field--outlined .q-field__control{
+    padding-letf 12px
+    padding-right 40px
+  }
+
+  .expression-dinamyc-field {
     width: calc(100% - 40px)
   }
 
@@ -1621,7 +1627,7 @@ export default {
       background transparent !important
       border 0
       max-height 26px
-      padding 0
+      padding-right 0px
 
       .vue-treeselect__single-value
         line-height 1.9
