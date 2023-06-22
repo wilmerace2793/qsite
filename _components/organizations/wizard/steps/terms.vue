@@ -13,7 +13,7 @@
           <div class="tw-flex tw-overflow-hidden tw-mb-3">
               <q-checkbox dense v-model="buttonTerms" color="primary" />
               <div class="tw-pl-3 text-justify">
-                  Se aplican las <a href="#" target="_blank" class="text-primary">Condiciones de uso</a> de Wygo. Se aplica la <a href="#" target="_blank" class="text-primary">Política de privacidad</a> de Wygo.
+                  Se aplican las <a href="#" target="_blank" class="text-primary">Condiciones de uso</a>. Se aplica la <a href="#" target="_blank" class="text-primary">Política de privacidad</a>.
               </div>
           </div>
       </div>
