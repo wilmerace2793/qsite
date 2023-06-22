@@ -249,7 +249,7 @@ export default {
       //Instance the needed params
       const params = {
         billingcycle: this.dataCheck.plan.optionValue.toLowerCase(),
-        layoutId: this.dataCheck.layout.id,
+        layoutId: this.dataCheck.layout.entity.id,
         organizationName: this.dataCheck.organization,
         categoryId: this.dataCheck.category.id,
         email: this.dataCheck.user.email,
