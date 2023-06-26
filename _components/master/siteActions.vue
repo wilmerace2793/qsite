@@ -148,8 +148,7 @@ export default {
             props: {
               ...this.defaultButtonProps,
               icon: 'fa-light fa-cloud-slash',
-
-              class: `btn-small ${this.badge.notification ? 'active-badge' : ''}`
+              class: `btn-small`
             },
             action: () => this.$eventBus.$emit('toggleMasterDrawer', 'offline')
           },
