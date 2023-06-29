@@ -8,9 +8,9 @@
                 tw-z-20
                 tw-flex tw-justify-center tw-items-center
                 tw-w-full
-                tw-h-16
+                tw-h-20
     ">
-      <a :href="urlBase"> <img :src="logo" class="tw-h-16 tw-w-auto"/> </a>
+      <a :href="urlBase"> <img :src="logo" class="tw-h-20 tw-w-auto"/> </a>
       <q-linear-progress :value="progress" class="linear-progress-header"/>
     </div>
 
