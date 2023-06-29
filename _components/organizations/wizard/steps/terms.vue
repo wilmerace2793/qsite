@@ -13,7 +13,7 @@
           <div class="tw-flex tw-overflow-hidden tw-mb-3">
               <q-checkbox dense v-model="buttonTerms" color="primary" />
               <div class="tw-pl-3 text-justify">
-                  Se aplican las <a href="#" target="_blank" class="text-primary">Condiciones de uso</a>. Se aplica la <a href="#" target="_blank" class="text-primary">Política de privacidad</a>.
+                  Se aplican las <a :href="`${urlBase}/condiciones-de-uso`" target="_blank" class="text-primary">Condiciones de uso</a>. Se aplica la <a :href="`${urlBase}/politica-de-privacidad`" target="_blank" class="text-primary">Política de privacidad</a>.
               </div>
           </div>
       </div>
@@ -45,6 +45,7 @@ export default {
       buttonEmail: false,
       buttonTerms: false,
       stepContent: '',
+      urlBase: this.$store.state.qsiteApp.baseUrl,
     }
   },
   inject: {

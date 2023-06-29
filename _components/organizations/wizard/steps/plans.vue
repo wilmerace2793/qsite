@@ -23,7 +23,7 @@
               class="tw-mb-4 cursor-pointer tw-rounded-md item-plan tw-mx-2 md:tw-mx-6"
               v-for="(item, index) in plans" :key="index"
               v-if="item.optionValue == element.optionValue"
-              :class="{ activePlan : item.id === selected.id &&  item.PlanId === selected.PlanId}"
+              :class="{ activePlan : item.id === selected.id &&  item.planId === selected.planId}"
               @click="selectPlan(item)">
 
             <q-expansion-item
@@ -211,7 +211,7 @@ export default {
 }
 
 .step-plan .activePlan .q-item {
-  @apply tw-text-white;
+  @apply tw-text-white tw-rounded;
   background-color: var(--q-color-primary);
 }
 
@@ -221,6 +221,7 @@ export default {
 
 .step-plan .activePlan .q-expansion-item--expanded {
   @apply tw-rounded-t-md tw-rounded-b-none;
+  background-color: var(--q-color-primary);
 }
 
 .step-plan .activePlan .q-expansion-item__content {
@@ -234,14 +235,25 @@ export default {
 }
 
 .step-plan .item-plan .q-expansion-item:after {
-  @apply tw-rounded-md tw-absolute tw-top-0 tw-right-0 tw-bottom-0 tw-left-0 tw-border tw-border-transparent;
+  @apply tw-rounded-md tw-absolute tw-top-0 tw-right-0 tw-bottom-0 tw-left-0 tw-border;
   transition: border-color .2s, top .2s, right .2s, bottom .2s, left .2s;
   content: "";
+  border-color: var(--q-color-primary);
 }
 
 .step-plan .activePlan .q-expansion-item:after, .step-plan .item-plan:hover .q-expansion-item:after {
   @apply tw--top-1.5 tw--right-1.5 tw--bottom-1.5 tw--left-1.5;
   border-color: var(--q-color-primary);
 }
+
+.step-plan .item-plan:hover  {
+  background-color: var(--q-color-primary);
+}
+.step-plan .item-plan:hover .q-item__section--main,
+.step-plan .item-plan:hover .q-item__section--side > .q-icon,
+.step-plan .item-plan:hover .q-item__section--side .row.items-center {
+  @apply tw-text-white;
+}
+
 </style>
 

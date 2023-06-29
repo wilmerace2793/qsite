@@ -10,7 +10,7 @@
                 tw-w-full
                 tw-h-16
     ">
-      <a :href="urlBase"> <img :src="logo" class="tw-h-10 tw-w-auto"/> </a>
+      <a :href="urlBase"> <img :src="logo" class="tw-h-16 tw-w-auto"/> </a>
       <q-linear-progress :value="progress" class="linear-progress-header"/>
     </div>
 
