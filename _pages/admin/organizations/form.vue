@@ -22,7 +22,7 @@
     <!--Empty conten-->
     <div v-else class="box box-auto-height text-center">
       <div class="q-py-md">
-        <q-icon name="fas fa-crown" size="40px" color="primary" class="q-mb-md"/>
+        <q-icon name="fal fa-crown" size="40px" color="primary" class="q-mb-md"/>
         <div>{{ $tr('isite.cms.messages.noOrganization') }}...</div>
       </div>
     </div>
