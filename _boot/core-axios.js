@@ -1,7 +1,10 @@
 import axios from 'axios'
 import alert from '@imagina/qsite/_plugins/alert'
+import {Loading, QSpinnerCube} from 'quasar'
 
 export default function ({app, router, store, Vue, ssrContext}) {
+  //Open Loading
+  Loading.show({spinner : QSpinnerCube, spinnerColor : "cyan"})
   //=========== Set base url to axios
   let baseUrl = config('app.baseUrl')
   let tagsToParceHost = ['http://', 'https://', ':8080', ':3000', 'www.']

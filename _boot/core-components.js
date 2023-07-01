@@ -1,3 +1,4 @@
+import {Loading} from "quasar";
 import treeSelect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import crud from '@imagina/qcrud/_components/crud'
@@ -57,4 +58,7 @@ export default ({app, router, store, Vue}) => {
     Vue.use(item.component)
     Vue.component(item.name, item.component)
   })
+
+  //Hidde loading
+  Loading.hide()
 }
