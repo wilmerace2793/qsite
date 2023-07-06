@@ -160,7 +160,7 @@ export default {
                 "isTranslatable": true,
                 "multiple": true,
                 "children": {
-                  "callingCode": {
+                  "calling_code": {
                     "value": null,
                     "type": "select",
                     "colClass": "col-6",
@@ -216,7 +216,7 @@ export default {
                 "isTranslatable": true,
                 "multiple": true,
                 "children": {
-                  "callingCode": {
+                  "calling_code": {
                     "value": null,
                     "type": "select",
                     "colClass": "col-6",
