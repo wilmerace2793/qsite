@@ -69,7 +69,7 @@
         <div 
           class="tw-flex tw-w-full kanbanName"
         >
-          <div class="tw-w-11/12">
+          <div class="tw-w-10/12">
             <p
               v-if="!columnData.new"
               class="
@@ -97,7 +97,8 @@
             class="
               tw-w-1/12 
               tw-text-xs 
-              tw-cursor-pointer icon-edit"
+              tw-cursor-pointer 
+              icon-edit "
             :class="{ 'tw-text-white': columnData.color }" 
           >
             <q-btn
@@ -109,6 +110,26 @@
               @click="columnData.new = true"
             >
               <q-tooltip> Editar Columna </q-tooltip>
+            </q-btn>
+          </div>
+          <div
+            v-if="!disableCrud && arrowKanbanNameHover && !columnData.new"
+            class="tw-w-1/12 
+              tw-text-xs 
+              tw-cursor-pointer icon-edit"
+            :class="{ 'tw-text-white': columnData.color }" 
+          >
+            <q-btn
+              flat
+              round
+              padding="5px"
+              icon="fa-duotone fa-rotate-right"
+              size="6px"
+              @click="addCard(columnData.id)"
+            >
+              <q-tooltip> 
+                  {{ $trp('isite.cms.label.refresh') }} 
+              </q-tooltip>
             </q-btn>
           </div>
           <div
@@ -134,6 +155,16 @@
                   <q-tooltip> Asignar Color </q-tooltip>
                 </template>
               </q-btn>
+            </div>
+            <div v-if="columnData.data.length > 0">
+              <q-btn
+                flat
+                round
+                padding="5px"
+                icon="fa-light fa-check"
+                size="6px"
+                @click="addColumnName"
+              />
             </div>
             <div>
               <q-btn
@@ -265,6 +296,8 @@ export default {
     'routes',
     'openFormComponentModal',
     'countTotalRecords',
+    'addCard',
+    'updateCardColumn',
   ],
   mounted() {
     const parent = document.querySelector(`#kanbanCtn${this.uId}`);
@@ -306,9 +339,7 @@ export default {
         value: null,
         type: 'input',
         isFakeField: true,
-        props: {
-            clearable: true,
-        },
+        props: {},
       }
     },
     computedHeight: {
@@ -387,6 +418,7 @@ export default {
       const route = this.routes[nameRoute];
       if(!route) return;
       const data = { id: elm.clone.id, [route.filter.name]: elm.to.id };
+      this.updateCardColumn(Number(elm.to.id));
       this.updateCard(data , route);
     }
   },
@@ -399,12 +431,12 @@ export default {
 }
 
 .dragCard {
-  @apply tw-bg-white tw-opacity-100;
+  @apply tw-bg-white tw-transform tw-rotate-6;
   cursor: grabbing;
 }
 
 .ghostCard {
-  @apply tw-opacity-50 tw-bg-gray-100;
+  @apply tw-opacity-75 tw-bg-white !important;
 }
 
 .kanbanName p {

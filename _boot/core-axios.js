@@ -2,8 +2,11 @@ import axios from 'axios'
 import alert from '@imagina/qsite/_plugins/alert'
 import cache from '@imagina/qsite/_plugins/cache'
 import Vue from 'vue';
+import {Loading} from 'quasar'
 
 export default function ({app, router, store, Vue, ssrContext}) {
+  //Open Loading
+  Loading.show()
   //=========== Set base url to axios
   let baseUrl = config('app.baseUrl')
   let tagsToParceHost = ['http://', 'https://', ':8080', ':3000', 'www.']
@@ -106,8 +109,6 @@ export default function ({app, router, store, Vue, ssrContext}) {
   }, (error) => {
     //if (axios.isCancel(error)) return Promise.reject('axiosIsCancel');
     if (!axios.isCancel(error)) {
-      //Show messages
-      if (error.response.data && error.response.data.messages) showMessages(error.response.data.messages)
       //Response
       if (error.response) {
         let status = error.response.status;
@@ -119,18 +120,32 @@ export default function ({app, router, store, Vue, ssrContext}) {
               router.push({name: 'auth.logout'})
             break;
           case 400://Intercep request errors to show alert message
-            if (error.response.data && error.response.data.errors) {
-              //Get messages
-              let errorsRequest = JSON.parse(error.response.data.errors)
-              //Instance alert message
-              if (Object.keys(errorsRequest).length) {
-                showMessages([{
-                  type: 'error',
-                  message: Object.values(errorsRequest).map(item => `<div>• ${item.join(',')}</div>`).join('')
-                }])
+            let errorsRequest = {}
+            //Map the errors
+            if (error.response.data) {
+              if (error.response.data.errors) errorsRequest = JSON.parse(error.response.data.errors)
+              if (error.response.data.messages) {
+                error.response.data.messages.forEach(item => {
+                  errorsRequest = {...errorsRequest, ...JSON.parse(item.message)}
+                })
               }
             }
+            //Instance alert message
+            if (Object.keys(errorsRequest).length) {
+              showMessages([{
+                type: 'error',
+                timeout: 20000,
+                message: Object.keys(errorsRequest).map(key => {
+                  let language = key.split('.')[0]
+                  let item = errorsRequest[key]
+                  return `<div>• [${language}] ${item.join(',')}</div>`
+                }).join('')
+              }])
+            }
             break;
+          default:
+            if (error.response.data && error.response.data.messages) showMessages(error.response.data.messages)
+            break
         }
       }
     }

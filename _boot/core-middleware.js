@@ -1,7 +1,6 @@
 import helper from '@imagina/qsite/_plugins/helper'
 import cache from '@imagina/qsite/_plugins/cache'
 import appConfig from 'src/config/app'
-import {Loading} from "quasar";
 
 class Middleware {
   constructor(router, store) {
@@ -203,8 +202,5 @@ export default async ({router, store, Vue, app, ssrContext}) => {
 
     //Go to next route
     middleware.goToNextRoute(to, from, next)
-
-    //Hidde loading
-    Loading.hide()
   })
 }

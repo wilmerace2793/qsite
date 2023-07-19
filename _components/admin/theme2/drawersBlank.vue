@@ -1,5 +1,5 @@
 <template>
-    <div id="blackDrawers2">  
+    <div id="blackDrawers2">
       <!--Master filter-->
       <q-drawer bordered id="drawerFilterMaster" v-model="drawer.filter" side="right" v-if="filter.load" :overlay="false">
         <master-filter/>
@@ -11,7 +11,7 @@
   import sidebarMixins from '@imagina/qsite/_mixins/sidebarMixins'
   //Components
   import masterFilter from '@imagina/qsite/_components/master/masterFilter'
- 
+
   export default {
     beforeDestroy() {
       this.$eventBus.$off('toggleMasterDrawer')
@@ -60,7 +60,7 @@
       //Version app text
       versionText() {
         return 'v' + config('app.version')
-      },   
+      },
     },
     methods: {
       //init
@@ -107,7 +107,6 @@
         //Toogle drawer
         if (drawerName == 'menu') {
           if (this.windowSize == 'mobile') {
-            console.log('ingreso');
             this.miniState = false
             this.drawer.menu = !this.drawer.menu
           } else {
@@ -136,55 +135,55 @@
         padding 30px 7px
         height 120px
         background-color #FFFFFF
-  
+
       #versionContent
         padding 3px 15px
         font-size 13px
-  
+
       .q-item
-        padding-left 0  
+        padding-left 0
         background-color $primary
         min-height 50px
         color var(--q-color-contrast)
         .q-focus-helper
           opacity 0
         .q-item__section--avatar
-          padding 0 18px !important  
+          padding 0 18px !important
         .q-item__section
           font-weight 600
         .q-item__section, .q-icon
-          color var(--q-color-contrast)  
-          
-      .content-item 
+          color var(--q-color-contrast)
+
+      .content-item
         > .q-item
-          .q-item__section--main 
+          .q-item__section--main
             font-size 16px
           .q-icon
-            font-size: 20px 
+            font-size: 20px
           &:hover,  &.item-is-active
             background-color $secondary
             border-radius: 0 15px 15px 0
             font-weight 900
-  
-        > .q-expansion-item  
+
+        > .q-expansion-item
           background-color $primary
           .q-expansion-item__container > .q-item
             .q-item__label
               font-size 15px
             .q-icon
-              font-size: 20px  
-            &:hover, &.item-is-active  
+              font-size: 20px
+            &:hover, &.item-is-active
               border-radius: 0 15px 15px 0
               background-color $secondary
               font-weight 900
-  
+
           .q-expansion-item__container > .q-expansion-item__content
             padding 0 0 0 3px
             border-left 18px solid $primary
             #listMenu
               .content-item
                 border-left 3px solid $secondary
-            .q-item    
+            .q-item
               min-height 40px
               margin-left -1px
               .q-item__section, .q-icon
@@ -192,17 +191,16 @@
                 font-size 14px
                 font-weight 600
               .q-icon
-                display none  
+                display none
               &:hover, &.item-is-active
                 background-color $secondary
                 .q-item__section, .q-icon
                   color var(--q-color-contrast)
-  
+
       .expansion-selected
         background-color $primary
-  
+
       .q-drawer--mini .q-item
         border-radius 0 !important
-  
+
   </style>
-  

@@ -8,9 +8,9 @@
                 tw-z-20
                 tw-flex tw-justify-center tw-items-center
                 tw-w-full
-                tw-h-16
+                tw-h-20
     ">
-      <a :href="urlBase"> <img :src="logo" class="tw-h-10 tw-w-auto"/> </a>
+      <a :href="urlBase"> <img :src="logo" class="tw-h-20 tw-w-auto"/> </a>
       <q-linear-progress :value="progress" class="linear-progress-header"/>
     </div>
 
@@ -21,17 +21,17 @@
     <!-- keep-alive -->
     <div class="page-wizard tw-w-full tw-relative">
       <q-stepper
-          v-model="pace"
-          ref="stepper"
-          v-if="dataText.length>0"
+        v-model="pace"
+        ref="stepper"
+        v-if="dataText.length>0"
       >
         <q-step
-            v-for="step in steps"
-            :key="step.id"
-            :name="step.id"
-            :prefix="step.prefix"
-            :title="step.title"
-            :done="step.done"
+          v-for="step in steps"
+          :key="step.id"
+          :name="step.id"
+          :prefix="step.prefix"
+          :title="step.title"
+          :done="step.done"
         >
           <component :is="step.component" @update="navNext" :info.async="dataText"/>
         </q-step>
@@ -84,7 +84,7 @@ import {
   STEP_THEMES,
   STEP_PLANS,
   PLAN_BASE_ID
-} from '@imagina/qsite/_components/organizations/wizard/steps/model/constant.js';
+} from '@imagina/qsite/_components/organizations/wizard/steps/model/constant';
 
 const infoMappings = {
   [STEP_COMPANY]: 'organization',
@@ -184,11 +184,11 @@ export default {
         // si llega al final y todo esta lleno envia la info
         if (this.pace === this.steps.length) {
           if ((this.dataCheck.user !== null) &&
-              this.dataCheck.terms &&
-              (this.dataCheck.category !== null) &&
-              (this.dataCheck.layout !== null) &&
-              (this.dataCheck.plan !== null) &&
-              (this.dataCheck.organization !== '')) {
+            this.dataCheck.terms &&
+            (this.dataCheck.category !== null) &&
+            (this.dataCheck.layout !== null) &&
+            (this.dataCheck.plan !== null) &&
+            (this.dataCheck.organization !== '')) {
             //Clear cache
             this.$cache.remove('org-wizard-data');
             this.$cache.remove('org-wizard-step');
@@ -241,7 +241,7 @@ export default {
       this.isActive = current.done;
       this.setCacheStep(current.id - 1);
     },
-    redirectAfterWizard() {
+    async redirectAfterWizard() {
       //Instance the url
       let url = null
       //Get setting to know the wizard type
@@ -249,7 +249,7 @@ export default {
       //Instance the needed params
       const params = {
         billingcycle: this.dataCheck.plan.optionValue.toLowerCase(),
-        layoutId: this.dataCheck.layout.id,
+        layoutId: this.dataCheck.layout.entity.id,
         organizationName: this.dataCheck.organization,
         categoryId: this.dataCheck.category.id,
         email: this.dataCheck.user.email,
@@ -265,11 +265,10 @@ export default {
           break
         default://Local
           //Request
-          this.$crud.create('apiRoutes.qplan.buy', params).then(response => {
-            if (response.data && response.data.redirectTo) url = response.data.redirectTo
-          }).catch(error => {
+          const response = await this.$crud.create('apiRoutes.qplan.buy', params).catch(error => {
             this.$alert.error({message: `${this.$tr('isite.cms.message.recordNoCreated')}`})
           })
+          if (response.data && response.data.redirectTo) url = response.data.redirectTo
           break
       }
       //Redirect
