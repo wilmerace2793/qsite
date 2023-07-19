@@ -689,6 +689,7 @@ export default {
             //style: 'width: 100%',
             behavior: "menu",
             class: "q-pb-md",
+            disableAlphaSort: false,
             ...props
           }
           props.loading = props.loading || this.loading
@@ -1026,11 +1027,13 @@ export default {
         })
 
         //sort by label
-        items.sort((a, b) => {
-          if (a.label > b.label) return 1
-          if (a.label < b.label) return -1
-          return 0;
-        })
+        if(!this.fieldProps.disableAlphaSort) {
+          items.sort((a, b) => {
+            if (a.label > b.label) return 1
+            if (a.label < b.label) return -1
+            return 0;
+          })
+        }
 
         //response
         return items
