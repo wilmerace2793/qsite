@@ -62,6 +62,10 @@ export default {
     logout: [
       'offlineRequests',
       'site.default.locale',
+      'qsite.settings',
+      'qsite.module.configs',
+      'qsite.site.hooks',
+      'qtranslation.translations'
     ]
   },
   //Reset Store

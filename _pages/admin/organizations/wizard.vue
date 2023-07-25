@@ -8,7 +8,7 @@
                 tw-z-20
                 tw-flex tw-justify-center tw-items-center
                 tw-w-full
-                tw-h-20
+                tw-h-28
     ">
       <a :href="urlBase"> <img :src="logo" class="tw-h-20 tw-w-auto"/> </a>
       <q-linear-progress :value="progress" class="linear-progress-header"/>
@@ -21,17 +21,17 @@
     <!-- keep-alive -->
     <div class="page-wizard tw-w-full tw-relative">
       <q-stepper
-        v-model="pace"
-        ref="stepper"
-        v-if="dataText.length>0"
+          v-model="pace"
+          ref="stepper"
+          v-if="dataText.length>0"
       >
         <q-step
-          v-for="step in steps"
-          :key="step.id"
-          :name="step.id"
-          :prefix="step.prefix"
-          :title="step.title"
-          :done="step.done"
+            v-for="step in steps"
+            :key="step.id"
+            :name="step.id"
+            :prefix="step.prefix"
+            :title="step.title"
+            :done="step.done"
         >
           <component :is="step.component" @update="navNext" :info.async="dataText"/>
         </q-step>
@@ -184,11 +184,11 @@ export default {
         // si llega al final y todo esta lleno envia la info
         if (this.pace === this.steps.length) {
           if ((this.dataCheck.user !== null) &&
-            this.dataCheck.terms &&
-            (this.dataCheck.category !== null) &&
-            (this.dataCheck.layout !== null) &&
-            (this.dataCheck.plan !== null) &&
-            (this.dataCheck.organization !== '')) {
+              this.dataCheck.terms &&
+              (this.dataCheck.category !== null) &&
+              (this.dataCheck.layout !== null) &&
+              (this.dataCheck.plan !== null) &&
+              (this.dataCheck.organization !== '')) {
             //Clear cache
             this.$cache.remove('org-wizard-data');
             this.$cache.remove('org-wizard-step');
