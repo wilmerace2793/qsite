@@ -276,14 +276,8 @@ export default {
     },
     async getInfo() {
       this.dataText = await storeStepWizard().getInfoWizard();
-      // busco la info
-      const categories = await storeStepWizard().getCategories();
-      const plans = await storeStepWizard().getPlans(PLAN_BASE_ID);
-
-      // se guarda en cache
-      await this.$cache.set('org-wizard-categories', categories);
-      await this.$cache.set('org-wizard-plans', plans);
-
+      storeStepWizard().getCategories();
+      storeStepWizard().getPlans(PLAN_BASE_ID);
       // verifico en que step se quedo antes de recargar
       const step = await this.$cache.get.item('org-wizard-step');
       // verifico que info tenia guardada antes de recargar
