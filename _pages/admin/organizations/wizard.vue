@@ -8,7 +8,7 @@
                 tw-z-20
                 tw-flex tw-justify-center tw-items-center
                 tw-w-full
-                tw-h-28
+                tw-h-20
     ">
       <a :href="urlBase"> <img :src="logo" class="tw-h-20 tw-w-auto"/> </a>
       <q-linear-progress :value="progress" class="linear-progress-header"/>
@@ -99,7 +99,11 @@ export default {
   props: {},
   components: {},
   watch: {},
-  computed: {},
+  computed: {
+    siteName() {
+      return this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name')
+    }
+  },
   data() {
     return {
       loading: false,
@@ -264,10 +268,21 @@ export default {
           Object.keys(params).forEach(paramName => url += `&${paramName}=${params[paramName]}`)
           break
         default://Local
+          this.isActive = false
+          //UX
+          this.$alert.info({
+            mode: 'modal',
+            title: this.siteName,
+            icon: 'fa-duotone fa-spinner-third fa-spin',
+            message: this.$tr('isite.cms.message.creatingTenant'),
+            actions: []
+          })
           //Request
           const response = await this.$crud.create('apiRoutes.qplan.buy', params).catch(error => {
+            this.isActive = true
             this.$alert.error({message: `${this.$tr('isite.cms.message.recordNoCreated')}`})
           })
+          this.isActive = true
           if (response.data && response.data.redirectTo) url = response.data.redirectTo
           break
       }
