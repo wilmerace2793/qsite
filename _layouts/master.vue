@@ -66,7 +66,6 @@ import activitiesActions from '@imagina/qgamification/_components/activitiesActi
 import Alert from '@imagina/qoffline/_components/Alert.vue'
 import Progressrequest from '@imagina/qoffline/_components/Progressrequest.vue'
 import offlineAlert from '@imagina/qsite/_components/master/offlineAlert';
-import storeFirebase from '@imagina/qnotification/_store/firebase/index.ts'
 
 export default {
   name: "MasterLayout",
@@ -76,7 +75,6 @@ export default {
     let siteName = this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name')
     let siteDescription = this.$store.getters['qsiteApp/getSettingValueByName']('core::site-description')
     let iconHref = this.$store.getters['qsiteApp/getSettingMediaByName']('isite::favicon').path
-    storeFirebase.icon = iconHref;
     return {
       title: `${this.useLegacyStructure ? this.$tr(routeTitle) : routeTitle} | ${siteName}`,
       meta: {
