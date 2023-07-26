@@ -1168,6 +1168,7 @@
           "passengerInfo": "Passenger",
           "map": "Map",
           "schedule": "Schedule",
+          "scheduler": "Scheduler",
           "scheduleStatus": "Schedule status",
           "workOrderStatuses": "Work Order statuses"
         },
