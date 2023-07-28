@@ -27,31 +27,50 @@
               </q-card>
             </q-item-section>
             <q-item-section class="bg-grey-1 shadow-1 tw-p-2" v-else>
-              <CKEditor
-                v-model="dataBase.text"
-                :config="editorConfig"
-              ></CKEditor>
-              <div class="flex justify-between">
-                <div class="tw-mt-2 tw-space-x-2">
-                  <q-btn
-                    :loading="dataBase.loading"
-                    :disable="dataBase.text == ''"
-                    @click="addComment()"
-                    rounded
-                    size="md"
-                    :label="tr(`isite.cms.label.save`)"
-                    color="primary"
-                    no-caps
-                  />
-                  <q-btn
-                    flat
-                    size="md"
-                    @click="cancelText()"
-                    padding="4px 4px"
-                    icon="close"
-                    color="primary"
+              <div v-if="!loadingComment">
+                  <CKEditor
+                    v-model="dataBase.text"
+                    :config="editorConfig"
+                />
+                <div>
+                  <dynamic-field 
+                    :field="files" 
+                    class="tw-py-2"
                   />
                 </div>
+                <div class="flex justify-between">
+                  <div class="tw-mt-2 tw-space-x-2">
+                    <q-btn
+                      :loading="dataBase.loading"
+                      :disable="dataBase.text == ''"
+                      @click="addComment()"
+                      rounded
+                      size="md"
+                      :label="tr(`isite.cms.label.save`)"
+                      color="primary"
+                      no-caps
+                    />
+                    <q-btn
+                      flat
+                      size="md"
+                      @click="cancelText()"
+                      padding="4px 4px"
+                      icon="close"
+                      color="primary"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div 
+                v-if="loadingComment" 
+                class="tw-py-8"
+              >
+                <q-spinner
+                  color="primary"
+                  size="3em"
+                  :thickness="2"
+                  class="tw-mx-auto"
+                />
               </div>
             </q-item-section>
           </q-item>
@@ -182,6 +201,16 @@ export default defineComponent({
     }
   },
   setup(props) {
+    const files = ref({
+      value: null,
+      type: 'uploader',
+      props: {
+        title:  Vue.prototype.$trp('isite.cms.label.file'),
+        gridColClass: 'col-3 col-md-3 col-lg-4',
+        maxFiles: 3,
+      }
+    })
+    const loadingComment = ref(false);
     const commentableType = computed<string>(() => props.commentableType);
     const commentModel = ref<CommentModelContract>({...commentModelConst});
     const route = computed<string>(() => props.apiRoute);
@@ -207,8 +236,13 @@ export default defineComponent({
       return date ? Vue.prototype.$moment(date).format("DD MMM YYYY, h:mm a") : null;
     };
     function activeText(): void {
+      loadingComment.value = true;
       dataBase.value.active = true;
       dataBase.value.text = "";
+      setTimeout(() => {
+        loadingComment.value = false;
+      }, 1000);
+      
     }
     function cancelText(): void {
       if (dataBase.value.text.length > 0) {
@@ -418,6 +452,8 @@ export default defineComponent({
       comments,
       loading,
       mainImage,
+      loadingComment,
+      files,
     };
   },
 });
