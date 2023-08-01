@@ -4,7 +4,9 @@ import plans from '../plans';
 import themes from '../themes';
 import terms from '../terms';
 import register from '../register';
+import welcome from '../welcome';
 import {
+    STEP_WELCOME,
     STEP_REGISTER,
     STEP_TERMS,
     STEP_COMPANY,
@@ -16,6 +18,13 @@ import {
 
 
 export default [
+    {
+        id: STEP_WELCOME,
+        title: 'Welcome',
+        prefix: STEP_WELCOME,
+        component: welcome,
+        done: false,
+    },
     {
         id: STEP_REGISTER,
         title: 'Register',
