@@ -1,9 +1,12 @@
 <template>
   <div class="step-themes">
     <h2 v-if="stepContent" class="step-title">{{stepContent.title}}</h2>
-
+    
     <div class="step-loading" v-if="loading"><div></div><div></div></div>
     <div class="row tw-justify-center tw-px-2 md:tw-px-4 tw-mb-6" v-else>
+      <div class="col-12 tw-text-xs tw-mt-2 tw-px-3" v-show="selected">
+          Plantilla seleccionada: <span class="tw-font-bold"> {{selected.name}}</span>
+      </div>
       <div class="col-6 col-sm-3  tw-mb-2 tw-p-3 tw-cursor-pointer"
           v-for="(item, index) in themes" v-if="themes.length>0">
         <div class="item-theme"
@@ -15,6 +18,9 @@
                  class="tw-rounded tw-border tw-w-full tw-bg-white"
           >
           </q-img>
+          <div class="item-theme-name tw-text-xs text-center text-weight-bold">
+            {{ item.name }}
+          </div>
         </div>
       </div>
       <div class="col-12 tw-text-base" v-else>
@@ -25,9 +31,13 @@
 
     <div v-if="stepContent" class="step-sidebar">
       <div class="select-card tw-max-w-md tw-w-full" v-if="selected">
+        <div class="select-name text-caption text-center text-weight-bold tw-mb-2">
+            {{ selected.name }}
+        </div>
         <q-img class="img-themes" contain
                 :src="selected.mediaFiles.mainimage.extraLargeThumb"
         />
+        <div class="select-description text-caption text-center tw-mt-3" v-html="selected.description"></div>
       </div>
       <div class="select-card tw-max-w-md tw-w-full" v-else>
         <div class="tw-text-base tw-mb-8 text-center" v-html="stepContent.description"></div>
@@ -146,10 +156,12 @@ export default {
   transition: all .1s;
 }
 .step-themes .item-theme-name {
-  @apply tw-p-1;
+  @apply tw-p-1 tw-mt-1;
 }
+.step-themes .item-theme:hover .item-theme-name,
 .step-themes  .activeClass .item-theme-name {
   background-color: var(--q-color-primary);
+  color: #fff;
 }
 .step-themes .activeClass .tw-border {
   @apply tw-shadow-lg;
@@ -168,6 +180,13 @@ export default {
 }
 .step-themes .img-themes {
   object-fit: contain;
-  height: 80vh;
+  height: 60vh;
+}
+.step-themes .select-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

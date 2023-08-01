@@ -57,7 +57,11 @@ export default {
       'auth.role.id',
       'impersonatorData',
       'app.state.extra',
-      'auth.organization.id'
+      'auth.organization.id',
+      'org-wizard-data',
+      'org-wizard-categories',
+      'org-wizard-plans',
+      'org-wizard-step'
     ],
     logout: [
       'offlineRequests',
@@ -65,7 +69,11 @@ export default {
       'qsite.settings',
       'qsite.module.configs',
       'qsite.site.hooks',
-      'qtranslation.translations'
+      'qtranslation.translations',
+      'org-wizard-data',
+      'org-wizard-categories',
+      'org-wizard-plans',
+      'org-wizard-step'
     ]
   },
   //Reset Store
