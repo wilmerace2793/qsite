@@ -220,7 +220,7 @@ export default {
         this.isActive = current.done;
 
         if (current.id == STEP_WELCOME) {
-          this.dataCheck.welcome = value.active;
+          //this.dataCheck.welcome = value.active;
           this.progress = this.progress + this.progressPercent;
           this.$refs.stepper.next();
           this.setCacheStep(current.id + 1);
@@ -344,12 +344,6 @@ export default {
       };
       let layout = null;
       let planSelected = null;
-      // si no tiene datos se coloca anual
-      if (this.dataUrl.billingCycle === undefined) {
-        this.dataUrl.billingCycle = 'annually';
-      } else if (this.dataUrl.billingCycle.toLowerCase() !== 'monthly') {
-        this.dataUrl.billingCycle = 'annually';
-      }
       // datos bases del plan
       const plans = await storeStepWizard().getPlans(PLAN_BASE_ID);
       // si existe un layoutId es la prioridad
@@ -367,20 +361,21 @@ export default {
             layout = null
           }
         });
-        if (planSelected) {
+        if (planBase) {
+          if (this.dataUrl.billingCycle === undefined) {
+            this.dataUrl.billingCycle = planBase.optionValues[0].optionValue;
+          }
           planSelected = this.getFilterPlan(planBase, this.dataUrl.billingCycle);
-        } else {
-          planSelected = this.getFilterPlan(plans[1], this.dataUrl.billingCycle);
-        }
-
+        } 
       } else {
         if (this.dataUrl.planId) {
           let plan = plans.find((items) => items.id === parseInt(this.dataUrl.planId))
           if (plan) {
+            if (this.dataUrl.billingCycle === undefined) {
+              this.dataUrl.billingCycle = plan.optionValues[0].optionValue;
+            }
             planSelected = this.getFilterPlan(plan, this.dataUrl.billingCycle);
-          } else {
-            planSelected = this.getFilterPlan(plans[1], this.dataUrl.billingCycle);
-          }
+          } 
         }
       }
       this.dataCheck = {
@@ -391,7 +386,6 @@ export default {
         plan: planSelected,
         organization: '',
       };
-
     },
     getFilterPlan(plan, billingCycle) {
       const option = plan.optionValues.filter((item, index) => item.optionValue.toLowerCase() == billingCycle.toLowerCase());
@@ -406,7 +400,12 @@ export default {
         planUrl: plan.url,
         active: true,
       }));
-      return planFilter[0]
+      if(planFilter.length>0) {
+        return planFilter[0]
+      } else {
+        return null
+      }
+      
     }
   }
 }
