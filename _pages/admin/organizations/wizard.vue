@@ -1,5 +1,8 @@
 <template>
-  <div id="wizardOrganization" class="tw-h-screen tw-overflow-auto">
+  <div id="wizardOrganization" 
+      class="tw-h-screen tw-overflow-auto" 
+      :class="{'page-welcome' : pace == welcome }"
+      >
     <div class="page-header
                 tw-border-b-2 tw-border-white tw-border-opacity-50
                 tw-fixed
@@ -21,29 +24,29 @@
     <!-- keep-alive -->
     <div class="page-wizard tw-w-full tw-relative">
       <q-stepper
-        v-model="pace"
-        ref="stepper"
-        v-if="dataText.length>0"
+          v-model="pace"
+          ref="stepper"
+          v-if="dataText.length>0"
       >
         <q-step
-          v-for="step in steps"
-          :key="step.id"
-          :name="step.id"
-          :prefix="step.prefix"
-          :title="step.title"
-          :done="step.done"
+            v-for="step in steps"
+            :key="step.id"
+            :name="step.id"
+            :prefix="step.prefix"
+            :title="step.title"
+            :done="step.done"
         >
           <component :is="step.component" @update="navNext" :info.async="dataText"/>
         </q-step>
 
         <template v-slot:navigation>
-          <q-stepper-navigation v-if="pace > 1">
+          <q-stepper-navigation v-if="pace > 2">
             <div class="tw-pt-3 md:tw-pt-4 tw-pb-1">
               <div class="row justify-between">
                 <div class="col-4">
                   <q-btn rounded
                          no-caps
-                         v-if="pace > 2"
+                         v-if="pace > 3"
                          color="primary"
                          icon="fas fa-arrow-left tw-mr-0 sm:tw-mr-2"
                          @click="stepperPrevious()">
@@ -77,6 +80,7 @@
 import modelSteps from '@imagina/qsite/_components/organizations/wizard/steps/model/steps.js';
 import storeStepWizard from '@imagina/qsite/_components/organizations/wizard/steps/store/index.ts';
 import {
+  STEP_WELCOME,
   STEP_REGISTER,
   STEP_TERMS,
   STEP_COMPANY,
@@ -99,7 +103,11 @@ export default {
   props: {},
   components: {},
   watch: {},
-  computed: {},
+  computed: {
+    siteName() {
+      return this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name')
+    }
+  },
   data() {
     return {
       loading: false,
@@ -118,6 +126,7 @@ export default {
         layoutId: '',
       },
       dataCheck: null,
+      welcome: STEP_WELCOME,
       /*dataCheck: {
         user: null,
         terms: false,
@@ -141,7 +150,7 @@ export default {
   created() {
   },
   methods: {
-    init() {
+    async init() {
       /*this.$cache.remove('org-wizard-step');
       this.$cache.remove('org-wizard-categories');
       this.$cache.remove('org-wizard-plans');
@@ -184,16 +193,11 @@ export default {
         // si llega al final y todo esta lleno envia la info
         if (this.pace === this.steps.length) {
           if ((this.dataCheck.user !== null) &&
-            this.dataCheck.terms &&
-            (this.dataCheck.category !== null) &&
-            (this.dataCheck.layout !== null) &&
-            (this.dataCheck.plan !== null) &&
-            (this.dataCheck.organization !== '')) {
-            //Clear cache
-            this.$cache.remove('org-wizard-data');
-            this.$cache.remove('org-wizard-step');
-            this.$cache.remove('org-wizard-categories');
-            this.$cache.remove('org-wizard-plans');
+              this.dataCheck.terms &&
+              (this.dataCheck.category !== null) &&
+              (this.dataCheck.layout !== null) &&
+              (this.dataCheck.plan !== null) &&
+              (this.dataCheck.organization !== '')) {
             // enviar a url de pago
             this.redirectAfterWizard();
           }
@@ -215,6 +219,13 @@ export default {
         current.done = value.active;
         this.isActive = current.done;
 
+        if (current.id == STEP_WELCOME) {
+          this.dataCheck.welcome = value.active;
+          this.progress = this.progress + this.progressPercent;
+          this.$refs.stepper.next();
+          this.setCacheStep(current.id + 1);
+        }
+
         if (current.id == STEP_REGISTER) {
           this.dataCheck.user = value.info;
           this.stepperNext(current.id);
@@ -222,13 +233,17 @@ export default {
 
         // if it is terms and conditions the value of the check updates the data
         if (current.id == STEP_TERMS) {
-          this.dataCheck.terms = value.active;
+          this.dataCheck.terms.active = value.active;
+          this.dataCheck.terms.info = value.info;
         }
 
         if (value.info !== undefined) {
           const mappedProp = infoMappings[current.id];
           if (mappedProp) {
             this.dataCheck[mappedProp] = value.info;
+            if (current.id != STEP_COMPANY) {
+              this.setCacheInfo(this.dataCheck);
+            }
           }
         }
 
@@ -264,31 +279,42 @@ export default {
           Object.keys(params).forEach(paramName => url += `&${paramName}=${params[paramName]}`)
           break
         default://Local
+          this.isActive = false
+          //UX
+          this.$alert.info({
+            mode: 'modal',
+            title: this.siteName,
+            icon: 'fa-duotone fa-spinner-third fa-spin',
+            message: this.$tr('isite.cms.message.creatingTenant'),
+            actions: []
+          })
           //Request
           const response = await this.$crud.create('apiRoutes.qplan.buy', params).catch(error => {
+            this.isActive = true
             this.$alert.error({message: `${this.$tr('isite.cms.message.recordNoCreated')}`})
           })
+          this.isActive = true
           if (response.data && response.data.redirectTo) url = response.data.redirectTo
           break
       }
       //Redirect
-      if (url) this.$helper.openExternalURL(url, false)
+      if (url) {
+        //Clear cache
+        this.$cache.remove('org-wizard-data');
+        this.$cache.remove('org-wizard-step');
+        this.$cache.remove('org-wizard-categories');
+        this.$cache.remove('org-wizard-plans');       
+        this.$helper.openExternalURL(url, false)    
+      } 
     },
     async getInfo() {
       this.dataText = await storeStepWizard().getInfoWizard();
-      // busco la info
-      const categories = await storeStepWizard().getCategories();
-      const plans = await storeStepWizard().getPlans(PLAN_BASE_ID);
-
-      // se guarda en cache
-      await this.$cache.set('org-wizard-categories', categories);
-      await this.$cache.set('org-wizard-plans', plans);
-
+      storeStepWizard().getCategories();
+      storeStepWizard().getPlans(PLAN_BASE_ID);
       // verifico en que step se quedo antes de recargar
       const step = await this.$cache.get.item('org-wizard-step');
       // verifico que info tenia guardada antes de recargar
       const info = await this.$cache.get.item('org-wizard-data');
-
       if (step) {
         this.pace = step;
       } else {
@@ -359,7 +385,7 @@ export default {
       }
       this.dataCheck = {
         user: null,
-        terms: false,
+        terms: {active: false, info: false },
         category: null,
         layout: layout,
         plan: planSelected,
