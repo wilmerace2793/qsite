@@ -1203,7 +1203,8 @@
           "costCenters": "Cost Centers",
           "gates": "Parking Spots",
           "areas": "Areas",
-          "passengerCarrierStations": "Passenger Carrier Stations"
+          "passengerCarrierStations": "Passenger Carrier Stations",
+          "contracts": "Contracts"
         },
         "message": {}
       }
@@ -3003,7 +3004,8 @@
           "customers": "Clientes",
           "costCenters": "Centros de costo",
           "gates": "Lugares de estacionamiento",
-          "areas": "Areas"
+          "areas": "Areas",
+          "contracts": "Contratos"
         },
         "message": {}
       }
