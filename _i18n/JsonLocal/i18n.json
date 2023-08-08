@@ -1193,7 +1193,8 @@
           "customers": "Customers",
           "costCenters": "Cost Centers",
           "gates": "Parking Spots",
-          "areas": "Areas"
+          "areas": "Areas",
+          "contracts": "Contracts"
         },
         "message": {}
       }
@@ -2978,7 +2979,8 @@
           "customers": "Clientes",
           "costCenters": "Centros de costo",
           "gates": "Lugares de estacionamiento",
-          "areas": "Areas"
+          "areas": "Areas",
+          "contracts": "Contratos"
         },
         "message": {}
       }
