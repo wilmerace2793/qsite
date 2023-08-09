@@ -129,7 +129,6 @@ export default {
         billingCycle: '',
         layoutId: '',
       },
-      hola:'',
       dataCheck: null,
       welcome: STEP_WELCOME,
       summary: STEP_SUMMARY,
@@ -267,7 +266,6 @@ export default {
       let url = null
       //Get setting to know the wizard type
       const wizardType = this.$store.getters['qsiteApp/getSettingValueByName']('isite::wizardTenantType')
-      this.hola = wizardType;
       //Instance the needed params
       const params = {
         billingcycle: this.dataCheck.plan.optionValue.toLowerCase(),
@@ -305,8 +303,6 @@ export default {
           this.isActive = true;
           this.isActivePrevious = true;
           if (response.data && response.data.redirectTo) url = response.data.redirectTo
-          
-          
           break
       }
       //Redirect
