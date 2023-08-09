@@ -7,26 +7,27 @@
       <div class="col-12 tw-text-xs tw-mt-2 tw-px-3" v-show="selected">
           Plantilla seleccionada: <span class="tw-font-bold"> {{selected.name}}</span>
       </div>
-      <div class="col-6 col-sm-3  tw-mb-2 tw-p-3 tw-cursor-pointer"
-          v-for="(item, index) in themes" v-if="themes.length>0">
-        <div class="item-theme"
-            :class="{ activeClass : item.id === selected.id }"
-            @click="selectData(item)">
-          <q-img contain
-                 :src="item.mediaFiles.mainimage.smallThumb"
-                 :ratio="1/1"
-                 class="tw-rounded tw-border tw-w-full tw-bg-white"
-          >
-          </q-img>
-          <div class="item-theme-name tw-text-xs text-center text-weight-bold">
-            {{ item.name }}
+      <div class="col-12" v-if="themes.length>0">
+        <div class="row">
+          <div class="col-6 col-sm-3  tw-mb-2 tw-p-3 tw-cursor-pointer"
+              v-for="(item, index) in themes">
+            <div class="item-theme"
+                :class="{ activeClass : item.id === selected.id }"
+                @click="selectData(item)">
+              <q-img contain
+                    :src="item.mediaFiles.mainimage.smallThumb"
+                    :ratio="1/1"
+                    class="tw-rounded tw-border tw-w-full tw-bg-white"/>
+              <div class="item-theme-name tw-text-xs text-center text-weight-bold">
+                {{ item.name }}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </div>    
       <div class="col-12 tw-text-base" v-else>
         No hay plantillas relacionadas a este plan
       </div>
-
     </div>
 
     <div v-if="stepContent" class="step-sidebar">

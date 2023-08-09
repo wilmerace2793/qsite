@@ -11,7 +11,7 @@
                 :src="stepContent.mediaFiles.mainimage.extraLargeThumb"
                 :ratio="1/1" class="tw-h-44"
           /> 
-          <div class="text-center tw-mt-4">
+          <div class="text-center tw-mt-6">
             <q-btn  rounded
                     class="tw-text-center"
                     no-caps
@@ -62,7 +62,7 @@ export default {
 }
 </script>
 <style scope>
-.page-welcome .q-stepper__content  {
+.page-full .q-stepper__content  {
   width: 100% !important;
   min-height: 100vh !important;
   display: contents;

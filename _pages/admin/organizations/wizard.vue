@@ -1,7 +1,7 @@
 <template>
   <div id="wizardOrganization" 
       class="tw-h-screen tw-overflow-auto" 
-      :class="{'page-welcome' : pace == welcome }"
+      :class="{'page-full' : pace == welcome || pace == summary }"
       >
     <div class="page-header
                 tw-border-b-2 tw-border-white tw-border-opacity-50
@@ -13,7 +13,7 @@
                 tw-w-full
                 tw-h-20
     ">
-      <a :href="urlBase"> <img :src="logo" class="tw-h-20 tw-w-auto"/> </a>
+      <a :href="urlBase"> <img :src="logo" class="tw-h-20 tw-w-auto"/> </a> 
       <q-linear-progress :value="progress" class="linear-progress-header"/>
     </div>
 
@@ -46,6 +46,7 @@
                 <div class="col-4">
                   <q-btn rounded
                          no-caps
+                         :disabled="!isActivePrevious"
                          v-if="pace > 3"
                          color="primary"
                          icon="fas fa-arrow-left tw-mr-0 sm:tw-mr-2"
@@ -56,9 +57,10 @@
                   </q-btn>
                 </div>
                 <div class="col-4 text-right">
-                  <q-btn :disabled="!isActive"
+                  <q-btn 
                          rounded
                          no-caps
+                         :disabled="!isActive"
                          icon-right="fas fa-arrow-right tw-ml-0 sm:tw-ml-2"
                          @click="stepperNext(pace)"
                          color="primary">
@@ -87,6 +89,7 @@ import {
   STEP_CATEGORIES,
   STEP_THEMES,
   STEP_PLANS,
+  STEP_SUMMARY,
   PLAN_BASE_ID
 } from '@imagina/qsite/_components/organizations/wizard/steps/model/constant';
 
@@ -118,6 +121,7 @@ export default {
       steps: modelSteps,
       progressPercent: 0,
       isActive: false,
+      isActivePrevious: true,
       urlBase: this.$store.state.qsiteApp.baseUrl,
       dataText: [],
       dataUrl: { // datos que vienen de la url
@@ -127,6 +131,7 @@ export default {
       },
       dataCheck: null,
       welcome: STEP_WELCOME,
+      summary: STEP_SUMMARY,
       /*dataCheck: {
         user: null,
         terms: false,
@@ -279,7 +284,8 @@ export default {
           Object.keys(params).forEach(paramName => url += `&${paramName}=${params[paramName]}`)
           break
         default://Local
-          this.isActive = false
+          this.isActive = false;
+          this.isActivePrevious = false;
           //UX
           this.$alert.info({
             mode: 'modal',
@@ -290,10 +296,12 @@ export default {
           })
           //Request
           const response = await this.$crud.create('apiRoutes.qplan.buy', params).catch(error => {
-            this.isActive = true
+            this.isActive = true;
+            this.isActivePrevious = true;
             this.$alert.error({message: `${this.$tr('isite.cms.message.recordNoCreated')}`})
           })
-          this.isActive = true
+          this.isActive = true;
+          this.isActivePrevious = true;
           if (response.data && response.data.redirectTo) url = response.data.redirectTo
           break
       }
@@ -303,7 +311,7 @@ export default {
         this.$cache.remove('org-wizard-data');
         this.$cache.remove('org-wizard-step');
         this.$cache.remove('org-wizard-categories');
-        this.$cache.remove('org-wizard-plans');       
+        this.$cache.remove('org-wizard-plans');    
         this.$helper.openExternalURL(url, false)    
       } 
     },
@@ -344,6 +352,7 @@ export default {
       };
       let layout = null;
       let planSelected = null;
+
       // datos bases del plan
       const plans = await storeStepWizard().getPlans(PLAN_BASE_ID);
       // si existe un layoutId es la prioridad
@@ -378,6 +387,7 @@ export default {
           } 
         }
       }
+
       this.dataCheck = {
         user: null,
         terms: {active: false, info: false },
