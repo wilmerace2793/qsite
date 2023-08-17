@@ -1667,7 +1667,12 @@
           "endPoint": "End Point",
           "token": "Token",
           "refreshAtOnce": "Refresh",
-          "refreshEveryMinutes": "Refresh every {min} minutes"
+          "refreshEveryMinutes": "Refresh every {min} minutes",
+          "start": "Start",
+          "continueUser": "Continue with this User",
+          "createNewAccount": "Create new account",
+          "continue": "Continue",
+          "plan": "Plan"
         },
         "message": {
           "phoneHint": "Enter a phone number and press enter",
@@ -1740,7 +1745,11 @@
           "hintFilterByQuery": "Type 3 or more characters to search for options",
           "invalidFormat": "Invalid format",
           "specialCharactersAreNotAllowed": "Special characters are not allowed",
-          "configureThisSection": "configure This section"
+          "configureThisSection": "configure This section",
+          "selectedCategory": "Selected category",
+          "noCategories": "There are no categories",
+          "selectedTemplate": "Selected template",
+          "noTemplates": "No templates"
         },
         "form": {
           "whatsappNumber": "Número de Whatsapp",
@@ -3452,7 +3461,12 @@
           "endPoint": "Punto Final",
           "token": "Token",
           "refreshAtOnce": "Refrescar de una vez",
-          "refreshEveryMinutes": "Refrescar cada {min} minutos"
+          "refreshEveryMinutes": "Refrescar cada {min} minutos",
+          "start": "Empezar",
+          "continueUser": "Continuar con este Usuario",
+          "createNewAccount": "Crear Nueva Cuenta",
+          "continue": "Continuar",
+          "plan": "Plan"
         },
         "message": {
           "phoneHint": "Ingresa un número telefónico y presiona enter",
@@ -3525,7 +3539,11 @@
           "hintFilterByQuery": "Escribe 3 o más caracteres para buscar opciones",
           "invalidFormat": "Formato invalido",
           "specialCharactersAreNotAllowed": "No se permiten caracteres especiales",
-          "configureThisSection": "Configura esta sección"
+          "configureThisSection": "Configura esta sección",
+          "selectedCategory": "Categoría seleccionada",
+          "noCategories": "No existen categorías",
+          "selectedTemplate": "Plantilla seleccionada",
+          "noTemplates": "No existen plantillas"
         },
         "form": {
           "whatsappNumber": "Número de Whatsapp",

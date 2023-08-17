@@ -52,7 +52,7 @@
                          icon="fas fa-arrow-left tw-mr-0 sm:tw-mr-2"
                          @click="stepperPrevious()">
                     <div class="tw-hidden sm:tw-inline-block">
-                      Anterior
+                      {{ $tr('isite.cms.label.previous') }}
                     </div>
                   </q-btn>
                 </div>
@@ -65,7 +65,7 @@
                          @click="stepperNext(pace)"
                          color="primary">
                     <div class="tw-hidden sm:tw-inline-block">
-                      {{ pace === steps.length ? 'Finalizar' : 'Continuar' }}
+                      {{ pace === steps.length ? $tr('isite.cms.label.finalize') : $tr('isite.cms.label.continue') }}
                     </div>
                   </q-btn>
                 </div>
@@ -450,7 +450,6 @@ export default {
   @apply tw-w-2/4 tw-z-10 tw-left-0 tw-bottom-0 tw-fixed tw-bg-white tw-border-t-2;
   @apply tw-border-gray-300 tw-border-opacity-50 tw-pb-3 md:tw-pb-4;
   transition: transform .4s ease-out, width .4s ease-out;
-  /*padding-bottom: 15px;*/
 }
 
 #wizardOrganization .page-wizard .q-stepper__nav .q-btn .q-icon {
@@ -473,13 +472,11 @@ export default {
 @media only screen and (max-width: 1439px) {
   #wizardOrganization .page-wizard .q-stepper__content,
   #wizardOrganization .page-wizard .q-stepper__nav {
-    /*width: 700px;*/
     width: 50%;
   }
 
   #wizardOrganization .page-wizard .step-sidebar {
     @apply tw-left-auto;
-    /*width: calc(100% - 700px);*/
     width: 50%;
   }
 }
@@ -545,6 +542,9 @@ export default {
   @apply  tw-rounded tw-px-3 tw-py-1 tw-relative tw-mb-3 tw-text-xs md:tw-text-sm;
   border: 2px solid var(--q-color-primary);
 } 
+#wizardOrganization .selected-box-m {
+  @apply tw-mb-0 md:tw-mb-3
+}
 
 @-webkit-keyframes fade-in-left {
   0% {

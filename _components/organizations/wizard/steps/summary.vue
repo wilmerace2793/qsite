@@ -9,31 +9,31 @@
           <div class="row q-col-gutter-md" v-if="selected">
             <div class="col-12 col-md-7 tw-mt-3">
 
-              <div class="selected-label">Usuario</div>  
+              <div class="selected-label">{{ $tr('isite.cms.label.user') }} </div>  
               <div class="selected-box ">
                 {{selected.user.email}}
               </div> 
-              <div class="selected-label">Organizacion</div>  
+              <div class="selected-label">{{ $tr('isite.cms.label.organization') }}</div>  
               <div class="selected-box">
                 {{selected.organization}}
               </div> 
 
               <div class="row q-col-gutter-md">
                 <div class="col-12 col-md-6">
-                  <div class="selected-label">Categoria</div>  
-                  <div class="selected-box">
+                  <div class="selected-label">{{ $tr('isite.cms.label.category') }}</div>  
+                  <div class="selected-box selected-box-m">
                     {{selected.category.title}}
                   </div> 
                 </div>
                 <div class="col-12 col-md-6">
-                  <div class="selected-label">Plan</div>  
+                  <div class="selected-label">{{ $tr('isite.cms.label.plan') }}</div>  
                   <div class="selected-box">
                     {{selected.plan.product.name}} {{selected.plan.optionValue}}
                   </div> 
                 </div>
               </div>
 
-              <div class="selected-label">Plantilla</div>  
+              <div class="selected-label">{{ $tr('isite.cms.label.template') }}</div>  
               <div class="selected-box">
                 {{ selected.layout.name }}
                 <div class="select-description" v-html="selected.layout.description"></div>
