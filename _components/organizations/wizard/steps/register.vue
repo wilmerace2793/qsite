@@ -1,7 +1,37 @@
 <template>
   <div class="step-register">
-
-    <div class="auth-register tw-flex tw-mx-auto tw-flex-col">
+    <div class="auth-register-1 tw-mx-auto" v-if="isActive">
+      <div class="box-title text-center tw-mb-4 tw-uppercase">Datos de Usuario Logueado </div>
+      <div class="selected-label">Usuario</div>  
+      <div class="selected-box">
+        {{userAuth.userData.fullName}}
+      </div> 
+      <div class="selected-label">Email</div>  
+      <div class="selected-box">
+        {{userAuth.userData.email}} 
+      </div> 
+      <hr class="tw-my-5">
+      <div class="text-center q-gutter-md">
+        <q-btn  rounded
+              class="tw-text-center "
+              no-caps
+              color="primary"
+              size="md"
+              outline
+              @click="continueUser()">
+              Continuar con este Usuario 
+        </q-btn>
+        <q-btn  rounded
+                class="tw-text-center "
+                no-caps
+                color="primary"
+                size="md"
+                @click="createUser()">
+                Crear Nueva Cuenta
+        </q-btn>
+      </div>
+    </div>
+    <div class="auth-register tw-flex tw-mx-auto tw-flex-col" v-else>
       <!--Auth Type-->
       <div class="auth-register-internal">
         <!--Register-->
@@ -59,11 +89,15 @@ export default {
   data() {
     return {
       stepContent: '',
+      userAuth: this.$store.state.quserAuth,
+      isActive: false,
+      activeRegister: false
     }
   },
   mounted() {
     this.$nextTick(async function () {
       this.getStepInfo();
+      this.authActive();
     })
   },
   computed: {
@@ -104,6 +138,28 @@ export default {
     getStepInfo() {
       this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_REGISTER);
     },
+    continueUser() {
+      try {
+        if (this.userAuth.userData.email && this.userAuth.userId) {
+          this.$emit("update", {active: true, info: {email: this.userAuth.userData.email, id: this.userAuth.userId}});
+        }
+      } catch (error) {
+        console.log('error en user');
+      }
+    },
+    createUser() {
+      this.activeRegister = !this.activeRegister;
+      this.authActive();
+    },
+    authActive() {
+      if (this.userAuth.authenticated && this.userAuth.organizations.length==0) {
+        if(this.activeRegister) {
+          this.isActive = false
+        }else {
+          this.isActive = true
+        }
+      } 
+    } 
   }
 }
 </script>

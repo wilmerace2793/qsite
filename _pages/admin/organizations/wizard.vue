@@ -526,6 +526,26 @@ export default {
   @apply tw-text-base;
 }
 
+#wizardOrganization .selected-label {
+  @apply tw-text-white tw-text-xs tw-relative tw-z-0 tw-font-bold tw-inline-block;
+  padding: 0.125rem 1rem;
+  border-radius: 0.9375rem;
+  background-color: var(--q-color-primary);
+} 
+
+#wizardOrganization .selected-label:after {
+  @apply tw-w-2.5 tw-h-2.5 tw-left-0 tw-absolute;
+  content: "";
+  bottom: -2px;
+  z-index: -1;
+  background: var(--q-color-primary);
+}
+
+#wizardOrganization .selected-box {
+  @apply  tw-rounded tw-px-3 tw-py-1 tw-relative tw-mb-3 tw-text-xs md:tw-text-sm;
+  border: 2px solid var(--q-color-primary);
+} 
+
 @-webkit-keyframes fade-in-left {
   0% {
     -webkit-transform: translateX(-50px);

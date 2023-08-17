@@ -121,24 +121,4 @@ export default {
   object-fit: contain;
   height: 50vh;
 }
-.page-full .selected-label {
-  @apply tw-text-white tw-text-xs tw-relative tw-z-0 tw-font-bold tw-inline-block;
-  padding: 0.125rem 1rem;
-  border-radius: 0.9375rem;
-  background-color: var(--q-color-primary);
-} 
-.page-full .selected-label:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  z-index: -1;
-  background: var(--q-color-primary);
-  height: 10px;
-  width: 10px;
-}
-.page-full .selected-box {
-  @apply  tw-rounded tw-px-3 tw-py-1 tw-relative tw-mb-3 tw-text-xs md:tw-text-sm;
-  border: 2px solid var(--q-color-primary);
-} 
 </style>
