@@ -5,7 +5,7 @@
     <div class="step-loading" v-if="loading"><div></div><div></div></div>
     <div class="row tw-justify-center tw-px-2 md:tw-px-4 tw-mb-6" v-else>
       <div class="col-12 tw-text-xs tw-mt-2 tw-px-3" v-show="selected">
-          Plantilla seleccionada: <span class="tw-font-bold"> {{selected.name}}</span>
+        {{ $tr('isite.cms.message.selectedTemplate') }} : <span class="tw-font-bold"> {{selected.name}}</span>
       </div>
       <div class="col-12" v-if="themes.length>0">
         <div class="row">
@@ -26,7 +26,7 @@
         </div>
       </div>    
       <div class="col-12 tw-text-base" v-else>
-        No hay plantillas relacionadas a este plan
+        {{ $tr('isite.cms.message.noTemplates') }}
       </div>
     </div>
 

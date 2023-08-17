@@ -5,14 +5,13 @@
     <div class="tw-px-2 md:tw-px-6 tw-pb-6 tw-mt-4 tw-mb-2">
       <dynamic-field v-model="name" :field="formFields.category" @input="getCategoriesSearch"/>
       <div class="tw-text-xs tw-mt-2" v-show="selected">
-          Categoria seleccionada: <span class="tw-font-bold"> {{selected.title}}</span>
+        {{ $tr('isite.cms.message.selectedCategory') }}: <span class="tw-font-bold"> {{selected.title}}</span>
       </div>
     </div>
     <div class="step-loading" v-if="loading"><div></div><div></div></div>
     <div v-else>
     <div class="tw-px-2 md:tw-px-6" v-if="categories.length>=1">
       <div class="row q-gutter-sm items-stars justify-between tw-mb-4">
-        <!-- v-for="(item, index) in categories"   -->
         <div class="col-auto tw-mb-3"
             v-for="(item, index) in categories" v-show="(pag - 1) * limitPage <= index  && pag * limitPage > index"
             @click="selectData(item)">
@@ -40,7 +39,7 @@
       </div>
     </div>
     <div class="tw-px-2 md:tw-px-6" v-else>
-      No existen categorias
+      {{ $tr('isite.cms.message.noCategories') }} 
     </div>
   </div>
 
@@ -122,7 +121,7 @@ export default {
           value: "",
           type: "search",
           props: {
-            label: "Buscar",
+            label: this.$tr('isite.cms.label.search'),
             color: "primary",
             rounded: true,
             dense: false

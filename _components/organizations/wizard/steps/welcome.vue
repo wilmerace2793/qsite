@@ -19,7 +19,7 @@
                     size="md"
                     outline
                     @click="redirectLogin()">
-                Empezar
+              {{ $tr('isite.cms.label.start') }}
             </q-btn>
           </div>
         </div>

@@ -1,12 +1,12 @@
 <template>
   <div class="step-register">
-    <div class="auth-register-1 tw-mx-auto" v-if="isActive">
+    <div class="auth-user tw-mx-auto" v-if="isActive">
       <div class="box-title text-center tw-mb-4 tw-uppercase">Datos de Usuario Logueado </div>
-      <div class="selected-label">Usuario</div>  
+      <div class="selected-label">{{ $tr('isite.cms.label.user') }}</div>  
       <div class="selected-box">
         {{userAuth.userData.fullName}}
       </div> 
-      <div class="selected-label">Email</div>  
+      <div class="selected-label">{{ $tr('isite.cms.label.email') }}</div>  
       <div class="selected-box">
         {{userAuth.userData.email}} 
       </div> 
@@ -19,7 +19,7 @@
               size="md"
               outline
               @click="continueUser()">
-              Continuar con este Usuario 
+              {{ $tr('isite.cms.label.continueUser') }}
         </q-btn>
         <q-btn  rounded
                 class="tw-text-center "
@@ -27,7 +27,7 @@
                 color="primary"
                 size="md"
                 @click="createUser()">
-                Crear Nueva Cuenta
+                {{ $tr('isite.cms.label.createNewAccount') }}
         </q-btn>
       </div>
     </div>
@@ -140,8 +140,8 @@ export default {
     },
     continueUser() {
       try {
-        if (this.userAuth.userData.email && this.userAuth.userId) {
-          this.$emit("update", {active: true, info: {email: this.userAuth.userData.email, id: this.userAuth.userId}});
+        if (this.userAuth.userData.email) {
+          this.$emit("update", {active: true, info: {email: this.userAuth.userData.email}});
         }
       } catch (error) {
         console.log('error en user');
@@ -179,6 +179,9 @@ export default {
 
 .step-register .auth-register {
   max-width: 300px;
+}
+.step-register .auth-user {
+  max-width: 500px;
 }
 
 .step-register .auth-register .q-stepper__content {
