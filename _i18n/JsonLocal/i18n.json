@@ -1889,7 +1889,8 @@
         "bottomLeft": "Bottom-Left",
         "bottom": "Bottom",
         "bottomRight": "Bottom-Right",
-        "selectedRows": "{num} selected rows"
+        "selectedRows": "{num} selected rows",
+        "reportQueue": "You already have a report in progress, you requested it on <b>{date}</b>. As soon as it is finished we will enable the 'create' function for you... We do this to make the app work much better!"
       }
     },
     "setupagione": {
@@ -3681,7 +3682,8 @@
         "bottomLeft": "Abajo-Izquierda",
         "bottom": "Abajo",
         "bottomRight": "Abajo-Derecha",
-        "selectedRows": "{num} Filas seleccionadas"
+        "selectedRows": "{num} Filas seleccionadas",
+        "reportQueue": "Ya tienes un reporte en progreso, lo solicitaste en <b>{date}</b>. Tan pronto este termine habilitaremos la función de 'crear' para ti... Esto lo hacemos para que la aplicación funcione mucho mejor!"
       }
     },
     "setupagione": {
