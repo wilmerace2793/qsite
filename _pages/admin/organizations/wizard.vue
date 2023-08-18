@@ -1,6 +1,6 @@
 <template>
-  <div id="wizardOrganization" 
-      class="tw-h-screen tw-overflow-auto" 
+  <div id="wizardOrganization"
+      class="tw-h-screen tw-overflow-auto"
       :class="{'page-full' : pace == welcome || pace == summary }"
       >
     <div class="page-header
@@ -13,7 +13,7 @@
                 tw-w-full
                 tw-h-20
     ">
-      <a :href="urlBase"> <img :src="logo" class="tw-h-20 tw-w-auto"/> </a> 
+      <a :href="urlBase"> <img :src="logo" class="tw-h-20 tw-w-auto"/> </a>
       <q-linear-progress :value="progress" class="linear-progress-header"/>
     </div>
 
@@ -57,7 +57,7 @@
                   </q-btn>
                 </div>
                 <div class="col-4 text-right">
-                  <q-btn 
+                  <q-btn
                          rounded
                          no-caps
                          :disabled="!isActive"
@@ -311,9 +311,9 @@ export default {
         this.$cache.remove('org-wizard-data');
         this.$cache.remove('org-wizard-step');
         this.$cache.remove('org-wizard-categories');
-        this.$cache.remove('org-wizard-plans');    
-        this.$helper.openExternalURL(url, false)    
-      } 
+        this.$cache.remove('org-wizard-plans');
+        this.$helper.openExternalURL(url, false)
+      }
     },
     async getInfo() {
       this.dataText = await storeStepWizard().getInfoWizard();
@@ -375,7 +375,7 @@ export default {
             this.dataUrl.billingCycle = planBase.optionValues[0].optionValue;
           }
           planSelected = this.getFilterPlan(planBase, this.dataUrl.billingCycle);
-        } 
+        }
       } else {
         if (this.dataUrl.planId) {
           let plan = plans.find((items) => items.id === parseInt(this.dataUrl.planId))
@@ -384,7 +384,7 @@ export default {
               this.dataUrl.billingCycle = plan.optionValues[0].optionValue;
             }
             planSelected = this.getFilterPlan(plan, this.dataUrl.billingCycle);
-          } 
+          }
         }
       }
 
@@ -415,7 +415,7 @@ export default {
       } else {
         return null
       }
-      
+
     }
   }
 }
@@ -527,8 +527,8 @@ export default {
   @apply tw-text-white tw-text-xs tw-relative tw-z-0 tw-font-bold tw-inline-block;
   padding: 0.125rem 1rem;
   border-radius: 0.9375rem;
-  background-color: var(--q-color-primary);
-} 
+  color: var(--q-color-primary);
+}
 
 #wizardOrganization .selected-label:after {
   @apply tw-w-2.5 tw-h-2.5 tw-left-0 tw-absolute;
@@ -540,8 +540,8 @@ export default {
 
 #wizardOrganization .selected-box {
   @apply  tw-rounded tw-px-3 tw-py-1 tw-relative tw-mb-3 tw-text-xs md:tw-text-sm;
-  border: 2px solid var(--q-color-primary);
-} 
+  border: 2px dashed var(--q-color-primary);
+}
 #wizardOrganization .selected-box-m {
   @apply tw-mb-0 md:tw-mb-3
 }
