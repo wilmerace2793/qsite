@@ -44,14 +44,12 @@
         <div class="tw-text-base tw-mb-8 text-center" v-html="stepContent.description"></div>
         <q-img v-if="stepContent.mediaFiles" contain
                 :src="stepContent.mediaFiles.mainimage.extraLargeThumb"
-                :ratio="1/1"
           />
       </div>
     </div>
   </div>
 </template>
 <script>
-import storeStepWizard from './store/index.ts';
 import { STEP_NAME_THEMES } from './model/constant.js';
 export default {
   props: {
@@ -96,11 +94,13 @@ export default {
     },
     async getThemeSelected() {
       try {
+        this.loading = true;
         if(this.infoBase && (this.infoBase.layout !== null)) {
           if(this.infoBase.layout.planId == this.infoBase.plan.planId) {
             this.selected=this.infoBase.layout;
             this.$emit("update", { active: true, info: this.selected});
           }
+          this.loading = false;
         } else {
           // Sino hay nada es porque recargo entonces verifico que tiene cache
           const info = await this.$cache.get.item('org-wizard-data');
@@ -112,6 +112,7 @@ export default {
           } else {
             this.$emit("update",  { active: false });
           }
+          this.loading = false;
         }
       } catch (error) {
         console.log(error);
@@ -143,7 +144,7 @@ export default {
     },
     getStepInfo() {
       this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_THEMES);
-    },
+    }
   }
 }
 </script>

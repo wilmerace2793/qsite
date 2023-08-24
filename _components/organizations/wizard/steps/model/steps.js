@@ -6,6 +6,7 @@ import terms from '../terms';
 import register from '../register';
 import welcome from '../welcome';
 import summary from '../summary';
+import ai from '../ai';
 import {
     STEP_WELCOME,
     STEP_REGISTER,
@@ -15,6 +16,7 @@ import {
     STEP_THEMES,
     STEP_PLANS,
     STEP_SUMMARY,
+    STEP_AI,
 } from '@imagina/qsite/_components/organizations/wizard/steps/model/constant';
 
 
@@ -67,6 +69,13 @@ export default [
         title: 'Themes',
         prefix: STEP_THEMES,
         component: themes,
+        done: false,
+    },
+    {
+        id: STEP_AI,
+        title: 'AI',
+        prefix: STEP_AI,
+        component: ai,
         done: false,
     },
     {

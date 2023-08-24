@@ -215,7 +215,10 @@ export default {
 }
 
 .step-register {
-  @apply tw-flex tw-min-h-screen tw-flex-col tw-justify-center;
-  margin-top: -95px;
+  /*@apply tw-flex tw-min-h-screen tw-flex-col tw-justify-center;
+  margin-top: -95px;*/
+}
+#wizardOrganization .page-wizard > .q-stepper--horizontal > .q-stepper__content {
+  padding-top: 10rem !important;
 }
 </style>
