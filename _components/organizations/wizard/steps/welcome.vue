@@ -2,7 +2,7 @@
   <div class="step-welcome">
     <div class="row justify-center align-center">
       <div class="col-12 col-sm-10 col-md-11">
-        <div class="tw-p-4 md:tw-p-8 tw-mx-auto lg:tw-w-3/5 tw-mt-4">
+        <div class="tw-mx-auto lg:tw-w-3/5 tw-mt-4">
           <h2 class="step-title-1 text-primary">{{stepContent.title}}</h2> 
           <div class="tw-text-xs md:tw-text-xl lg:tw-px-8 tw-text-center tw-pb-4 md:tw-pb-6"
               v-html="stepContent.description">
@@ -69,6 +69,6 @@ export default {
   background: -webkit-linear-gradient(right, #fff, #e4e2f2);
   justify-content: center;
   align-items: center;
-  padding-top: 5rem;
+  padding-top: 5rem !important;
 }
 </style>

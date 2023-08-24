@@ -8,7 +8,7 @@
         {{ $tr('isite.cms.message.selectedCategory') }}: <span class="tw-font-bold"> {{selected.title}}</span>
       </div>
     </div>
-    <div class="step-loading" v-if="loading"><div></div><div></div></div>
+    <div class="stepp-loading" v-if="loading"><div></div><div></div></div>
     <div v-else>
     <div class="tw-px-2 md:tw-px-6" v-if="categories.length>=1">
       <div class="row q-gutter-sm items-stars justify-between tw-mb-4">
@@ -144,8 +144,10 @@ export default {
     },
     async getCategorySelected() {
       try {
+        this.loading = true;
         if(this.infoBase && this.infoBase.category !== null) {
           this.selected=this.infoBase.category;
+          this.loading = false;
         } else {
           // Sino hay nada es porque recargo entonces verifico que tiene cache
           const info = await this.$cache.get.item('org-wizard-data');
@@ -155,6 +157,7 @@ export default {
           } else {
             this.$emit("update",  { active: false });
           }
+          this.loading = false;
         }
 
       } catch (error) {
@@ -254,5 +257,20 @@ export default {
 .step-categories .text-category:hover:after {
   @apply tw--top-1 tw--right-1 tw--bottom-1 tw--left-1;
   background: var(--q-color-primary);
+}
+
+.step-categories .stepp-loading {
+  @apply tw-absolute tw-w-20 tw-h-20 tw-top-3/4 tw-left-1/2;
+  transform: translate(-75%, -75%);
+}
+
+.step-categories .stepp-loading div {
+  @apply tw-absolute tw-opacity-100 tw-rounded-full;
+  border: 4px solid var(--q-color-primary);
+  animation: step-loading 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.step-categories .stepp-loading div:nth-child(2) {
+  animation-delay: -0.5s;
 }
 </style>
