@@ -36,14 +36,17 @@
             :title="step.title"
             :done="step.done"
         >
-          <component :is="step.component" @update="navNext" :info.async="dataText"/>
+          <component ref="stepComponent" :is="step.component" @update="navNext" :info.async="dataText"/>
         </q-step>
 
         <template v-slot:navigation>
           <q-stepper-navigation v-if="pace > 2">
+           
+           
             <div class="tw-pt-3 md:tw-pt-4 tw-pb-1">
               <div class="row justify-between">
                 <div class="col-4">
+
                   <q-btn rounded
                          no-caps
                          :disabled="!isActivePrevious"
@@ -90,6 +93,7 @@ import {
   STEP_THEMES,
   STEP_PLANS,
   STEP_SUMMARY,
+  STEP_AI,
   PLAN_BASE_ID
 } from '@imagina/qsite/_components/organizations/wizard/steps/model/constant';
 
@@ -131,15 +135,7 @@ export default {
       },
       dataCheck: null,
       welcome: STEP_WELCOME,
-      summary: STEP_SUMMARY,
-      /*dataCheck: {
-        user: null,
-        terms: false,
-        category: null,
-        layout: null,
-        plan: null,
-        organization: '',
-      }*/
+      summary: STEP_SUMMARY
     }
   },
   provide() {
@@ -156,10 +152,10 @@ export default {
   },
   methods: {
     async init() {
-      /*this.$cache.remove('org-wizard-step');
+      /*  this.$cache.remove('org-wizard-step');
       this.$cache.remove('org-wizard-categories');
       this.$cache.remove('org-wizard-plans');
-      this.$cache.remove('org-wizard-data');*/
+      this.$cache.remove('org-wizard-data'); */
       this.getInfo();
       this.configProgress();
 
@@ -207,10 +203,29 @@ export default {
             this.redirectAfterWizard();
           }
         } else {
-          this.progress = this.progress + this.progressPercent;
-          this.setCacheInfo(this.dataCheck);
-          this.$refs.stepper.next();
-          this.setCacheStep(step + 1);
+
+          //console.log(this.pace,'-',STEP_AI,'-',this.dataCheck.form.check);
+          if (this.pace == STEP_AI && this.dataCheck.form.check) {
+
+            // averiguo si esta lleno el formulario
+            let validate = await this.$refs['stepComponent'][0].verifyForm();
+            if(validate){
+              // si esta lleno quiere decir que puede avanzar
+              this.progress = this.progress + this.progressPercent;
+              this.setCacheInfo(this.dataCheck);
+              this.setCacheStep(step + 1);
+              this.$refs.stepper.next();
+            } 
+
+          } else {
+
+            this.progress = this.progress + this.progressPercent;
+            this.setCacheInfo(this.dataCheck);
+            this.setCacheStep(step + 1);
+            this.$refs.stepper.next();
+          }
+          
+          
         }
 
       } catch (error) {
@@ -225,7 +240,6 @@ export default {
         this.isActive = current.done;
 
         if (current.id == STEP_WELCOME) {
-          //this.dataCheck.welcome = value.active;
           this.progress = this.progress + this.progressPercent;
           this.$refs.stepper.next();
           this.setCacheStep(current.id + 1);
@@ -240,6 +254,11 @@ export default {
         if (current.id == STEP_TERMS) {
           this.dataCheck.terms.active = value.active;
           this.dataCheck.terms.info = value.info;
+        }
+
+        if (current.id == STEP_AI) {
+          this.dataCheck.form.check = value.check;
+          this.dataCheck.form.info = value.info;
         }
 
         if (value.info !== undefined) {
@@ -273,7 +292,8 @@ export default {
         organizationName: this.dataCheck.organization,
         categoryId: this.dataCheck.category.id,
         email: this.dataCheck.user.email,
-        planId: this.dataCheck.plan.product.entity.id //Keep this to works with local type
+        planId: this.dataCheck.plan.product.entity.id, //Keep this to works with local type
+        formIA: this.dataCheck.form.info //Keep this to works with local type
       }
       //Validate and get the url to redirect
       switch (wizardType) {
@@ -395,6 +415,7 @@ export default {
         layout: layout,
         plan: planSelected,
         organization: '',
+        form: {active: false, check: false, info: {} },
       };
     },
     getFilterPlan(plan, billingCycle) {
@@ -440,16 +461,29 @@ export default {
   @apply tw-rounded-none tw-shadow-none;
 }
 
-#wizardOrganization .page-wizard .q-stepper__content {
+/*#wizardOrganization .page-wizard .q-stepper__content {
   @apply tw-min-h-screen tw-z-10 tw-flex tw-flex-col tw-bg-white tw-box-border tw-w-2/4;
   padding: 95px 0 75px;
   transition: transform .4s ease-out, width .4s ease-out;
+}*/
+
+#wizardOrganization .page-wizard .q-stepper__content {
+  @apply tw-min-h-screen tw-z-10 tw-flex tw-flex-col tw-bg-white tw-box-border tw-w-2/4;
+  padding: 190px 0 75px;
+  transition: transform .4s ease-out, width .4s ease-out;
 }
 
-#wizardOrganization .page-wizard .q-stepper__nav {
+/*#wizardOrganization .page-wizard .q-stepper__nav {
   @apply tw-w-2/4 tw-z-10 tw-left-0 tw-bottom-0 tw-fixed tw-bg-white tw-border-t-2;
   @apply tw-border-gray-300 tw-border-opacity-50 tw-pb-3 md:tw-pb-4;
   transition: transform .4s ease-out, width .4s ease-out;
+}*/
+
+#wizardOrganization .page-wizard .q-stepper__nav {
+  @apply tw-w-2/4 tw-z-50 tw-left-0  tw-fixed tw-bg-white tw-border-b-2;
+  @apply tw-border-gray-300 tw-border-opacity-50 tw-pb-3 md:tw-pb-4;
+  transition: transform .4s ease-out, width .4s ease-out;
+  margin-top: -95px; top: 180px; 
 }
 
 #wizardOrganization .page-wizard .q-stepper__nav .q-btn .q-icon {
@@ -616,5 +650,8 @@ export default {
     height: 72px;
     opacity: 0;
   }
+}
+.step-plan, .step-categories, .step-themes, .step-ai {
+  margin-top: 25px;
 }
 </style>
