@@ -15,7 +15,7 @@
               <div class="selected-box ">
                 {{selected.user.email}}
               </div> 
-              
+
               <div class="selected-label">{{ $tr('isite.cms.label.organization') }}</div>  
               <div class="selected-box">
                 {{selected.organization}}

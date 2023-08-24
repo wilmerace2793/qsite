@@ -1,33 +1,34 @@
 <template>
   <div class="step-register">
     <div class="auth-user tw-mx-auto" v-if="isActive">
-      <div class="box-title text-center tw-mb-4 tw-uppercase">Datos de Usuario Logueado </div>
-      <div class="selected-label">{{ $tr('isite.cms.label.user') }}</div>  
+      <div class="step-title">
+        {{ $tr('isite.cms.sessionFound')}}!
+      </div>
+      <div class="selected-label">{{ $tr('isite.cms.label.user') }}</div>
       <div class="selected-box">
         {{userAuth.userData.fullName}}
-      </div> 
-      <div class="selected-label">{{ $tr('isite.cms.label.email') }}</div>  
+      </div>
+      <div class="selected-label">{{ $tr('isite.cms.label.email') }}</div>
       <div class="selected-box">
-        {{userAuth.userData.email}} 
-      </div> 
+        {{userAuth.userData.email}}
+      </div>
       <hr class="tw-my-5">
       <div class="text-center q-gutter-md">
-        <q-btn  rounded
-              class="tw-text-center "
-              no-caps
-              color="primary"
-              size="md"
-              outline
-              @click="continueUser()">
-              {{ $tr('isite.cms.label.continueUser') }}
-        </q-btn>
-        <q-btn  rounded
+        <q-btn  rounded outline
                 class="tw-text-center "
                 no-caps
                 color="primary"
                 size="md"
                 @click="createUser()">
                 {{ $tr('isite.cms.label.createNewAccount') }}
+        </q-btn>
+        <q-btn  rounded unelevated
+                class="tw-text-center "
+                no-caps
+                color="primary"
+                size="md"
+                @click="continueUser()">
+          {{ $tr('isite.cms.label.continueUser') }}
         </q-btn>
       </div>
     </div>
@@ -45,7 +46,6 @@
         <div class="row justify-center q-gutter-sm">
           <google-auth/>
           <facebook-auth/>
-          <microsoftAuth @logged="checkAfterLogin()"/>
         </div>
       </div>
     </div>
@@ -158,8 +158,8 @@ export default {
         }else {
           this.isActive = true
         }
-      } 
-    } 
+      }
+    }
   }
 }
 </script>
