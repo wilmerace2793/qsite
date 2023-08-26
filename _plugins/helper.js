@@ -345,6 +345,11 @@ class Helper {
     document.head.appendChild(scripToCDN)
   }
 
+  //Append Script header
+  appendScriptStringHead(scriptString) {
+    return  document.head.insertAdjacentHTML('beforeend', scriptString)
+  }
+
   //validate rules
   validateRules(params = {}) {
     let response = true
