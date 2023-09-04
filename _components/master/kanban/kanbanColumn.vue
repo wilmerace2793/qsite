@@ -41,7 +41,7 @@
           hover:tw-ease-in 
           hover:tw--translate-y-1 icon-plus
         "
-        v-if="!disableCrud && hover"
+        v-if="!disableCrud && hover && columnData.type !== 1"
         @click="addColumnKanban"
       >
         <i 

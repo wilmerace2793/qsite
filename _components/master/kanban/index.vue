@@ -103,6 +103,7 @@
         :funnelId="funnelSelectedComputed"
         :filterName="routes.column ? routes.column.filter.name : null"
     />
+    <modalStatus />
   </div>
 </template>
 
@@ -113,6 +114,7 @@ import automationRules from "./automationRules/index.vue";
 import draggable from "vuedraggable";
 import formComponent from './modals/form.vue';
 import formRules from './modals/formRules';
+import modalStatus from './modals//statusModal/index.vue'
 
 const modelPayload = {
   id: null,
@@ -186,6 +188,7 @@ export default {
       crudfieldActions: this.crudfieldActions,
       deleteKanbanCard: this.deleteKanbanCard,
       updateCardColumn: this.updateCard,
+      getStatus: this.getStatus,
     };
   },
   inject:['funnelPageAction', 'fieldActions'],
@@ -194,7 +197,8 @@ export default {
     draggable,
     automationRules,
     formComponent,
-    formRules
+    formRules,
+    modalStatus
   },
   data() {
     return {
@@ -227,14 +231,24 @@ export default {
   },
   computed: {
     extraPageActions() {
-      return {
+      return [{
           label: "Reglas de automatización",
           props: {
             label: "Reglas de automatización",
             padding: "3px 15px",
           },
           action: this.openAutomationRulesModal,
-        };
+        },
+        {
+          label: "Estados",
+          props: {
+            label: "Estados",
+            padding: "3px 15px",
+          },
+          action: () => { 
+            kanbanStore().setModalStatus(true) 
+          },
+        }];
     },
     funnel() {
       return {
@@ -265,10 +279,10 @@ export default {
     },
   },
   methods: {
-    async init(refresh = false) {
+    async init(refresh = false, isModal = false) {
       this.kanbanColumns = [];
       await this.getFunnel();
-      await this.getColumns(refresh);
+      await this.getColumns(refresh, isModal);
     },
     async getFunnel() {
       try {
@@ -306,18 +320,23 @@ export default {
         item.position = index;
       });
     },
-    async getColumns(refresh = false) {
-      try {
-        if(!this.routes.column) return;
-        this.loading = true;
+    async getStatus(refresh = false) {
+      if(!this.routes.column) return;
         const route = this.routes.column;
         const parameters = { params: {}, refresh };
         parameters.params.include = route.include;
         const id =  { id: this.$filter.values.statusId } || {};
         parameters.params.filter = {
-          [route.filter.name]: this.funnelSelectedComputed, ...id
+          [route.filter.name]: this.funnelSelectedComputed, ...id,
+          order: {field:"type", way:"asc"}
         };
         const response = await this.$crud.index(route.apiRoute, parameters);
+        return response;
+    },
+    async getColumns(refresh = false, isModal = false) {
+      try {
+        this.loading = true;
+        const response = await this.getStatus(isModal ? !refresh : refresh);
         const kanbanColumn = this.getKanbanColumns(response.data, refresh);
         this.kanbanColumns = kanbanColumn;
         setTimeout(() => {
@@ -342,6 +361,7 @@ export default {
           loading: false,
           new: false,
           position: index,
+          type: item.type
         };
       });
       kanbanColumn.forEach(async (column) => {
@@ -503,6 +523,7 @@ export default {
         payloadStatus.title = data.title;
         payloadStatus.color = data.color;
         payloadStatus[route.filter.name] = this.funnelSelected;
+        payloadStatus.type = data.type;
         return await this.$crud.create(route.apiRoute, payloadStatus);
       } catch (error) {
         console.log(error);
