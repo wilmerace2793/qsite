@@ -80,7 +80,7 @@
                 <q-timeline-entry
                   v-for="(item, index, itemKey) in comments"
                   :key="itemKey"
-                  :avatar="mainImage(item)"
+                  :icon="item.icon ? item.icon : 'fa-regular fa-comment'"
                 >
                   <h4 
                     class="tw-text-sm" 
