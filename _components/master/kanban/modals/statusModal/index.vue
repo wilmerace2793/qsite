@@ -154,7 +154,6 @@ export default defineComponent({
             },
             { inProgress: [], success: [], failed: [] }
           );
-          console.log(statusList.value);
         }
       },
     });
