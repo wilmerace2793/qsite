@@ -15,11 +15,14 @@
         ghost-class="ghostCard"
         drag-class="dragCard"
         filter=".ignoreItem"
+        draggable=".notMoveBetweenColumns"
         :disabled="loading || !dragColumn || kanbanColumns.length === 0"
         class="tw-p-3 tw-h-auto tw-flex tw-space-x-4 tw-overflow-x-auto"
         @change="reorderColumns"
       >
-        <div v-if="!loading" v-for="(column, index) in kanbanColumns">
+        <div v-if="!loading" v-for="(column, index) in kanbanColumns" 
+         :class="{'notMoveBetweenColumns': column.type !== 1}"
+        >
           <kanbanColumn
             :key="index"
             :column-data="column"
@@ -32,6 +35,7 @@
               tw-bg-gray-100 tw-rounded-lg tw-shadow
             "
           />
+          
         </div>
         <q-skeleton
           animation="blink"
