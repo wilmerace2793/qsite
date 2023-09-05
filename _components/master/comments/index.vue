@@ -107,7 +107,7 @@
                         v-html="item.comment"
                         @click="activeEdit(item.id)"
                         :title="tr(`isite.cms.label.edit`)"
-                        v-if="permisionComments.edit"
+                        v-if="permisionComments.edit && !Boolean(item.internal)"
                       />
                       <q-card-section
                         class="tw-py-2"
@@ -117,7 +117,7 @@
                     </q-card>
                     <div class="tw-mt-2 tw-text-xs">
                       <q-btn
-                        v-if="permisionComments.destroy"
+                        v-if="permisionComments.destroy && !Boolean(item.internal)"
                         class="tw-bg-red-500 tw-text-white"
                         :label="tr(`isite.cms.label.delete`)"
                         size="sm"
