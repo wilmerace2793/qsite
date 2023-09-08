@@ -236,6 +236,7 @@ export default {
   computed: {
     extraPageActions() {
       return [{
+          vIf: this.$auth.hasAccess('requestable.automationrules.manage'),
           label: "Reglas de automatización",
           props: {
             label: "Reglas de automatización",
@@ -244,6 +245,7 @@ export default {
           action: this.openAutomationRulesModal,
         },
         {
+          vIf: this.$auth.hasAccess('requestable.statuses.manage'),
           label: "Estados",
           props: {
             label: "Estados",
