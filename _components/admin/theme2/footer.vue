@@ -107,6 +107,13 @@
               </q-item-section>
               <q-item-section class="ellipsis">{{ $trp('isite.cms.label.notification') }}</q-item-section>
             </q-item>
+            <!-- Logout -->
+            <q-item clickable v-ripple @click.native="$router.push({name: 'auth.logout'})">
+              <q-item-section avatar>
+                <q-icon color="primary" name="fa-light fa-right-from-bracket"/>
+              </q-item-section>
+              <q-item-section class="ellipsis">{{ $tr('isite.cms.configList.signOut') }}</q-item-section>
+            </q-item>
             <!---->
           </q-list>
         </q-card-section>
