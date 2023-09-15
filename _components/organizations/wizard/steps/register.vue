@@ -1,7 +1,38 @@
 <template>
   <div class="step-register">
-
-    <div class="auth-register tw-flex tw-mx-auto tw-flex-col">
+    <div class="auth-user tw-mx-auto" v-if="isActive">
+      <div class="step-title">
+        {{ $tr('isite.cms.sessionFound')}}!
+      </div>
+      <div class="selected-label">{{ $tr('isite.cms.label.user') }}</div>
+      <div class="selected-box">
+        {{userAuth.userData.fullName}}
+      </div>
+      <div class="selected-label">{{ $tr('isite.cms.label.email') }}</div>
+      <div class="selected-box">
+        {{userAuth.userData.email}}
+      </div>
+      <hr class="tw-my-5">
+      <div class="text-center q-gutter-md">
+        <q-btn  rounded outline
+                class="tw-text-center "
+                no-caps
+                color="primary"
+                size="md"
+                @click="createUser()">
+                {{ $tr('isite.cms.label.createNewAccount') }}
+        </q-btn>
+        <q-btn  rounded unelevated
+                class="tw-text-center "
+                no-caps
+                color="primary"
+                size="md"
+                @click="continueUser()">
+          {{ $tr('isite.cms.label.continueUser') }}
+        </q-btn>
+      </div>
+    </div>
+    <div class="auth-register tw-flex tw-mx-auto tw-flex-col" v-else>
       <!--Auth Type-->
       <div class="auth-register-internal">
         <!--Register-->
@@ -15,7 +46,6 @@
         <div class="row justify-center q-gutter-sm">
           <google-auth/>
           <facebook-auth/>
-          <microsoftAuth @logged="checkAfterLogin()"/>
         </div>
       </div>
     </div>
@@ -59,11 +89,15 @@ export default {
   data() {
     return {
       stepContent: '',
+      userAuth: this.$store.state.quserAuth,
+      isActive: false,
+      activeRegister: false
     }
   },
   mounted() {
     this.$nextTick(async function () {
       this.getStepInfo();
+      this.authActive();
     })
   },
   computed: {
@@ -104,6 +138,28 @@ export default {
     getStepInfo() {
       this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_REGISTER);
     },
+    continueUser() {
+      try {
+        if (this.userAuth.userData.email) {
+          this.$emit("update", {active: true, info: {email: this.userAuth.userData.email}});
+        }
+      } catch (error) {
+        console.log('error en user');
+      }
+    },
+    createUser() {
+      this.activeRegister = !this.activeRegister;
+      this.authActive();
+    },
+    authActive() {
+      if (this.userAuth.authenticated && this.userAuth.organizations.length==0) {
+        if(this.activeRegister) {
+          this.isActive = false
+        }else {
+          this.isActive = true
+        }
+      }
+    }
   }
 }
 </script>
@@ -123,6 +179,9 @@ export default {
 
 .step-register .auth-register {
   max-width: 300px;
+}
+.step-register .auth-user {
+  max-width: 500px;
 }
 
 .step-register .auth-register .q-stepper__content {
@@ -156,7 +215,10 @@ export default {
 }
 
 .step-register {
-  @apply tw-flex tw-min-h-screen tw-flex-col tw-justify-center;
-  margin-top: -95px;
+  /*@apply tw-flex tw-min-h-screen tw-flex-col tw-justify-center;
+  margin-top: -95px;*/
+}
+#wizardOrganization .page-wizard > .q-stepper--horizontal > .q-stepper__content {
+  padding-top: 10rem !important;
 }
 </style>
