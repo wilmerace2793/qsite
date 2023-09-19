@@ -1,7 +1,7 @@
 <template>
-  <div id="wizardOrganization" 
-      class="tw-h-screen tw-overflow-auto" 
-      :class="{'page-welcome' : pace == welcome }"
+  <div id="wizardOrganization"
+      class="tw-h-screen tw-overflow-auto"
+      :class="{'page-full' : pace == welcome || pace == summary }"
       >
     <div class="page-header
                 tw-border-b-2 tw-border-white tw-border-opacity-50
@@ -36,34 +36,39 @@
             :title="step.title"
             :done="step.done"
         >
-          <component :is="step.component" @update="navNext" :info.async="dataText"/>
+          <component ref="stepComponent" :is="step.component" @update="navNext" :info.async="dataText"/>
         </q-step>
 
         <template v-slot:navigation>
           <q-stepper-navigation v-if="pace > 2">
+           
+           
             <div class="tw-pt-3 md:tw-pt-4 tw-pb-1">
               <div class="row justify-between">
                 <div class="col-4">
+
                   <q-btn rounded
                          no-caps
+                         :disabled="!isActivePrevious"
                          v-if="pace > 3"
                          color="primary"
                          icon="fas fa-arrow-left tw-mr-0 sm:tw-mr-2"
                          @click="stepperPrevious()">
                     <div class="tw-hidden sm:tw-inline-block">
-                      Anterior
+                      {{ $tr('isite.cms.label.previous') }}
                     </div>
                   </q-btn>
                 </div>
                 <div class="col-4 text-right">
-                  <q-btn :disabled="!isActive"
+                  <q-btn
                          rounded
                          no-caps
+                         :disabled="!isActive"
                          icon-right="fas fa-arrow-right tw-ml-0 sm:tw-ml-2"
                          @click="stepperNext(pace)"
                          color="primary">
                     <div class="tw-hidden sm:tw-inline-block">
-                      {{ pace === steps.length ? 'Finalizar' : 'Continuar' }}
+                      {{ pace === steps.length ? $tr('isite.cms.label.finalize') : $tr('isite.cms.label.continue') }}
                     </div>
                   </q-btn>
                 </div>
@@ -87,6 +92,8 @@ import {
   STEP_CATEGORIES,
   STEP_THEMES,
   STEP_PLANS,
+  STEP_SUMMARY,
+  STEP_AI,
   PLAN_BASE_ID
 } from '@imagina/qsite/_components/organizations/wizard/steps/model/constant';
 
@@ -118,6 +125,7 @@ export default {
       steps: modelSteps,
       progressPercent: 0,
       isActive: false,
+      isActivePrevious: true,
       urlBase: this.$store.state.qsiteApp.baseUrl,
       dataText: [],
       dataUrl: { // datos que vienen de la url
@@ -127,14 +135,7 @@ export default {
       },
       dataCheck: null,
       welcome: STEP_WELCOME,
-      /*dataCheck: {
-        user: null,
-        terms: false,
-        category: null,
-        layout: null,
-        plan: null,
-        organization: '',
-      }*/
+      summary: STEP_SUMMARY
     }
   },
   provide() {
@@ -151,10 +152,10 @@ export default {
   },
   methods: {
     async init() {
-      /*this.$cache.remove('org-wizard-step');
+      /*  this.$cache.remove('org-wizard-step');
       this.$cache.remove('org-wizard-categories');
       this.$cache.remove('org-wizard-plans');
-      this.$cache.remove('org-wizard-data');*/
+      this.$cache.remove('org-wizard-data'); */
       this.getInfo();
       this.configProgress();
 
@@ -202,10 +203,29 @@ export default {
             this.redirectAfterWizard();
           }
         } else {
-          this.progress = this.progress + this.progressPercent;
-          this.setCacheInfo(this.dataCheck);
-          this.$refs.stepper.next();
-          this.setCacheStep(step + 1);
+
+          //console.log(this.pace,'-',STEP_AI,'-',this.dataCheck.form.check);
+          if (this.pace == STEP_AI && this.dataCheck.form.check) {
+
+            // averiguo si esta lleno el formulario
+            let validate = await this.$refs['stepComponent'][0].verifyForm();
+            if(validate){
+              // si esta lleno quiere decir que puede avanzar
+              this.progress = this.progress + this.progressPercent;
+              this.setCacheInfo(this.dataCheck);
+              this.setCacheStep(step + 1);
+              this.$refs.stepper.next();
+            } 
+
+          } else {
+
+            this.progress = this.progress + this.progressPercent;
+            this.setCacheInfo(this.dataCheck);
+            this.setCacheStep(step + 1);
+            this.$refs.stepper.next();
+          }
+          
+          
         }
 
       } catch (error) {
@@ -220,7 +240,6 @@ export default {
         this.isActive = current.done;
 
         if (current.id == STEP_WELCOME) {
-          this.dataCheck.welcome = value.active;
           this.progress = this.progress + this.progressPercent;
           this.$refs.stepper.next();
           this.setCacheStep(current.id + 1);
@@ -235,6 +254,11 @@ export default {
         if (current.id == STEP_TERMS) {
           this.dataCheck.terms.active = value.active;
           this.dataCheck.terms.info = value.info;
+        }
+
+        if (current.id == STEP_AI) {
+          this.dataCheck.form.check = value.check;
+          this.dataCheck.form.info = value.info;
         }
 
         if (value.info !== undefined) {
@@ -268,7 +292,8 @@ export default {
         organizationName: this.dataCheck.organization,
         categoryId: this.dataCheck.category.id,
         email: this.dataCheck.user.email,
-        planId: this.dataCheck.plan.product.entity.id //Keep this to works with local type
+        planId: this.dataCheck.plan.product.entity.id, //Keep this to works with local type
+        formIA: this.dataCheck.form.info //Keep this to works with local type
       }
       //Validate and get the url to redirect
       switch (wizardType) {
@@ -279,7 +304,8 @@ export default {
           Object.keys(params).forEach(paramName => url += `&${paramName}=${params[paramName]}`)
           break
         default://Local
-          this.isActive = false
+          this.isActive = false;
+          this.isActivePrevious = false;
           //UX
           this.$alert.info({
             mode: 'modal',
@@ -290,10 +316,12 @@ export default {
           })
           //Request
           const response = await this.$crud.create('apiRoutes.qplan.buy', params).catch(error => {
-            this.isActive = true
+            this.isActive = true;
+            this.isActivePrevious = true;
             this.$alert.error({message: `${this.$tr('isite.cms.message.recordNoCreated')}`})
           })
-          this.isActive = true
+          this.isActive = true;
+          this.isActivePrevious = true;
           if (response.data && response.data.redirectTo) url = response.data.redirectTo
           break
       }
@@ -303,9 +331,9 @@ export default {
         this.$cache.remove('org-wizard-data');
         this.$cache.remove('org-wizard-step');
         this.$cache.remove('org-wizard-categories');
-        this.$cache.remove('org-wizard-plans');       
-        this.$helper.openExternalURL(url, false)    
-      } 
+        this.$cache.remove('org-wizard-plans');
+        this.$helper.openExternalURL(url, false)
+      }
     },
     async getInfo() {
       this.dataText = await storeStepWizard().getInfoWizard();
@@ -344,12 +372,7 @@ export default {
       };
       let layout = null;
       let planSelected = null;
-      // si no tiene datos se coloca anual
-      if (this.dataUrl.billingCycle === undefined) {
-        this.dataUrl.billingCycle = 'annually';
-      } else if (this.dataUrl.billingCycle.toLowerCase() !== 'monthly') {
-        this.dataUrl.billingCycle = 'annually';
-      }
+
       // datos bases del plan
       const plans = await storeStepWizard().getPlans(PLAN_BASE_ID);
       // si existe un layoutId es la prioridad
@@ -367,22 +390,24 @@ export default {
             layout = null
           }
         });
-        if (planSelected) {
+        if (planBase) {
+          if (this.dataUrl.billingCycle === undefined) {
+            this.dataUrl.billingCycle = planBase.optionValues[0].optionValue;
+          }
           planSelected = this.getFilterPlan(planBase, this.dataUrl.billingCycle);
-        } else {
-          planSelected = this.getFilterPlan(plans[1], this.dataUrl.billingCycle);
         }
-
       } else {
         if (this.dataUrl.planId) {
           let plan = plans.find((items) => items.id === parseInt(this.dataUrl.planId))
           if (plan) {
+            if (this.dataUrl.billingCycle === undefined) {
+              this.dataUrl.billingCycle = plan.optionValues[0].optionValue;
+            }
             planSelected = this.getFilterPlan(plan, this.dataUrl.billingCycle);
-          } else {
-            planSelected = this.getFilterPlan(plans[1], this.dataUrl.billingCycle);
           }
         }
       }
+
       this.dataCheck = {
         user: null,
         terms: {active: false, info: false },
@@ -390,8 +415,8 @@ export default {
         layout: layout,
         plan: planSelected,
         organization: '',
+        form: {active: false, check: false, info: {} },
       };
-
     },
     getFilterPlan(plan, billingCycle) {
       const option = plan.optionValues.filter((item, index) => item.optionValue.toLowerCase() == billingCycle.toLowerCase());
@@ -406,7 +431,12 @@ export default {
         planUrl: plan.url,
         active: true,
       }));
-      return planFilter[0]
+      if(planFilter.length>0) {
+        return planFilter[0]
+      } else {
+        return null
+      }
+
     }
   }
 }
@@ -431,17 +461,29 @@ export default {
   @apply tw-rounded-none tw-shadow-none;
 }
 
-#wizardOrganization .page-wizard .q-stepper__content {
+/*#wizardOrganization .page-wizard .q-stepper__content {
   @apply tw-min-h-screen tw-z-10 tw-flex tw-flex-col tw-bg-white tw-box-border tw-w-2/4;
   padding: 95px 0 75px;
   transition: transform .4s ease-out, width .4s ease-out;
+}*/
+
+#wizardOrganization .page-wizard .q-stepper__content {
+  @apply tw-min-h-screen tw-z-10 tw-flex tw-flex-col tw-bg-white tw-box-border tw-w-2/4;
+  padding: 190px 0 75px;
+  transition: transform .4s ease-out, width .4s ease-out;
 }
 
-#wizardOrganization .page-wizard .q-stepper__nav {
+/*#wizardOrganization .page-wizard .q-stepper__nav {
   @apply tw-w-2/4 tw-z-10 tw-left-0 tw-bottom-0 tw-fixed tw-bg-white tw-border-t-2;
   @apply tw-border-gray-300 tw-border-opacity-50 tw-pb-3 md:tw-pb-4;
   transition: transform .4s ease-out, width .4s ease-out;
-  /*padding-bottom: 15px;*/
+}*/
+
+#wizardOrganization .page-wizard .q-stepper__nav {
+  @apply tw-w-2/4 tw-z-50 tw-left-0  tw-fixed tw-bg-white tw-border-b-2;
+  @apply tw-border-gray-300 tw-border-opacity-50 tw-pb-3 md:tw-pb-4;
+  transition: transform .4s ease-out, width .4s ease-out;
+  margin-top: -95px; top: 180px; 
 }
 
 #wizardOrganization .page-wizard .q-stepper__nav .q-btn .q-icon {
@@ -464,13 +506,11 @@ export default {
 @media only screen and (max-width: 1439px) {
   #wizardOrganization .page-wizard .q-stepper__content,
   #wizardOrganization .page-wizard .q-stepper__nav {
-    /*width: 700px;*/
     width: 50%;
   }
 
   #wizardOrganization .page-wizard .step-sidebar {
     @apply tw-left-auto;
-    /*width: calc(100% - 700px);*/
     width: 50%;
   }
 }
@@ -515,6 +555,30 @@ export default {
 
 #wizardOrganization .q-dialog__message {
   @apply tw-text-base;
+}
+
+#wizardOrganization .selected-label {
+  @apply tw-text-white tw-text-xs tw-relative tw-z-0 tw-font-bold tw-inline-block;
+  padding: 0.125rem 1rem;
+  border-radius: 0.9375rem;
+  color: var(--q-color-primary);
+}
+
+#wizardOrganization .selected-label:after {
+  @apply tw-w-2.5 tw-h-2.5 tw-left-0 tw-absolute;
+  content: "";
+  bottom: -2px;
+  z-index: -1;
+  background: var(--q-color-primary);
+}
+
+#wizardOrganization .selected-box {
+  @apply  tw-rounded tw-px-3 tw-py-1 tw-relative tw-mb-3 tw-text-xs md:tw-text-sm;
+  border: 2px dashed var(--q-color-primary);
+}
+
+#wizardOrganization .selected-box-m {
+  @apply tw-mb-0 md:tw-mb-3
 }
 
 @-webkit-keyframes fade-in-left {
@@ -587,5 +651,8 @@ export default {
     height: 72px;
     opacity: 0;
   }
+}
+.step-plan, .step-categories, .step-themes, .step-ai {
+  margin-top: 25px;
 }
 </style>

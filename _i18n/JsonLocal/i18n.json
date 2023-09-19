@@ -1681,7 +1681,12 @@
           "refreshAtOnce": "Refresh",
           "refreshEveryMinutes": "Refresh every {min} minutes",
           "offline": "Offline",
-          "offlineRequests": "Offline Requests"
+          "offlineRequests": "Offline Requests",
+          "start": "Start",
+          "continueUser": "Continue with this User",
+          "createNewAccount": "Create new account",
+          "continue": "Continue",
+          "plan": "Plan"
         },
         "message": {
           "requestAdded": "Request added to the offline queue successfully",
@@ -1755,7 +1760,11 @@
           "hintFilterByQuery": "Type 3 or more characters to search for options",
           "invalidFormat": "Invalid format",
           "specialCharactersAreNotAllowed": "Special characters are not allowed",
-          "configureThisSection": "configure This section"
+          "configureThisSection": "configure This section",
+          "selectedCategory": "Selected category",
+          "noCategories": "There are no categories",
+          "selectedTemplate": "Selected template",
+          "noTemplates": "No templates"
         },
         "form": {
           "whatsappNumber": "Número de Whatsapp",
@@ -1895,7 +1904,9 @@
         "bottomLeft": "Bottom-Left",
         "bottom": "Bottom",
         "bottomRight": "Bottom-Right",
-        "selectedRows": "{num} selected rows"
+        "selectedRows": "{num} selected rows",
+        "reportQueue": "You already have a report in progress, you requested it on <b>{date}</b>. As soon as it is finished we will enable the 'create' function for you... We do this to make the app work much better!",
+        "sessionFound": "There is an active session"
       }
     },
     "setupagione": {
@@ -3480,7 +3491,12 @@
           "refreshAtOnce": "Refrescar de una vez",
           "refreshEveryMinutes": "Refrescar cada {min} minutos",
           "offline": "Sin conexión",
-          "offlineRequests": "Peticiones sin conexión"
+          "offlineRequests": "Peticiones sin conexión",
+          "start": "Empezar",
+          "continueUser": "Continuar con este Usuario",
+          "createNewAccount": "Crear Nueva Cuenta",
+          "continue": "Continuar",
+          "plan": "Plan"
         },
         "message": {
           "requestAdded": "Petición agregada a la cola sin conexión",
@@ -3554,7 +3570,11 @@
           "hintFilterByQuery": "Escribe 3 o más caracteres para buscar opciones",
           "invalidFormat": "Formato invalido",
           "specialCharactersAreNotAllowed": "No se permiten caracteres especiales",
-          "configureThisSection": "Configura esta sección"
+          "configureThisSection": "Configura esta sección",
+          "selectedCategory": "Categoría seleccionada",
+          "noCategories": "No existen categorías",
+          "selectedTemplate": "Plantilla seleccionada",
+          "noTemplates": "No existen plantillas"
         },
         "form": {
           "whatsappNumber": "Número de Whatsapp",
@@ -3693,7 +3713,9 @@
         "bottomLeft": "Abajo-Izquierda",
         "bottom": "Abajo",
         "bottomRight": "Abajo-Derecha",
-        "selectedRows": "{num} Filas seleccionadas"
+        "selectedRows": "{num} Filas seleccionadas",
+        "reportQueue": "Ya tienes un reporte en progreso, lo solicitaste en <b>{date}</b>. Tan pronto este termine habilitaremos la función de 'crear' para ti... Esto lo hacemos para que la aplicación funcione mucho mejor!",
+        "sessionFound": "Hay una sesión activa"
       }
     },
     "setupagione": {

@@ -5,28 +5,29 @@
     <div class="step-loading" v-if="loading"><div></div><div></div></div>
     <div class="row tw-justify-center tw-px-2 md:tw-px-4 tw-mb-6" v-else>
       <div class="col-12 tw-text-xs tw-mt-2 tw-px-3" v-show="selected">
-          Plantilla seleccionada: <span class="tw-font-bold"> {{selected.name}}</span>
+        {{ $tr('isite.cms.message.selectedTemplate') }} : <span class="tw-font-bold"> {{selected.name}}</span>
       </div>
-      <div class="col-6 col-sm-3  tw-mb-2 tw-p-3 tw-cursor-pointer"
-          v-for="(item, index) in themes" v-if="themes.length>0">
-        <div class="item-theme"
-            :class="{ activeClass : item.id === selected.id }"
-            @click="selectData(item)">
-          <q-img contain
-                 :src="item.mediaFiles.mainimage.smallThumb"
-                 :ratio="1/1"
-                 class="tw-rounded tw-border tw-w-full tw-bg-white"
-          >
-          </q-img>
-          <div class="item-theme-name tw-text-xs text-center text-weight-bold">
-            {{ item.name }}
+      <div class="col-12" v-if="themes.length>0">
+        <div class="row">
+          <div class="col-6 col-sm-3  tw-mb-2 tw-p-3 tw-cursor-pointer"
+              v-for="(item, index) in themes">
+            <div class="item-theme"
+                :class="{ activeClass : item.id === selected.id }"
+                @click="selectData(item)">
+              <q-img contain
+                    :src="item.mediaFiles.mainimage.smallThumb"
+                    :ratio="1/1"
+                    class="tw-rounded tw-border tw-w-full tw-bg-white"/>
+              <div class="item-theme-name tw-text-xs text-center text-weight-bold">
+                {{ item.name }}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </div>    
       <div class="col-12 tw-text-base" v-else>
-        No hay plantillas relacionadas a este plan
+        {{ $tr('isite.cms.message.noTemplates') }}
       </div>
-
     </div>
 
     <div v-if="stepContent" class="step-sidebar">
@@ -43,14 +44,12 @@
         <div class="tw-text-base tw-mb-8 text-center" v-html="stepContent.description"></div>
         <q-img v-if="stepContent.mediaFiles" contain
                 :src="stepContent.mediaFiles.mainimage.extraLargeThumb"
-                :ratio="1/1"
           />
       </div>
     </div>
   </div>
 </template>
 <script>
-import storeStepWizard from './store/index.ts';
 import { STEP_NAME_THEMES } from './model/constant.js';
 export default {
   props: {
@@ -95,11 +94,13 @@ export default {
     },
     async getThemeSelected() {
       try {
+        this.loading = true;
         if(this.infoBase && (this.infoBase.layout !== null)) {
           if(this.infoBase.layout.planId == this.infoBase.plan.planId) {
             this.selected=this.infoBase.layout;
             this.$emit("update", { active: true, info: this.selected});
           }
+          this.loading = false;
         } else {
           // Sino hay nada es porque recargo entonces verifico que tiene cache
           const info = await this.$cache.get.item('org-wizard-data');
@@ -111,6 +112,7 @@ export default {
           } else {
             this.$emit("update",  { active: false });
           }
+          this.loading = false;
         }
       } catch (error) {
         console.log(error);
@@ -142,7 +144,7 @@ export default {
     },
     getStepInfo() {
       this.stepContent = this.info.find((item) => item.systemName === STEP_NAME_THEMES);
-    },
+    }
   }
 }
 </script>
