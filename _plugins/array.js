@@ -246,6 +246,16 @@ class Array {
     //Response
     return response
   }
+
+  hasCommonElement(arr1, arr2) {
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr2.includes(arr1[i])) {
+        return true;  // Found a common element
+      }
+    }
+    return false;  // No common element found
+  }
+
 }
 
 const array = new Array();
