@@ -51,8 +51,11 @@ export default function useModalAnalytics() {
     }))
     
     const chartsData = computed(() => store.chartsData);
-    onBeforeMount(() => {
+    function hidden() {
         store.reset();
+    }
+    onBeforeMount(() => {
+        hidden()
     })
     return {
         chartsData, 
@@ -60,5 +63,6 @@ export default function useModalAnalytics() {
         loading,
         field,
         filterDate,
+        hidden,
     };
 }

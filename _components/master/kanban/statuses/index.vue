@@ -153,7 +153,6 @@ export default defineComponent({
           persistent: true
         }).onOk(async() => {
           emit('delete')
-          Vue.prototype.$alert.info({ message: Vue.prototype.$tr('isite.cms.message.recordDeleted') });
         }).onCancel(() => {})
     }
     function update() {
