@@ -51,6 +51,9 @@ const store = computed(() => ({
         state.loading = false;
         state.chartsData = null;
         state.showModal = false;
+        state.filterDate = 'currentMonth';
+        state.from = moment().startOf('month').format('YYYY-MM-DD 00:00:00');
+        state.to = moment().endOf('month').format('YYYY-MM-DD 23:59:59');
     }
 })).value;
 
