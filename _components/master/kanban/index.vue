@@ -356,6 +356,7 @@ export default {
     },
     async getColumns(refresh = false, isModal = false) {
       try {
+        if(!this.routes.column) return;
         this.loading = true;
         const response = await this.getStatus(isModal ? !refresh : refresh);
         const kanbanColumn = this.getKanbanColumns(response.data, refresh);
