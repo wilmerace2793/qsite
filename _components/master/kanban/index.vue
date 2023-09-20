@@ -108,6 +108,7 @@
         :filterName="routes.column ? routes.column.filter.name : null"
     />
     <modalStatus />
+    <modalAnalytics />
   </div>
 </template>
 
@@ -119,6 +120,9 @@ import draggable from "vuedraggable";
 import formComponent from './modals/form.vue';
 import formRules from './modals/formRules';
 import modalStatus from './modals//statusModal/index.vue'
+import modalAnalytics from './modals/analytics/index.vue'
+import showaAnalytics from './modals/analytics/actions/show.ts';
+import storeAnalytics from './modals/analytics/store/index.ts';
 
 const modelPayload = {
   id: null,
@@ -202,7 +206,8 @@ export default {
     automationRules,
     formComponent,
     formRules,
-    modalStatus
+    modalStatus,
+    modalAnalytics,
   },
   data() {
     return {
@@ -235,7 +240,17 @@ export default {
   },
   computed: {
     extraPageActions() {
-      return [{
+      return [
+        {
+          vIf: this.$auth.hasAccess('requestable.automationrules.manage'),
+          label: "Analytics",
+          props: {
+            label: "Analytics",
+            padding: "3px 15px",
+          },
+          action: this.openAnalytics,
+        },
+        {
           vIf: this.$auth.hasAccess('requestable.automationrules.manage'),
           label: "Reglas de automatización",
           props: {
@@ -562,6 +577,10 @@ export default {
     },
     openAutomationRulesModal() {
       if(this.$refs.automationRules) this.$refs.automationRules.openModal();
+    },
+    async openAnalytics() {
+      storeAnalytics.showModal = true;
+      await showaAnalytics();
     },
     openFormComponentModal(statusId, title, id = null) {
       if (this.automation) {

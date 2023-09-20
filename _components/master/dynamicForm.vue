@@ -78,7 +78,7 @@
                   </div>
                 </div>
                 <!--Actions-->
-                <div :class="`actions__content row justify-${step == 0 ? 'end' : 'between'}`"
+                <div :class="`tw-space-x-1 actions__content row justify-${step == 0 ? 'end' : 'between'}`"
                      v-if="(formType == 'stepper') && !noActions">
                   <q-btn v-for="(action, keyAction) in formActions" :key="keyAction" v-bind="action"
                          unelevated rounded no-caps @click="action.action(keyBlock)" type="button"
@@ -99,16 +99,20 @@
       <!--Innerloading-->
       <inner-loading :visible="(loading || innerLoading) ? true : false"/>
     </div>
+    <newFormModal />
   </div>
 </template>
 
 <script>
 import fileListComponent from '@imagina/qsite/_components/master/fileList';
 import layoutStore from '@imagina/qsite/_store/layoutStore.js'
+import newFormModal from '@imagina/qrequestable/_components/modals/information/components/newFormModal.vue'
+import newFormModalStore from '@imagina/qrequestable/_components/modals/information/stores/newFormModal.ts'
 
 export default {
   components: {
-    fileListComponent
+    fileListComponent,
+    newFormModal,
   },
   props: {
     value: {
@@ -519,6 +523,13 @@ export default {
           ...(this.actions.next || {}),
           action: () => this.changeStep('next', isLastStep)
         },
+        new: {
+          color: "primary",
+          icon: "fas fa-plus",
+          label: this.$tr('isite.cms.label.new'),
+          ...(this.actions.new || {}),
+          action: () => newFormModalStore.showModal = true
+        },
         submit: {
           color: "green",
           icon: "fas fa-save",
@@ -529,7 +540,7 @@ export default {
       }
 
       //Instance Response
-      let response = {previous: actions.previous, next: (isLastStep ? actions.submit : actions.next)}
+      let response = {previous: actions.previous, new: actions.new, next: (isLastStep ? actions.submit : actions.next)}
 
       //Validate prop icon
       if (!response.previous.icon) delete response.previous.icon
