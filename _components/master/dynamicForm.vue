@@ -146,7 +146,8 @@ export default {
       validator: (value) => [1, 2, 3].includes(value)
     },
     noResetWithBlocksUpdate: {type: Boolean, default: false},
-    boxStyle: {type: Boolean, default: true}
+    boxStyle: {type: Boolean, default: true},
+    noSave: {type: Boolean, default: false}
   },
   watch: {
     value: {
@@ -534,11 +535,11 @@ export default {
           color: "green",
           icon: "fas fa-save",
           label: this.$tr('isite.cms.label.save'),
+          vIf: !this.noSave,
           ...(this.actions.submit || {}),
           action: () => this.changeStep('next', true)
         },
       }
-
       //Instance Response
       let response = {previous: actions.previous, new: actions.new, next: (isLastStep ? actions.submit : actions.next)}
 

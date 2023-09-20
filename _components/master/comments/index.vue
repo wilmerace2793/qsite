@@ -118,8 +118,9 @@
                     <div class="tw-mt-2 tw-text-xs">
                       <q-btn
                         v-if="permisionComments.destroy && !Boolean(item.internal)"
+                        round
                         class="tw-bg-red-500 tw-text-white"
-                        :label="tr(`isite.cms.label.delete`)"
+                        icon="fa-sharp fa-regular fa-trash"
                         size="sm"
                         @click="deleteComment(item.id)"
                       />
