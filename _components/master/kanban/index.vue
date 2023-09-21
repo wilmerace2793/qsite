@@ -243,27 +243,27 @@ export default {
       return [
         {
           vIf: this.$auth.hasAccess('requestable.automationrules.manage'),
-          label: "Analytics",
+          label: this.$tr('isite.cms.label.analytics'),
           props: {
-            label: "Analytics",
             padding: "3px 15px",
+            icon: 'fa-duotone fa-chart-mixed'
           },
           action: this.openAnalytics,
         },
         {
           vIf: this.$auth.hasAccess('requestable.automationrules.manage'),
-          label: "Reglas de automatización",
+          label: this.$tr('isite.cms.label.automationRules'),
           props: {
-            label: "Reglas de automatización",
+            icon: 'fa-duotone fa-ruler',
             padding: "3px 15px",
           },
           action: this.openAutomationRulesModal,
         },
         {
           vIf: this.$auth.hasAccess('requestable.statuses.manage'),
-          label: "Estados",
+          label: this.$tr('isite.cms.form.status'),
           props: {
-            label: "Estados",
+            icon: 'fa-duotone fa-swap-arrows',
             padding: "3px 15px",
           },
           action: () => { 
