@@ -81,6 +81,7 @@
                   v-for="(item, index, itemKey) in comments"
                   :key="itemKey"
                   :icon="item.icon ? item.icon : 'fa-regular fa-comment'"
+                  :color="item.color"
                 >
                   <h4 
                     class="tw-text-sm" 

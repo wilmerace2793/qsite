@@ -1,5 +1,5 @@
 import Vue, 
-{ computed, ref} 
+{ computed, ref, getCurrentInstance} 
 from "vue";
 import { 
     CommentModelContract, 
@@ -12,6 +12,7 @@ import {
 } from "@imagina/qsite/_components/master/comments/contracts/comments";
 
 export default function useComments(props: any) {
+    const proxy = (getCurrentInstance() as any).proxy as any;
     const files = ref({
         value: null,
         type: 'uploader',
@@ -212,8 +213,9 @@ export default function useComments(props: any) {
           })
           .onCancel(() => {});
       }
-      function getCommentsList(commentableId: number): void {
+      async function getCommentsList(commentableId: number): Promise<void> {
         try {
+          const config = await configComment();
           loading.value = true;
           const params = {
             filter: {
@@ -231,6 +233,8 @@ export default function useComments(props: any) {
                 active: false,
                 loading: false,
                 textEdit: "",
+                icon: item.type ? config.data[item.type].icon : null,
+                color: item.type ? config.data[item.type].color: null,
               }));
               loading.value = false;
             })
@@ -242,6 +246,20 @@ export default function useComments(props: any) {
         } catch (error) {
           console.log(error);
         }
+      }
+      async function configComment() {
+        let routeParams = Vue.prototype.$helper.getInfoFromPermission(proxy.$route.meta.permission);
+        if (!routeParams) return;
+        let requestParams = {
+          refresh: true,
+          params: {
+            filter: {
+              configName: `${routeParams.module}.config.commentableConfig.requestable`
+            }
+          }
+        }
+        //Request
+        return await Vue.prototype.$crud.index('apiRoutes.qsite.configs', requestParams);
       }
       getCommentsList(props.commentableId);
       return {
