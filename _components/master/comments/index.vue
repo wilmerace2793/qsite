@@ -85,7 +85,7 @@
                 >
                   <h4 
                     class="tw-text-sm" 
-                    v-if="item.userProfile"
+                    v-if="item.userProfile && !Boolean(item.internal)"
                   >
                     <strong>
                       {{ item.userProfile.fullName }}
