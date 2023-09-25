@@ -111,7 +111,7 @@
                           <div
                             v-html="item.comment"
                             v-if="permisionComments.edit"
-                            @click="activeEdit(item.id)"
+                            @click="!Boolean(item.internal) ? activeEdit(item.id): null"
                           />
                         </div>
                         <div class="tw-text-right tw-text-xs tw-w-1/12">
