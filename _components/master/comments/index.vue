@@ -103,33 +103,31 @@
                       v-if="item.active"
                     ></CKEditor>
                     <div v-else>
-                      <q-card flat bordered>
-                        <q-card-section
-                          class="tw-py-2 tw-cursor-pointer"
-                          v-html="item.comment"
-                          @click="activeEdit(item.id)"
-                          :title="tr(`isite.cms.label.edit`)"
-                          v-if="permisionComments.edit && !Boolean(item.internal)"
-                        />
-                        <q-card-section
-                          class="tw-py-2"
-                          v-html="item.comment"
-                          v-else
-                        />
-                      </q-card>
-                      <div class="tw-text-right tw-mt-2 tw-text-xs">
-                        <q-btn
-                          v-if="permisionComments.destroy && !Boolean(item.internal)"
-                          round
-                          class="tw-bg-red-500 tw-text-white"
-                          icon="fa-sharp fa-regular fa-trash"
-                          size="xs"
-                          @click="deleteComment(item.id)"
-                        >
-                          <q-tooltip>{{
-                              tr(`isite.cms.label.delete`)
-                            }}</q-tooltip>
-                        </q-btn>
+                      <div 
+                       class="tw-flex tw-border tw-p-2"
+                       :class="{'tw-cursor-pointer': !Boolean(item.internal) }"
+                      >
+                        <div class="tw-w-11/12">
+                          <div
+                            v-html="item.comment"
+                            v-if="permisionComments.edit"
+                            @click="activeEdit(item.id)"
+                          />
+                        </div>
+                        <div class="tw-text-right tw-text-xs tw-w-1/12">
+                          <q-btn
+                            flat
+                            v-if="permisionComments.destroy && !Boolean(item.internal)"
+                            class="tw-text-gray-500"
+                            icon="fa-sharp fa-regular fa-trash"
+                            size="xs"
+                            @click="deleteComment(item.id)"
+                          >
+                            <q-tooltip>{{
+                                tr(`isite.cms.label.delete`)
+                              }}</q-tooltip>
+                          </q-btn>
+                        </div>
                       </div>
                     </div>
                     <div class="flex justify-between" v-if="item.active">
