@@ -11,7 +11,7 @@
     >
       <div class="content-modal">
         <div class="tw-text-md md:tw-text-lg text-center tw-font-semibold tw-p-4" 
-            v-html="$tr('isite.cms.label.recordModalMessage')">
+            v-html="$tr('isite.cms.message.recordModalMessage')">
         </div>
         <div class="text-center tw-mt-6">
         <q-btn  rounded
@@ -52,7 +52,7 @@ export default {
     },
     async showModalWizard() {
       this.modal = {
-        title: this.$tr('isite.cms.label.recordModalTitle'),
+        title: this.$tr('isite.cms.message.recordModalTitle'),
         show: true,
         loading: false,
       };
