@@ -11,7 +11,7 @@
   >
     <div class="statusCtn">
       <div class="tw-border tw-border-gray-200 tw-rounded-t-md">
-        <p class="tw-py-4 tw-px-4">InProgress</p>
+        <p class="tw-py-4 tw-px-4">En Progreso</p>
         <div>
           <q-btn
             v-if="statusList.inProgress.length === 0"
@@ -47,7 +47,7 @@
         </div>
       </div>
       <div class="tw-border tw-border-gray-200">
-        <p class="tw-py-4 tw-px-4">Failed</p>
+        <p class="tw-py-4 tw-px-4">Se produjo un fallo</p>
         <div>
           <q-btn
             v-if="statusList.failed.length === 0"
@@ -83,7 +83,7 @@
         </div>
       </div>
       <div class="tw-border tw-border-gray-200 tw-rounded-b-md">
-        <p class="tw-py-4 tw-px-4">Success</p>
+        <p class="tw-py-4 tw-px-4">Exito</p>
         <q-btn
           v-if="statusList.success.length === 0"
           round
