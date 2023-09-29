@@ -75,7 +75,7 @@
           </q-item>
           <q-item v-if="permisionComments.index">
             <q-item-section v-if="!loading">
-              <q-timeline class="grey-4">
+              <q-timeline class="grey-4 timeline-ctn">
                 <q-timeline-entry
                   v-for="(item, index, itemKey) in comments"
                   :key="itemKey"
@@ -208,3 +208,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.timeline-ctn .q-timeline__dot:after {
+  @apply tw-text-gray-500;
+  width: 1px;
+}
+</style>
