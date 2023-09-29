@@ -33,10 +33,10 @@ export default function useModalAnalytics() {
                                 result.inProgress.push(item);
                                 break;
                             case 1:
-                                result.success.push(item);
+                                result.failed.push(item);
                                 break;
                             case 2:
-                                result.failed.push(item);
+                                result.success.push(item);
                                 break;
                             default:
                                 break;
@@ -52,9 +52,9 @@ export default function useModalAnalytics() {
     function addStatus(index, type) {
         try {
             enum Status {
-                inProgress = 0, // Por defecto
-                success = 1,
-                failed = 2,
+                inProgress = 0,
+                failed = 1,
+                success = 2
             }
             const modelColumn = {
                 id: null,
