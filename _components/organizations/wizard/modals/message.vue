@@ -10,12 +10,8 @@
       customClass="wizard-modal"
     >
       <div class="content-modal">
-        <div class="tw-text-md md:tw-text-lg text-center tw-font-semibold tw-p-4">
-          <p>Has dado el primer paso importante al registrarte, y ahora estamos listos para 
-            llevarte a  través de nuestro sencillo
-            proceso para personalizar y crear el sitio web perfecto que refleje
-              tu visión y objetivos.</p> 
-          <p>¡Bienvenid@ y adelante! 👋</p>
+        <div class="tw-text-md md:tw-text-lg text-center tw-font-semibold tw-p-4" 
+            v-html="$tr('isite.cms.label.recordModalMessage')">
         </div>
         <div class="text-center tw-mt-6">
         <q-btn  rounded
@@ -42,7 +38,6 @@ export default {
         title: null,
         show: false,
         loading: false,
-        user: [],
       },
     };
   },
@@ -57,7 +52,7 @@ export default {
     },
     async showModalWizard() {
       this.modal = {
-        title: '¡Felicidades por completar el registro de tu cuenta!',
+        title: this.$tr('isite.cms.label.recordModalTitle'),
         show: true,
         loading: false,
       };

@@ -1672,7 +1672,9 @@
           "continueUser": "Continue with this User",
           "createNewAccount": "Create new account",
           "continue": "Continue",
-          "plan": "Plan"
+          "plan": "Plan",
+          "recordModalTitle": "Congratulations on completing your account registration!",
+          "recordModalMessage": "<p>You've taken the first important step by signing up, and now we're ready to take you through our simple process to customize and create the perfect website that reflects your vision and goals.</p><p>Welcome and go ahead! 👋</p>"
         },
         "message": {
           "phoneHint": "Enter a phone number and press enter",
@@ -3467,7 +3469,9 @@
           "continueUser": "Continuar con este Usuario",
           "createNewAccount": "Crear Nueva Cuenta",
           "continue": "Continuar",
-          "plan": "Plan"
+          "plan": "Plan",
+          "recordModalTitle": "¡Felicidades por completar el registro de tu cuenta!",
+          "recordModalMessage": "<p>Has dado el primer paso importante al registrarte, y ahora estamos listos para llevarte a  través de nuestro sencillo proceso para personalizar y crear el sitio web perfecto que refleje tu visión y objetivos.</p><p> ¡Bienvenid@ y adelante! 👋</p>"
         },
         "message": {
           "phoneHint": "Ingresa un número telefónico y presiona enter",
