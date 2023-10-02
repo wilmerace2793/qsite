@@ -111,6 +111,7 @@ export default {
           } 
           this.loading = false;
         }
+        console.log(this.selected);
       } catch (error) {
         console.log(error);
       }
