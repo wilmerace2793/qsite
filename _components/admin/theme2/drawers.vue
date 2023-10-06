@@ -30,9 +30,11 @@
     <!--    </q-drawer>-->
 
     <!--Master filter-->
+    <!--
     <q-drawer bordered id="drawerFilterMaster" v-model="drawer.filter" side="right" v-if="filter.load" :overlay="false">
       <master-filter/>
     </q-drawer>
+    -->
 
     <!--Recommendation-->
     <q-drawer id="drawerRecommendationMaster" v-model="drawer.recommendation" side="right" :overlay="false"
