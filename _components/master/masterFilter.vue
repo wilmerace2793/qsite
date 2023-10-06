@@ -79,7 +79,17 @@
 export default {
   inject: {
     filterPlugin: {
-      from: 'filterPlugin'
+      from: 'filterPlugin',
+      default: {
+        name: false,
+        fields: {},
+        values: {},
+        callBack: false,
+        pagination: {},
+        load: false,
+        hasValues: false,
+        storeFilter: false,
+      }
     }
   },
   components: {},
