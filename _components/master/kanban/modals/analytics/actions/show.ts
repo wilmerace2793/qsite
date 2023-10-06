@@ -20,7 +20,8 @@ export default async function showAnalytics(criteria: string = 'leadsByStatus') 
         store.chartsData = response.data;
         store.loading = false;
     } catch (error) {
-        console.log(error);
+        store.loading = false;
+        Vue.prototype.$alert.error({message:  Vue.prototype.$tr('isite.cms.message.errorRequest'), pos: 'bottom'})
         return { data: {} }
     }
 }
