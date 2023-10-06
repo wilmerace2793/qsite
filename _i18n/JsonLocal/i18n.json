@@ -1321,6 +1321,7 @@
         "perzonalizationTitle": "Welcome to the editor of your website",
         "perzonalizationDescription": "Easily change the logo, colors and the main information of your website",
         "label": {
+          "resposible": "Responsible",
           "informationTitle": "Site Information",
           "top": "Top",
           "bottom": "Bottom",
@@ -3122,6 +3123,7 @@
         "perzonalizationTitle": "Bienvenid@ al editor de tu sitio web",
         "perzonalizationDescription": "De manera fácil, cambia el logo, colores y la información principal de tu página web",
         "label": {
+          "resposible": "Responsable",
           "top": "Arriba",
           "bottom": "Abajo",
           "left": "Izquierda",
