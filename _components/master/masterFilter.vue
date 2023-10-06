@@ -77,7 +77,11 @@
 </template>
 <script>
 export default {
-  props: {},
+  inject: {
+    filterPlugin: {
+      from: 'filterPlugin'
+    }
+  },
   components: {},
   watch: {
     '$filter': {
@@ -96,23 +100,25 @@ export default {
     '$route.name': {
       deep: true,
       handler: function (newValue) {
-        this.$filter.reset()
+        this.filterPlugin.reset()
       }
     },
     readOnlyData: {
       deep: true,
       handler: async function () {
-        if(this.$filter.storeFilter && this.currentUrlFilter.length > 0 ) {
+        if(this.filterPlugin.storeFilter && this.currentUrlFilter.length > 0 ) {
           const obj = await this.$helper.convertStringToObject();
           Object.keys(this.readOnlyData).forEach((key) => {
             if(obj.hasOwnProperty(key)) {
               this.readOnlyData[key].value = obj[key];
             }
           })
-          this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData))
+          //this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData))
+          this.$set(this.filterPlugin, 'readValues', this.$clone(this.readOnlyData))
           return;
         }
-        this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData));
+        //this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData));
+        this.$set(this.filterPlugin, 'readValues', this.$clone(this.readOnlyData))
       }
     }
   },
@@ -136,12 +142,12 @@ export default {
   },
   computed: {
     filter() {
-      if(this.$filter.storeFilter && this.currentUrlFilter.length > 0) {
+      if(this.filterPlugin.storeFilter && this.currentUrlFilter.length > 0) {
         this.filterValues = this.$helper.convertStringToObject();
       }
-      if (!this.$filter.storeFilter && this.$filter.values) this.filterValues = this.$clone(this.$filter.values)
-      if (this.$filter.pagination) this.pagination = this.$clone(this.$filter.pagination)
-      return this.$filter
+      if (!this.filterPlugin.storeFilter && this.filterPlugin.values) this.filterValues = this.$clone(this.filterPlugin.values)
+      if (this.filterPlugin.pagination) this.pagination = this.$clone(this.filterPlugin.pagination)
+      return this.filterPlugin
     },
     dateFields() {
       let filterDate = this.$clone(this.filterValues.date)
@@ -247,7 +253,7 @@ export default {
   },
   methods: {
     async init() {
-      const filterValues = this.$filter.storeFilter && this.currentUrlFilter.length > 0 
+      const filterValues = this.filterPlugin.storeFilter && this.currentUrlFilter.length > 0
         ? await this.$helper.convertStringToObject() 
         : this.filterValues;
       this.filterValues = filterValues || {};
@@ -256,7 +262,7 @@ export default {
     //Emit filter
     async emitFilter(filterBtn = false) {
       if(!filterBtn) {
-        if(this.$filter.storeFilter) {
+        if(this.filterPlugin.storeFilter) {
           const objUrl = await this.$helper.convertStringToObject();
           const type = objUrl.type ? {type: objUrl.type} : {};
           const date = objUrl.dateStart && objUrl.dateEnd 
@@ -267,8 +273,8 @@ export default {
         this.currentUrlFilter = '';
       }
       this.changeDate();
-      this.$filter.addValues(this.filterValues);
-      if(this.$filter.storeFilter) {
+      this.filterPlugin.addValues(this.filterValues);
+      if(this.filterPlugin.storeFilter) {
         this.mutateCurrentURL();
       };
       //Emit Filter
@@ -282,7 +288,7 @@ export default {
       try {
         let paramsUrl = '';
         Object.keys(this.filterValues).forEach((item, index) => {
-          if(this.$filter.fields.hasOwnProperty(item)) {
+          if(this.filterPlugin.fields.hasOwnProperty(item)) {
             if(index === 0) {
               paramsUrl += this.validateObjectFilter('?', item);
             } else {
