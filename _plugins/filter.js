@@ -212,12 +212,11 @@ class Filter {
     }
   }
   // returns a new intance with custom cache name
-  getNewInstance(cacheName = false){
+  getInstance(cacheName = false){
     const filter = new Filter()
     if(cacheName){
       filter.cacheName = `${filter.cacheName}__${cacheName}`
     }
-    console.log('%c setting instance name: '+filter.cacheName, 'color:pink');
     return filter
   }
 }

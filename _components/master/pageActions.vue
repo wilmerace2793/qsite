@@ -332,14 +332,8 @@ export default {
   methods: {
     init() {
       this.handlerEvent()
-      /*
-      this.$root.$on('page.data.filter.read', (readValues) => {
-        this.$set(this.filter, 'readValues', readValues)
-      })
-      */
     },
     handlerEvent() {
-      //handler toggleMasterDrawer
       this.$eventBus.$on('toggleMasterDrawer', () => this.toggleMasterFilter(false))
     },
     refreshByTime(time) {
@@ -367,12 +361,6 @@ export default {
     emitFilter() {
       this.filterPlugin.addValues(this.filterData)
       if (this.filterPlugin && this.filterPlugin.callBack) this.filterPlugin.callBack();
-      /*
-      //Add Values
-      this.$filter.addValues(this.filterData)
-      //Call back
-      if (this.filter && this.filter.callBack) this.filter.callBack(this.filter)
-      */
     },
     clearInterval() {
       if (this.refreshIntervalId) {

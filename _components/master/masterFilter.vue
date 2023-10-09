@@ -123,11 +123,9 @@ export default {
               this.readOnlyData[key].value = obj[key];
             }
           })
-          //this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData))
           this.$set(this.filterPlugin, 'readValues', this.$clone(this.readOnlyData))
           return;
         }
-        //this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData));
         this.$set(this.filterPlugin, 'readValues', this.$clone(this.readOnlyData))
       }
     }
