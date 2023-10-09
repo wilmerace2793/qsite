@@ -79,13 +79,11 @@ export default {
         menu: this.$q.platform.is.mobile ? false : true,
         config: false,
         chat: false,
-        filter: false,
         checkin: false,
         recommendation: false,
         notification: false
       },
-      appConfig: config('app'),
-      filter: this.$filter
+      appConfig: config('app')
     }
   },
   computed: {

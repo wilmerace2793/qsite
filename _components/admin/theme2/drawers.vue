@@ -78,13 +78,11 @@ export default {
         menu: false,
         config: false,
         chat: false,
-        filter: false,
         checkin: false,
         recommendation: false,
         notification: false
       },
-      appConfig: config('app'),
-      filter: this.$filter
+      appConfig: config('app')
     }
   },
   computed: {
