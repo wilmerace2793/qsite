@@ -1,3 +1,5 @@
+import lodash from 'lodash'
+
 class Array {
   constructor() {
   }
@@ -256,6 +258,9 @@ class Array {
     return false;  // No common element found
   }
 
+  mergeUniqueBy(dataToMerge, keyToCompare = '') {
+    return lodash.uniqBy(dataToMerge, keyToCompare)
+  }
 }
 
 const array = new Array();
