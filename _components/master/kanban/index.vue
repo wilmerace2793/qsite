@@ -199,7 +199,7 @@ export default {
       getStatus: this.getStatus,
     };
   },
-  inject:['funnelPageAction', 'fieldActions'],
+  inject:['funnelPageAction', 'fieldActions', 'filterPlugin'],
   components: {
     kanbanColumn,
     draggable,
@@ -243,7 +243,7 @@ export default {
       return [
         {
           vIf: this.$auth.hasAccess('requestable.automationrules.manage'),
-          label: this.$tr('isite.cms.label.analytics'),
+          label: this.$tr('requestable.cms.label.analytics'),
           props: {
             padding: "3px 15px",
             icon: 'fa-duotone fa-chart-mixed'
@@ -252,7 +252,7 @@ export default {
         },
         {
           vIf: this.$auth.hasAccess('requestable.automationrules.manage'),
-          label: this.$tr('isite.cms.label.automationRules'),
+          label: this.$tr('requestable.cms.label.automationRules'),
           props: {
             icon: 'fa-duotone fa-ruler',
             padding: "3px 15px",
@@ -346,7 +346,7 @@ export default {
         const route = this.routes.column;
         const parameters = { params: {}, refresh };
         parameters.params.include = route.include;
-        const id =  { id: this.$filter.values.statusId } || {};
+        const id =  { id: this.filterPlugin.values.statusId } || {};
         parameters.params.filter = {
           [route.filter.name]: this.funnelSelectedComputed, ...id,
           order: {field:"type", way:"asc"}
@@ -424,7 +424,7 @@ export default {
         parameters.params.include = route.include;
         parameters.params.filter = { 
           [route.filter.name]: column.id, 
-          ...this.$filter.values, 
+          ...this.filterPlugin.values, 
           ...search,
           order: {way: 'desc'}
         };
