@@ -210,7 +210,7 @@ export default {
               action: () => this.refreshByTime(0)
             },
             {
-              label: this.$tr('isite.cms.label.refreshEveryMinutes', {min: 1}),
+              label: this.$tr('isite.cms.label.refreshEveryMinute', {min: 1}),
               action: () => this.refreshByTime(1)
             },
             {
