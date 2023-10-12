@@ -82,9 +82,18 @@
     <!-- Export Component -->
     <master-export v-model="exportParams" ref="exportComponent"/>
     <!-- Master Filter Component -->
-    <q-drawer bordered id="drawerFilterMaster" v-model="drawer.filter" side="right" v-if="filter.load" :overlay="false">
-      <master-filter />
-    </q-drawer>
+    <q-dialog
+      id="drawerFilterMaster"
+      v-model="drawer.filter"
+      persistent
+      maximized
+      position="right"
+      v-if="filter.load"
+    >
+      <q-card style="width: 350px; height: calc(120vh)">
+        <master-filter />
+      </q-card>
+    </q-dialog>
     <master-synchronizable v-model="syncParams" v-if="$auth.hasAccess('isite.synchronizables.index')" ref="syncComponent" />
   </div>
 </template>
