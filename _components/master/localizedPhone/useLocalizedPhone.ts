@@ -39,14 +39,11 @@ export default function useLocalizedPhone(props: any = {}, emit: any = null) {
       console.log(error);
     }
   }
-  async function setCountries() {
-    listCountries.value = await getCountries();
-  } 
   async function init() {
     inputDataComputed.value = props.value;
   }
   onMounted(async () => {
-    await setCountries();
+    listCountries.value = await getCountries();
     await init();
   })
   function setSeletdCountry(country) {
