@@ -1,4 +1,13 @@
 <template>
+  <q-dialog
+      id="drawerFilterMaster"
+      v-model="show"
+      persistent
+      maximized
+      position="right"
+      v-if="filter.load"
+    >
+  <q-card style="width: 350px;">
   <div id="masterFilterComponent" v-if="filter">
     <!-- Header -->
     <div id="masterFilterContent">
@@ -39,13 +48,13 @@
               </div>
               <!--Input search-->
               <dynamic-field v-model="filterValues.search"
-                             :field="{...filter.fields.search, props : {debounce : '0'}}"/>
+                             :field="{...filter.fields.search, props : {debounce : '0'}}" :enableCache="dynamicFieldCache" />
             </div>
             <!--Date-->
             <div v-if="filter.fields && filter.fields.date" class="q-mb-sm">
               <!--Fields date-->
               <dynamic-field v-for="(fieldDate, key) in dateFields" :key="key" :field="fieldDate" class="q-mb-sm"
-                             v-model="filterValues.date[fieldDate.name || key]"/>
+                             v-model="filterValues.date[fieldDate.name || key]" :enableCache="dynamicFieldCache" />
             </div>
             <!--Pagination-->
             <div v-if="filter.fields && filter.fields.pagination" class="q-mb-sm">
@@ -56,11 +65,11 @@
               </div>
               <!--Fields pagination-->
               <dynamic-field v-for="(fieldPagination, key) in paginationFields" :field="fieldPagination" class="q-mb-sm"
-                             v-model="pagination[fieldPagination.name || key]" :key="key"/>
+                             v-model="pagination[fieldPagination.name || key]" :key="key" :enableCache="dynamicFieldCache" />
             </div>
             <!--others Fields-->
             <dynamic-field v-for="(field, key) in filter.fields" :key="key" v-model="filterValues[field.name || key]"
-                           v-if="['search','pagination'].indexOf(key) == -1" class="q-mb-sm" :field="field"
+                           v-if="['search','pagination'].indexOf(key) == -1" class="q-mb-sm" :field="field" :enableCache="dynamicFieldCache"
                            @inputReadOnly="data => $set(readOnlyData, (field.name || key), data)"/>
           </div>
         </q-tab-panel>
@@ -74,6 +83,8 @@
              @click="emitFilter(), $eventBus.$emit('toggleMasterDrawer','filter')"/>
     </div>
   </div>
+  </q-card>
+    </q-dialog>
 </template>
 <script>
 export default {
@@ -91,6 +102,12 @@ export default {
         storeFilter: false,
       }
     }
+  },
+  props : {
+    show: {
+      type: Boolean,
+      default: () => false,
+    },
   },
   components: {},
   watch: {
@@ -146,6 +163,7 @@ export default {
       pagination: {},
       readOnlyData: {},
       currentUrlFilter: '',
+      dynamicFieldCache: true
     }
   },
   computed: {
