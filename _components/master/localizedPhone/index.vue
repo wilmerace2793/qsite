@@ -11,56 +11,58 @@
         dense
       >
         <template v-slot:prepend>
-          <q-btn-dropdown flat size="sm" v-model="isDrop">
-            <template v-slot:label>
+          <div class="tw-border-r tw-border-gray-200 tw-pr-2 tw-mr-1">
+            <q-btn-dropdown flat size="sm" v-model="isDrop">
+              <template v-slot:label>
+                <div>
+                  {{ seletdCountry.name }} (+{{ seletdCountry.callingCode }})
+                </div>
+              </template>
               <div>
-                {{ seletdCountry.name }} (+{{ seletdCountry.callingCode }})
-              </div>
-            </template>
-            <div>
-              <div class="tw-p-4 tw-mb-3 tw-border tw-border-gray-200">
-                <q-input
-                  v-model="searchTerm"
-                  outlined
-                  class="tw-bg-white"
-                  dense
-                >
-                  <template v-slot:append>
-                    <q-icon name="search" />
-                  </template>
-                </q-input>
-              </div>
-              <div class="tw-px-4">
-                <q-list>
-                  <q-item
-                    clickable
-                    v-close-popup
-                    v-for="(country, index) in filteredCountries"
-                    :key="index"
-                    @click="setSeletdCountry(country)"
+                <div class="tw-p-4 tw-mb-3 tw-border tw-border-gray-200">
+                  <q-input
+                    v-model="searchTerm"
+                    outlined
+                    class="tw-bg-white"
+                    dense
                   >
-                    <q-item-section
-                      class="tw-px-3"
-                      :class="{
-                        'tw-bg-blue-100 tw-opacity-90 tw-rounded-lg':
-                          seletdCountry.iso3 === country.iso3,
-                      }"
+                    <template v-slot:append>
+                      <q-icon name="search" />
+                    </template>
+                  </q-input>
+                </div>
+                <div class="tw-px-4">
+                  <q-list>
+                    <q-item
+                      clickable
+                      v-close-popup
+                      v-for="(country, index) in filteredCountries"
+                      :key="index"
+                      @click="setSeletdCountry(country)"
                     >
-                      <q-item-label>
-                        {{ country.name }} (+{{ country.callingCode }})
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-                <div
-                  v-if="filteredCountries.length === 0"
-                  class="tw-py-12 tw-text-center"
-                >
-                  No Data
+                      <q-item-section
+                        class="tw-px-3"
+                        :class="{
+                          'tw-bg-blue-100 tw-opacity-90 tw-rounded-lg':
+                            seletdCountry.iso3 === country.iso3,
+                        }"
+                      >
+                        <q-item-label>
+                          {{ country.name }} (+{{ country.callingCode }})
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                  <div
+                    v-if="filteredCountries.length === 0"
+                    class="tw-py-12 tw-text-center"
+                  >
+                    No Data
+                  </div>
                 </div>
               </div>
-            </div>
-          </q-btn-dropdown>
+            </q-btn-dropdown>
+          </div>
         </template>
       </q-input>
     </div>
