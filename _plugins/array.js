@@ -86,7 +86,6 @@ class Array {
         img: item[fields.img] || null
       })
     })
-    console.log(response);
     return response
   }
 
