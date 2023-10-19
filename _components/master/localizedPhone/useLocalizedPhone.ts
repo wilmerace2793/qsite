@@ -1,6 +1,8 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import getCountries from '@imagina/qsite/_components/master/localizedPhone/actions/getCountries';
 export default function useLocalizedPhone(props: any = {}, emit: any = null) {
+  const countryDefault = {name: 'Colombia', iso3: 'COL', callingCode: 57 };
+  const callingCode = ref(0);
   const loading = ref(false);
   const inputKey: any = ref(null);
   const menu = ref(false);
@@ -9,7 +11,7 @@ export default function useLocalizedPhone(props: any = {}, emit: any = null) {
   const searchTerm = ref('');
   const selectionStart = ref(0);
   const field = computed(() => props.fieldProps);
-  const seletdCountry = ref({name: 'Colombia', iso3: 'COL', callingCode: 57 });
+  const seletdCountry: any = ref(countryDefault);
   const listCountries = ref([]);
   const inputDataComputed = computed({
     get() {
@@ -18,7 +20,7 @@ export default function useLocalizedPhone(props: any = {}, emit: any = null) {
     set(value) {
       selectionStart.value = inputKey.value.$el.control.selectionStart || 0;
       inputData.value = value;
-      emit("input", `+${seletdCountry.value.callingCode}${value}`);
+      emit("input", `${seletdCountry.value.callingCode}${value}`);
     },
   });
   const filteredCountries = computed(() => {
@@ -43,7 +45,12 @@ export default function useLocalizedPhone(props: any = {}, emit: any = null) {
     listCountries.value = await getCountries();
   } 
   async function init() {
-    inputDataComputed.value = props.value;
+    callingCode.value = props.value ? props.value.substring(0, 2) : 0;
+    if(callingCode.value !== 0) {
+      seletdCountry.value = listCountries.value
+      .find(item => (item as any).callingCode == callingCode.value) || countryDefault;
+    }
+    inputDataComputed.value = props.value ? props.value.substring(2) : null;
   }
   onMounted(async () => {
     await setCountries();
@@ -52,7 +59,7 @@ export default function useLocalizedPhone(props: any = {}, emit: any = null) {
   function setSeletdCountry(country) {
     seletdCountry.value = country;
     searchTerm.value = '';
-    emit("input", `+${seletdCountry.value.callingCode}${inputDataComputed.value}`);
+    emit("input", `${seletdCountry.value.callingCode}${inputDataComputed.value}`);
   }
   watch(isDrop, (newValue) => {
     if(!newValue) searchTerm.value = '';
