@@ -301,7 +301,7 @@ class Helper {
       else if (permitValues) {
         let optValue = opt.value.toString()//Parse value
         if (typeof (permitValues) == 'object') {
-          permitValues.forEach(item => {
+          Object.keys(permitValues).forEach(item => {
             if (item.toString() == optValue) responseOptions.push(opt)
           })
         } else if (permitValues.toString() == optValue) responseOptions.push(opt)
