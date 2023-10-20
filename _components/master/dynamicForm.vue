@@ -77,6 +77,19 @@
                     </div>
                   </div>
                 </div>
+                <div 
+                   class="
+                    tw-text-left
+                    tw-text-xs 
+                    tw-text-gray-600
+                    tw-ml-1
+                    tw-mb-4
+                    tw-z-10"
+                    @click="showModalForm"
+                  >
+                    <span class="tw-border-dashed 
+                    tw-border-b tw-cursor-pointer">Crear nuevo campo</span> 
+                  </div>
                 <!--Actions-->
                 <div :class="`tw-space-x-1 actions__content row justify-${step == 0 ? 'end' : 'between'}`"
                      v-if="(formType == 'stepper') && !noActions">
@@ -524,13 +537,6 @@ export default {
           ...(this.actions.next || {}),
           action: () => this.changeStep('next', isLastStep)
         },
-        new: {
-          color: "primary",
-          icon: "fas fa-plus",
-          label: this.$tr('isite.cms.label.new'),
-          ...(this.actions.new || {}),
-          action: () => newFormModalStore.showModal = true
-        },
         submit: {
           color: "green",
           icon: "fas fa-save",
@@ -541,7 +547,7 @@ export default {
         },
       }
       //Instance Response
-      let response = {previous: actions.previous, new: actions.new, next: (isLastStep ? actions.submit : actions.next)}
+      let response = {previous: actions.previous, next: (isLastStep ? actions.submit : actions.next)}
 
       //Validate prop icon
       if (!response.previous.icon) delete response.previous.icon
@@ -795,6 +801,9 @@ export default {
     selectedFile(file) {
       const fileId = file.length === 0 ? null : file[0].id;
       layoutStore().setSelectedLayout(fileId);
+    },
+    showModalForm() {
+      newFormModalStore.showModal = true;
     },
   }
 }
