@@ -85,15 +85,15 @@ export default {
     formFields() {
       const userData = this.$store.state.quserAuth.userData;
       return {
-        createdBy: {
+         requestedBy: {
           value: null,
           type: 'crud',
-          permission: 'requestable.requestables.edit-created-by',
+          permission: "requestable.requestables.filter-requested-by",
           props: {
             crudType: 'select',
             crudData: import('@imagina/quser/_crud/users'),
             crudProps: {
-              label: this.$tr('isite.cms.form.createdBy'),
+              label: this.$tr('isite.cms.form.requestedBy'),
               rules: [
                 val => !!val || this.$tr('isite.cms.message.fieldRequired')
               ],
@@ -106,15 +106,15 @@ export default {
             }
           },
         },
-        requestedBy: {
-          value: null,
+        createdBy: {
+          value: this.$store.state.quserAuth.userId,
           type: 'crud',
-          permission: "requestable.requestables.filter-requested-by",
+          permission: 'requestable.requestables.edit-created-by',
           props: {
             crudType: 'select',
             crudData: import('@imagina/quser/_crud/users'),
             crudProps: {
-              label: this.$tr('isite.cms.form.requestedBy'),
+              label: this.$tr('isite.cms.form.createdBy'),
               rules: [
                 val => !!val || this.$tr('isite.cms.message.fieldRequired')
               ],
