@@ -175,6 +175,7 @@ export default function useComments(props: any) {
       }
       async function addComment(): Promise<void> {
         try {
+          if(dataBase.value.text.length === 0) return;
           const userId = proxy.$store.state.quserAuth.userId;
           dataBase.value.loading = true;
           const params = {
