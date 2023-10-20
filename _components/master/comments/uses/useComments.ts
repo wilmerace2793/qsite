@@ -278,7 +278,6 @@ export default function useComments(props: any) {
       }
       getCommentsList(props.commentableId);
       onBeforeUnmount(async () => {
-        console.log(dataComment.value);
          if(dataComment.value.close) {
           if(dataComment.value.edit){
             await updateComment('edit', dataComment.value.id)
