@@ -209,7 +209,7 @@ export default {
             })
           }
           // telegram is hidden until the functionality remains
-          this.categories = await this.$clone(categoriesRule).filter(item => item.id !== this.TELEGRAM);
+          this.categories = await this.$clone(categoriesRule);
           this.loading = false
         }).catch(error => {console.log(error); this.loading = true })
       })
