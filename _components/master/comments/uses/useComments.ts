@@ -1,5 +1,5 @@
 import Vue, 
-{ computed, ref, getCurrentInstance} 
+{ computed, ref, getCurrentInstance, onBeforeUnmount} 
 from "vue";
 import { 
     CommentModelContract, 
@@ -13,6 +13,11 @@ import {
 
 export default function useComments(props: any) {
     const proxy = (getCurrentInstance() as any).proxy as any;
+    const dataComment: any = ref({
+      edit: false,
+      id: null,
+      close: false,
+    })
     const files = ref({
         value: null,
         type: 'uploader',
@@ -54,7 +59,7 @@ export default function useComments(props: any) {
         setTimeout(() => {
           loadingComment.value = false;
         }, 1000);
-        
+        dataComment.value.close = true;
       }
       function cancelText(): void {
         if (dataBase.value.text.length > 0) {
@@ -68,10 +73,12 @@ export default function useComments(props: any) {
             .onOk(async () => {
               dataBase.value.active = false;
               dataBase.value.text = "";
+              dataComment.value.close = false;
             })
             .onCancel(() => {});
         } else {
           dataBase.value.active = false;
+          dataComment.value.close = false;
         }
       }
       function updateComment(type: string, id: number): void {
@@ -105,10 +112,12 @@ export default function useComments(props: any) {
             .onOk(async () => {
               comment.comment = comment.textEdit;
               comment.active = false;
+              dataComment.value.close = false;
             })
             .onCancel(() => {});
         } else {
           comment.active = false;
+          dataComment.value.close = false;
         }
       }
       function editComment(id: number, comment: commentsContract) {
@@ -142,25 +151,31 @@ export default function useComments(props: any) {
                 message: tr.value(`requestable.cms.message.updateNoComment`),
               });
             });
+            dataComment.value.close = false;
         } catch (error) {
           console.log(error);
+          dataComment.value.close = false;
         }
       }
       function activeEdit(id: number): void {
         try {
+          dataComment.value.id = id;
           const comment = comments.value.find((item) => item.id === id);
           if (comment) {
             comment.textEdit = comment.comment;
             comment.active = true;
+            dataComment.value.edit = true;
+            dataComment.value.close = true;
           }
         } catch (error) {
           console.log(error);
+          dataComment.value.edit = false;
+          dataComment.value.close = false;
         }
       }
       async function addComment(): Promise<void> {
         try {
-          // @ts-ignore
-          const userId = this.$store.state.quserAuth.userId;
+          const userId = proxy.$store.state.quserAuth.userId;
           dataBase.value.loading = true;
           const params = {
             approved: true,
@@ -262,6 +277,16 @@ export default function useComments(props: any) {
         return await Vue.prototype.$crud.index('apiRoutes.qsite.configs', requestParams);
       }
       getCommentsList(props.commentableId);
+      onBeforeUnmount(async () => {
+        console.log(dataComment.value);
+         if(dataComment.value.close) {
+          if(dataComment.value.edit){
+            await updateComment('edit', dataComment.value.id)
+          } else {
+            await addComment();
+          }
+         }
+      })
       return {
         permisionComments,
         tr,
