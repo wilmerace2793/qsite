@@ -113,7 +113,7 @@
             </div>
             <div>
               <p class="text-subtitle1">
-                {{ $tr('iforms.cms.feedBack.message') }}
+                {{ successText }}
               </p>
             </div>
             <div>
@@ -558,7 +558,7 @@ export default {
         submit: {
           color: "green",
           icon: "fas fa-save",
-          label: this.$tr('isite.cms.label.save'),
+          label: this.formBlocks.submitText ?? this.$tr('isite.cms.label.save'),
           ...(this.actions.submit || {}),
           action: () => this.changeStep('next', true)
         },
@@ -586,6 +586,10 @@ export default {
       })
       //Response
       return fields
+    },
+    //Returns success text after submit
+    successText(){
+      return this.formBlocks.successText ?? this.$tr('iforms.cms.feedBack.message')
     }
   },
   methods: {
