@@ -342,6 +342,7 @@
         },
         "newForm": "New Form",
         "updateForm": "Update Form",
+        "fillForm": "Fill Form",
         "newField": "New Field",
         "updateField": "Update Field",
         "newBlock": "new Block",
@@ -370,6 +371,10 @@
         },
         "message": {
           "helpToOptionsField": "Type the option and press enter..."
+        },
+        "feedBack": {
+          "newForm": "Fill another Form",
+          "message": "¡Done!, Your Form has been successfully sent!"
         }
       }
     },
@@ -2271,6 +2276,7 @@
         },
         "newForm": "Nuevo Formulario",
         "updateForm": "Actualizar Formulario",
+        "fillForm": "Llenar Formulario",
         "newField": "Nuevo Campo",
         "updateField": "Actualizar Campo",
         "newBlock": "Nuevo Bloque",
@@ -2299,6 +2305,10 @@
         },
         "message": {
           "helpToOptionsField": "Escribe la opción y preciona enter..."
+        },
+        "feedBack": {
+          "newForm": "Enviar otra respuesta",
+          "message": "¡Todo listo!  Tu formulario ha sido enviado con éxito."
         }
       }
     },
