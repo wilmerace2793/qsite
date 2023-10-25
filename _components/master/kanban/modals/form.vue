@@ -85,7 +85,7 @@ export default {
     formFields() {
       const userData = this.$store.state.quserAuth.userData;
       return {
-         requestedBy: {
+         requestedById: {
           value: null,
           type: 'crud',
           permission: "requestable.requestables.filter-requested-by",
@@ -160,7 +160,7 @@ export default {
           type: this.funnelForm.type,
           statusId: this.statusId,
           ...this.dynamicFieldForm,
-          requestedBy: this.dynamicFieldForm.requestedBy || this.$store.state.quserAuth.userId
+          requestedById: this.dynamicFieldForm.requestedById || this.$store.state.quserAuth.userId
         };
         await this.$crud.create(route.apiRoute, form);
         await this.addCard(this.statusId);
