@@ -41,7 +41,7 @@
           hover:tw-ease-in 
           hover:tw--translate-y-1 icon-plus
         "
-        v-if="!disableCrud && hover && columnData.type !== 1"
+        v-if="!disableCrud && hover && columnData.type !== 2"
         @click="addColumnKanban"
       >
         <i 
@@ -356,7 +356,7 @@ export default {
   },
   methods: {
     addColumnKanban() {
-      this.addColumn(this.columnIndex);
+      this.addColumn(this.columnIndex, this.columnData);
     },
     async columnDeleteMessages() {
       this.$q.dialog({

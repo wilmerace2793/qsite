@@ -510,13 +510,14 @@ export default {
         console.log(error);
       }
     },
-    addColumn(index) {
+    addColumn(index, data = null) {
       try {
             const counter = `kanban-${this.totalColumns + 1}`;
             const randomColor = Math.floor(Math.random() * 16777215).toString(16);
             const column = { ...modelColumn };
             column.id = counter;
             column.color = `#${randomColor}`;
+            column.type = data?.type || 0;
             this.kanbanColumns.splice(index + 1, 0, column);
         } catch (error) {
             console.log(error);
