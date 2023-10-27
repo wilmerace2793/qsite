@@ -512,7 +512,8 @@ export default {
     },
     addColumn(index, data = null) {
       try {
-            const counter = `kanban-${this.totalColumns + 1}`;
+            const counter = `kanban-${Math.random() + 1}`;
+            console.log(counter);
             const randomColor = Math.floor(Math.random() * 16777215).toString(16);
             const column = { ...modelColumn };
             column.id = counter;

@@ -189,6 +189,7 @@
             hover:tw-text-white 
             hover:tw-bg-gray-200"
           @click="openFormComponentModal(columnData.id, columnData.title)"
+          :disabled="typeof columnData.id == 'string'"
           >
           <i class="fa-solid fa-plus"></i> 
         </q-btn>
