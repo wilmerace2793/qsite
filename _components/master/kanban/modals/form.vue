@@ -127,6 +127,27 @@ export default {
             }
           },
         },
+        responsibleId: {
+          value: null,
+          type: 'crud',
+          permission: 'requestable.requestables.edit-created-by',
+          props: {
+            crudType: 'select',
+            crudData: import('@imagina/quser/_crud/users'),
+            crudProps: {
+              label: this.$tr('requestable.cms.label.responsible'),
+              rules: [
+                val => !!val || this.$tr('isite.cms.message.fieldRequired')
+              ],
+            },
+            config: {
+              filterByQuery: true,
+              options: {
+                label: 'fullName', value: 'id',
+              }
+            }
+          },
+        }
       }
     },
   },
