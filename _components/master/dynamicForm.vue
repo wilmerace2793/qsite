@@ -88,7 +88,7 @@
                     @click="showModalForm"
                   >
                     <span class="tw-border-dashed 
-                    tw-border-b tw-cursor-pointer">Crear nuevo campo</span> 
+                    tw-border-b tw-cursor-pointer">Editar este formulario</span> 
                   </div>
                 <!--Actions-->
                 <div :class="`tw-space-x-1 actions__content row justify-${step == 0 ? 'end' : 'between'}`"
