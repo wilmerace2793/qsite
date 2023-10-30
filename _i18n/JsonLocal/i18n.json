@@ -346,7 +346,7 @@
           "dragFieldsHere": "Drag the fields here",
           "addNewBlock": "Add a new block",
           "emptyBlock": "Empty block",
-          "editForm": "Edit form.",      
+          "editForm": "Edit form.",
           "openParentForm": "Open parent form"
         },
         "newForm": "New Form",
@@ -1697,6 +1697,7 @@
           "createChildForm": "Create child form"
         },
         "message": {
+          "showDemo": "Demo",
           "phoneHint": "Enter a phone number and press enter",
           "appOffline": "You have lost connection to the internet. This app is offline.",
           "activitiesDescription": "Select the activity you want",
@@ -3516,6 +3517,7 @@
           "createChildForm": "Crear formulario hijo"
         },
         "message": {
+          "showDemo": "Ver Demo",
           "phoneHint": "Ingresa un número telefónico y presiona enter",
           "appOffline": "Has perdido la conexión a internet. La aplicación está offline.",
           "activitiesDescription": "Seleeciona la actividad que desees.",
