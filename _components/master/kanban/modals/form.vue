@@ -93,7 +93,7 @@ export default {
             crudType: 'select',
             crudData: import('@imagina/quser/_crud/users'),
             crudProps: {
-              label: this.$tr('isite.cms.form.requestedBy'),
+              label: this.$tr('requestable.requestables.table.requestedBy'),
               rules: [
                 val => !!val || this.$tr('isite.cms.message.fieldRequired')
               ],
@@ -114,7 +114,7 @@ export default {
             crudType: 'select',
             crudData: import('@imagina/quser/_crud/users'),
             crudProps: {
-              label: this.$tr('isite.cms.form.createdBy'),
+              label: this.$tr('requestable.cms.requestables.table.createdBy'),
               rules: [
                 val => !!val || this.$tr('isite.cms.message.fieldRequired')
               ],
