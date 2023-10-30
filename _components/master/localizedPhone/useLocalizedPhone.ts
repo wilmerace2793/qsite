@@ -1,6 +1,7 @@
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watchEffect } from 'vue';
 import getCountries from '@imagina/qsite/_components/master/localizedPhone/actions/getCountries';
 export default function useLocalizedPhone(props: any = {}, emit: any = null) {
+  const valuePhone = computed(() => props.value);
   const countryDefault = {name: 'Colombia', iso3: 'COL', callingCode: 57 };
   const callingCode = ref(0);
   const loading = ref(false);
@@ -45,12 +46,16 @@ export default function useLocalizedPhone(props: any = {}, emit: any = null) {
     listCountries.value = await getCountries();
   } 
   async function init() {
-    callingCode.value = props.value ? props.value.substring(0, 2) : 0;
+    const country: any = listCountries.value.find(item => {
+      const country: any = item;
+      return valuePhone.value ? valuePhone.value.startsWith(`${country.callingCode}`) : country.callingCode === 57;
+    });
+    callingCode.value = country.callingCode;
     if(callingCode.value !== 0) {
       seletdCountry.value = listCountries.value
       .find(item => (item as any).callingCode == callingCode.value) || countryDefault;
     }
-    inputDataComputed.value = props.value ? props.value.substring(2) : null;
+    inputDataComputed.value = valuePhone.value ? valuePhone.value.substring(String(country.callingCode).length) : null;
   }
   onMounted(async () => {
     await setCountries();
@@ -61,9 +66,16 @@ export default function useLocalizedPhone(props: any = {}, emit: any = null) {
     searchTerm.value = '';
     emit("input", `${seletdCountry.value.callingCode}${inputDataComputed.value}`);
   }
-  watch(isDrop, (newValue) => {
-    if(!newValue) searchTerm.value = '';
-  }, { deep: true });
+  
+  watchEffect(async () => {
+    if (!isDrop.value) {
+      searchTerm.value = '';
+    }
+
+    if(props.value) {
+      await init();
+    }
+  });
   return {
     menu,
     inputData,
@@ -78,6 +90,7 @@ export default function useLocalizedPhone(props: any = {}, emit: any = null) {
     setSeletdCountry,
     filteredCountries,
     searchTerm,
-    isDrop
+    isDrop,
+    valuePhone
   }
 }
