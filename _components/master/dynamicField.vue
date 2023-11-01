@@ -1617,7 +1617,6 @@ export default {
 
   .q-field--outlined .q-field__control {
     padding-letf 12px
-    padding-right 40px
   }
 
   .expression-dinamyc-field {
@@ -1675,4 +1674,19 @@ export default {
 
 #ckEditorComponent
   width 100%
+
+// help padding-right
+.crud-dynamic-field,
+.input-dynamic-field,
+.search-dynamic-field,
+.date-dynamic-field,
+.hour-dynamic-field,
+.full-date-dynamic-field,
+.select-dynamic-field,
+.treeselect-dynamic-field,
+.input-color-dynamic-field,
+.select-icon-dinamyc-field
+  .q-field__control{
+    padding-right 40px
+}
 </style>
