@@ -86,9 +86,9 @@
                     <div>
                       <h4 
                       class="tw-text-sm" 
-                      v-if="item.userProfile && !Boolean(item.internal)"
+                      v-if="item.userProfile"
                     >
-                      <strong>
+                      <strong v-if="!Boolean(item.internal)">
                         {{ item.userProfile.fullName }}
                       </strong>
                       <small v-if="item.updatedAt || item.createdAt">
