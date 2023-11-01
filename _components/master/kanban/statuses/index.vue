@@ -82,6 +82,7 @@
                 icon="fa-light fa-check"
                 size="6px"
                 @click="update"
+                v-if="status.title"
               >
                 <q-tooltip> Actualizar </q-tooltip>
               </q-btn>

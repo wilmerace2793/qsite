@@ -8,7 +8,8 @@ export default async function showAnalytics(criteria: string = 'leadsByStatus') 
             "type": store.filterDate,
             "from": store.from,
             "to": store.to
-            }
+            },
+            categoryId: store.categoryId
         }
         store.loading = true;
         const response = await Vue.prototype.$crud.show("apiRoutes.qrequestable.analytics", criteria, {

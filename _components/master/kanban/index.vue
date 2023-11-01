@@ -583,6 +583,7 @@ export default {
     },
     async openAnalytics() {
       storeAnalytics.showModal = true;
+      storeAnalytics.categoryId = this.funnelSelected;
       await showaAnalytics();
     },
     openFormComponentModal(statusId, title, id = null) {

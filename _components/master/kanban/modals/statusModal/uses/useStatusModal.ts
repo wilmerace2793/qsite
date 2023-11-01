@@ -70,7 +70,6 @@ export default function useModalAnalytics() {
             column.id = counter;
             column.color = `#${randomColor}`;
             // @ts-ignore
-            console.log(column);
             statusList.value[type].splice(index + 1, 0, column);
         } catch (error) {
             console.log(error);
@@ -78,12 +77,12 @@ export default function useModalAnalytics() {
     }
     async function deleteStatus(id, type) {
         try {
+            statusList.value[type] = statusList.value[type].filter(
+                (item) => item.id !== id
+            );
+            Vue.prototype.$alert.info({ message: Vue.prototype.$tr('isite.cms.message.recordDeleted') });
             if (!isNaN(id)) {
                 await Vue.prototype.$crud.delete(routes.column.apiRoute, id);
-                statusList.value[type] = statusList.value[type].filter(
-                    (item) => item.id !== id
-                );
-                Vue.prototype.$alert.info({ message: Vue.prototype.$tr('isite.cms.message.recordDeleted') });
             }
         } catch (error) {
             console.log(error);
