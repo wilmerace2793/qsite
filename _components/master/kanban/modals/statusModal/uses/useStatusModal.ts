@@ -77,18 +77,28 @@ export default function useModalAnalytics() {
     }
     async function deleteStatus(id, type) {
         try {
-            statusList.value[type] = statusList.value[type].filter(
-                (item) => item.id !== id
-            );
-            Vue.prototype.$alert.info({ message: Vue.prototype.$tr('isite.cms.message.recordDeleted') });
             if (!isNaN(id)) {
-                await Vue.prototype.$crud.delete(routes.column.apiRoute, id);
+                await Vue.prototype.$crud.delete(routes.column.apiRoute, id).then(res => {
+                    statusList.value[type] = statusList.value[type].filter(
+                        (item) => item.id !== id
+                    );
+                    Vue.prototype.$alert.info({ message: Vue.prototype.$tr('isite.cms.message.recordDeleted') });
+                })
+                .catch(err => {
+                    
+                });
+                
+            } else {
+                statusList.value[type] = statusList.value[type].filter(
+                    (item) => item.id !== id
+                );
+                Vue.prototype.$alert.info({ message: Vue.prototype.$tr('isite.cms.message.recordDeleted') });
             }
         } catch (error) {
             console.log(error);
         }
-
     }
+    
 
     async function hideModal() {
         showModal.value = false;

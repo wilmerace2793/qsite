@@ -153,7 +153,12 @@ export default defineComponent({
           cancel: true,
           persistent: true
         }).onOk(async() => {
-          emit('delete')
+          try {
+            emit('delete')
+          } catch (error) {
+            console.log(error);
+            isEdit.value = false;
+          }
         }).onCancel(() => {})
     }
     function update() {
