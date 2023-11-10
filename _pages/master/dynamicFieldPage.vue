@@ -231,6 +231,34 @@ export default {
             mask:"###-###-####"
           },
         },
+        multiDynamifield : {
+            value : [],
+            type : 'multiplier',
+            props : {
+                label : 'Phones',
+                isDraggable: false, // Default true
+                maxQuantity: 7, // Default 5
+                fields : {
+                  localizedPhone: {
+                      ...globalData,
+                      type: 'localizedPhone',
+                      colClass: "col-6",
+                      props: {
+                        label: 'type: localizedPhone',
+                        mask:"###-###-####"
+                      },
+                    },
+                    numberPhone : {
+                        value : null,
+                        type : 'input',
+                        colClass: "col-6",
+                        props : { 
+                          label: 'Email'
+                        } 
+                    }
+                }
+            }
+        },
       }
     }
   },
