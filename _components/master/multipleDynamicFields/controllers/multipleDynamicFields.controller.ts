@@ -1,7 +1,8 @@
 import { ref, computed, onMounted, watch } from "vue";
-import reateEmptyObjectFromFields from '@imagina/qsite/_components/master/multipleDynamicFields/helpers/reateEmptyObjectFromFields'
+import reateEmptyObjectFromFields from '@imagina/qsite/_components/master/multipleDynamicFields/helpers/reateEmptyObjectFromFields.helper'
 
 export default function multipleDynamicFieldsController(props: any, emit: any) {
+    const valueMultiple = computed(() => props.value);
     const fieldProps: any = computed(() => props.fieldProps);
     const defaultField = computed(() => props.fieldProps.fields);
     const fields: any = ref([]);
@@ -17,7 +18,12 @@ export default function multipleDynamicFieldsController(props: any, emit: any) {
 
     onMounted(() => {
         const fromFields = reateEmptyObjectFromFields(defaultField.value)
-        fields.value.push(fromFields);
+        if(valueMultiple.value.length > 0) {
+            fields.value = valueMultiple;  
+        } else {
+          fields.value.push(fromFields);
+        }
+        
     });
     watch(fields.value, (newField, oldField): void => {
         if(newField) {

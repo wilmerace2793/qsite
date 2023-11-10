@@ -130,6 +130,10 @@ export default defineComponent({
     draggable,
   },
   props: {
+    value: {
+      type: Array,
+      default: () => [],
+    },
     fieldProps: {
       type: Object as any,
       default: () => {},
