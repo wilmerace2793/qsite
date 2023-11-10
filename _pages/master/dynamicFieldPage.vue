@@ -235,14 +235,14 @@ export default {
             value : [],
             type : 'multiplier',
             props : {
-                label : 'Phones',
-                isDraggable: false, // Default true
+                label : 'Multiple Dynamic Fields',
+                isDraggable: true, // Default true
                 maxQuantity: 7, // Default 5
                 fields : {
                   localizedPhone: {
                       ...globalData,
                       type: 'localizedPhone',
-                      colClass: "col-6",
+                      colClass: "col-12",
                       props: {
                         label: 'type: localizedPhone',
                         mask:"###-###-####"
@@ -251,7 +251,7 @@ export default {
                     numberPhone : {
                         value : null,
                         type : 'input',
-                        colClass: "col-6",
+                        colClass: "col-12",
                         props : { 
                           label: 'Email'
                         } 
