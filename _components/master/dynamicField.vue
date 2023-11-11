@@ -363,6 +363,12 @@
           v-model="responseValue"
           :fieldProps="fieldProps"
         />
+        
+        <multipleDynamicFields 
+          v-if="loadField('multiplier')"
+          v-model="responseValue"
+          :fieldProps="fieldProps"
+        />
         <!--Code Editor-->
         <q-field v-model="responseValue" v-if="loadField('code')"
                  v-bind="fieldProps.fieldComponent"
@@ -400,6 +406,7 @@ import googleMapMarker from '@imagina/qsite/_components/master/googleMapMarker'
 import JsonEditorVue from 'json-editor-vue'
 import expressionField from '@imagina/qsite/_components/master/expressionField/index.vue';
 import localizedPhone from '@imagina/qsite/_components/master/localizedPhone/index.vue';
+import multipleDynamicFields from '@imagina/qsite/_components/master/multipleDynamicFields/views'
 //Code mirror
 import {codemirror} from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
@@ -448,7 +455,8 @@ export default {
     JsonEditorVue,
     expressionField,
     codemirror,
-    localizedPhone
+    localizedPhone,
+    multipleDynamicFields,
   },
   watch: {
     value: {
@@ -1365,7 +1373,7 @@ export default {
             }
           })
         } else {
-          this.responseValue = propValue ? this.$clone(this.fieldProps.emitValue ? propValue.toString() : propValue) : propValue
+          this.responseValue = propValue || propValue == 0 ? this.$clone(this.fieldProps.emitValue ? propValue.toString() : propValue) : propValue
         }
       }
     },
@@ -1436,7 +1444,7 @@ export default {
             this.rootOptionsData = this.$clone(response.data)
             let formatedOptions = []
             //Format response
-            response.data = response.data.map((item, index) => ({...item, id: item.id || (index + 1)}))
+            response.data = response.data.map((item, index) => ({...item, id: item.id >= 0 ? item.id : (index + 1)}))
             formatedOptions = ['select', 'expression'].includes(this.field.type) ?
                 this.$array.select(response.data, loadOptions.select || fieldSelect) :
                 this.$array.tree(response.data, loadOptions.select || fieldSelect)
