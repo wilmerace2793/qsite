@@ -13,79 +13,112 @@
     "
     :style="{ borderLeftColor: colorColumn }"
   >
-    <div class="tw-flex tw-justify-between">
-      <p
-        class="
-          tw-text-gray-700
-          tw-font-semibold
-          tw-font-sans
-          tw-tracking-wide
-          tw-text-sm
-          tw-w-full
-        "
-      >
-        <q-btn-dropdown
-          round
-          color="gray-4"
-          flat
-          size="10px"
-          padding="5px 5px"
-          class="
-            kd-without-arrow
-            tw-float-right 
-            tw-cursor-pointer 
-            tw-text-xs 
-            tw-bg-gray-100
-          "
-          icon="fa-solid fa-ellipsis"
-        >
-          <q-list
-            dense
+    <section class="tw-flex tw-justify-between">
+      <div>
+        <div>
+          <q-btn-dropdown
+            round
+            color="gray-4"
+            flat
+            size="10px"
+            padding="5px 5px"
             class="
-              tw-p-2 
-              kd-list-without-arrow 
-              tw-bg-gray-100 
-              tw-text-xs"
+              kd-without-arrow
+              tw-float-right 
+              tw-cursor-pointer 
+              tw-text-xs 
+              tw-bg-gray-100
+            "
+            icon="fa-solid fa-ellipsis"
           >
-            <q-item
-              clickable
-              v-close-popup
-              v-for="(action, keyAction) in actionsAutomations"
-              :key="keyAction"
-              v-bind="action.props"
-              v-if="action.vIf != undefined ? action.vIf : true"
-              @click.native="runAction(action)"
+            <q-list
+              dense
+              class="
+                tw-p-2 
+                kd-list-without-arrow 
+                tw-bg-gray-100 
+                tw-text-xs"
             >
-              <q-item-section avatar>
-                <q-icon :name="action.icon" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>
-                  {{ action.label || action.tooltip }}
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-btn-dropdown>
-
-       ID:{{ cardData.id }} {{ cardData.title }}
-      </p>
-    </div>
+              <q-item
+                clickable
+                v-close-popup
+                v-for="(action, keyAction) in actionsAutomations"
+                :key="keyAction"
+                v-bind="action.props"
+                v-if="action.vIf != undefined ? action.vIf : true"
+                @click.native="runAction(action)"
+              >
+                <q-item-section avatar>
+                  <q-icon :name="action.icon" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>
+                    {{ action.label || action.tooltip }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+          <span
+            class="
+              tw-text-gray-700
+              tw-font-semibold
+              tw-font-sans
+              tw-tracking-wide
+              tw-text-sm
+              tw-w-full
+            "
+          >
+            ID: {{ cardData.id }} {{ cardData.title }}
+          </span>
+        </div>
+        <figure 
+          class="picture"
+        >
+          <img 
+            class="
+              img
+            "
+            src="https://th.bing.com/th/id/OIG.uQ089mxxb0XOpfN0sPs6?pid=ImgGn&w=1024&h=1024&rs=1"
+          />
+          <figcaption>{{ cardData.creator.lastName }}</figcaption>
+        </figure>
+      </div>
+    </section>
     <div
       v-if="cardData.type"
-      class="tw-flex tw-mt-1 tw-justify-between tw-items-center"
+      class="
+        tw-flex 
+        tw-mt-1 
+        tw-justify-between 
+        tw-items-center
+      "
     >
-      <span class="tw-text-xs tw-text-gray-600">
-        <b>Tipo *</b> {{ cardData.type }}
+      <span 
+        class="
+          tw-text-xs 
+          tw-text-gray-600
+        "
+      >
+        <b>Tipo * </b> {{ cardData.type }}
       </span>
     </div>
     <div
-      class="tw-flex tw-mt-1 tw-justify-between tw-items-center"
+      class="
+        tw-flex 
+        tw-mt-1 
+        tw-justify-between 
+        tw-items-center
+      "
       v-for="field in cardData.fields"
       :key="field.id"
     >
       <span
-        class="tw-text-xs tw-text-gray-600 tw-truncate"
+        class="
+          tw-text-xs 
+          tw-text-gray-600 
+          tw-truncate
+        "
         v-if="field.name && typeof field.value !== 'object'"
       >
         <b>{{ field.label || field.name }} *</b>
@@ -93,9 +126,19 @@
       </span>
     </div>
 
-    <div class="tw-flex tw-mt-4 tw-justify-between tw-items-center">
-      <span class="tw-text-xs tw-text-gray-600">
-        <b>{{ $tr('isite.cms.label.date') }} *</b> {{ cardData.createdAt }}
+    <div 
+      class="
+        tw-flex 
+        tw-mt-4 
+        tw-justify-between 
+        tw-items-center
+      ">
+      <span 
+        class="
+          tw-text-xs 
+          tw-text-gray-600
+        ">
+          <b>{{ $tr('isite.cms.label.date') }} *</b> {{ cardData.createdAt }}
       </span>
     </div>
   </div>
@@ -141,6 +184,7 @@ export default {
   },
   computed: {
     actions() {
+      console.log('cardData', this.cardData)
       return this.crudfieldActions(this.cardData);
     },
     actionsAutomations() {
@@ -211,5 +255,19 @@ export default {
 }
 .kd-list-without-arrow .q-item__section--avatar {
   @apply tw-mx-1 tw-pr-1 !important tw-min-w-0 !important;
+}
+
+.img {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-right: 8px;
+}
+
+.picture {
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
 }
 </style>
