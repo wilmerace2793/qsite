@@ -83,17 +83,49 @@
                 <div class="file-card__bottom">
                   <!--Actions-->
                   <div v-if="!readonly" class="file-card__bottom_actions row items-center justify-between">
-                    <div v-if="true"
-                         :class="`full-width file-card__bottom_title ellipsis ${draggable ? 'drag-handle' : ''}`">
-                      <div class="q-pa-sm ellipsis">{{ itemRow.filename }}</div>
-                      <q-separator inset/>
+                    <div
+                      class="
+                       full-width 
+                       file-card__bottom_title 
+                       ellipsis 
+                       tw-border-b 
+                       tw-border-gray-200 
+                       tw-mb-1"
+                       :class="{
+                        'drag-handle': draggable
+                       }"
+                      >
+                      <div 
+                        class="q-pa-sm ellipsis"
+                      >
+                         {{ itemRow.filename }}
+                      </div>
                     </div>
                     <!--select file-->
                     <q-checkbox v-if="allowSelect" v-model="table.selected" :val="itemRow.filename" color="green"/>
                     <!-- File id -->
-                    <div class="q-px-sm text-caption text-grey-9"><b>ID: {{ itemRow.id }}</b></div>
-                    <!--button Actions-->
-                    <btn-menu class="float-right" :actions="itemActions" :action-data="itemRow"/>
+                    <div class="tw-flex tw-w-full">
+                      <div class="tw-w-3/4 tw-py-2">
+                        <div 
+                          class="
+                            q-px-sm 
+                            text-caption 
+                            text-grey-9 
+                            ellipsis
+                            tw-font-bold"
+                          >
+                           ID: {{ itemRow.id }}
+                        </div>
+                      </div>
+                      <div class="tw-w-3/12">
+                         <!--button Actions-->
+                        <btn-menu 
+                          class="float-right" 
+                          :actions="itemActions" 
+                          :action-data="itemRow"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

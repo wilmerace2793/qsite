@@ -200,6 +200,11 @@
           <template slot="after-options">
             <slot name="after-options"></slot>
           </template>
+          <template v-slot:before v-if="selectImg">
+            <q-avatar>
+              <img :src="selectImg">
+            </q-avatar>
+          </template>
         </q-select>
         <!--tree select-->
         <q-field v-model="responseValue" v-if="loadField('treeSelect')" :label="fieldLabel"
@@ -428,7 +433,8 @@ export default {
     keyField: {
       type: String,
       default: () => '',
-    }
+    },
+    enableCache: {default: false}
   },
   components: {
     managePermissions,
@@ -523,6 +529,11 @@ export default {
     }
   },
   computed: {
+    selectImg() {
+      const data = this.rootOptions.find(item => item.id == this.responseValue) || {};
+      
+      return data.img || null;
+    },
     //Return label to field
     fieldLabel() {
       let response = ''
@@ -1399,6 +1410,8 @@ export default {
 
           //enable cache by isite setting
           let enableCache = this.$store.getters['qsiteApp/getSettingValueByName']('isite::enableDynamicFieldsCache')
+          //enable cache by params
+          if(this.enableCache) enableCache = 1
 
           let params = {//Params to request
             refresh: enableCache == '1' ? false : true,
@@ -1590,7 +1603,7 @@ export default {
           )
           //Validate if there is the option for the value
           if (loadOptions.filterByQuery && !includeAll) {
-            let fieldSelect = loadOptions.select || {label: 'title', id: 'id'}
+            let fieldSelect = loadOptions.select || {label: 'title', id: 'id', img: 'mainImage'}
             //Instance request params
             let requestParams = {
               refresh: true,
@@ -1607,7 +1620,7 @@ export default {
             this.$crud.index(loadOptions.apiRoute, requestParams).then(response => {
               this.rootOptions = [
                 ...this.rootOptions,
-                ...this.$array.select(response.data, fieldSelect)
+                ...this.$array.select(response.data, fieldSelect),
               ]
             }).catch(error => {
               this.$apiResponse.handleError(error, () => {

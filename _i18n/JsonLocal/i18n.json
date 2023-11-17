@@ -1341,6 +1341,7 @@
         "perzonalizationTitle": "Welcome to the editor of your website",
         "perzonalizationDescription": "Easily change the logo, colors and the main information of your website",
         "label": {
+          "resposible": "Responsible",
           "clickToAction": "Click to Action",
           "informationTitle": "Site Information",
           "top": "Top",
@@ -1694,6 +1695,8 @@
           "createNewAccount": "Create new account",
           "continue": "Continue",
           "plan": "Plan",
+          "analytics": "Analytics",
+          "automationRules": "Automation rules",
           "copyEmbedHtml": "Copy HTML",
           "createChildForm": "Create child form"
         },
@@ -3183,6 +3186,7 @@
         "perzonalizationTitle": "Bienvenid@ al editor de tu sitio web",
         "perzonalizationDescription": "De manera fácil, cambia el logo, colores y la información principal de tu página web",
         "label": {
+          "resposible": "Responsable",
           "clickToAction": "Click para Acción",
           "top": "Arriba",
           "bottom": "Abajo",
@@ -3534,6 +3538,8 @@
           "createNewAccount": "Crear Nueva Cuenta",
           "continue": "Continuar",
           "plan": "Plan",
+          "analytics": "Analytics",
+          "automationRules": "Reglas de automatizacións",
           "copyEmbedHtml": "Copiar HTML",
           "createChildForm": "Crear formulario hijo"
         },

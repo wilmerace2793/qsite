@@ -85,28 +85,7 @@ export default {
     formFields() {
       const userData = this.$store.state.quserAuth.userData;
       return {
-        createdBy: {
-          value: null,
-          type: 'crud',
-          permission: 'requestable.requestables.edit-created-by',
-          props: {
-            crudType: 'select',
-            crudData: import('@imagina/quser/_crud/users'),
-            crudProps: {
-              label: this.$tr('isite.cms.form.createdBy'),
-              rules: [
-                val => !!val || this.$tr('isite.cms.message.fieldRequired')
-              ],
-            },
-            config: {
-              filterByQuery: true,
-              options: {
-                label: 'fullName', value: 'id'
-              }
-            }
-          },
-        },
-        requestedBy: {
+         requestedById: {
           value: null,
           type: 'crud',
           permission: "requestable.requestables.filter-requested-by",
@@ -114,7 +93,7 @@ export default {
             crudType: 'select',
             crudData: import('@imagina/quser/_crud/users'),
             crudProps: {
-              label: this.$tr('isite.cms.form.requestedBy'),
+              label: this.$tr('requestable.cms.requestables.table.requestedBy'),
               rules: [
                 val => !!val || this.$tr('isite.cms.message.fieldRequired')
               ],
@@ -150,6 +129,48 @@ export default {
             }
           },
         },
+        createdBy: {
+          value: this.$store.state.quserAuth.userId,
+          type: 'crud',
+          permission: 'requestable.requestables.edit-created-by',
+          props: {
+            crudType: 'select',
+            crudData: import('@imagina/quser/_crud/users'),
+            crudProps: {
+              label: this.$tr('requestable.cms.requestables.table.createdBy'),
+              rules: [
+                val => !!val || this.$tr('isite.cms.message.fieldRequired')
+              ],
+            },
+            config: {
+              filterByQuery: true,
+              options: {
+                label: 'fullName', value: 'id'
+              }
+            }
+          },
+        },
+        responsibleId: {
+          value: null,
+          type: 'crud',
+          permission: 'requestable.requestables.edit-created-by',
+          props: {
+            crudType: 'select',
+            crudData: import('@imagina/quser/_crud/users'),
+            crudProps: {
+              label: this.$tr('requestable.cms.label.responsible'),
+              rules: [
+                val => !!val || this.$tr('isite.cms.message.fieldRequired')
+              ],
+            },
+            config: {
+              filterByQuery: true,
+              options: {
+                label: 'fullName', value: 'id',
+              }
+            }
+          },
+        }
       }
     },
   },
@@ -183,7 +204,7 @@ export default {
           type: this.funnelForm.type,
           statusId: this.statusId,
           ...this.dynamicFieldForm,
-          requestedBy: this.dynamicFieldForm.requestedBy || this.$store.state.quserAuth.userId
+          requestedById: this.dynamicFieldForm.requestedById || this.$store.state.quserAuth.userId
         };
         await this.$crud.create(route.apiRoute, form);
         await this.addCard(this.statusId);

@@ -246,21 +246,20 @@ export default {
           }
         }
         //Request
-        this.$crud.index('apiRoutes.qrequestable.categoriesRule', requestParams)
-          .then(async response => {
-            const categoriesRule = this.$clone(response.data);
-            if(data) {
-              const category = await categoriesRule.find(item => item.id === data.categoryRuleId);
-              await data.fields.forEach(item => {
-                if(category.formFields[item.name]) {
-                  category.formFields[item.name].value = item.value;
-                }
-              })
-            }
-            // telegram is hidden until the functionality remains
-            this.categories = await this.$clone(categoriesRule).filter(item => item.id !== this.TELEGRAM);
-            this.loading = false
-          }).catch(error => {console.log(error); this.loading = true })
+        this.$crud.index('apiRoutes.qrequestable.categoriesRule', requestParams).then(async response => {
+          const categoriesRule = this.$clone(response.data);
+          if(data) {
+            const category = await categoriesRule.find(item => item.id === data.categoryRuleId);
+            await data.fields.forEach(item => {
+              if(category.formFields[item.name]) {
+                category.formFields[item.name].value = item.value;
+              }
+            })
+          }
+          // telegram is hidden until the functionality remains
+          this.categories = await this.$clone(categoriesRule);
+          this.loading = false
+        }).catch(error => {console.log(error); this.loading = true })
       })
     },
     async showAutomation(id) {
