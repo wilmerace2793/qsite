@@ -503,7 +503,15 @@ export default {
       }
 
       //Add captcha field
-      if (this.useCaptcha && blocks.length) blocks[blocks.length - 1].fields.captcha = {type: 'captcha'}
+      if (this.useCaptcha && blocks.length){
+        const lastBlock = blocks[blocks.length - 1]
+
+        if(lastBlock.fields?.captcha){
+          lastBlock.fields.captcha = {type: 'captcha'}
+        }else {
+          lastBlock.fields.push({type: 'captcha' , name: 'captcha', value: ''})
+        }
+      }
 
       //Validate if field should be translatable
       blocks.forEach((block, blockKey) => {
