@@ -160,7 +160,11 @@ export default {
         typeDynamicField() {
             const selectField = {
                 type: "select",
+<<<<<<< HEAD
                 vIf: this.isSelectField,
+=======
+                vIf: this.isTo,
+>>>>>>> 1b40ae852dc074c01d3bdb961420530416a655b7
                 props: {
                     multiple: true,
                     useChips: true,
@@ -184,7 +188,11 @@ export default {
                     }
                 }
             }
+<<<<<<< HEAD
             return this.isSelectField ? { ...selectField  } : { ...dynamicField }
+=======
+            return this.isTo ? { ...selectField  } : { ...dynamicField }
+>>>>>>> 1b40ae852dc074c01d3bdb961420530416a655b7
         },
         modalActions() {
             return [
