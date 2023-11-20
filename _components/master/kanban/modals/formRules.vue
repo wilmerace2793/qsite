@@ -15,26 +15,35 @@
       @submit="submitData"
       @validation-error="$alert.error($tr('isite.cms.message.formInvalid'))"
     >
-      <!--Main-->
-      <div class="box box-auto-height q-mb-md">
+        <!--Main-->
+        <div class="box box-auto-height q-mb-md">
         <!--Category Id-->
         <dynamic-field v-model="form.categoryId" :field="formFields.category"/>
         <!--Title-->
         <dynamic-field v-model="form.name" :field="formFields.name"/>
         <!--Recipient Type-->
         <dynamic-field 
-          v-model="form.to" 
-          :field="formFields.to"
-          v-if="formFields.to.vIf" 
-          :key="`recipient-${changeKey}`"
+            v-model="form.to" 
+            :field="formFields.to"
+            v-if="formFields.to.vIf" 
+            :key="`recipient-${changeKey}`"
         />
-      </div>
-      <!--Run fields-->
-      <dynamic-form v-model="form.run" :blocks="formFields.run" no-actions no-reset-with-blocks-update
-                    class="q-mb-md" :title="this.$tr('isite.cms.label.run')"/>
-      <!--Category fields-->
-      <dynamic-form v-model="form.categoryFields" :blocks="formFields.categoryFields" no-actions
-                    v-if="formFields.categoryFields" :title="this.$tr('isite.cms.label.setting')"/>
+        </div>
+        <!--Run fields-->
+        <dynamic-form 
+            v-model="form.run" 
+            :blocks="formFields.run" 
+            no-actions no-reset-with-blocks-update
+            class="q-mb-md" :title="this.$tr('isite.cms.label.run')"
+        />
+        <!--Category fields-->
+        <dynamic-form 
+            v-model="form.categoryFields" 
+            :blocks="formFields.categoryFields" 
+            no-actions
+            v-if="formFields.categoryFields" 
+            :title="this.$tr('isite.cms.label.setting')"
+        />
     </q-form>
   </master-modal>
 </template>
@@ -79,14 +88,40 @@ export default {
         };
     },
     computed: {
-        isTo() {
+        isSelectField() {
             const idCategoriesWithRecipient = [1, 7];
             return idCategoriesWithRecipient.includes(this.categorySelected?.parentId);
         },
-        idMultipleDynamic() {
+        isMultiDynamicfield() {
             const EXTERNAL_DATA_COMUNICATION = 13;
             const parentId = this.categorySelected?.parentId;
             return parentId === EXTERNAL_DATA_COMUNICATION;
+        },
+        whatTypeField() {
+            const email = {
+                localizedPhone: {
+                    type: 'localizedPhone',
+                    colClass: "col-12",
+                    props: {
+                        label: 'type: localizedPhone',
+                        mask:"###-###-####"
+                    },
+                }
+            }
+            const phoneNumber = {
+                email : {
+                    value : null,
+                    type : 'input',
+                    colClass: "col-12",
+                    props : { 
+                        label: 'Email'
+                    } 
+                }
+            }
+            const SEND_EMAIL_TO_EXTERNAL_DATA_ID = 14
+            const id = Number(this.categorySelected?.id)
+            const isSendEmailToExternalData = SEND_EMAIL_TO_EXTERNAL_DATA_ID === id
+            return isSendEmailToExternalData ?  { ...phoneNumber } : { ...email }
         },
         whatLoadOptions() {
             const ID_INTERNAL_COMMUNICATION = 7;
@@ -122,6 +157,35 @@ export default {
                 ? loadOptionsUsers
                 : loadOptionsCategories;
         },
+        typeDynamicField() {
+            const selectField = {
+                type: "select",
+                vIf: this.isSelectField,
+                props: {
+                    multiple: true,
+                    useChips: true,
+                    clearable: true,
+                    label: `${this.$tr("isite.cms.label.recipient")} *`,
+                },
+                loadOptions: {
+                    ...this.whatLoadOptions
+                }
+            }
+
+            const dynamicField = {
+                type : 'multiplier',
+                vIf: this.isMultiDynamicfield,
+                props : {
+                    label : 'Multiple Dynamic Fields',
+                    isDraggable: true, // Default true
+                    maxQuantity: 7, // Default 5
+                    fields : {
+                        ...this.whatTypeField
+                    }
+                }
+            }
+            return this.isSelectField ? { ...selectField  } : { ...dynamicField }
+        },
         modalActions() {
             return [
                 {
@@ -132,6 +196,11 @@ export default {
         },
         formFields() {
             const categoryFields = this.categorySelected?.formFields || {};
+            let globalData = {
+                help: {
+                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium ad amet aspernatur atque, error harum ipsa magni odit recusandae, repellat totam vitae? Impedit inventore necessitatibus reiciendis soluta! Deserunt, harum, sunt.'
+                }
+            }
             return {
                 category: {
                     type: "treeSelect",
@@ -153,17 +222,7 @@ export default {
                 },
                 to: {
                     value: [],
-                    type: "select",
-                    vIf: this.isTo,
-                    props: {
-                        multiple: true,
-                        useChips: true,
-                        clearable: true,
-                        label: `${this.$tr("isite.cms.label.recipient")} *`,
-                    },
-                    loadOptions: {
-                        ...this.whatLoadOptions
-                    }
+                    ...this.typeDynamicField
                 },
                 run: [{
                         name: "runForm",
