@@ -14,8 +14,20 @@
     :style="{ borderLeftColor: colorColumn }"
   >
     <section class="tw-flex tw-justify-between">
-      <div>
-        <div>
+      <div class="tw-w-full">
+        <div class="tw-flex">
+          <span
+            class="
+              tw-text-gray-700
+              tw-font-semibold
+              tw-font-sans
+              tw-tracking-wide
+              tw-text-sm
+              tw-w-full
+            "
+          >
+            ID: {{ cardData.id }} {{ cardData.title }}
+          </span>
           <q-btn-dropdown
             round
             color="gray-4"
@@ -28,6 +40,7 @@
               tw-cursor-pointer 
               tw-text-xs 
               tw-bg-gray-100
+              tw-h-7
             "
             icon="fa-solid fa-ellipsis"
           >
@@ -59,18 +72,6 @@
               </q-item>
             </q-list>
           </q-btn-dropdown>
-          <span
-            class="
-              tw-text-gray-700
-              tw-font-semibold
-              tw-font-sans
-              tw-tracking-wide
-              tw-text-sm
-              tw-w-full
-            "
-          >
-            ID: {{ cardData.id }} {{ cardData.title }}
-          </span>
         </div>
         <figure 
           class="picture"
@@ -81,7 +82,7 @@
             "
             src="https://th.bing.com/th/id/OIG.uQ089mxxb0XOpfN0sPs6?pid=ImgGn&w=1024&h=1024&rs=1"
           />
-          <figcaption>{{ cardData.creator.lastName }}</figcaption>
+          <figcaption>{{ lastName }}</figcaption>
         </figure>
       </div>
     </section>
@@ -145,6 +146,7 @@
 </template>
 
 <script>
+
 export default {
   inject: {
     showRequestData: {
@@ -175,17 +177,33 @@ export default {
   props: {
     cardData: {
       type: Object,
-      default: () => {},
+      default: () => this.cardDataDefault,
     },
     colorColumn: {
       type: String,
       default: () => "#00000",
     },
   },
+  data() {
+    return {
+      cardDataDefault: {
+        id: 0,
+        title: '',
+        type: '',
+        createdAt: '',
+        fields: [],
+        creator: {
+          lastName: '',
+        },
+      },
+    };
+  },
   computed: {
     actions() {
-      console.log('cardData', this.cardData)
       return this.crudfieldActions(this.cardData);
+    },
+    lastName() {
+      return this.cardData?.creator?.lastName || ''
     },
     actionsAutomations() {
       let response = [

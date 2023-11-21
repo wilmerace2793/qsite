@@ -1698,7 +1698,8 @@
           "analytics": "Analytics",
           "automationRules": "Automation rules",
           "copyEmbedHtml": "Copy HTML",
-          "createChildForm": "Create child form"
+          "createChildForm": "Create child form",
+          "phoneNumber": "Phone number"
         },
         "message": {
           "showDemo": "Demo",
@@ -3541,7 +3542,8 @@
           "analytics": "Analytics",
           "automationRules": "Reglas de automatizacións",
           "copyEmbedHtml": "Copiar HTML",
-          "createChildForm": "Crear formulario hijo"
+          "createChildForm": "Crear formulario hijo",
+          "phoneNumber": "Número de teléfono"
         },
         "message": {
           "showDemo": "Ver Demo",

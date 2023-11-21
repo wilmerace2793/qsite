@@ -18,9 +18,15 @@
         <!--Main-->
         <div class="box box-auto-height q-mb-md">
         <!--Category Id-->
-        <dynamic-field v-model="form.categoryId" :field="formFields.category"/>
+        <dynamic-field 
+            v-model="form.categoryId" 
+            :field="formFields.category"
+        />
         <!--Title-->
-        <dynamic-field v-model="form.name" :field="formFields.name"/>
+        <dynamic-field 
+            v-model="form.name" 
+            :field="formFields.name"
+        />
         <!--Recipient Type-->
         <dynamic-field 
             v-model="form.to" 
@@ -88,43 +94,80 @@ export default {
         };
     },
     computed: {
+        isSendEmailToExternalData() {
+            const SEND_EMAIL_TO_EXTERNAL_DATA_ID = 14
+            const id = Number(this.categorySelected?.id)
+            return SEND_EMAIL_TO_EXTERNAL_DATA_ID === id
+        },
         isSelectField() {
-            const idCategoriesWithRecipient = [1, 7];
-            return idCategoriesWithRecipient.includes(this.categorySelected?.parentId);
+            const MAIN_FORM_COMUNICATION_ID = 1;
+            const INTERNAL_COMMUNICATION_ID = 7;
+            const idCategoriesWithRecipient = [
+                MAIN_FORM_COMUNICATION_ID, 
+                INTERNAL_COMMUNICATION_ID
+            ];
+            return idCategoriesWithRecipient.includes(this.categorySelected?.parentId)
         },
         isMultiDynamicfield() {
-            const EXTERNAL_DATA_COMUNICATION = 13;
-            const parentId = this.categorySelected?.parentId;
+            const EXTERNAL_DATA_COMUNICATION = 13
+            const parentId = this.categorySelected?.parentId
             return parentId === EXTERNAL_DATA_COMUNICATION;
         },
         whatTypeField() {
-            const email = {
-                localizedPhone: {
+            //TO-DO: Definir estructura de datos.
+
+            // const email = {
+            //     localizedPhone: {
+            //         type: 'localizedPhone',
+            //         colClass: "col-12",
+            //         props: {
+            //             label: 'Phone number',
+            //             mask:"##########"
+            //         },
+            //     }
+            // }
+            // const phoneNumber = {
+            //     email : {
+            //         value : null,
+            //         type : 'input',
+            //         colClass: "col-12",
+            //         props : {
+            //             //TO-DO
+            //             vIf: true,
+            //             label: 'Email'
+            //         } 
+            //     }
+            // }
+            // return isSendEmailToExternalData ?  { ...phoneNumber } : { ...email }
+
+            const field = {
+                phoneNumber: {
                     type: 'localizedPhone',
                     colClass: "col-12",
+                    required: true,
                     props: {
-                        label: 'type: localizedPhone',
-                        mask:"###-###-####"
+                        label: this.$tr('isite.cms.label.phoneNumber'),
+                        vIf: !this.isSendEmailToExternalData,
+                        mask:"##########",
                     },
-                }
-            }
-            const phoneNumber = {
+                },
                 email : {
                     value : null,
                     type : 'input',
                     colClass: "col-12",
-                    props : { 
-                        label: 'Email'
+                    required: true,
+                    props : {
+                        label: 'Email',
+                        type: 'email',
+                        vIf: this.isSendEmailToExternalData,
                     } 
-                }
+                },
             }
-            const SEND_EMAIL_TO_EXTERNAL_DATA_ID = 14
-            const id = Number(this.categorySelected?.id)
-            const isSendEmailToExternalData = SEND_EMAIL_TO_EXTERNAL_DATA_ID === id
-            return isSendEmailToExternalData ?  { ...phoneNumber } : { ...email }
+            return { ...field }
         },
         whatLoadOptions() {
-            const ID_INTERNAL_COMMUNICATION = 7;
+            const INTERNAL_COMMUNICATION_ID = 7;
+
             const loadOptionsUsers = {
                 apiRoute: "apiRoutes.quser.users",
                 select: {
@@ -153,7 +196,8 @@ export default {
                     id: "id"
                 }
             };
-            return this.categorySelected?.parentId === ID_INTERNAL_COMMUNICATION
+
+            return this.categorySelected?.parentId === INTERNAL_COMMUNICATION_ID
                 ? loadOptionsUsers
                 : loadOptionsCategories;
         },
@@ -172,7 +216,7 @@ export default {
                 }
             }
 
-            const dynamicField = {
+            const multiDynamicField = {
                 type : 'multiplier',
                 vIf: this.isMultiDynamicfield,
                 props : {
@@ -184,7 +228,7 @@ export default {
                     }
                 }
             }
-            return this.isSelectField ? { ...selectField  } : { ...dynamicField }
+            return this.isSelectField ? { ...selectField  } : { ...multiDynamicField }
         },
         modalActions() {
             return [
@@ -196,11 +240,6 @@ export default {
         },
         formFields() {
             const categoryFields = this.categorySelected?.formFields || {};
-            let globalData = {
-                help: {
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium ad amet aspernatur atque, error harum ipsa magni odit recusandae, repellat totam vitae? Impedit inventore necessitatibus reiciendis soluta! Deserunt, harum, sunt.'
-                }
-            }
             return {
                 category: {
                     type: "treeSelect",
@@ -377,6 +416,18 @@ export default {
                     date: this.form.run.date
                 };
             }
+
+            if (this.isSendEmailToExternalData) {
+                const emails = ruleData.to.map(item => item.email)
+                const regex = /\S+@\S+\.\S+/
+                const isEmail = emails.every(item => item.match(regex))
+                if (!isEmail) {
+                    this.$alert.error(this.$tr('isite.cms.message.emailInvalid'))
+                    this.loading = false;
+                    return
+                }
+            }
+
             const crud = this.automationId
                 ? this.$crud.update(route, this.automationId, ruleData)
                 : this.$crud.create(route, ruleData);
