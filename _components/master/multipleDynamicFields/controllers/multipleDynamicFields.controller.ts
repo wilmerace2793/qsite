@@ -7,6 +7,7 @@ export default function multipleDynamicFieldsController(props: any, emit: any) {
     const defaultField = computed(() => props.fieldProps.fields);
     const fields: any = ref([]);
     const maxQuantity = computed(() => fields.value.length === (fieldProps.value?.maxQuantity || 5))
+    const minQuantity = computed(() => fields.value.length === (fieldProps.value?.minQuantity || 0))
     function add(): void {
         const fromFields = reateEmptyObjectFromFields(defaultField.value);
         if(maxQuantity.value) return;
@@ -21,7 +22,9 @@ export default function multipleDynamicFieldsController(props: any, emit: any) {
         if(valueMultiple.value.length > 0) {
             fields.value = valueMultiple;  
         } else {
-          fields.value.push(fromFields);
+            for (let i=1; i <= fieldProps.value?.minQuantity; i++) {
+                fields.value.push(fromFields);
+            }
         }
         
     });
@@ -37,5 +40,6 @@ export default function multipleDynamicFieldsController(props: any, emit: any) {
         add,
         deleteItem,
         maxQuantity,
+        minQuantity,
     };
 }

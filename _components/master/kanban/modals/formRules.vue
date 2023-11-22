@@ -114,62 +114,34 @@ export default {
             return parentId === EXTERNAL_DATA_COMUNICATION;
         },
         whatTypeField() {
-            //TO-DO: Definir estructura de datos.
-
-            // const email = {
-            //     localizedPhone: {
-            //         type: 'localizedPhone',
-            //         colClass: "col-12",
-            //         props: {
-            //             label: 'Phone number',
-            //             mask:"##########"
-            //         },
-            //     }
-            // }
-            // const phoneNumber = {
-            //     email : {
-            //         value : null,
-            //         type : 'input',
-            //         colClass: "col-12",
-            //         props : {
-            //             //TO-DO
-            //             vIf: true,
-            //             label: 'Email'
-            //         } 
-            //     }
-            // }
-            // return isSendEmailToExternalData ?  { ...phoneNumber } : { ...email }
-
-            const field = {
-                phoneNumber: {
+            const email = {
+                localizedPhone: {
                     type: 'localizedPhone',
                     colClass: "col-12",
-                    required: true,
                     props: {
-                        label: this.$tr('isite.cms.label.phoneNumber'),
-                        vIf: !this.isSendEmailToExternalData,
-                        mask:"##########",
+                        label: 'Phone number',
+                        mask:"##########"
                     },
-                },
+                }
+            }
+            const phoneNumber = {
                 email : {
                     value : null,
                     type : 'input',
                     colClass: "col-12",
-                    required: true,
                     props : {
-                        label: 'Email',
-                        type: 'email',
-                        vIf: this.isSendEmailToExternalData,
+                        label: 'Email'
                     } 
-                },
+                }
             }
-            return { ...field }
+            return this.isSendEmailToExternalData ?  { ...phoneNumber } : { ...email }
         },
         whatLoadOptions() {
             const INTERNAL_COMMUNICATION_ID = 7;
 
             const loadOptionsUsers = {
                 apiRoute: "apiRoutes.quser.users",
+                filterByQuery: true,
                 select: {
                     label: "fullName",
                     id: "id"
@@ -191,6 +163,7 @@ export default {
                     );
                   });
                 },
+                filterByQuery: true,
                 select: {
                     label: "name",
                     id: "id"
@@ -215,13 +188,14 @@ export default {
                     ...this.whatLoadOptions
                 }
             }
-
+            //TO-DO: Focus al campo creado.
             const multiDynamicField = {
                 type : 'multiplier',
                 vIf: this.isMultiDynamicfield,
                 props : {
-                    label : 'Multiple Dynamic Fields',
+                    label : 'Destinatarios',
                     isDraggable: true, // Default true
+                    minQuantity: 1,
                     maxQuantity: 7, // Default 5
                     fields : {
                         ...this.whatTypeField
@@ -420,7 +394,7 @@ export default {
             if (this.isSendEmailToExternalData) {
                 const emails = ruleData.to.map(item => item.email)
                 const regex = /\S+@\S+\.\S+/
-                const isEmail = emails.every(item => item.match(regex))
+                const isEmail = emails.every(item => item?.match(regex))
                 if (!isEmail) {
                     this.$alert.error(this.$tr('isite.cms.message.emailInvalid'))
                     this.loading = false;

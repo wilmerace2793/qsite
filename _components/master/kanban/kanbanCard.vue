@@ -73,17 +73,6 @@
             </q-list>
           </q-btn-dropdown>
         </div>
-        <figure 
-          class="picture"
-        >
-          <img 
-            class="
-              img
-            "
-            src="https://th.bing.com/th/id/OIG.uQ089mxxb0XOpfN0sPs6?pid=ImgGn&w=1024&h=1024&rs=1"
-          />
-          <figcaption>{{ lastName }}</figcaption>
-        </figure>
       </div>
     </section>
     <div
@@ -142,6 +131,23 @@
           <b>{{ $tr('isite.cms.label.date') }} *</b> {{ cardData.createdAt }}
       </span>
     </div>
+    <figure 
+      class="picture"
+      v-if="lastName"
+    >
+      <img 
+        class="
+          img
+        "
+        :src="quserState.userData.mainImage"
+      />
+      <figcaption
+        class="figcaption"
+      >
+        <span>{{ lastName }}</span>
+        <span class="tag">Responsable</span>
+      </figcaption>
+    </figure>
   </div>
 </template>
 
@@ -199,6 +205,9 @@ export default {
     };
   },
   computed: {
+    quserState() {
+      return this.$store.state.quserAuth
+    },
     actions() {
       return this.crudfieldActions(this.cardData);
     },
@@ -267,7 +276,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .kd-without-arrow .q-btn-dropdown__arrow {
   @apply tw-hidden !important;
 }
@@ -276,8 +285,8 @@ export default {
 }
 
 .img {
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   border-radius: 10px;
   object-fit: cover;
   margin-right: 8px;
@@ -287,5 +296,15 @@ export default {
   margin: 16px 0;
   display: flex;
   align-items: center;
+}
+
+.figcaption {
+  display: flex;
+  flex-direction: column;
+}
+
+.tag {
+  color: #c0c0c0;
+  font-size: 12px;
 }
 </style>
