@@ -28,6 +28,7 @@
         handle=".dot-vertical"
         class="tw-h-500"
         :class="{'tw-overflow-y-scroll': fields.length > 0}"
+        ref="refDraggable"
       >
         <div
           v-for="(field, keyField) in fields"

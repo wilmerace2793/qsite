@@ -188,7 +188,6 @@ export default {
                     ...this.whatLoadOptions
                 }
             }
-            //TO-DO: Focus al campo creado.
             const multiDynamicField = {
                 type : 'multiplier',
                 vIf: this.isMultiDynamicfield,
