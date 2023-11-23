@@ -441,8 +441,10 @@ export default {
       return {
         total: response.meta.page.total,
         data: response.data.map((card) => {
-         const nameCreator = card.creator ? `${card.creator.firstName} ${card.creator.lastName}` : null;
-         return { 
+          const nameCreator = card.creator 
+            ? `${card.creator.firstName} ${card.creator.lastName}` 
+            : null;
+          return { 
             title: card.name || nameCreator || card.title,
             type: card.type || null,
             fields: card.fields || [],
