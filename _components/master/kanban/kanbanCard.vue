@@ -141,15 +141,15 @@
     >
       <img 
         class="
-          tw-w-6
-          tw-h-6
+          tw-w-5
+          tw-h-5
           tw-rounded-md
         "
         :src="urlAvatar"
       />
       <figcaption 
         class="
-          tw-ml-2 
+          tw-ml-1 
           tw-text-xs 
           tw-m-auto 
           tw-text-gray-400"
@@ -224,7 +224,8 @@ export default {
       return this.cardData?.creator?.lastName || ''
     },
     urlAvatar() {
-      return  this.cardData?.creator?.mediaFiles?.profile?.relativePath || 
+      console.log('card', this.cardData?.creator)
+      return  this.cardData?.creator?.mediaFiles?.profile?.largeThumb || 
               this.quserState.userData.mainImage
     },
     actionsAutomations() {
