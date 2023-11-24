@@ -63,7 +63,7 @@
           <div
             v-for="key in Object.keys(field)"
             :key="key"
-            :class="defaultField[key].colClass"
+            :class="defaultField[key] && defaultField[key].colClass"
           >
             <dynamic-field
               v-model="fields[keyField][key]"
@@ -77,7 +77,7 @@
               size="xs"
               flat
               round
-              :disabled="minQuantity"
+              :disabled="isMinQuantity"
               @click="deleteItem(keyField)"
             >
               <q-tooltip>

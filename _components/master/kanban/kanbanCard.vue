@@ -86,6 +86,7 @@
     >
       <span 
         class="
+          tw-mt-4
           tw-text-xs 
           tw-text-gray-600
         "
@@ -132,20 +133,28 @@
       </span>
     </div>
     <figure 
-      class="picture"
+      class="
+        tw-flex
+        tw-mt-4
+      "
       v-if="lastName"
     >
       <img 
         class="
-          img
+          tw-w-6
+          tw-h-6
+          tw-rounded-md
         "
-        :src="quserState.userData.mainImage"
+        :src="urlAvatar"
       />
-      <figcaption
-        class="figcaption"
-      >
-        <span>{{ lastName }}</span>
-        <span class="tag">Responsable</span>
+      <figcaption 
+        class="
+          tw-ml-2 
+          tw-text-xs 
+          tw-m-auto 
+          tw-text-gray-400"
+        >
+          {{ lastName }}
       </figcaption>
     </figure>
   </div>
@@ -213,6 +222,10 @@ export default {
     },
     lastName() {
       return this.cardData?.creator?.lastName || ''
+    },
+    urlAvatar() {
+      return  this.cardData?.creator?.mediaFiles?.profile?.relativePath || 
+              this.quserState.userData.mainImage
     },
     actionsAutomations() {
       let response = [
@@ -284,27 +297,4 @@ export default {
   @apply tw-mx-1 tw-pr-1 !important tw-min-w-0 !important;
 }
 
-.img {
-  width: 35px;
-  height: 35px;
-  border-radius: 10px;
-  object-fit: cover;
-  margin-right: 8px;
-}
-
-.picture {
-  margin: 16px 0;
-  display: flex;
-  align-items: center;
-}
-
-.figcaption {
-  display: flex;
-  flex-direction: column;
-}
-
-.tag {
-  color: #c0c0c0;
-  font-size: 12px;
-}
 </style>
