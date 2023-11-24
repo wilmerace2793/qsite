@@ -12,7 +12,11 @@
           "noMessages": "There isn't messages..."
         },
         "newProvider": "New Provider",
-        "updateProvider": "Update Provider"
+        "updateProvider": "Update Provider",
+        "label": {
+          "resend": "Resend",
+          "sendMessage": "Send a Message..."
+        }
       }
     },
     "ievent": {
@@ -951,6 +955,7 @@
           "confirmPassword": "Confirm password",
           "changePassword": "Change Password",
           "profile": "Profile | Profiles",
+          "profilePicture": "Profile Picture",
           "myProfile": "My profile | My profiles",
           "userGroup": "User Group | User Groups",
           "registerAs": "Register as",
@@ -961,7 +966,10 @@
           "lastLogin": "Last login",
           "defaultAddress": "Default address",
           "documentType": "Document type",
-          "documentnumber": "Document number"
+          "documentnumber": "Document number",
+          "emailLogin": "Continue With Email",
+          "sendEmailToVerify": "We have sent an email to <b>{email}</b> where you will find a secure link to access. Please check your inbox to access securely.",
+          "introMessage": "Enter your email, and we'll send you a link to connect quickly and securely"
         },
         "message": {
           "emailExist": "Email already exist",
@@ -1698,7 +1706,9 @@
           "analytics": "Analytics",
           "automationRules": "Automation rules",
           "copyEmbedHtml": "Copy HTML",
-          "createChildForm": "Create child form"
+          "createChildForm": "Create child form",
+          "copy": "Copy",
+          "insert": "Insert"
         },
         "message": {
           "showDemo": "Demo",
@@ -1959,7 +1969,9 @@
         "label": {
           "new": "New QR code",
           "view": "View QR code",
-          "download": "Download QR code"
+          "download": "Download QR code",
+          "update": "Update QR code",
+          "createQr": "Create a New QR Code"
         },
         "form": {
           "id": "ID",
@@ -1969,6 +1981,9 @@
           "entityId": "Entity Id",
           "zone": "Zone",
           "bannerInfo": "Prefixes make it easier to define the type of content contained in each QR code. Here are common examples you can use when entering your content:<br><br><li>Website URL: enter \"<b>http://</b>\" or \"<b>https://</b>\" followed by the Website URL. Example: \"<b>https://www.imaginacolombia.com\"</b></li><li>Email: enter \"<b>mailto:</b>\" followed by the Email. Example: \"<b>mailto:support@imaginacolombia.com</b>\"</li><li>Phone number: Enter \"<b>tel:</b>\" followed by the Phone number. Example: <b>tel:555-555-5555</b></li><li>Text Message (SMS)  With Pretyped Message and Number: Enter \"<b>sms:</b>\" Combine number \"<b>:</b>\" message. Example: <b>sms:555-555-5555:I am a pretyped message</b></li><li>Geo Address: Enter \"<b>geo:</b>\". Example: <b>geo:-78.400364,-85.916993</b></li><li>MeCard: Enter \"<b>mecard:</b>\". Example: <b>MECARD:Simple, Software;Some Address, Somewhere, 20430;TEL:555-555-5555;EMAIL:support@imaginacolombia.com</b></li>"
+        },
+        "messages": {
+          "sureCreateQr": "Do you want to generate a QR code for this record?"
         }
       }
     }
@@ -1986,7 +2001,11 @@
           "noMessages": "No tienes mensajes..."
         },
         "newProvider": "Nuevo Proveedor",
-        "updateProvider": "Actualizar Proveedor"
+        "updateProvider": "Actualizar Proveedor",
+        "label": {
+          "resend": "Reenviar",
+          "sendMessage": "Envia un mensaje..."
+        }
       }
     },
     "ievent": {
@@ -2925,6 +2944,7 @@
           "confirmPassword": "Confirmar contraseña",
           "changePassword": "Cambiar contraseña",
           "profile": "Perfil | Perfiles",
+          "profilePicture": "Foto de Perfil",
           "myProfile": "Mi perfil | Mis perfiles",
           "userGroup": "Grupo de usuario | Grupos de usuario",
           "registerAs": "Registrarme como",
@@ -2935,7 +2955,10 @@
           "lastLogin": "Ultima sesión",
           "defaultAddress": "Dirección por defecto",
           "documentType": "Tipo de documento",
-          "documentnumber": "Numero de documento"
+          "documentnumber": "Numero de documento",
+          "emailLogin": "Continuar con Email",
+          "sendEmailToVerify": "Hemos enviado un correo electrónico a <b>{email}</b> en donde encontrarás un enlace seguro para acceder. Por favor, verifica tu bandeja de entrada para acceder de manera segura.",
+          "introMessage": "Ingresa tu email, te enviaremos un link para conectarte de forma rápida y segura"
         },
         "message": {
           "emailExist": "El email ya está registrado",
@@ -3541,7 +3564,9 @@
           "analytics": "Analytics",
           "automationRules": "Reglas de automatizacións",
           "copyEmbedHtml": "Copiar HTML",
-          "createChildForm": "Crear formulario hijo"
+          "createChildForm": "Crear formulario hijo",
+          "copy": "Copiar",
+          "insert": "Insertar"
         },
         "message": {
           "showDemo": "Ver Demo",
@@ -3794,7 +3819,9 @@
         "label": {
           "new": "Nuevo Codigo QR",
           "view": "Ver codigo QR",
-          "download": "Descargar codigo QR"
+          "download": "Descargar codigo QR",
+          "update": "Actualizar Codigo QR",
+          "createQr": "Genera un Codigo QR"
         },
         "form": {
           "id": "ID",
@@ -3804,6 +3831,9 @@
           "entityId": "Id de endiad ",
           "zone": "Zona",
           "bannerInfo": "Los prefijos facilitan la definición del tipo de contenido que contiene cada código QR. Aquí hay ejemplos comunes que puedes usar al ingresar tu contenido:<br><br><li>Dirección web: ingresa \"<b>http://</b>\" o \"<b>https://</b>\" seguido de la direccion web. Ejemplo: \"<b>https://www.imaginacolombia.com\"</b></li><li>Correo electrónico: ingresa \"<b>mailto:</b>\" seguido de la direccion de correo. Ejemplo: \"<b>mailto:support@imaginacolombia.com</b>\"</li><li>Número de teléfono: Ingresa \"<b>tel:</b>\" seguido del numero telefonico. Ejemplo: <b>tel:555-555-5555</b></li><li>Mensaje de texto (SMS) con mensaje y número predefinidos: Ingresa \"<b>sms:</b>\" Combina número \"<b>:</b>\" mensaje. Ejemplo: <b>sms:555-555-5555:yo soy el mensaje</b></li><li>Ubicacion geográfica: Ingresa \"<b>geo:</b>\". Ejemplo: <b>geo:-78.400364,-85.916993</b></li><li>Tarjeta MeCard: Ingresa \"<b>mecard:</b>\". Ejemplo: <b>MECARD:Simple, Software;Some Address, Somewhere, 20430;TEL:555-555-5555;EMAIL:support@imaginacolombia.com</b></li>"
+        },
+        "messages": {
+          "sureCreateQr": "¿Quieres generar un código QR para este registro?"
         }
       }
     }
