@@ -5,18 +5,19 @@
       tw-border 
       tw-border-gray-200
       tw-rounded-md
-      tw-shadow-md"
+    "
     >
     <div 
       class="
-       tw-w-full 
-       tw-px-4
-       tw-py-2 
-       tw-text-lg 
-       tw-font-semibold 
-       tw-border-b
-       tw-border-gray-200
-       tw-text-gray-500"
+        tw-w-full 
+        tw-px-3
+        tw-py-2 
+        tw-text-xs
+        tw-font-light
+        tw-border-b
+        tw-border-gray-200
+        tw-text-gray-500
+      "
     >
       {{ fieldProps.label }}
     </div>
@@ -27,32 +28,36 @@
         handle=".dot-vertical"
         class="tw-h-500"
         :class="{'tw-overflow-y-scroll': fields.length > 0}"
+        ref="refDraggable"
       >
         <div
           v-for="(field, keyField) in fields"
           :key="keyField"
           class="
-           row 
-           q-col-gutter-md 
-           tw-mb-5 
-           tw-border 
-           tw-border-gray-200 
-           tw-mx-5
-           tw-px-2
-           tw-rounded-md 
-           tw-mt-3"
+            row 
+            q-col-gutter-xs 
+            tw-mb-1 
+            tw-border 
+            tw-border-gray-200 
+            tw-mx-3
+            tw-px-2
+            tw-rounded-md 
+            tw-mt-1
+          "
         >
          <div 
           class="tw-w-full"
           v-if="fieldProps.isDraggable"
         >
-            <i class="
-              tw-cursor-move
-              fa-solid 
-              fa-grip-dots
-              dot-vertical 
-              tw-text-lg 
-              tw-text-gray-500" 
+            <i 
+              class="
+                tw-cursor-move
+                fa-solid 
+                fa-grip-dots
+                dot-vertical 
+                tw-text-sm 
+                tw-text-gray-500
+              " 
             />
          </div>
           <div
@@ -69,9 +74,10 @@
             <q-btn
               color="red"
               icon="fa-light fa-trash-can"
-              size="sm"
+              size="xs"
               flat
               round
+              :disabled="minQuantity"
               @click="deleteItem(keyField)"
             >
               <q-tooltip>
@@ -85,11 +91,11 @@
           class="
            tw-w-full 
            tw-text-center
-           tw-text-7xl 
+           tw-text-sx 
            tw-text-gray-500
-           tw-py-16"
+           tw-py-2"
         >
-          <div class="tw-mb-4">
+          <div class="tw-mb-1 tw-text-lg">
             <i class="fa-light fa-face-thinking" />
           </div>
           No data
@@ -97,8 +103,8 @@
       </draggable>
       <div 
         class="
-         tw-my-4
-         tw-px-4 
+         tw-my-2
+         tw-px-2 
          tw-w-full 
          tw-text-right"
       >
@@ -106,9 +112,9 @@
           color="primary"
           icon="fa-light fa-plus"
           @click="add"
-          size="sm"
+          size="xs"
           round
-          class="tw-ml-4"
+          class="tw-ml-2"
           :disabled="maxQuantity"
         >
           <q-tooltip>

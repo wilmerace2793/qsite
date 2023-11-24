@@ -1,5 +1,5 @@
 <template>
-  <master-modal
+  <superModal
       v-model="show"
       :persistent="true"
       customPosition
@@ -31,9 +31,10 @@
         </div>
       </div>
     </div>
-  </master-modal>
+  </superModal>
 </template>
 <script>
+import superModal from '@imagina/qsite/_components/master/superModal/view';
 export default {
   props: {
     funnelId: {
@@ -63,6 +64,9 @@ export default {
       type: Function,
       default: () => false,
     },
+  },
+  components: {
+    superModal
   },
   data() {
     return {
