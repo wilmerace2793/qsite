@@ -224,7 +224,6 @@ export default {
       return this.cardData?.creator?.lastName || ''
     },
     urlAvatar() {
-      console.log('card', this.cardData?.creator)
       return  this.cardData?.creator?.mediaFiles?.profile?.largeThumb || 
               this.quserState.userData.mainImage
     },
