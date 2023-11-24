@@ -20,7 +20,7 @@ class cacheOffline {
 
     const dataInCache = structuredClone(cacheResponse)
     const records = await dataInCache.data.map(item => 
-      Number(item.id) === Number(data.id) ? {...item, ...data} : item
+      String(item.id) === String(data.id) ? {...item, ...data} : item
     );
     const newData = {
       ...dataInCache,
@@ -42,13 +42,17 @@ class cacheOffline {
   }
 
   async deleteItem(itemId, apiRoute=null){
+    console.log('deleteItem - 45', itemId)
     if (!apiRoute) return []
     const route = `${apiRoute}::offline`;
     const cacheResponse = await cache.get.item(route) || { data: [] };
 
     const dataInCache = structuredClone(cacheResponse)
-    const index = dataInCache.data.findIndex(item => item.id === itemId)
-    const deleteAS = dataInCache.data.splice(index, 1)
+    const index = dataInCache.data.findIndex(
+      item =>  String(item.id) === String(itemId)
+    )
+    if (index < 0) return null
+    dataInCache.data.splice(index, 1)
     await cache.set(route, { ...dataInCache });
     return true;
   }
