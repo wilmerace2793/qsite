@@ -42,7 +42,6 @@ class cacheOffline {
   }
 
   async deleteItem(itemId, apiRoute=null){
-    console.log('deleteItem - 45', itemId)
     if (!apiRoute) return []
     const route = `${apiRoute}::offline`;
     const cacheResponse = await cache.get.item(route) || { data: [] };
