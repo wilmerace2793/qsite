@@ -387,6 +387,7 @@ export default {
       }
       //Set the user info due register step was removed
       this.dataCheck.user = info?.user ?? this.$store.getters["quserAuth/user"];
+      this.setCacheInfo(this.dataCheck);
     },
     async setCacheStep(step) {
       await this.$cache.set('org-wizard-step', step);
