@@ -176,6 +176,7 @@ export default {
         },
         typeDynamicField() {
             const selectField = {
+                value: null,
                 type: "select",
                 vIf: this.isSelectField,
                 props: {
@@ -189,6 +190,7 @@ export default {
                 }
             }
             const multiDynamicField = {
+                value: [],
                 type : 'multiplier',
                 vIf: this.isMultiDynamicfield,
                 props : {

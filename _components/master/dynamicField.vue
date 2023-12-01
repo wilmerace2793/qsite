@@ -363,7 +363,7 @@
           v-model="responseValue"
           :fieldProps="fieldProps"
         />
-        
+
         <multipleDynamicFields 
           v-if="loadField('multiplier')"
           v-model="responseValue"
@@ -1381,6 +1381,9 @@ export default {
         case 'code':
           this.responseValue = typeof propValue != "string" ? JSON.stringify(propValue) : propValue
           break
+        case 'multiplier':
+          this.responseValue = (Array.isArray(propValue)) ? propValue : []
+          break
         default :
           this.responseValue = propValue || null
           break
@@ -1531,9 +1534,9 @@ export default {
     watchValue() {
       let value = this.$clone(this.value)
       let response = this.$clone(this.responseValue)
-
+      
       if (JSON.stringify(value) !== JSON.stringify(response)) {
-        //decode when is json
+                //decode when is json
         if (this.field.type == "json" && (typeof response == "string"))
           response = JSON.parse(response)
         //Emit input data
