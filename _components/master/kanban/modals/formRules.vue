@@ -119,6 +119,9 @@ export default {
                     type: 'localizedPhone',
                     colClass: "col-12",
                     props: {
+                        rules: [
+                            (val) => !!val || this.$tr("isite.cms.message.fieldRequired"),
+                        ],
                         label: 'Phone number',
                         mask:"##########"
                     },
@@ -130,7 +133,11 @@ export default {
                     type : 'input',
                     colClass: "col-12",
                     props : {
-                        label: 'Email'
+                        label: 'Email',
+                        rules: [
+                            (val) => !!val || this.$tr("isite.cms.message.fieldRequired"),
+                            (val) => /.+@.+\..+/.test(val) || "Por favor, introduce una dirección de correo electrónico válida",
+                        ],
                     } 
                 }
             }
@@ -395,17 +402,6 @@ export default {
                     value: this.form.run.value,
                     date: this.form.run.date
                 };
-            }
-
-            if (this.isSendEmailToExternalData) {
-                const emails = ruleData.to.map(item => item.email)
-                const regex = /\S+@\S+\.\S+/
-                const isEmail = emails.every(item => item?.match(regex))
-                if (!isEmail) {
-                    this.$alert.error(this.$tr('isite.cms.message.emailInvalid'))
-                    this.loading = false;
-                    return
-                }
             }
 
             const crud = this.automationId
