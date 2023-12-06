@@ -345,6 +345,11 @@ class Helper {
     document.head.appendChild(scripToCDN)
   }
 
+  //Append Script header
+  appendScriptStringHead(scriptString) {
+    return document.head.insertAdjacentHTML('beforeend', scriptString)
+  }
+
   //validate rules
   validateRules(params = {}) {
     let response = true
@@ -554,6 +559,12 @@ class Helper {
         .replace('_', '')
     );
   }
+
+  // validate Url
+  validateUrl(url) {
+    return /^(http|https):\/\/[^\s/$.?#].[^\s]*$/.test(url)
+  }
+
   //snakeCase to Camel
   async convertStringToObject() {
     try {
@@ -578,6 +589,58 @@ class Helper {
     } catch (error) {
       Vue.prototype.$alert.error('The filter url is misspelled');
       console.log(error);
+    }
+  }
+
+  //Return the module and entity name from permission string
+  getInfoFromPermission(permission) {
+    if (!permission) return null
+    //Parse Route Permission
+    let splitPermission = permission.split('.')
+    //Instance the response
+    return {
+      module: (splitPermission[0] == 'profile') ? 'iprofile' : splitPermission[0],
+      entity: splitPermission[1]
+    }
+  }
+
+  arraysAreEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false;
+
+    let sortedArr1 = arr1.slice().sort();
+    let sortedArr2 = arr2.slice().sort();
+
+    for (let i = 0; i < sortedArr1.length; i++) {
+      if (sortedArr1[i] !== sortedArr2[i]) return false;
+    }
+
+    return true;
+  }
+  
+  //Copy to clipboard Base64
+  async copyBase64ToClipboard(base64 = '', message = 'isite.cms.messages.copyToClipboard') {
+    try {
+      //Get blob of base64Image
+      const blob = await fetch(base64).then(r => r.blob())
+      //Transform in a clipboard
+      const image = new ClipboardItem({ 'image/png': blob })
+
+      navigator.clipboard.write([image]).then(function () {
+        alert.info({
+          icon: 'fas fa-copy',
+          message: Vue.prototype.$tr(message)
+        });
+      }, function (err) {
+        alert.error({
+          icon: 'fas fa-copy',
+          message: Vue.prototype.$tr('isite.cms.messages.failedCopyToClipboard')
+        });
+      });
+    } catch (error) {
+      alert.error({
+        icon: 'fas fa-copy',
+        message: Vue.prototype.$tr('isite.cms.messages.failedCopyToClipboard')
+      });
     }
   }
 }

@@ -1,22 +1,27 @@
 <template>
   <div id="indexMasterPage" class="relative-position">
-    <!--Logo-->
-    <div v-if="!quickCards.list1.length" id="logoContent" class="flex flex-center">
-      <img style="max-width: 40vw" :src="$store.state.qsiteApp.logo">
+    <!--Page Actions-->
+    <div class="q-mb-md">
+      <page-actions :title="$tr($route.meta.title)" :excludeActions="['refresh']" :tour-name="tourName"/>
+    </div>
+
+    <!--Activities-->
+    <div id="adminHomeActivities" class="col-12 q-mb-md">
+      <activities system-name="admin_home_actions" @loaded="loading = false" view="cardImage"/>
     </div>
 
     <!--Quick cards-->
-    <div id="quickCardsContent" v-if="quickCards.list1.length">
+    <div v-if="quickCards.list1.length">
       <div class="row q-col-gutter-x-md">
-        <!--Activities-->
-        <div class="col-12 q-mb-md">
-          <activities system-name="admin_home" @loaded="loading = false"/>
-        </div>
         <!-- QuickCards -->
-        <div v-for="(groupQuickCard, key) in quickCards" :key="key" class="col-12 col-lg-6">
-          <div class="row q-col-gutter-y-md full-width">
-            <div v-for="(item, keyItem) in groupQuickCard" :key="keyItem" class="col-12">
-              <component :is="item.component" :key="`component${keyItem}`" v-bind="item.props || {}"/>
+        <div id="quickCardsContent" class="col-12">
+          <div class="row q-col-gutter-x-md">
+            <div v-for="(groupQuickCard, key) in quickCards" :key="key" class="col-12 col-lg-6">
+              <div class="row q-col-gutter-y-md full-width">
+                <div v-for="(item, keyItem) in groupQuickCard" :key="keyItem" class="col-12">
+                  <component :is="item.component" :key="`component${keyItem}`" v-bind="item.props || {}"/>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -28,12 +33,8 @@
   </div>
 </template>
 <script>
-//Components
-import activities from '@imagina/qgamification/_components/activities'
-
 export default {
   props: {},
-  components: {activities},
   watch: {},
   created() {
     this.loading = true;
@@ -42,6 +43,7 @@ export default {
     this.$nextTick(function () {
       setTimeout(() => {
         this.loading = false;
+        this.$tour.start(this.tourName)
       }, 1000);
     })
   },
@@ -49,6 +51,7 @@ export default {
     return {
       testSchedule: false,
       loading: false,
+      tourName: this.$q.platform.is.desktop ? 'admin_home_tour' : 'admin_home_tour_mobile'
     }
   },
   computed: {

@@ -16,7 +16,7 @@ export default {
   components: {indexAdmin, indexPanel},
   watch: {},
   mounted() {
-    this.$nextTick(function () {
+    this.$nextTick(async function () {
     })
   },
   data() {

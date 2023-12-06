@@ -2,7 +2,7 @@
   <div id="testPageId">
     <div class="row">
       <div v-for="(field, keyField) in fieldsConfig" :key="keyField" class="col-12">
-        <dynamic-field class="q-mb-md" :field="field"/>
+        <dynamic-field v-model="form[keyField]" class="q-mb-md" :field="field"/>
       </div>
     </div>
   </div>
@@ -19,7 +19,8 @@ export default {
   data() {
     return {
       loading: false,
-      data: []
+      data: [],
+      form: {}
     }
   },
   computed: {
@@ -99,7 +100,8 @@ export default {
           },
           loadOptions: {
             apiRoute: 'apiRoutes.quser.users',
-            select: {label: 'fullName', id: 'id'}
+            select: {label: 'fullName', id: 'id'},
+            filterByQuery: true
           }
         },
         treeSelect: {
@@ -201,6 +203,61 @@ export default {
               categoryId: 1
             }
           }
+        },
+        code: {
+          ...globalData,
+          value: '/* Some example CSS */\n' +
+            '@import url("something.css");\n' +
+            '\n' +
+            'body {\n' +
+            '  margin: 0;\n' +
+            '  padding: 3em 6em;\n' +
+            '  font-family: tahoma, arial, sans-serif;\n' +
+            '  color: #000;\n' +
+            '}',
+          type: 'code',
+          props: {
+            label: 'type: Code',
+            options : {
+              mode : 'text/css'
+            }
+          }
+        },
+        localizedPhone: {
+          ...globalData,
+          type: 'localizedPhone',
+          props: {
+            label: 'type: localizedPhone',
+            mask:"###-###-####"
+          },
+        },
+        multiDynamifield : {
+            value : [],
+            type : 'multiplier',
+            props : {
+                label : 'Multiple Dynamic Fields',
+                isDraggable: true, // Default true
+                maxQuantity: 7, // Default 5
+                fields : {
+                  localizedPhone: {
+                      ...globalData,
+                      type: 'localizedPhone',
+                      colClass: "col-12",
+                      props: {
+                        label: 'type: localizedPhone',
+                        mask:"###-###-####"
+                      },
+                    },
+                    numberPhone : {
+                        value : null,
+                        type : 'input',
+                        colClass: "col-12",
+                        props : { 
+                          label: 'Email'
+                        } 
+                    }
+                }
+            }
         },
       }
     }

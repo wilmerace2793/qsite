@@ -1,6 +1,11 @@
 <template>
   <div id="ckEditorComponent">
-    <ck-editor v-if="true" v-model="responseValue" :config="configEditor" @namespaceloaded="onNamespaceLoaded"/>
+    <ck-editor v-model="responseValue"
+               :config="configEditor"
+               @namespaceloaded="onNamespaceLoaded"
+               :ref="`ref-${internalName}`"
+               :id="`id-${internalName}`"
+    />
   </div>
 </template>
 <script>
@@ -9,10 +14,12 @@ import CKEditor from 'ckeditor4-vue';
 //Custom Plugins
 import pluginCollapsibleItem from '@imagina/qsite/_plugins/ckEditorPlugins/collapsibleItem/plugin'
 import pluginGrid from '@imagina/qsite/_plugins/ckEditorPlugins/grid/plugin'
+import pluginEmbed from '@imagina/qsite/_plugins/ckEditorPlugins/embed/plugin'
 
 export default {
   props: {
-    value: {default: ''}
+    value: {default: ''},
+    name: {default: null}
   },
   components: {ckEditor: CKEditor.component},
   watch: {
@@ -37,13 +44,16 @@ export default {
       configEditor: {
         allowedContent: true,
         filebrowserBrowseUrl: this.$router.resolve({name: 'app.media.select'}).href,
-        extraPlugins: 'embed,autoembed,colorbutton,colordialog,justify,collapsibleItem,font,btgrid',
+        extraPlugins: 'colorbutton,colordialog,justify,collapsibleItem,font,btgrid,simplebox',
         embed_provider: '//iframe.ly/api/oembed?url={url}&callback={callback}&api_key=7e0aa12b0cd2c01651346b',
-
       }
     }
   },
-  computed: {},
+  computed: {
+    internalName(){
+      return this.name || this.$uid()
+    }
+  },
   methods: {
     init() {
       this.responseValue = this.$clone(this.value)
@@ -52,7 +62,8 @@ export default {
     onNamespaceLoaded(CKEDITOR) {
       //Load custom plugins
       pluginCollapsibleItem.load(CKEDITOR)
-      pluginGrid.load(CKEDITOR)
+      pluginGrid.load(CKEDITOR);
+      pluginEmbed.load(CKEDITOR);
     }
   }
 }
@@ -70,5 +81,9 @@ export default {
 
   #iconToolbarGrid
     background-image url("../../_plugins/ckEditorPlugins/grid/grid.png")
+
+  #iconToolbarEmbed
+    background-image url("../../_plugins/ckEditorPlugins/embed/embed.png")
+
 
 </style>

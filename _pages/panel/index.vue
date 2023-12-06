@@ -13,12 +13,9 @@
   </q-page>
 </template>
 <script>
-//Components
-import activities from '@imagina/qgamification/_components/activities'
-
 export default {
   props: {},
-  components: {activities},
+  components: {},
   watch: {},
   mounted() {
     this.$nextTick(function () {

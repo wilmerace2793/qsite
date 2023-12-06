@@ -1,6 +1,6 @@
 <template>
   <div id="dynamicFormComponent">
-    <div v-bind="structure.wrapper.props" :key="structure.wrapper.directives.key">
+    <div v-bind="structure.wrapper.props" :key="structure.wrapper.directives.key" v-show="showForm">
       <!--Top Content-->
       <div v-bind="structure.wrapperTop.props" v-if="structure.wrapperTop.directives.vIf">
         <!--Title-->
@@ -18,6 +18,7 @@
       <q-form v-bind="structure.form.props" v-if="structure.form.directives.vIf"
               @validation-error="structure.form.events.validateError()">
         <!--Language-->
+
         <div v-bind="structure.wrapperLocales.props" v-show="structure.wrapperLocales.directives.vShow">
           <locales v-model="locale" ref="localeComponent" :form="$refs.formContent"/>
         </div>
@@ -26,7 +27,8 @@
           <!--Columns-->
           <component v-for="(column, keyColumn) in structure.columns()" :key="keyColumn" v-bind="column.props">
             <!--Blocks-->
-            <component v-for="(block, keyBlock) in column.blocks" :key="keyBlock" v-bind="block.props">
+            <component v-for="(block, keyBlock) in column.blocks" :key="keyBlock" v-bind="block.props" class="position-relative">
+              <help-text v-if="block.help" :title="block.help.title" :description="block.help.description" class="position-right"/>
               <div :class="block.childClass">
                 <!--Top step Info-->
                 <div class="step-top-content" v-if="block.title || block.description">
@@ -40,7 +42,8 @@
                 </div>
                 <!--Fields-->
                 <div class="row q-col-gutter-x-md q-mb-sm">
-                  <div v-for="(field, key) in block.fields" :key="key" v-if="field.type != 'hidden'"
+                  <div v-for="(field, key) in block.fields" :key="key"
+                       v-if="(field.type != 'hidden') && (field.vIf != undefined ? field.vIf : true)"
                        :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)">
                     <!--fake field-->
                     <div v-if="field.type === 'fileList'">
@@ -96,6 +99,39 @@
       <!--Innerloading-->
       <inner-loading :visible="(loading || innerLoading) ? true : false"/>
     </div>
+    <!-- Feedback after submit-->
+    <div v-if="withFeedBack && showFeedBack">
+      <div class="box box-auto-height justify-center">
+        <div class="row">
+          <div class="col-12 text-center q-gutter-y-sm">
+            <div>
+              <q-icon
+                name="fa-light fa-envelope-circle-check"
+                color="green"
+                size="xl"
+              />
+            </div>
+            <div>
+              <p class="text-subtitle1">
+                {{ successText }}
+              </p>
+            </div>
+            <div>
+              <q-btn
+                unelevated
+                rounded
+                no-caps
+                @click="setNewForm"
+                :label="$tr('iforms.cms.feedBack.newForm')"
+                type="button"
+                color="primary"
+                icon="fa-light fa-envelope"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -111,6 +147,12 @@ export default {
     value: {
       default: () => {
         return {}
+      }
+    },
+    help: {
+      type: Object,
+      default(){
+        return { description: "Some description..." }
       }
     },
     loading: {type: Boolean, default: false},
@@ -133,7 +175,8 @@ export default {
       validator: (value) => [1, 2, 3].includes(value)
     },
     noResetWithBlocksUpdate: {type: Boolean, default: false},
-    boxStyle: {type: Boolean, default: true}
+    boxStyle: {type: Boolean, default: true},
+    withFeedBack: {type: Boolean, default: false}
   },
   watch: {
     value: {
@@ -172,7 +215,9 @@ export default {
       locale: {},
       step: 0,
       innerLoading: false,
-      formBlocks: false
+      formBlocks: false,
+      showForm: true,
+      showFeedBack: false
     }
   },
   computed: {
@@ -440,7 +485,15 @@ export default {
       }
 
       //Add captcha field
-      if (this.useCaptcha && blocks.length) blocks[blocks.length - 1].fields.captcha = {type: 'captcha'}
+      if (this.useCaptcha && blocks.length){
+        const lastBlock = blocks[blocks.length - 1]
+
+        if(!Array.isArray(lastBlock.fields)){
+          lastBlock.fields.captcha = {type: 'captcha'}
+        }else {
+          lastBlock.fields.push({type: 'captcha' , name: 'captcha', value: ''})
+        }
+      }
 
       //Validate if field should be translatable
       blocks.forEach((block, blockKey) => {
@@ -513,7 +566,7 @@ export default {
         submit: {
           color: "green",
           icon: "fas fa-save",
-          label: this.$tr('isite.cms.label.save'),
+          label: this.formBlocks.submitText ?? this.$tr('isite.cms.label.save'),
           ...(this.actions.submit || {}),
           action: () => this.changeStep('next', true)
         },
@@ -541,6 +594,10 @@ export default {
       })
       //Response
       return fields
+    },
+    //Returns success text after submit
+    successText(){
+      return this.formBlocks.successText ?? this.$tr('iforms.cms.feedBack.message')
     }
   },
   methods: {
@@ -573,7 +630,11 @@ export default {
           this.formBlocks = response.data
           this.$emit('obtainedForm', this.$clone(response.data))
           resolve(response.data)
-        }).catch(error => reject(error))
+        }).catch(error => {
+          this.$apiResponse.handleError(error, () => {
+            reject(error)
+          })
+        })
       })
     },
     //set locale form data
@@ -725,7 +786,7 @@ export default {
       }
     },
     //validate all languages
-    async validateCompleteForm(){
+    async validateCompleteForm() {
       const isValid = await this.$refs.localeComponent.validateForm();
       return isValid;
     },
@@ -748,6 +809,14 @@ export default {
               this.innerLoading = false
               this.reset()
               this.$emit('sent', this.$clone(this.locale.form))
+
+              //feedBack
+              if(this.withFeedBack && response?.data){
+                this.showForm = false;
+                this.showFeedBack = true
+                this.$emit('feedBack', this.$clone(response.data))
+              }
+
             }).catch(error => {
               this.innerLoading = false
             })
@@ -766,11 +835,19 @@ export default {
       this.componentId = this.$uid()
       this.$refs.formContent.resetValidation()
       this.step = 0
+      this.showForm = true
+      this.showFeedBack = false
     },
     selectedFile(file) {
       const fileId = file.length === 0 ? null : file[0].id;
       layoutStore().setSelectedLayout(fileId);
     },
+    setNewForm(){
+      this.reset()
+      this.locale.form = false
+      this.init()
+      this.$emit('newForm')
+    }
   }
 }
 </script>
@@ -778,7 +855,12 @@ export default {
 <style lang="stylus">
 #dynamicFormComponentContent
   //min-height 150px
-
+  .position-relative{
+    position: relative
+  }
+  .position-right
+    position absolute
+    right 16px
   #stepperContent
     padding 0
 

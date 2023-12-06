@@ -88,14 +88,14 @@
         class="tw-text-xs tw-text-gray-600 tw-truncate"
         v-if="field.name && typeof field.value !== 'object'"
       >
-        <b>{{ field.name }} *</b>
+        <b>{{ field.label || field.name }} *</b>
         <span class="tw-lowercase">{{ field.value }}</span>
       </span>
     </div>
 
     <div class="tw-flex tw-mt-4 tw-justify-between tw-items-center">
       <span class="tw-text-xs tw-text-gray-600">
-        <b>Fecha *</b> {{ cardData.createdAt }}
+        <b>{{ $tr('isite.cms.label.date') }} *</b> {{ cardData.createdAt }}
       </span>
     </div>
   </div>
@@ -124,6 +124,10 @@ export default {
       type: Function,
       default: () => false,
     },
+    openFormComponentModal:  {
+      type: Function,
+      default: () => false,
+    },
   },
   props: {
     cardData: {
@@ -148,6 +152,14 @@ export default {
           label: this.$tr('isite.cms.label.delete'),
           action: (item) => {
             if(this.deleteKanbanCard) this.deleteKanbanCard(item);
+          }
+        },
+        {
+          icon: 'fas fa-pencil',
+          color: 'red',
+          label: this.$tr('isite.cms.label.edit'),
+          action: (item) => {
+            if(this.openFormComponentModal) this.openFormComponentModal(item.statusId, item.title, item.id);
           }
         }
       ];

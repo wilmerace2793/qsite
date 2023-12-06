@@ -1,7 +1,6 @@
 import helper from '@imagina/qsite/_plugins/helper'
 import cache from '@imagina/qsite/_plugins/cache'
 import appConfig from 'src/config/app'
-import {Loading} from "quasar";
 
 class Middleware {
   constructor(router, store) {
@@ -113,7 +112,8 @@ class Middleware {
             const otherWorkSpace = appConfig.mode == 'iadmin' ? 'ipanel' : 'iadmin'
             //Validate if redirect to other workSpace
             if (this.store.getters['quserAuth/hasAccess'](`profile.access.${otherWorkSpace}`)) {
-              helper.openExternalURL(`${this.store.state.qsiteApp.baseUrl}/${otherWorkSpace}`, false)
+              const redirectToWorkSpace = window.location.href.replace(appConfig.mode, otherWorkSpace)
+              helper.openExternalURL(redirectToWorkSpace, false)
             } else {
               this.redirectTo = {name: 'app.not.authorized'}
             }
@@ -150,7 +150,7 @@ class Middleware {
           //If is authenticated, redirect page from login to home
           if (!this.redirectTo && (to.name == 'auth.login')) this.redirectTo = {name: 'app.home'}
         } else {//If user not is authenticate
-          if (to.name != 'auth.login') this.redirectTo = {name: 'auth.login', query: {fromVueRoute: to.name}}
+          if (!['auth.login', 'auth.register'].includes(to.name)) this.redirectTo = {name: 'auth.login', query: {fromVueRoute: to.name}}
         }
       }
       //Response
@@ -203,8 +203,5 @@ export default async ({router, store, Vue, app, ssrContext}) => {
 
     //Go to next route
     middleware.goToNextRoute(to, from, next)
-
-    //Hidde loading
-    Loading.hide()
   })
 }

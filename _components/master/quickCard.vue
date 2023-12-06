@@ -112,15 +112,15 @@
                 </q-circular-progress>
               </div>
               <div>
-                <p 
+                <p
                   class="
-                    tw-font-semibold 
-                    tw-py-5 
-                    tw-text-base 
-                    tw-text-justify 
+                    tw-font-semibold
+                    tw-py-5
+                    tw-text-base
+                    tw-text-justify
                     tw-break-normal"
                     v-html="items.description"
-                /> 
+                />
               </div>
           </div>
         </div>
@@ -211,8 +211,10 @@ export default {
           this.loading = false
           resolve(response.data)
         }).catch(error => {
-          this.loading = false
-          resolve(error)
+          this.$apiResponse.handleError(error, () => {
+            this.loading = false
+            resolve(error)
+          })
         })
       })
     },
@@ -289,7 +291,7 @@ export default {
         position absolute
         bottom 0
         left 0
-  
+
   .colorPercentage
-    color: $primary      
+    color: $primary
 </style>

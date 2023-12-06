@@ -1,4 +1,5 @@
 import array from '@imagina/qsite/_plugins/array'
+import helper from '@imagina/qsite/_plugins/helper'
 import cloneDeep from 'lodash.clonedeep'
 
 export const getExtra = (state) => (name) => {
@@ -11,10 +12,10 @@ export const getState = (state) => (name) => {
 }
 
 export const getMenu = (state) => {
-  return state.menu 
+  return state.menu
 }
 export const ipAddress = (state) => {
-  return state.ipAddress 
+  return state.ipAddress
 }
 
 export const getSettings = (state) => {
@@ -34,12 +35,12 @@ export const getDefaultLocale = (state) => {
 };
 
 export const availableLocalesSelect = (state) => {
-  return array.select(state.availableLocales, {label : 'name', id : 'iso'});
+  return array.select(state.availableLocales, {label: 'name', id: 'iso'});
 };
 
 export const availableLocalesTreeSelect = (state) => {
   let items = []
-  state.availableLocales.forEach((locale,index) => {
+  state.availableLocales.forEach((locale, index) => {
     items.push({
       id: locale.iso,
       label: locale.name
@@ -49,14 +50,14 @@ export const availableLocalesTreeSelect = (state) => {
 };
 
 export const availableThemesSelect = (state) => {
-  return array.select(state.availableThemes, {label : 'name', id : 'name'});
+  return array.select(state.availableThemes, {label: 'name', id: 'name'});
 };
 
 export const availableThemesTreeSelect = (state) => {
   let items = []
   state.availableThemes.forEach(theme => {
     items.push({
-      id:theme.name,
+      id: theme.name,
       label: theme.name
     })
   })
@@ -64,14 +65,12 @@ export const availableThemesTreeSelect = (state) => {
 };
 
 export const getSettingValueByName = (state) => (filter) => {
-  let settings = state.settings
-  let response = undefined
-
-  settings.forEach(item => {
-    if (item.name == filter) response = item.value
-  })
-
-  return response
+//Search and return the setting
+  let response = state.settings.find(item => item.name == filter)
+  //Intercept this setting t ever show the legacyStructure (temporally)
+  if (filter == "isite::legacyStructureCMS") response = {value: 1}
+  //Response
+  return response ? response.value : undefined
 };
 
 export const getSettingMediaByName = (state) => (filter) => {
@@ -88,10 +87,26 @@ export const getSettingMediaByName = (state) => (filter) => {
 export const getSelectedLocalesSelect = (state) => {
   //Get labels formselected locales
   let languages = state.availableLocales.filter(item => state.selectedLocales.indexOf(item.iso) >= 0)
-  let selectLanguages = array.select(languages, {label : 'name', id : 'iso'})
-  selectLanguages.forEach((item,index) => {
+  let selectLanguages = array.select(languages, {label: 'name', id: 'iso'})
+  selectLanguages.forEach((item, index) => {
     selectLanguages[index].label += ` (${item.value})`
   })
   //Return array select form selected languages
   return selectLanguages
 };
+
+export const getConfigApp = (state) => (path) => {
+  let response = state.configs
+  let keys = path.toLowerCase().split(".")
+  //Parse the config object
+  keys.forEach(key => {
+    if (response) {
+      //Search the next key as lowercase
+      let nextKey = Object.keys(response).find(k => k.toLowerCase() === key)
+      //Set the response
+      response = response[nextKey];
+    }
+  })
+  //Response
+  return response
+}

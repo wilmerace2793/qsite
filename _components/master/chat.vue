@@ -176,7 +176,11 @@
             this.totalMessages = response.meta.page.total
             if (index == 1) this.chatToBotton()
             done()
-          }).catch(error => this.$refs.infiniteScroll.stop())
+          }).catch(error => {
+            this.$apiResponse.handleError(error, () => {
+              this.$refs.infiniteScroll.stop()
+            })
+          })
         } else this.$refs.infiniteScroll.stop()
       },
       //Send message

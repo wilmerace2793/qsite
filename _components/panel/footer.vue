@@ -3,7 +3,7 @@
     <!-- === FOOTER === -->
     <q-footer class="bg-white">
       <!--Footer admin-->
-      <div id="footerContent" class="row q-md-hide items-center" v-if="appConfig.mode == 'iadmin'">
+      <div id="panelFooterContent" class="row q-md-hide items-center" v-if="appConfig.mode == 'iadmin'">
         <!-- Menu -->
         <div class="item-footer col cursor-pointer" @click="$eventBus.$emit('toggleMasterDrawer','menu')">
           <q-icon class="item-icon" name="fas fa-bars"/>
@@ -14,7 +14,7 @@
           <q-btn :to="{name: 'user.profile.me'}" flat no-caps v-if="quserState.authenticated"
                  class="item-icon" padding="none">
             <q-avatar size="20px">
-              <img :src="quserState.userData.mainImage">
+              <img :src="profileImage.smallThumb">
             </q-avatar>
           </q-btn>
           <div>{{ $tr('isite.cms.label.profile') }}</div>
@@ -149,6 +149,9 @@ export default {
     params() {
       return this.currentRoute.meta.subHeader || {}
     },
+    profileImage(){
+      return this.$store.getters['quserAuth/profileImage']
+    }
   },
   methods: {
     init() {
@@ -209,7 +212,7 @@ export default {
 }
 </script>
 <style lang="stylus">
-#footerContent
+#panelFooterContent
   background-color white
   color $grey-7
 

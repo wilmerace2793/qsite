@@ -1,9 +1,11 @@
 <template>
   <div id="pageActionscomponent" class="row q-col-gutter-y-sm full-width items-center justify-between">
     <!--Title-->
-    <div :class="`text-primary text-weight-bold ellipsis title-content`">
+    <div :class="`row text-primary text-weight-bold ellipsis title-content items-center`">
       <q-icon v-if="icon" :name="icon" size="22px" class="q-mr-sm"/>
       <label id="titleCrudTable" v-if="title">{{ title }}</label>
+      <!--Help Text: Page documentation-->
+      <help-text v-if="pageDocumentation && title" v-bind="pageDocumentation"/>
     </div>
     <!--Actions-->
     <div :class="`actions-content row q-gutter-${gutter} items-center justify-end items-start`">
@@ -13,23 +15,23 @@
                v-if="extraActions && extraActions.includes('search') && searchAction"
                @input="$emit('search', $clone(search))">
         <template v-slot:prepend>
-          <q-icon color="tertiary" name="fa-duotone fa-magnifying-glass"/>
+          <q-icon color="tertiary" size="xs" name="fa-light fa-magnifying-glass"/>
         </template>
       </q-input>
       <!--Button Actions-->
-      <div v-for="(btn, keyAction) in actions" :key="keyAction" v-if="btn.vIf != undefined ? btn.vIf : true">
+      <div v-for="(btn, keyAction) in actions" :key="keyAction">
         <!-- if the button is dropdown -->
-        <q-btn-dropdown split v-bind="{...buttonProps}"
-                        v-if="btn.type == 'btn-dropdown'" outline
+        <q-btn-dropdown split v-bind="{...buttonProps}" padding="xs 15px"
+                        v-if="btn.type == 'btn-dropdown'" class="btn-border-dropdown-custom"
         >
-        <template v-slot:label>
-          <div class="row items-center no-wrap" @click="refreshByTime(timeRefresh)">
-            <q-icon left :name="btn.props.icon" />
-            <div class="text-center" v-if="multipleRefresh">
-              {{ titleRefresh }}
+          <template v-slot:label>
+            <div class="row items-center no-wrap" @click="refreshByTime(timeRefresh)">
+              <q-icon left :name="btn.props.icon"/>
+              <div class="text-center" v-if="multipleRefresh">
+                {{ titleRefresh }}
+              </div>
             </div>
-          </div>
-        </template>
+          </template>
           <q-list>
             <q-item v-for="(item, index) in btn.items" :key="index" clickable v-close-popup
                     @click="item.action != undefined ? item.action() : null" class="tw-px-4">
@@ -42,7 +44,8 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <q-btn v-else-if="btn.type === 'recommendation'" class="animated" v-bind="{...buttonProps, ...btn.props}" @click="btn.action !=    undefined ? btn.action() : null">
+        <q-btn v-else-if="btn.type === 'recommendation'" class="animated" v-bind="{...buttonProps, ...btn.props}"
+               @click="btn.action !=    undefined ? btn.action() : null">
           <q-tooltip v-if="btn.label">{{ btn.label }}</q-tooltip>
         </q-btn>
         <q-btn v-else v-bind="{...buttonProps, ...btn.props}" @click="btn.action != undefined ? btn.action() : null">
@@ -51,7 +54,12 @@
       </div>
     </div>
     <!--Description-->
-    <div v-if="description" class="ellipsis-2-lines col-12 description-content">{{ description }}</div>
+    <span 
+      v-if="description" 
+      class="col-12 description-content"
+    >
+      {{ description }}
+    </span>
     <!--Filter data-->
     <div class="col-12 tw-mt-3" v-if="filter.hasValues || Object.keys(quickFilters).length">
       <!--<q-separator class="q-mb-sm"/>-->
@@ -59,30 +67,32 @@
         <q-icon name="fa-light fa-filter" class="q-mr-xs" color="amber" size="18px"/>
         <b>{{ $trp('isite.cms.label.filter') }}:</b>
         <label
-          v-for="(item, itemKey) in filter.readValues"
-          :key="itemKey"
-          v-if="item.value && item.label !== ''"
-               class="q-ml-xs text-grey-7">
+            v-for="(item, itemKey) in filter.readValues"
+            :key="itemKey"
+            v-if="item.value && item.label !== ''"
+            class="q-ml-xs text-grey-7">
           {{ item.label }} {{ item.value }},
         </label>
       </div>
       <!-- Quick Filters-->
       <div v-if="Object.keys(quickFilters).length" class="row q-col-gutter-md q-pt-sm">
         <dynamic-field v-for="(field, keyField) in quickFilters" :key="keyField" :field="field"
-            v-model="filterData[keyField]"
-            :class="field.colClass"
-            @input="emitFilter"
-            :keyField="keyField"
+                       v-model="filterData[keyField]"
+                       :class="field.colClass"
+                       @input="emitFilter"
+                       :keyField="keyField"
         />
       </div>
     </div>
     <!-- Export Component -->
     <master-export v-model="exportParams" ref="exportComponent"/>
+    <master-synchronizable v-model="syncParams" v-if="$auth.hasAccess('isite.synchronizables.index')" ref="syncComponent" />
   </div>
 </template>
 <script>
 //Components
 import masterExport from "@imagina/qsite/_components/master/masterExport"
+import masterSynchronizable from "@imagina/qsite/_components/master/masterSynchronizable"
 
 export default {
   beforeDestroy() {
@@ -101,9 +111,13 @@ export default {
     multipleRefresh: {
       type: Boolean,
       default: () => false,
-    }
+    },
+    tourName: {default: null},
+    documentation: { 
+      default: () => {}
+    },
   },
-  components: {masterExport},
+  components: {masterExport, masterSynchronizable},
   watch: {},
   mounted() {
     this.$nextTick(function () {
@@ -113,11 +127,12 @@ export default {
   data() {
     return {
       exportParams: false,
+      syncParams: false,
       search: null,
       filterData: {},
       refreshIntervalId: null,
       titleRefresh: this.$tr('isite.cms.label.refreshAtOnce'),
-      timeRefresh: 0,
+      timeRefresh: 0
     }
   },
   computed: {
@@ -137,9 +152,9 @@ export default {
         rounded: true,
         dense: true,
         unelevated: true,
-        color: "primary",
+        textColor: "primary",
+        style: "border: 1px solid rgba(0, 13, 71, 0.15)",
         class: `btn-${this.size}`,
-        outline: true,
         noCaps: true,
       }
     },
@@ -149,14 +164,33 @@ export default {
       let excludeActions = this.$clone(Array.isArray(this.excludeActions) ? this.excludeActions : [])
 
       let response = [
+        //Export Icommerce
+        {
+          label: this.$tr('isite.cms.label.migration'),
+          vIf: (this.syncParams && !excludeActions.includes('sync')),
+          props: {
+            icon: 'fa-light fa-folder-tree'
+          },
+          action: () => this.$refs.syncComponent.show()
+        },
         //Export
         {
           label: this.$tr('isite.cms.label.export'),
           vIf: (this.exportParams && !excludeActions.includes('export')),
           props: {
-            icon: 'fa-duotone fa-file-arrow-down'
+            icon: 'fa-light fa-file-arrow-down'
           },
           action: () => this.$refs.exportComponent.showReport()
+        },
+        //Tour
+        {
+          label: 'Tour',
+          vIf: (this.tourName && !config("app.disableTours")),
+          props: {
+            icon: 'fa-light fa-shoe-prints',
+            id: 'actionStartTour'
+          },
+          action: () => this.startTour(true)
         },
         //recommendations
         {
@@ -173,7 +207,8 @@ export default {
           label: this.$tr('isite.cms.label.filter'),
           vIf: (this.filter.load && !excludeActions.includes('filter')),
           props: {
-            icon: 'fa-duotone fa-filter'
+            icon: 'fa-light fa-filter',
+            id: 'filter-button-crud',
           },
           action: () => this.$eventBus.$emit('toggleMasterDrawer', 'filter')
         },
@@ -183,7 +218,8 @@ export default {
           type: this.multipleRefresh ? 'btn-dropdown' : '',
           vIf: (this.params.refresh && !excludeActions.includes('refresh')),
           props: {
-            icon: 'fa-duotone fa-rotate-right'
+            icon: 'fa-light fa-rotate-right',
+            id: 'refresh-button-crud'
           },
           items: [
             {
@@ -221,18 +257,22 @@ export default {
             vIf: this.params.create && this.params.hasPermission.create,
             props: {
               label: this.$tr(`isite.cms.label.new`),
-              icon: 'fa-duotone fa-plus',
-              color: "primary",
+              icon: 'fa-light fa-plus',
+              textColor: "primary",
               round: false,
               rounded: true,
-              padding: '3px 15px'
+              padding: '3px 15px',
+              id: 'new-button-crud'
             },
             action: () => this.$emit('new')
           })
       }
 
+      //force styles
+      response = response.map(item => ({...item, props : {...item.props, color : 'white', outline: false}}))
+
       //Response
-      return response
+      return response.filter(item => item.vIf !== undefined ? item.vIf : true)
     },
     //Quick filters
     quickFilters() {
@@ -252,6 +292,27 @@ export default {
       }
       //Response
       return response
+    },
+    //Page Documentation
+    pageDocumentation() {
+      let response = null
+      //Get params from page permission
+      let params = this.$helper.getInfoFromPermission(this.$route.meta.permission)
+      if (params) {
+        //instance the config name
+        let configName = `${params.module}.documentation.${params.entity}`
+        //Search the config
+        response = this.$store.getters['qsiteApp/getConfigApp'](configName)
+      }
+
+      const tooltipInfo = {
+        title: this.title,
+        description: response,
+        icon: this.$route.meta.icon,
+        class: 'q-ml-sm'
+      }
+      if (response) return tooltipInfo
+      if (!response && this.documentation) return this.documentation
     }
   },
   methods: {
@@ -263,12 +324,12 @@ export default {
     refreshByTime(time) {
       this.timeRefresh = time;
       this.titleRefresh = time === 0
-      ? this.$tr('isite.cms.label.refreshAtOnce')
-      : this.$tr('isite.cms.label.refreshEveryMinutes', {min: time});
+          ? this.$tr('isite.cms.label.refreshAtOnce')
+          : this.$tr('isite.cms.label.refreshEveryMinutes', {min: time});
       this.clearInterval();
       const interval = 1000 * 60 * time;
       this.emitRefresh();
-      if(time > 0) {
+      if (time > 0) {
         this.refreshIntervalId = setInterval(() => {
           this.emitRefresh();
         }, interval);
@@ -289,11 +350,26 @@ export default {
       if (this.filter && this.filter.callBack) this.filter.callBack(this.filter)
     },
     clearInterval() {
-      if(this.refreshIntervalId) {
+      if (this.refreshIntervalId) {
         clearInterval(this.refreshIntervalId);
         this.refreshIntervalId = null;
       }
     },
+    //Handle start tour
+    startTour(forceStart) {
+      this.$tour.start(this.tourName, {
+        forceStart,
+        extraSteps: [
+          {
+            icon: 'fa-duotone fa-shoe-prints',
+            title: this.$tr('igamification.cms.activities.repeatAction'),
+            content: this.$tr('igamification.cms.activities.repeatActionDescription'),
+            element: '#actionStartTour',
+            position: 'top',
+          }
+        ]
+      })
+    }
   }
 }
 </script>
@@ -303,7 +379,7 @@ export default {
     font-size 20px
 
   .animated {
-      animation: ring 10s .7s ease-in-out infinite;
+    animation: ring 10s .7s ease-in-out infinite;
   }
 
   .title-content
@@ -335,47 +411,100 @@ export default {
   #dynamicFieldComponent
     .q-field.q-field--float .q-field__label
       color: $primary
+
     .q-field__control
       .q-field__append .q-icon
         color: $tertiary
+
       .q-field__append:last-child .q-icon
         color: $primary
+
 .q-menu
   .q-list
     .q-item
       padding: 3px 10px 3px 3px;
+
       .q-item__section--avatar
         min-width: 50px;
         padding-right 10px
         color $primary
+
         i
           font-size 16px
 
 @keyframes ring {
-  0% { transform: rotate(0); }
-  1% { transform: rotate(30deg); }
-  3% { transform: rotate(-28deg); }
-  5% { transform: rotate(34deg); }
-  7% { transform: rotate(-32deg); }
-  9% { transform: rotate(30deg); }
-  11% { transform: rotate(-28deg); }
-  13% { transform: rotate(26deg); }
-  15% { transform: rotate(-24deg); }
-  17% { transform: rotate(22deg); }
-  19% { transform: rotate(-20deg); }
-  21% { transform: rotate(18deg); }
-  23% { transform: rotate(-16deg); }
-  25% { transform: rotate(14deg); }
-  27% { transform: rotate(-12deg); }
-  29% { transform: rotate(10deg); }
-  31% { transform: rotate(-8deg); }
-  33% { transform: rotate(6deg); }
-  35% { transform: rotate(-4deg); }
-  37% { transform: rotate(2deg); }
-  39% { transform: rotate(-1deg); }
-  41% { transform: rotate(1deg); }
+  0% {
+    transform: rotate(0);
+  }
+  1% {
+    transform: rotate(30deg);
+  }
+  3% {
+    transform: rotate(-28deg);
+  }
+  5% {
+    transform: rotate(34deg);
+  }
+  7% {
+    transform: rotate(-32deg);
+  }
+  9% {
+    transform: rotate(30deg);
+  }
+  11% {
+    transform: rotate(-28deg);
+  }
+  13% {
+    transform: rotate(26deg);
+  }
+  15% {
+    transform: rotate(-24deg);
+  }
+  17% {
+    transform: rotate(22deg);
+  }
+  19% {
+    transform: rotate(-20deg);
+  }
+  21% {
+    transform: rotate(18deg);
+  }
+  23% {
+    transform: rotate(-16deg);
+  }
+  25% {
+    transform: rotate(14deg);
+  }
+  27% {
+    transform: rotate(-12deg);
+  }
+  29% {
+    transform: rotate(10deg);
+  }
+  31% {
+    transform: rotate(-8deg);
+  }
+  33% {
+    transform: rotate(6deg);
+  }
+  35% {
+    transform: rotate(-4deg);
+  }
+  37% {
+    transform: rotate(2deg);
+  }
+  39% {
+    transform: rotate(-1deg);
+  }
+  41% {
+    transform: rotate(1deg);
+  }
 
-  43% { transform: rotate(0); }
-  100% { transform: rotate(0); }
+  43% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(0);
+  }
 }
 </style>

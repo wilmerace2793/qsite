@@ -11,31 +11,39 @@
       <!--Page route-->
       <div id="routeInformationContent" v-if="appConfig.mode == 'iadmin'"
            :class="`q-hide q-md-show ${iadminTheme == 1 ? 'bg-primary' : 'bg-white'}`">
-        <div id="subContent" class="row items-center">
-          <!-- Back Button -->
-          <q-btn icon="fas fa-arrow-left" unelevated round color="primary" class="btn-small q-mr-md"
-                 @click="$helper.backHistory()">
-            <q-tooltip>{{ $tr('isite.cms.label.back') }}</q-tooltip>
-          </q-btn>
-          <!--Breadcrumb-->
-          <q-breadcrumbs class="text-blue-grey">
-            <q-breadcrumbs-el v-for="(item, key) in breadcrumbs" :key="key" :label="item.label" :icon="item.icon"
-                              :to="item.to ? {name : item.to} : false"/>
-          </q-breadcrumbs>
+        <div id="subContent" class="row justify-between items-center">
+          <div class="row items-center">
+            <!-- Back Button -->
+            <q-btn icon="fas fa-arrow-left" unelevated round color="primary" class="btn-small q-mr-md"
+                   @click="$helper.backHistory()">
+              <q-tooltip>{{ $tr('isite.cms.label.back') }}</q-tooltip>
+            </q-btn>
+            <!--Breadcrumb-->
+            <q-breadcrumbs class="text-blue-grey">
+              <q-breadcrumbs-el v-for="(item, key) in breadcrumbs" :key="key" :label="item.label" :icon="item.icon"
+                                :to="item.to ? {name : item.to} : false"/>
+            </q-breadcrumbs>
+          </div>
+          <!-- Help Center -->
+          <activities v-bind="globalActivities.helpCenter"/>
         </div>
       </div>
       <div id="fakeRouteInformationContent" class="q-hide q-md-show" v-if="appConfig.mode == 'iadmin'"></div>
       <!--Router view-->
       <div id="routerPageContent" class="layout-padding">
         <router-view v-if="appState.loadPage"/>
+        <Alert/>
       </div>
     </q-page-container>
 
     <!---Cropper-->
     <cropper-component ref="cropperComponent"/>
 
-    <!-- Help Center -->
-    <help-center/>
+    <!-- Admin popUp -->
+    <activities v-bind="globalActivities.adminPopup"/>
+
+    <!-- Activities Actions -->
+    <activities-actions/>
 
     <!-- FOOTER -->
     <component :is="components.footer"/>
@@ -57,7 +65,8 @@ import drawersPanel from '@imagina/qsite/_components/panel/drawers'
 import footerPanel from '@imagina/qsite/_components/panel/footer'
 //Components
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
-import helpCenter from '@imagina/qsite/_components/master/helpCenter.vue'
+import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
+import Alert from '@imagina/qoffline/_components/Alert.vue'
 
 export default {
   name: "MasterLayout",
@@ -79,7 +88,7 @@ export default {
   components: {
     chat,
     cropperComponent,
-    helpCenter,
+    activitiesActions,
     //Admin
     headerAdminTheme1,
     headerAdminTheme2,
@@ -90,7 +99,9 @@ export default {
     //Panel
     headerPanel,
     drawersPanel,
-    footerPanel
+    footerPanel,
+    //Offline
+    Alert
   },
   watch: {
     shouldChangePassword(data) {
@@ -198,6 +209,24 @@ export default {
     //Should change password state
     shouldChangePassword() {
       return this.$store.state.quserAuth.shouldChangePassword
+    },
+    //Activities
+    globalActivities() {
+      return {
+        helpCenter: {
+          systemName: 'help_center',
+          view: 'button',
+          vIf: this.$q.platform.is.desktop,
+          btnProps: {
+            color: 'info',
+            flat: true
+          }
+        },
+        adminPopup: {
+          systemName: 'admin_popup',
+          view: 'popup'
+        }
+      }
     }
   },
   methods: {
@@ -249,14 +278,18 @@ export default {
 
 <style lang="stylus">
 #layoutMaster {
+  #routerPageContent {
+    position: relative;
+  }
 
   #routeInformationContent {
-    width: 100%;
+    width: -webkit-fill-available;
     position: fixed;
     z-index: 2;
     background: linear-gradient(180deg, #F1F4FA 0%, #FFFFFF 100%)
 
     #subContent {
+
       padding: 8px 10px 8px 16px;
       border-radius: $custom-radius 0 0 0;
       background: linear-gradient(180deg, #F1F4FA 0%, #FFFFFF 100%)

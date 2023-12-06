@@ -21,33 +21,17 @@
         </div>
         <!-- Help btn -->
         <div v-if="helpLoad.load && field.help && field.help.description" :class="helpLoad.class">
-          <q-btn size="xs" class="after-field"
-                 :style="'margin:'+helpLoad.margin"
-                 round color="info"
-                 icon="fa fa-info"
-                 unelevated
-          >
-            <q-menu id="dynamicFieldMenuHelp" v-model="tooltip" anchor="top right" self="top right">
-              <!--actions-->
-              <div class="row justify-between items-center">
-                <q-icon name="fas fa-info" color="info"/>
-                <q-btn icon="fas fa-times" v-close-popup color="blue-grey" size="8px" unelevated
-                       round outline padding="xs"/>
-              </div>
-              <q-separator class="q-my-xs"/>
-              <!--description-->
-              <div id="contentHelp" v-html="field.help.description"/>
-            </q-menu>
-          </q-btn>
+          <help-text :title="fieldLabel" :description="field.help.description"
+                     :btn-style="`margin:${helpLoad.margin}`"/>
         </div>
         <!--Crud-->
         <crud v-model="responseValue" @created="getOptions" v-bind="fieldProps" :key="field.name"
               :type="field.props.crudType || 'select'" ref="crudComponent"
               v-if="loadField('crud') || (field.props && field.props.crudData)"
-              :class="`q-mb-xs ${(field.props && field.props.crudType == 'button-create') ? 'absolute-right' : ''}`"/>
+              :class="`q-mb-xs ${field.help ? 'crud-dynamic-field' : ''} ${(field.props && field.props.crudType == 'button-create') ? 'absolute-right' : ''}`"/>
         <!--Input-->
         <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('input')"
-                 :label="fieldLabel" v-bind="fieldProps">
+                 :label="fieldLabel" v-bind="fieldProps" :class="`${field.help ? 'input-dynamic-field' : ''}`">
           <template v-slot:prepend v-if="fieldProps.icon">
             <q-icon :name="fieldProps.icon" size="18px"/>
           </template>
@@ -83,16 +67,19 @@
         </div>
         <!--Search-->
         <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('search')"
-                 v-bind="fieldProps">
+                 v-bind="fieldProps" :class="`${field.help ? 'search-dynamic-field' : ''}`">
           <template v-slot:append>
-            <q-icon name="search" class="cursor-pointer" @click="$emit('enter')"/>
+            <q-icon v-if="(fieldProps.icon === undefined) || fieldProps.icon"
+                    :name="fieldProps.icon || 'fa-duotone fa-magnifying-glass'"
+                    size="xs" class="cursor-pointer" @click="$emit('enter')"/>
           </template>
         </q-input>
         <!--Date-->
         <q-input v-if="loadField('date')"
                  v-model="responseValue"
                  :label="fieldLabel"
-                 v-bind="fieldProps.field">
+                 v-bind="fieldProps.field"
+                 :class="`${field.help ? 'date-dynamic-field' : ''}`">
           <template v-slot:prepend>
             <!--Float calendar-->
             <q-icon v-if="fieldProps.field.icon"
@@ -111,7 +98,8 @@
         <q-input v-if="loadField('hour')"
                  v-model="responseValue"
                  :label="fieldLabel"
-                 v-bind="fieldProps.field">
+                 v-bind="fieldProps.field"
+                 :class="`${field.help ? 'hour-dynamic-field' : ''}`">
           <template v-slot:prepend>
             <!--Float Time-->
             <q-icon v-if="fieldProps.field.icon"
@@ -129,7 +117,8 @@
         <q-input v-if="loadField('fullDate')"
                  v-model="responseValue"
                  :label="fieldLabel"
-                 v-bind="fieldProps.field">
+                 v-bind="fieldProps.field"
+                 :class="`${field.help ? 'full-date-dynamic-field' : ''}`">
           <template v-slot:prepend>
             <q-icon name="fa-light fa-calendar-day" class="cursor-pointer" color="blue-grey">
               <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -151,12 +140,16 @@
         <!--Select-->
         <q-select v-model="responseValue" :options="formatOptions" :label="fieldLabel" use-input v-bind="fieldProps"
                   @input="matchTags(field)" v-if="loadField('select')" @filter="filterSelectOptions"
-                  @clear="val => field.props.multiple ? responseValue = [] : ''">
+                  @clear="val => field.props.multiple ? responseValue = [] : ''"
+                  :class="`${field.help ? 'select-dynamic-field' : ''}`">
           <!--No options slot-->
           <template v-slot:no-option v-if="!fieldProps.hideDropdownIcon">
             <slot name="before-options"/>
             <q-item>
-              <q-item-section class="text-grey">
+              <q-item-section class="text-grey" v-if="field.loadOptions.filterByQuery">
+                {{ fieldProps.hint }}
+              </q-item-section>
+              <q-item-section class="text-grey" v-else>
                 {{ $tr('isite.cms.message.notFound') }}
               </q-item-section>
             </q-item>
@@ -177,12 +170,12 @@
                 <div :class="{'tw-flex': field.props.selectColor }">
                   <div v-if="field.props.selectColor">
                     <div
-                      class="
+                        class="
                         tw-h-4
                         tw-w-4
                         tw-rounded-full
                         tw-py-3"
-                      :class="badgeColor(field, scope)"
+                        :class="badgeColor(field, scope)"
                     />
                   </div>
                   <div :class="{'tw-px-4' : field.props.selectColor }">
@@ -210,7 +203,7 @@
         </q-select>
         <!--tree select-->
         <q-field v-model="responseValue" v-if="loadField('treeSelect')" :label="fieldLabel"
-                 v-bind="fieldProps.fieldComponent">
+                 v-bind="fieldProps.fieldComponent" :class="`${field.help ? 'treeselect-dynamic-field' : ''}`">
           <tree-select v-model="responseValue" :options="formatOptions" placeholder="" v-bind="fieldProps.field"
                        @select="(node, instanceId) => $emit('select', {node, instanceId})">
             <!--Before options slot-->
@@ -222,8 +215,7 @@
         <!--HTML-->
         <q-field v-model="responseValue" v-if="loadField('html')" label="" class="field-no-padding"
                  v-bind="fieldProps.fieldComponent">
-          <ck-editor v-model="responseValue"/>
-          <q-editor v-if="false" v-model="responseValue" class="full-width" v-bind="fieldProps.field"/>
+          <ck-editor v-model="responseValue" :name="field.name"/>
         </q-field>
         <!--multiSelect-->
         <q-field v-model="responseValue" v-if="loadField('multiSelect')" label="" v-bind="fieldProps.fieldComponent">
@@ -251,7 +243,8 @@
           <upload-image v-model="responseValue" v-bind="fieldProps.field"/>
         </q-field>
         <!--Media-->
-        <q-field v-model="responseValue" v-if="loadField('media')" label="" class="field-no-padding no-border"
+        <q-field v-model="responseValue" v-if="loadField('media')" label=""
+                 class="field-no-padding no-border media-dinamyc-field"
                  v-bind="fieldProps.fieldComponent">
           <!--<media v-model="responseValue" class="bg-white" v-bind="fieldProps.field" />-->
           <select-media v-model="responseValue" class="bg-white" v-bind="fieldProps.field"/>
@@ -269,7 +262,8 @@
         </div>
         <!--input color-->
         <q-input v-model="responseValue" :label="fieldLabel" v-if="loadField('inputColor')" v-bind="fieldProps.field"
-                 @click="$refs.qColorProxi.show()" :ref="`inputColor-${fieldKey}`">
+                 @click="$refs.qColorProxi.show()" :ref="`inputColor-${fieldKey}`"
+                 :class="`${field.help ? 'input-color-dynamic-field' : ''}`">
           <template v-slot:append>
             <!--Icon-->
             <q-icon name="fa-light fa-droplet" class="cursor-pointer"/>
@@ -303,7 +297,8 @@
           <q-rating v-model="responseValue" v-bind="fieldProps.field" class="q-mt-sm"/>
         </q-field>
         <!--icon select-->
-        <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps" class="q-mb-md"/>
+        <select-icon v-model="responseValue" v-if="loadField('selectIcon')" v-bind="fieldProps" class="q-mb-md"
+                     :class="`${field.help ? 'select-icon-dinamyc-field' : ''}`"/>
         <!--optionGroup-->
         <q-field v-model="responseValue" v-if="loadField('optionGroup')" v-bind="fieldProps.fieldComponent">
           <q-option-group class="q-pt-md" v-model="responseValue" v-bind="fieldProps.field"/>
@@ -316,9 +311,9 @@
         <div class="round bg-white" v-if="loadField('schedulable')">
           <schedulable v-model="responseValue" @input="watchValue" class="q-mb-sm" v-bind="fieldProps"/>
         </div>
-        <!--Code Editor-->
+        <!--Json Editor-->
         <q-field v-model="responseValue" v-if="loadField('json')" v-bind="fieldProps.fieldComponent"
-                 class="field-no-padding no-border" label="">
+                 class="field-no-padding no-border code-dinamyc-field" label="">
           <div class="full-width">
             <div class="text-grey-8 q-mb-xs" v-if="fieldProps.field.label">
               {{ fieldProps.field.label }}
@@ -351,13 +346,52 @@
           </div>
         </div>
         <!-- Expression -->
-          <expressionField 
+        <expressionField
             v-if="loadField('expression')"
             v-model="responseValue"
             :fieldProps="fieldProps"
-            :options="formatOptions" 
-          />
-        <!-- Expression end-->
+            :options="formatOptions"
+            :class="`${field.help ? 'expression-dinamyc-field' : ''}`"
+        />
+        <localizedPhone
+            v-if="loadField('localizedPhone')"
+            v-model="responseValue"
+            :fieldProps="fieldProps"
+        />
+
+        <multipleDynamicFields
+            v-if="loadField('multiplier')"
+            v-model="responseValue"
+            :fieldProps="fieldProps"
+        />
+        <!--Code Editor-->
+        <q-field v-model="responseValue" v-if="loadField('code')"
+                 v-bind="fieldProps.fieldComponent"
+                 class="field-no-padding no-border code-dinamyc-field" label="">
+          <div class="full-width">
+            <div class="text-grey-8 q-mb-xs" v-if="fieldProps.field.label">
+              {{ fieldProps.field.label }} [{{ fieldProps.field.options.mode }}]
+            </div>
+            <codemirror v-model="responseValue" :options="fieldProps.field.options"/>
+          </div>
+        </q-field>
+
+        <!--copy-->
+        <q-input v-model="responseValue" v-if="loadField('copy')" v-bind="fieldProps"
+                 :ref="`copy-${fieldKey}`" :label="fieldLabel"
+                 :class="`${field.help ? 'copy-dynamic-field' : ''}`"
+        >
+          <template v-slot:append>
+            <!--Copy button-->
+            <q-btn
+                :label="$trp('isite.cms.label.copy')"
+                flat
+                no-caps
+                @click="$helper.copyToClipboard(responseValue)"
+                color="primary"
+            />
+          </template>
+        </q-input>
       </div>
     </div>
   </div>
@@ -383,6 +417,18 @@ import selectMedia from '@imagina/qmedia/_components/selectMedia'
 import googleMapMarker from '@imagina/qsite/_components/master/googleMapMarker'
 import JsonEditorVue from 'json-editor-vue'
 import expressionField from '@imagina/qsite/_components/master/expressionField/index.vue';
+import localizedPhone from '@imagina/qsite/_components/master/localizedPhone/index.vue';
+import multipleDynamicFields from '@imagina/qsite/_components/master/multipleDynamicFields/views'
+//Code mirror
+import {codemirror} from 'vue-codemirror'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/mode/css/css.js'
+import 'codemirror/mode/sass/sass.js'
+import 'codemirror/mode/javascript/javascript.js'
+import 'codemirror/mode/htmlembedded/htmlembedded.js'
+import 'codemirror/mode/php/php.js'
+import 'codemirror/theme/base16-dark.css'
+import 'codemirror/addon/selection/active-line.js'
 
 export default {
   name: 'dynamicField',
@@ -418,7 +464,10 @@ export default {
     selectMedia,
     googleMapMarker,
     JsonEditorVue,
-    expressionField
+    expressionField,
+    codemirror,
+    localizedPhone,
+    multipleDynamicFields,
   },
   watch: {
     value: {
@@ -467,7 +516,6 @@ export default {
       fieldKey: this.$uid(),
       responseValue: null,//value to response
       showPassword: false,//to show password,
-      tooltip: false,
       options: [],//Options
       rootOptions: [],//Options
       rootOptionsData: [],//Options
@@ -489,6 +537,7 @@ export default {
           ['fullscreen']
         ]
       },
+      sortOptions: true
     }
   },
   computed: {
@@ -673,7 +722,7 @@ export default {
             outlined: true,
             dense: true,
             bgColor: 'white',
-            style: 'width: 100%',
+            //style: 'width: 100%',
             behavior: "menu",
             class: "q-pb-md",
             ...props
@@ -952,6 +1001,38 @@ export default {
             colorValue: getPaletteColor(color)
           }
           break;
+        case'code':
+          props = {
+            field: {
+              ...props,
+              options: {
+                tabSize: 4,
+                mode: 'text/javascript',
+                lineNumbers: true,
+                ...(props.options || {}),
+                theme: 'base16-dark',
+                styleActiveLine: true,
+                line: true,
+              }
+            },
+            fieldComponent: {
+              outlined: false,
+              borderless: true,
+              dense: true,
+              ...props
+            }
+          }
+          break;
+        case'copy':
+          props = {
+            bgColor: 'white',
+            readonly: true,
+            outlined: true,
+            dense: true,
+            inputClass: 'ellipsis',
+            ...props
+          }
+          break;
       }
 
       //Add ruler to required field
@@ -991,18 +1072,21 @@ export default {
         })
 
         //sort by label
-        items.sort((a, b) => {
-          if (a.label > b.label) return 1
-          if (a.label < b.label) return -1
-          return 0;
-        })
+        if (this.sortOptions) {
+          items.sort((a, b) => {
+            if (a.label > b.label) return 1
+            if (a.label < b.label) return -1
+            return 0;
+          })
+        }
 
         //response
         return items
       }
-
-      //response
-      return toString(this.$clone(this.options))
+      //Filter the unique options
+      var response = toString(this.$clone(this.options))
+      //response the unique options
+      return [...new Map(response.map(item => [item['value'], item])).values()]
     },
     //Return info fields readOnly
     infoReadOnly() {
@@ -1068,7 +1152,7 @@ export default {
       const objectOptions = {
         crud: {
           class: 'absolute-right',
-          margin: '1em 4.5em',
+          margin: '1em',
           load: true
         },
         input: {
@@ -1088,7 +1172,7 @@ export default {
         },
         search: {
           class: 'absolute-right',
-          margin: '1em 5em',
+          margin: '1em',
           load: true
         },
         date: {
@@ -1103,22 +1187,22 @@ export default {
         },
         fullDate: {
           class: 'absolute-right',
-          margin: '1em 5.5em',
+          margin: '1em',
           load: true
         },
         select: {
           class: 'absolute-right',
-          margin: '1em 4.5em',
+          margin: '1em',
           load: true
         },
         treeSelect: {
           class: 'absolute-right',
-          margin: '1em 4.5em',
+          margin: '1em',
           load: true
         },
         html: {
           class: 'absolute-right',
-          margin: '3.5em 1.5em',
+          margin: '3.8em 1.5em',
           load: true
         },
         checkbox: {
@@ -1128,12 +1212,12 @@ export default {
         },
         media: {
           class: 'absolute-right',
-          margin: '2em 20em',
+          margin: '2em 18em 0 0',
           load: true
         },
         inputColor: {
           class: 'absolute-right',
-          margin: '1em 5em',
+          margin: '1em',
           load: true
         },
         toggle: {
@@ -1143,7 +1227,7 @@ export default {
         },
         signature: {
           class: 'absolute-bottom-right',
-          margin: '1.5em 1em',
+          margin: '21.5em 12.5em',
           load: true
         },
         rating: {
@@ -1158,21 +1242,21 @@ export default {
         },
         optionGroup: {
           class: "absolute-left",
-          margin: '1.3em 12em',
+          margin: '1.3em 16em',
           load: true
         },
         schedulable: {
           class: 'absolute-left',
-          margin: '2.8em 12em',
+          margin: '3.6em 12.5em',
           load: true
         },
         json: {
           class: 'absolute-right',
-          margin: '2.3em 1em',
+          margin: '3.7em 1em',
           load: true
         },
         expression: {
-          class: 'absolute-right tw-mx-8',
+          class: 'absolute-right',
           margin: '1em',
           load: true
         }
@@ -1188,8 +1272,8 @@ export default {
     badgeColor() {
       return (field, scope) => {
         return field.props.colorType === 'tailwindcss'
-        ? `tw-bg-${scope.opt.color  || scope.opt.value}`
-        : `bg-${scope.opt.color || scope.opt.value}`
+            ? `tw-bg-${scope.opt.color || scope.opt.value}`
+            : `bg-${scope.opt.color || scope.opt.value}`
       }
     }
   },
@@ -1286,6 +1370,9 @@ export default {
         case 'json':
           this.responseValue = (propValue !== undefined) ? propValue : {}
           break
+        case 'code':
+          this.responseValue = typeof propValue != "string" ? JSON.stringify(propValue) : propValue
+          break
         default :
           this.responseValue = propValue || null
           break
@@ -1305,7 +1392,7 @@ export default {
             }
           })
         } else {
-          this.responseValue = propValue ? this.$clone(this.fieldProps.emitValue ? propValue.toString() : propValue) : propValue
+          this.responseValue = propValue || propValue == 0 ? this.$clone(this.fieldProps.emitValue ? propValue.toString() : propValue) : propValue
         }
       }
     },
@@ -1326,13 +1413,18 @@ export default {
     //Get options if is load options
     getOptions(query = false) {
       return new Promise((resolve, reject) => {
-        let loadOptions = this.$clone(this.field.loadOptions || {})
-        let defaultOptions = this.$clone(this.field.props?.options || [])//Instance default options
         this.loading = true//Open loading
+        let loadOptions = this.$clone(this.field.loadOptions || {})
+        //Instance default options keeping the options for the selected values
+        let defaultOptions = this.$clone([
+          ...(this.field.props?.options || []),
+          ...this.rootOptions.filter(opt => this.responseValue && this.responseValue.includes((opt.value || opt.id).toString()))
+        ])
 
         //==== Request options
         if (loadOptions.apiRoute) {
-          this.rootOptions = []//Reset options
+          //Reset options
+          this.rootOptions = defaultOptions
           let fieldSelect = {label: 'title', id: 'id'}
 
           //enable cache by isite setting
@@ -1369,8 +1461,8 @@ export default {
             this.rootOptionsData = this.$clone(response.data)
             let formatedOptions = []
             //Format response
-            response.data = response.data.map((item, index) => ({...item, id : item.id || (index + 1)}))
-            formatedOptions = ['select','expression'].includes(this.field.type) ?
+            response.data = response.data.map((item, index) => ({...item, id: item.id >= 0 ? item.id : (index + 1)}))
+            formatedOptions = ['select', 'expression'].includes(this.field.type) ?
                 this.$array.select(response.data, loadOptions.select || fieldSelect) :
                 this.$array.tree(response.data, loadOptions.select || fieldSelect)
 
@@ -1379,9 +1471,11 @@ export default {
             this.loading = false
             resolve(true)
           }).catch(error => {
-            this.$alert.error({message: this.$tr('isite.cms.message.errorRequest'), pos: 'bottom'})
-            this.loading = false
-            reject(true)
+            this.$apiResponse.handleError(error, () => {
+              this.$alert.error({message: this.$tr('isite.cms.message.errorRequest'), pos: 'bottom'})
+              this.loading = false
+              reject(true)
+            })
           })
           //==== Delayed loading options
         } else if (loadOptions.delayed) {
@@ -1403,10 +1497,12 @@ export default {
     },
     //Set options
     async setOptions() {
-      if (['treeSelect', 'select', 'multiSelect', 'expression'].indexOf(this.field.type) != -1) {
-        if (this.field.loadOptions) {
-          await this.getOptions()
-        }//Get options
+      if (['treeSelect', 'select', 'multiSelect', 'expression'].includes(this.field.type)) {
+        //Instance sortOrder from field props
+        if (this.field.props?.sortOptions != undefined) this.sortOptions = this.$clone(this.field.props.sortOptions)
+        //Load options
+        if (this.field.loadOptions) await this.getOptions()
+        //Set options
         else if (this.field.props && this.field.props.options) this.rootOptions = this.field.props.options
       }
     },
@@ -1479,8 +1575,10 @@ export default {
           }
           resolve(ruleResponse)
         }).catch(error => {
-          console.error(error)
-          resolve(ruleResponse)
+          this.$apiResponse.handleError(error, () => {
+            console.error(error)
+            resolve(ruleResponse)
+          })
         })
       })
     },
@@ -1499,6 +1597,15 @@ export default {
         })
       }
 
+      //Hint message for filterByQuery
+      if (loadOptions && loadOptions.filterByQuery) {
+        if (val.length > 2) {
+          if (!this.rootOptions.length) {
+            this.fieldProps.hint = `${this.$tr('isite.cms.message.noResultsFoundTryAnotherSearchValue')}`
+          }
+        }
+      }
+
       //Emit filter Value
       this.$emit("filter", val)
     },
@@ -1507,19 +1614,36 @@ export default {
       if (this.loadField('select')) {
         let loadOptions = this.field.loadOptions
         if (loadOptions && loadOptions.apiRoute) {
+          //Valudate if the response values is not in the root options
+          let responseValueTmp = (this.responseValue || [])
+          responseValueTmp = Array.isArray(responseValueTmp) ? responseValueTmp : [responseValueTmp]
+          const includeAll = responseValueTmp.every(val =>
+              this.rootOptions.map(val => (val.value || val.id).toString()).includes(val.toString())
+          )
           //Validate if there is the option for the value
-          if (loadOptions.filterByQuery && this.responseValue && !this.options.length) {
+          if (loadOptions.filterByQuery && !includeAll) {
             let fieldSelect = loadOptions.select || {label: 'title', id: 'id'}
             //Instance request params
             let requestParams = {
-              refresh : true,
-              params: {filter: {field: fieldSelect.id}}
+              refresh: true,
+              params: {
+                ...(loadOptions.requestParams || {}),
+                filter: {
+                  ...(loadOptions.requestParams?.filter || {}),
+                  [fieldSelect.id]: (this.responseValue.id || this.responseValue.value || this.responseValue)
+                }
+              }
             }
-            //Instance the criteria
-            const criteria = this.responseValue.id || this.responseValue.value || this.responseValue
+
             //Request
-            this.$crud.show(loadOptions.apiRoute, criteria, requestParams).then(response => {
-              this.rootOptions = this.$array.select([response.data], fieldSelect)
+            this.$crud.index(loadOptions.apiRoute, requestParams).then(response => {
+              this.rootOptions = [
+                ...this.rootOptions,
+                ...this.$array.select(response.data, fieldSelect)
+              ]
+            }).catch(error => {
+              this.$apiResponse.handleError(error, () => {
+              })
             })
           }
         }
@@ -1530,6 +1654,15 @@ export default {
 </script>
 <style lang="stylus">
 #dynamicFieldComponent
+
+  .q-field--outlined .q-field__control {
+    padding-letf 12px
+  }
+
+  .expression-dinamyc-field {
+    width: calc(100% - 40px)
+  }
+
   .jsoneditor-vue
     width: 100%;
     height: 400px;
@@ -1552,7 +1685,7 @@ export default {
       background transparent !important
       border 0
       max-height 26px
-      padding 0
+      padding-right 0px
 
       .vue-treeselect__single-value
         line-height 1.9
@@ -1570,9 +1703,6 @@ export default {
       .q-icon, .q-field__label, input
         color white
 
-  .after-field
-    z-index 4
-
   #bannerField
     .content
       border-radius $custom-radius-items
@@ -1585,14 +1715,19 @@ export default {
 #ckEditorComponent
   width 100%
 
-#dynamicFieldMenuHelp
-  border 2px solid $info
-  padding 10px 15px
-  border-radius $custom-radius-items
-
-  #contentHelp
-    max-width 20em
-    line-height 1.3
-    color $blue-grey
-    text-align justify
+// help padding-right
+.crud-dynamic-field,
+.input-dynamic-field,
+.search-dynamic-field,
+.date-dynamic-field,
+.hour-dynamic-field,
+.full-date-dynamic-field,
+.select-dynamic-field,
+.treeselect-dynamic-field,
+.input-color-dynamic-field,
+.copy-dynamic-field,
+.select-icon-dinamyc-field
+  .q-field__control {
+    padding-right 40px
+  }
 </style>

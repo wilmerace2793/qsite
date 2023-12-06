@@ -1,7 +1,7 @@
 <template>
   <master-modal v-model="showModal" icon="fas fa-file-download" width="380px" :loading="loading"
                 :title="modalTitle" @hide="reset()" @show="init()" custom-position>
-    <div class="relative-position">
+    <div class="relative-position" v-if="!loading">
       <div class="row q-col-gutter-md">
         <!--Generate new report-->
         <div id="newReportContent" class="col-12" v-if="!customExportData && allowCreation">
@@ -26,7 +26,7 @@
               <!--Submit-->
               <div class="text-right col-12">
                 <q-btn :label="$tr('isite.cms.label.create')" color="green" rounded unelevated size="13px"
-                       padding="xs sm" type="submit"/>
+                       padding="xs sm" type="submit" :disable="reportQueue ? true : false"/>
               </div>
             </q-form>
           </div>
@@ -100,24 +100,6 @@ export default {
       const useLegacyStructure = parseInt(this.$store.getters['qsiteApp/getSettingValueByName']('isite::legacyStructureCMS') || 0)
       return useLegacyStructure ? this.$tr(this.$route.meta.title) : this.$route.meta.title
     },
-    //Return params of subHeader
-    routeParams() {
-      let response = false
-      //GEt route permission
-      let permission = this.$route.meta.permission
-
-      //Parse Route Permission
-      if (permission) {
-        let splitPermission = this.$route.meta.permission.split('.')
-        response = {
-          moduleName: (splitPermission[0] == 'profile') ? 'iprofile' : splitPermission[0],
-          entityName: splitPermission[1]
-        }
-      }
-
-      //Response
-      return response
-    },
     //Modal export title
     modalTitle() {
       //Default response
@@ -150,12 +132,30 @@ export default {
         }
       }
 
+      //Add warning reportQueue
+      if (this.reportQueue) {
+        fields.reportQueue = {
+          type: 'banner',
+          props: {
+            message: this.$tr('isite.cms.reportQueue', {
+              date: this.$trd(this.reportQueue, {type: 'long'})
+            }),
+            color: 'warning'
+          }
+        }
+      }
+
       //Response
       return fields
     },
     //Allow Downloads from custom config
-    allowCreation(){
+    allowCreation() {
       return this.params.allowCreation !== undefined ? this.params.allowCreation : true
+    },
+    //Validate if already there is exporting a report
+    reportQueue() {
+      let lockReport = this.fileExport.find(item => item.reportQueue)
+      return lockReport?.reportQueue || null
     }
   },
   methods: {
@@ -193,14 +193,15 @@ export default {
     getExportConfig() {
       return new Promise((resolve, reject) => {
         this.params = false//Reset params
-        if (!this.routeParams) return resolve(false)
+        let routeParams = this.$helper.getInfoFromPermission(this.$route.meta.permission)
+        if (!routeParams) return resolve(false)
 
         //Request Params
         let requestParams = {
           refresh: true,
           params: {
             filter: {
-              configName: `${this.routeParams.moduleName}.config.exportable.${this.routeParams.entityName}${this.exportItem ? 'Item' : ''}`
+              configName: `${routeParams.module}.config.exportable.${routeParams.entity}${this.exportItem ? 'Item' : ''}`
             }
           }
         }
@@ -242,7 +243,7 @@ export default {
     //Request new report
     newReport() {
       return new Promise(async (resolve, reject) => {
-        //this.loading = true
+        this.loading = true
         //Instance de apiRoute
         const apiRoute = this.params.apiRoute || 'apiRoutes.qsite.export'
         const filter = await this.storeFilter();
@@ -287,11 +288,11 @@ export default {
     async getCurrentFilterDate(lastStart, lastEnd) {
       try {
         let lastStartM = this.$moment(lastStart)
-          .startOf('day')
-          .format("YYYY-MM-DD HH:mm:ss");
+            .startOf('day')
+            .format("YYYY-MM-DD HH:mm:ss");
         let lastEndM = this.$moment(lastEnd)
-          .endOf('day')
-          .format("YYYY-MM-DD HH:mm:ss");
+            .endOf('day')
+            .format("YYYY-MM-DD HH:mm:ss");
         return {
           date: {
             field: "inbound_scheduled_arrival",
@@ -305,22 +306,22 @@ export default {
       }
     },
     async storeFilter() {
-      const filterClone = this.$filter.storeFilter 
-      ? { values: await this.$helper.convertStringToObject() }
-      : this.$clone(this.$filter);
-      let filter = { ...filterClone };
-        if(this.$filter.storeFilter) {
-          if(filter.values.dateStart && filter.values.dateEnd) {
-            const dateFilter = await this.getCurrentFilterDate(filter.values.dateStart, filter.values.dateEnd);
-            delete filter.values.type;
-            delete filter.values.dateStart;
-            delete filter.values.dateEnd;
-            filter.values = {
-              ...dateFilter,
-              ...filter.values,
-            }
+      const filterClone = this.$filter.storeFilter
+          ? {values: await this.$helper.convertStringToObject()}
+          : this.$clone(this.$filter);
+      let filter = {...filterClone};
+      if (this.$filter.storeFilter) {
+        if (filter.values.dateStart && filter.values.dateEnd) {
+          const dateFilter = await this.getCurrentFilterDate(filter.values.dateStart, filter.values.dateEnd);
+          delete filter.values.type;
+          delete filter.values.dateStart;
+          delete filter.values.dateEnd;
+          filter.values = {
+            ...dateFilter,
+            ...filter.values,
           }
         }
+      }
       return filter;
     },
   }
