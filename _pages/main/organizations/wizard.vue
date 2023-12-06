@@ -59,7 +59,7 @@
                          color="blue-grey"
                          icon="fas fa-arrow-left tw-mr-0 sm:tw-mr-2"
                          @click="stepperPrevious()"
-                         v-show="!loading">
+                         v-show="!buttonLoading">
                     <div class="tw-hidden sm:tw-inline-block">
                       {{ $tr('isite.cms.label.previous') }}
                     </div>
@@ -74,7 +74,7 @@
                          @click="stepperNext(pace)"
                          unelevated
                          color="green"
-                         :loading="loading">
+                         :loading="buttonLoading">
                     <div class="tw-hidden sm:tw-inline-block">
                       {{ pace === summary ? $tr('isite.cms.label.finalize') : $tr('isite.cms.label.continue') }}
                     </div>
@@ -86,6 +86,7 @@
         </template>
       </q-stepper>
     </div>
+    <inner-loading :visible="loading"/>
   </div>
 </template>
 <script>
@@ -143,7 +144,8 @@ export default {
       welcome: STEP_WELCOME,
       summary: STEP_SUMMARY,
       themes: STEP_THEMES,
-      terms: STEP_TERMS
+      terms: STEP_TERMS,
+      buttonLoading: false
     }
   },
   provide() {
@@ -195,7 +197,7 @@ export default {
     async stepperNext(step) {
       try {
         // si llega al final y todo esta lleno envia la info
-        if (this.pace === this.steps.length) {
+        if (this.pace == STEP_SUMMARY){
           if ((this.dataCheck.user !== null) &&
               this.dataCheck.terms &&
               (this.dataCheck.category !== null) &&
@@ -268,6 +270,13 @@ export default {
         if (current.id == STEP_AI) {
           this.dataCheck.form.check = value.check;
           this.dataCheck.form.info = value.info;
+        }
+
+        if( current.id == STEP_SUMMARY){
+          //force data user for summary
+          const info = await this.$cache.get.item('org-wizard-data');
+          this.dataCheck.organization = this.dataCheck.organization ?? info.organization
+          this.dataCheck.user = info?.user ?? this.$store.getters["quserAuth/user"];
         }
 
         if (value.info !== undefined) {
@@ -345,10 +354,11 @@ export default {
       }
     },
     async getInfo() {
+      this.loading = true
       this.dataText = await storeStepWizard().getInfoWizard();
-      storeStepWizard().getCategories();
-      storeStepWizard().getPlans(PLAN_BASE_ID);
-
+      await storeStepWizard().getCategories();
+      await storeStepWizard().getPlans(PLAN_BASE_ID);
+      this.loading = false
       this.dataCheck = {
         user: null,
         terms: {active: false, info: false },
@@ -376,7 +386,8 @@ export default {
         this.getUrl();
       }
       //Set the user info due register step was removed
-      this.dataCheck['user'] = this.$store.getters["quserAuth/user"];
+      this.dataCheck.user = info?.user ?? this.$store.getters["quserAuth/user"];
+      this.setCacheInfo(this.dataCheck);
     },
     async setCacheStep(step) {
       await this.$cache.set('org-wizard-step', step);
@@ -469,13 +480,13 @@ export default {
           }
         }
         //Request
-        this.loading = true
+        this.buttonLoading = true
         this.$crud.show('apiRoutes.qsite.organizations', this.dataCheck.organization, requestParams).then(response => {
-          this.loading = false
+          this.buttonLoading = false
           resolve(response.data)
         }).catch(error => {
           this.$apiResponse.handleError(error, () => {
-            this.loading = false
+            this.buttonLoading = false
             reject(error)
           })
         })
