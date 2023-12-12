@@ -2,8 +2,8 @@
   <div class="row">
     <section id="panel-editor-component" class="full-width">
       <draggable class="row q-col-gutter-md" v-model="orderedItems" group="components" @update="updateSortOrder">
-        <div :class="element[gridPosition]" v-for="element in orderedItems" :key="element.id">
-          <div class="panel-editor-component__component">{{ element[titleItem] }}</div>
+        <div :class="element[gridPosField]" v-for="element in orderedItems" :key="element.id">
+          <div class="panel-editor-component__component">{{ element[titleField] }}</div>
           <!--<button @click="addItem(element)">Añade un bloque</button>-->
         </div>
       </draggable>
@@ -27,11 +27,11 @@ export default defineComponent({
       type: String,
       default: null
     },
-    gridPosition: {
+    gridPosField: {
       type: String,
       default: 'gridPosition'
     },
-    titleItem: {
+    titleField: {
       type: String,
       default: 'title'
     }
