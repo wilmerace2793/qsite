@@ -4,7 +4,7 @@
       <draggable class="row q-col-gutter-md" v-model="orderedItems" group="components" @update="updateSortOrder">
         <div :class="element[gridPosField]" v-for="element in orderedItems" :key="element.id">
           <div class="panel-editor-component__component">
-            <q-btn v-if="element[gridPosField]" class="btn-edit" icon="fa-regular fa-columns-3" outline>
+            <q-btn v-if="element[gridPosField]" class="btn-edit" icon="fa-regular fa-objects-column" outline>
               <q-popup-edit
                   v-model="element[gridPosField]"
                   buttons
