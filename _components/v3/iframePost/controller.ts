@@ -43,6 +43,14 @@ export default function controller(props: any, emit: any) {
 
   // Mounted
   onMounted(() => {
+    window.addEventListener('message', function (event) {
+      const data = event.data
+      const elementId = data.elementId
+      const iframe = document.getElementById(elementId);
+      if (iframe) {
+        iframe.style.height = `${data.clientHeight + 365 + 91}px`;
+      }
+    })
   })
 
   // Watch
