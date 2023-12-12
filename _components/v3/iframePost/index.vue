@@ -1,6 +1,6 @@
 <template>
   <div id="iframePostcomponent" v-if="actionUrl" class="relative-position">
-    <iframe :id="`iframeLayout${id}`" name="post-iframe" frameborder="0" @load="loading = false"/>
+    <iframe :id="id" name="post-iframe" frameborder="0" @load="loading = false"/>
     <form name="formPostIframe"
           id="formPostIframe"
           method="post"
@@ -20,8 +20,8 @@ import controller from '@imagina/qsite/_components/v3/iframePost/controller'
 export default defineComponent({
   props: {
     id: {
-      type: Number,
-      default: null
+      type: String,
+      default: ''
     }
   },
   components: {},
@@ -36,6 +36,7 @@ export default defineComponent({
   width 100%
 
   iframe
+    min-height 500px
     height 100%
     width 100%
 </style>

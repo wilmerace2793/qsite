@@ -48,7 +48,7 @@ export default function controller(props: any, emit: any) {
       const elementId = data.elementId
       const iframe = document.getElementById(elementId);
       if (iframe) {
-        iframe.style.height = `${data.clientHeight + 365 + 91}px`;
+        iframe.style.height = `${data.clientHeight + 90}px`;
       }
     })
   })
