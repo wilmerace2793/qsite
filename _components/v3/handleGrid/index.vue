@@ -4,17 +4,22 @@
       <draggable class="row q-col-gutter-md" v-model="orderedItems" group="components" @update="updateSortOrder">
         <div :class="element[gridPosField]" v-for="element in orderedItems" :key="element.id">
           <div class="panel-editor-component__component">
-            <q-btn v-if="element[gridPosField]" class="btn-edit" icon="fa-regular fa-objects-column" outline>
-              <q-popup-edit
-                  v-model="element[gridPosField]"
-                  buttons
-                  :label-set="$tr('isite.cms.label.save')"
-                  :label-cancel="$tr('isite.cms.label.cancel')"
-                  v-slot="scope"
-              >
-                <dynamic-field v-model="scope.value" :field="{type: 'input', props: {autofocus : true, label: $tr('isite.cms.label.gridPosition')}}" />
-              </q-popup-edit>
-            </q-btn>
+            <div class="absolute-right q-ma-sm">
+              <q-btn v-if="element[gridPosField]" icon="fa-regular fa-objects-column" outline round color="cyan" size="10px">
+                <q-popup-edit
+                    v-model="element[gridPosField]"
+                    :title="element[titleField]"
+                    buttons
+                    :label-set="$tr('isite.cms.label.save')"
+                    :label-cancel="$tr('isite.cms.label.cancel')"
+                    v-slot="scope"
+                >
+                  <dynamic-field v-model="scope.value"
+                                 :field="{type: 'input', props: {autofocus : true, label: $tr('isite.cms.label.gridPosition')}}"/>
+                </q-popup-edit>
+                <q-tooltip>{{$tr('isite.cms.label.gridPosition')}}</q-tooltip>
+              </q-btn>
+            </div>
             {{ element[titleField] }}
           </div>
           <!--<button @click="addItem(element)">Añade un bloque</button>-->
@@ -75,14 +80,4 @@ export default defineComponent({
     align-items: center;
     justify-content: center;
     border: dashed 3px $blue-grey;
-
-    &:hover .btn-edit
-      opacity 1;
-
-    .btn-edit
-      opacity 0;
-      color #888;
-      position absolute;
-      top 4px;
-      right 4px;
 </style>
