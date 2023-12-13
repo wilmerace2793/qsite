@@ -1,6 +1,6 @@
 <template>
   <div id="iframePostcomponent" v-if="actionUrl" class="relative-position">
-    <iframe :id="id" name="post-iframe" frameborder="0" @load="loading = false"/>
+    <iframe :id="id" name="post-iframe" frameborder="0" @load="handleIframeLoad"/>
     <form name="formPostIframe"
           id="formPostIframe"
           method="post"

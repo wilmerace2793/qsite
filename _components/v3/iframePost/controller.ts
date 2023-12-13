@@ -11,6 +11,7 @@ export default function controller(props: any, emit: any) {
   // States
   const state = reactive({
     loading: false,
+    count: 0,
     actionUrl: null,
     inputsForm: []
   })
@@ -38,6 +39,16 @@ export default function controller(props: any, emit: any) {
         const submitFormFunction = Object.getPrototypeOf(document.forms["formPostIframe"]).submit;
         submitFormFunction.call(document.forms["formPostIframe"]);
       })
+    },
+    handleIframeLoad() {
+      //Update the count
+      state.count += 1;
+      // When the count is 2 mean that iframe is mounted and render all info
+      if(state.count === 2) {
+        state.loading = false
+        //Set the count in 1 because the component is alredy mounted
+        state.count = 1
+      }
     },
   }
 
