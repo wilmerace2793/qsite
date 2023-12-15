@@ -147,7 +147,7 @@
             <slot name="before-options"/>
             <q-item>
               <q-item-section class="text-grey" v-if="field.loadOptions.filterByQuery">
-                {{ fieldProps.hint}}
+                {{ fieldProps.hint }}
               </q-item-section>
               <q-item-section class="text-grey" v-else>
                 {{ $tr('isite.cms.message.notFound') }}
@@ -358,12 +358,12 @@
             :options="formatOptions"
             :class="`${field.help ? 'expression-dinamyc-field' : ''}`"
         />
-        <localizedPhone 
-          v-if="loadField('localizedPhone')"
-          v-model="responseValue"
-          :fieldProps="fieldProps"
+        <localizedPhone
+            v-if="loadField('localizedPhone')"
+            v-model="responseValue"
+            :fieldProps="fieldProps"
         />
-        
+
         <multipleDynamicFields 
           v-if="loadField('multiplier')"
           v-model="responseValue"
@@ -380,6 +380,23 @@
             <codemirror v-model="responseValue" :options="fieldProps.field.options"/>
           </div>
         </q-field>
+
+        <!--copy-->
+        <q-input v-model="responseValue" v-if="loadField('copy')" v-bind="fieldProps"
+                 :ref="`copy-${fieldKey}`" :label="fieldLabel"
+                 :class="`${field.help ? 'copy-dynamic-field' : ''}`"
+        >
+          <template v-slot:append>
+            <!--Copy button-->
+            <q-btn
+                :label="$trp('isite.cms.label.copy')"
+                flat
+                no-caps
+                @click="$helper.copyToClipboard(responseValue)"
+                color="primary"
+            />
+          </template>
+        </q-input>
       </div>
     </div>
   </div>
@@ -525,7 +542,8 @@ export default {
           ['quote', 'unordered', 'ordered'],
           ['fullscreen']
         ]
-      }
+      },
+      sortOptions: true
     }
   },
   computed: {
@@ -1016,6 +1034,16 @@ export default {
             }
           }
           break;
+        case'copy':
+          props = {
+            bgColor: 'white',
+            readonly: true,
+            outlined: true,
+            dense: true,
+            inputClass: 'ellipsis',
+            ...props
+          }
+          break;
       }
 
       //Add ruler to required field
@@ -1055,11 +1083,13 @@ export default {
         })
 
         //sort by label
-        items.sort((a, b) => {
-          if (a.label > b.label) return 1
-          if (a.label < b.label) return -1
-          return 0;
-        })
+        if (this.sortOptions) {
+          items.sort((a, b) => {
+            if (a.label > b.label) return 1
+            if (a.label < b.label) return -1
+            return 0;
+          })
+        }
 
         //response
         return items
@@ -1354,6 +1384,9 @@ export default {
         case 'code':
           this.responseValue = typeof propValue != "string" ? JSON.stringify(propValue) : propValue
           break
+        case 'multiplier':
+          this.responseValue = (Array.isArray(propValue)) ? propValue : []
+          break
         default :
           this.responseValue = propValue || null
           break
@@ -1480,10 +1513,12 @@ export default {
     },
     //Set options
     async setOptions() {
-      if (['treeSelect', 'select', 'multiSelect', 'expression'].indexOf(this.field.type) != -1) {
-        if (this.field.loadOptions) {
-          await this.getOptions()
-        }//Get options
+      if (['treeSelect', 'select', 'multiSelect', 'expression'].includes(this.field.type)) {
+        //Instance sortOrder from field props
+        if (this.field.props?.sortOptions != undefined) this.sortOptions = this.$clone(this.field.props.sortOptions)
+        //Load options
+        if (this.field.loadOptions) await this.getOptions()
+        //Set options
         else if (this.field.props && this.field.props.options) this.rootOptions = this.field.props.options
       }
     },
@@ -1504,9 +1539,9 @@ export default {
     watchValue() {
       let value = this.$clone(this.value)
       let response = this.$clone(this.responseValue)
-
+      
       if (JSON.stringify(value) !== JSON.stringify(response)) {
-        //decode when is json
+                //decode when is json
         if (this.field.type == "json" && (typeof response == "string"))
           response = JSON.parse(response)
         //Emit input data
@@ -1579,9 +1614,9 @@ export default {
       }
 
       //Hint message for filterByQuery
-      if ( loadOptions && loadOptions.filterByQuery){
-        if(val.length > 2){
-          if(!this.rootOptions.length){
+      if (loadOptions && loadOptions.filterByQuery) {
+        if (val.length > 2) {
+          if (!this.rootOptions.length) {
             this.fieldProps.hint = `${this.$tr('isite.cms.message.noResultsFoundTryAnotherSearchValue')}`
           }
         }
@@ -1706,8 +1741,9 @@ export default {
 .select-dynamic-field,
 .treeselect-dynamic-field,
 .input-color-dynamic-field,
+.copy-dynamic-field,
 .select-icon-dinamyc-field
-  .q-field__control{
+  .q-field__control {
     padding-right 40px
-}
+  }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="wizardOrganization"
       class="tw-h-screen 'overflow-auto"
-      :class="{'page-full' : pace == welcome || pace == summary,  'overflow-hidden': pace == 7 }"
+      :class="{'page-full' : pace == welcome || pace == summary,  'overflow-hidden': pace == themes }"
       >
     <div class="page-header
                 tw-border-b-2 tw-border-white tw-border-opacity-50
@@ -42,13 +42,13 @@
             :title="step.title"
             :done="step.done"
             class="q-pb-xl"
-            :style="(step.id == 7) ? 'max-height: calc(100vh - 180px);' : ''"
+            :style="(step.id == themes) ? 'max-height: calc(100vh - 180px);' : ''"
         >
           <component ref="stepComponent" :is="step.component" @update="navNext" :info.async="dataText"/>
         </q-step>
 
         <template v-slot:navigation>
-          <q-stepper-navigation v-if="pace > 2">
+          <q-stepper-navigation v-if="pace > welcome">
             <div class="tw-pt-3 md:tw-pt-4 tw-pb-1">
               <div class="row justify-between">
                 <div class="col-4">
@@ -56,10 +56,10 @@
                          no-caps
                          :disabled="!isActivePrevious"
                          unelevated
-                         v-if="pace > 3"
                          color="blue-grey"
                          icon="fas fa-arrow-left tw-mr-0 sm:tw-mr-2"
-                         @click="stepperPrevious()">
+                         @click="stepperPrevious()"
+                         v-show="!buttonLoading">
                     <div class="tw-hidden sm:tw-inline-block">
                       {{ $tr('isite.cms.label.previous') }}
                     </div>
@@ -73,9 +73,10 @@
                          icon-right="fas fa-arrow-right tw-ml-0 sm:tw-ml-2"
                          @click="stepperNext(pace)"
                          unelevated
-                         color="green">
+                         color="green"
+                         :loading="buttonLoading">
                     <div class="tw-hidden sm:tw-inline-block">
-                      {{ pace === steps.length ? $tr('isite.cms.label.finalize') : $tr('isite.cms.label.continue') }}
+                      {{ pace === summary ? $tr('isite.cms.label.finalize') : $tr('isite.cms.label.continue') }}
                     </div>
                   </q-btn>
                 </div>
@@ -85,6 +86,7 @@
         </template>
       </q-stepper>
     </div>
+    <inner-loading :visible="loading"/>
   </div>
 </template>
 <script>
@@ -92,7 +94,6 @@ import modelSteps from '@imagina/qsite/_components/organizations/wizard/steps/mo
 import storeStepWizard from '@imagina/qsite/_components/organizations/wizard/steps/store/index.ts';
 import {
   STEP_WELCOME,
-  STEP_REGISTER,
   STEP_TERMS,
   STEP_COMPANY,
   STEP_CATEGORIES,
@@ -141,7 +142,10 @@ export default {
       },
       dataCheck: null,
       welcome: STEP_WELCOME,
-      summary: STEP_SUMMARY
+      summary: STEP_SUMMARY,
+      themes: STEP_THEMES,
+      terms: STEP_TERMS,
+      buttonLoading: false
     }
   },
   provide() {
@@ -160,10 +164,9 @@ export default {
     async init() {
       this.getInfo();
       this.configProgress();
-
     },
     async configProgress() {
-      this.progressPercent = 1 / this.steps.length;
+      this.progressPercent = 1 / (this.steps.length - 1);
       const step = await this.$cache.get.item('org-wizard-step');
       this.progress = this.progressPercent * step;
     },
@@ -194,7 +197,7 @@ export default {
     async stepperNext(step) {
       try {
         // si llega al final y todo esta lleno envia la info
-        if (this.pace === this.steps.length) {
+        if (this.pace == STEP_SUMMARY){
           if ((this.dataCheck.user !== null) &&
               this.dataCheck.terms &&
               (this.dataCheck.category !== null) &&
@@ -205,6 +208,19 @@ export default {
             this.redirectAfterWizard();
           }
         } else {
+          //Check the company name and, skip the step if exists
+          if (this.pace == STEP_COMPANY) {
+            const companyExist =  await this.checkOrganizationName();
+            if(companyExist && companyExist?.title){
+              this.$alert.info({
+                mode: 'modal',
+                title: this.siteName,
+                message: this.$tr('isite.cms.alreadyInUse'),
+                actions: []
+              })
+              return false
+            }
+          }
 
           //console.log(this.pace,'-',STEP_AI,'-',this.dataCheck.form.check);
           if (this.pace == STEP_AI && this.dataCheck.form.check) {
@@ -220,13 +236,11 @@ export default {
             }
 
           } else {
-
             this.progress = this.progress + this.progressPercent;
             this.setCacheInfo(this.dataCheck);
             this.setCacheStep(step + 1);
             this.$refs.stepper.next();
           }
-
 
         }
 
@@ -242,20 +256,13 @@ export default {
         this.isActive = current.done;
 
         if (current.id == STEP_WELCOME) {
-          this.progress = this.progress + this.progressPercent;
           this.$refs.stepper.next();
           this.setCacheStep(current.id + 1);
           this.stepperNext(current.id);
         }
 
-        /*if (current.id == STEP_REGISTER) {
-          this.dataCheck.user = value.info;
-          this.stepperNext(current.id);
-        }*/
-
         // if it is terms and conditions the value of the check updates the data
         if (current.id == STEP_TERMS) {
-          this.dataCheck.user = this.$store.getters["quserAuth/user"];
           this.dataCheck.terms.active = value.active;
           this.dataCheck.terms.info = value.info;
         }
@@ -263,6 +270,13 @@ export default {
         if (current.id == STEP_AI) {
           this.dataCheck.form.check = value.check;
           this.dataCheck.form.info = value.info;
+        }
+
+        if( current.id == STEP_SUMMARY){
+          //force data user for summary
+          const info = await this.$cache.get.item('org-wizard-data');
+          this.dataCheck.organization = this.dataCheck.organization ?? info.organization
+          this.dataCheck.user = info?.user ?? this.$store.getters["quserAuth/user"];
         }
 
         if (value.info !== undefined) {
@@ -340,9 +354,21 @@ export default {
       }
     },
     async getInfo() {
+      this.loading = true
       this.dataText = await storeStepWizard().getInfoWizard();
-      storeStepWizard().getCategories();
-      storeStepWizard().getPlans(PLAN_BASE_ID);
+      await storeStepWizard().getCategories();
+      await storeStepWizard().getPlans(PLAN_BASE_ID);
+      this.loading = false
+      this.dataCheck = {
+        user: null,
+        terms: {active: false, info: false },
+        category: null,
+        layout: null,
+        plan: null,
+        organization: '',
+        form: {active: false, check: false, info: {} },
+      };
+
       // verifico en que step se quedo antes de recargar
       const step = await this.$cache.get.item('org-wizard-step');
       // verifico que info tenia guardada antes de recargar
@@ -351,7 +377,7 @@ export default {
         this.pace = step;
       } else {
         // importante sino hay data entonces si asignarle el valor
-        this.pace = 1;
+        this.pace = STEP_WELCOME;
       }
 
       if (info != null) {
@@ -359,7 +385,9 @@ export default {
       } else {
         this.getUrl();
       }
-
+      //Set the user info due register step was removed
+      this.dataCheck.user = info?.user ?? this.$store.getters["quserAuth/user"];
+      this.setCacheInfo(this.dataCheck);
     },
     async setCacheStep(step) {
       await this.$cache.set('org-wizard-step', step);
@@ -441,6 +469,28 @@ export default {
         return null
       }
 
+    },
+    checkOrganizationName(){
+      return new Promise((resolve, reject) => {
+        //Requets params
+        let requestParams = {
+          refresh: true,
+          params: {
+            filter: {field: 'title'}
+          }
+        }
+        //Request
+        this.buttonLoading = true
+        this.$crud.show('apiRoutes.qsite.organizations', this.dataCheck.organization, requestParams).then(response => {
+          this.buttonLoading = false
+          resolve(response.data)
+        }).catch(error => {
+          this.$apiResponse.handleError(error, () => {
+            this.buttonLoading = false
+            reject(error)
+          })
+        })
+      })
     }
   }
 }

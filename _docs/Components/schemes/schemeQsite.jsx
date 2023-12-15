@@ -429,7 +429,11 @@ export const dynamicFieldTypes = [
   [
     'media',
     { description: 'Load a media selector.', props: <Link to="/docs/VueJs/components/dynamicField#media-type-props">Enabled props for this field.</Link>},
-  ]
+  ],
+  [
+    'copy',
+    { description: 'Copy the value. Only text is supported.'},
+  ],
 ]
 
 export const dynamicFieldProps = [
@@ -453,6 +457,10 @@ export const dynamicFieldProps = [
     'crudProps',
     { description: <>In the case of the type:"crud", these are the attributes that will be applied to the <code>select</code> input field. It includes <code>config.options</code> to define the label and id/value in the options, and <code>multiple</code> to determine if it allows multiple selection.</> }
   ],
+  [
+    'sortOptions',
+    { description: 'In the case of type:"select/treeSelect", by default the options are ordered alphabetically, so if you set this prop to FALSE you can disable this.' }
+  ]
 ]
 
 export const dynamicFieldValidateField = [

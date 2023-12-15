@@ -147,15 +147,14 @@
         "
         :src="urlAvatar"
       />
-      <figcaption 
-        class="
-          tw-ml-1 
-          tw-text-xs 
-          tw-m-auto 
-          tw-text-gray-400"
-        >
-          {{ lastName }}
-      </figcaption>
+      <q-tooltip
+        anchor="top left"
+        self="bottom left"
+        :offset="[10, 10]"
+        :delay="100" 
+      >
+        <p>{{ lastName }}</p>
+      </q-tooltip>
     </figure>
   </div>
 </template>

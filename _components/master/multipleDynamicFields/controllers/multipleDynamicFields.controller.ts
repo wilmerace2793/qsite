@@ -1,8 +1,9 @@
 import { ref, computed, onMounted, watch, nextTick } from "vue";
 import reateEmptyObjectFromFields from '@imagina/qsite/_components/master/multipleDynamicFields/helpers/reateEmptyObjectFromFields.helper'
+import _ from 'lodash'
 
 export default function multipleDynamicFieldsController(props: any, emit: any) {
-    const valueMultiple = computed(() => props.value);
+    const valueMultiple = computed(() => props.value || []);
     const fieldProps: any = computed(() => props.fieldProps);
     const defaultField = computed(() => props.fieldProps.fields);
     const fields: any = ref([]);
@@ -36,7 +37,7 @@ export default function multipleDynamicFieldsController(props: any, emit: any) {
     onMounted(() => {
         const fromFields = reateEmptyObjectFromFields(defaultField.value)
         if(valueMultiple.value.length > 0) {
-            fields.value = valueMultiple;  
+            fields.value = valueMultiple.value;  
         } else {
             const minQuantity = fieldProps.value?.minQuantity || 0;
             Array.from({ length: minQuantity }).forEach(() => {
@@ -45,9 +46,9 @@ export default function multipleDynamicFieldsController(props: any, emit: any) {
         }
         
     });
-    watch(fields.value, (newField, oldField): void => {
+    watch(fields, (newField, oldField): void => {
         if(newField) {
-            emit("input", fields.value);
+            emit("input", _.cloneDeep(newField));
         }
     }, { deep: true });
 
