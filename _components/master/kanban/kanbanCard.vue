@@ -86,6 +86,7 @@
     >
       <span 
         class="
+          tw-mt-4
           tw-text-xs 
           tw-text-gray-600
         "
@@ -132,21 +133,28 @@
       </span>
     </div>
     <figure 
-      class="picture"
+      class="
+        tw-flex
+        tw-mt-4
+      "
       v-if="lastName"
     >
       <img 
         class="
-          img
+          tw-w-5
+          tw-h-5
+          tw-rounded-md
         "
-        :src="quserState.userData.mainImage"
+        :src="urlAvatar"
       />
-      <figcaption
-        class="figcaption"
+      <q-tooltip
+        anchor="top left"
+        self="bottom left"
+        :offset="[10, 10]"
+        :delay="100" 
       >
-        <span>{{ lastName }}</span>
-        <span class="tag">Responsable</span>
-      </figcaption>
+        <p>{{ lastName }}</p>
+      </q-tooltip>
     </figure>
   </div>
 </template>
@@ -213,6 +221,10 @@ export default {
     },
     lastName() {
       return this.cardData?.creator?.lastName || ''
+    },
+    urlAvatar() {
+      return  this.cardData?.creator?.mediaFiles?.profile?.largeThumb || 
+              this.quserState.userData.mainImage
     },
     actionsAutomations() {
       let response = [
@@ -284,27 +296,4 @@ export default {
   @apply tw-mx-1 tw-pr-1 !important tw-min-w-0 !important;
 }
 
-.img {
-  width: 35px;
-  height: 35px;
-  border-radius: 10px;
-  object-fit: cover;
-  margin-right: 8px;
-}
-
-.picture {
-  margin: 16px 0;
-  display: flex;
-  align-items: center;
-}
-
-.figcaption {
-  display: flex;
-  flex-direction: column;
-}
-
-.tag {
-  color: #c0c0c0;
-  font-size: 12px;
-}
 </style>

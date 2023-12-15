@@ -114,8 +114,8 @@ export default {
             return parentId === EXTERNAL_DATA_COMUNICATION;
         },
         whatTypeField() {
-            const email = {
-                localizedPhone: {
+            const phoneNumber = {
+                phoneNumber: {
                     type: 'localizedPhone',
                     colClass: "col-12",
                     props: {
@@ -127,7 +127,7 @@ export default {
                     },
                 }
             }
-            const phoneNumber = {
+            const email = {
                 email : {
                     value : null,
                     type : 'input',
@@ -141,7 +141,7 @@ export default {
                     } 
                 }
             }
-            return this.isSendEmailToExternalData ?  { ...phoneNumber } : { ...email }
+            return this.isSendEmailToExternalData ?  { ...email } : { ...phoneNumber }
         },
         whatLoadOptions() {
             const INTERNAL_COMMUNICATION_ID = 7;
@@ -301,9 +301,9 @@ export default {
                         }
                     }],
                 categoryFields: !Object.values(categoryFields).length ? null : [{
-                        name: "categoryFields",
-                        fields: categoryFields
-                    }]
+                    name: "categoryFields",
+                    fields: categoryFields
+                }]
             };
         },
         categorySelected() {
@@ -356,6 +356,7 @@ export default {
         },
         async showAutomation(id) {
             try {
+                const API_ROUTE = 'apiRoutes.qrequestable.automationRule';
                 const requestParams = {
                     refresh: true,
                     params: {
@@ -365,7 +366,7 @@ export default {
                         }
                     }
                 };
-                const response = await this.$crud.show("apiRoutes.qrequestable.automationRule", id, requestParams);
+                const response = await this.$crud.show(API_ROUTE, id, requestParams);
                 this.form.categoryId = response.data.categoryRuleId;
                 this.form.name = response.data.name;
                 const when = response.data.runType ? { when: response.data.runType } : {};
@@ -380,7 +381,7 @@ export default {
             }
         },
         submitData() {
-            const route = "apiRoutes.qrequestable.automationRule";
+            const API_ROUTE = "apiRoutes.qrequestable.automationRule";
             this.loading = true;
             //Instance the rule data
             var ruleData = {
@@ -405,8 +406,8 @@ export default {
             }
 
             const crud = this.automationId
-                ? this.$crud.update(route, this.automationId, ruleData)
-                : this.$crud.create(route, ruleData);
+                ? this.$crud.update(API_ROUTE, this.automationId, ruleData)
+                : this.$crud.create(API_ROUTE, ruleData);
             //Request
             crud.then(response => {
                 this.loading = false;
