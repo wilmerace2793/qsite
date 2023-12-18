@@ -1,7 +1,7 @@
 import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance} from "vue";
 
 export default function controller(props: any, emit: any) {
-  const proxy = getCurrentInstance().proxy
+  const proxy = getCurrentInstance()!.proxy
 
   // Refs
   const refs = {
@@ -31,7 +31,9 @@ export default function controller(props: any, emit: any) {
   const methods = {
     updateSortOrder() {
       // Update sort_order based on the new position in the array
+      //@ts-ignore
       const orderedItems = !props.orderBy ? state.items : state.items.map((item, index) => ({
+        //@ts-ignore
         ...item,
         [props.orderBy]: index + 1
       }));

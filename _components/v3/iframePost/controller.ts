@@ -1,7 +1,7 @@
 import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance} from "vue";
 
 export default function controller(props: any, emit: any) {
-  const proxy = getCurrentInstance().proxy
+  const proxy = getCurrentInstance()!.proxy
 
   // Refs
   const refs = {
@@ -24,13 +24,16 @@ export default function controller(props: any, emit: any) {
   const methods = {
     loadIframe(actionUrl, attributes) {
       state.loading = true
+      //@ts-ignore
       state.actionUrl = proxy.$clone(actionUrl)
       let newInputsForm = []
       Object.keys(attributes).forEach(field => {
+        //@ts-ignore
         const input = document.createElement("input");
         input.name = field;
         input.value = JSON.stringify(attributes[field]);
         input.type = "hidden";
+        //@ts-ignore
         newInputsForm.push(input);
       });
       state.inputsForm = newInputsForm
