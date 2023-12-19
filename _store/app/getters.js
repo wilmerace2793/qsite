@@ -98,11 +98,10 @@ export const getSelectedLocalesSelect = (state) => {
 export const getConfigApp = (state) => (path, getConfigByName = false) => {
   let response = state.configs
   let keys = path.toLowerCase().split(".")
-  if(getConfigByName) {
-    let allConfigs = []
+  if (getConfigByName) {
+    let allConfigs = {}
     for (const key in response) {
-      let configModule = getConfigByPath(response[key], keys)
-      if(configModule) allConfigs = [...allConfigs, ...configModule]
+      allConfigs[key] = getConfigByPath(response[key], keys)
     }
     response = allConfigs;
 
