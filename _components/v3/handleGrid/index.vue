@@ -1,8 +1,8 @@
 <template>
   <div class="row">
     <section id="panel-editor-component" class="full-width">
-      <draggable class="row q-col-gutter-md" v-model="orderedItems" group="components" @update="updateSortOrder">
-        <div :class="element[gridPosField]" v-for="element in orderedItems" :key="element.id">
+      <draggable class="row q-col-gutter-md" v-model="items" group="components" @update="updateSortOrder">
+        <div :class="element[gridPosField]" v-for="element in items" :key="element.id">
           <div class="panel-editor-component__component">
             <div class="absolute-right q-ma-sm">
               <q-btn v-if="element[gridPosField]" icon="fa-regular fa-objects-column" outline round color="cyan" size="10px">
@@ -21,10 +21,23 @@
               </q-btn>
             </div>
             {{ element[titleField] }}
+            <q-btn v-if="canAddNewItem" class="add-btn" unelevated no-caps rounded color="cyan" @click="addItem(element)" >
+              <div class="row items-center no-wrap">
+                <q-icon left name="fa-regular fa-grid-2-plus" size="xs" />
+                <div class="text-center">
+                  Añadir
+                </div>
+              </div>
+            </q-btn>
           </div>
-          <!--<button @click="addItem(element)">Añade un bloque</button>-->
         </div>
       </draggable>
+      <div v-if="canAddNewItem && value.length == 0" class="add-new-item" @click="addItem()">
+        <div class="text-center q-pa-lg">
+          <q-icon name="fa-regular fa-grid-2-plus" size="60px" color="warning"/>
+          <div class="q-mt-md text-h5 text-blue-grey">Añade un nuevo item</div>
+        </div>
+      </div>
     </section>
   </div>
 </template>
@@ -52,6 +65,10 @@ export default defineComponent({
     titleField: {
       type: String,
       default: 'title'
+    },
+    canAddNewItem: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -80,4 +97,16 @@ export default defineComponent({
     align-items: center;
     justify-content: center;
     border: dashed 3px $blue-grey;
+
+    .add-btn
+      position absolute;
+      bottom: -15%;
+      left: 50%;
+      transform: translate(-50%);
+
+  .add-new-item
+    display grid;
+    place-content center;
+    height 100%;
+    cursor pointer;
 </style>
