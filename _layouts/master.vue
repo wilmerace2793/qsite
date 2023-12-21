@@ -66,7 +66,7 @@ import footerPanel from '@imagina/qsite/_components/panel/footer'
 //Components
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
 import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
-import Alert from '@imagina/qoffline/_components/Alert.vue'
+import Alert from '@imagina/qoffline/_components/alert.vue'
 
 export default {
   name: "MasterLayout",
