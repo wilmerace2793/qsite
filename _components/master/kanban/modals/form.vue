@@ -105,7 +105,7 @@ export default {
             config: {
               filterByQuery: true,
               options: {
-                label: 'title', value: 'id'
+                label: 'fullName', value: 'id'
               }
             },
             customData: {
@@ -169,7 +169,7 @@ export default {
             config: {
               filterByQuery: true,
               options: {
-                label: 'title', value: 'id',
+                label: 'fullName', value: 'id',
               }
             }
           },
