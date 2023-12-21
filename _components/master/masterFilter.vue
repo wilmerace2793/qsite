@@ -1,4 +1,13 @@
 <template>
+  <q-dialog
+      id="drawerFilterMaster"
+      v-model="show"
+      persistent
+      maximized
+      position="right"
+      v-if="filter.load"
+    >
+  <q-card style="width: 350px;">
   <div id="masterFilterComponent" v-if="filter">
     <!-- Header -->
     <div id="masterFilterContent">
@@ -39,13 +48,13 @@
               </div>
               <!--Input search-->
               <dynamic-field v-model="filterValues.search"
-                             :field="{...filter.fields.search, props : {debounce : '0'}}"/>
+                             :field="{...filter.fields.search, props : {debounce : '0'}}" :enableCache="dynamicFieldCache" />
             </div>
             <!--Date-->
             <div v-if="filter.fields && filter.fields.date" class="q-mb-sm">
               <!--Fields date-->
               <dynamic-field v-for="(fieldDate, key) in dateFields" :key="key" :field="fieldDate" class="q-mb-sm"
-                             v-model="filterValues.date[fieldDate.name || key]"/>
+                             v-model="filterValues.date[fieldDate.name || key]" :enableCache="dynamicFieldCache" />
             </div>
             <!--Pagination-->
             <div v-if="filter.fields && filter.fields.pagination" class="q-mb-sm">
@@ -56,11 +65,11 @@
               </div>
               <!--Fields pagination-->
               <dynamic-field v-for="(fieldPagination, key) in paginationFields" :field="fieldPagination" class="q-mb-sm"
-                             v-model="pagination[fieldPagination.name || key]" :key="key"/>
+                             v-model="pagination[fieldPagination.name || key]" :key="key" :enableCache="dynamicFieldCache" />
             </div>
             <!--others Fields-->
             <dynamic-field v-for="(field, key) in filter.fields" :key="key" v-model="filterValues[field.name || key]"
-                           v-if="['search','pagination'].indexOf(key) == -1" class="q-mb-sm" :field="field"
+                           v-if="['search','pagination'].indexOf(key) == -1" class="q-mb-sm" :field="field" :enableCache="dynamicFieldCache"
                            @inputReadOnly="data => $set(readOnlyData, (field.name || key), data)"/>
           </div>
         </q-tab-panel>
@@ -74,10 +83,32 @@
              @click="emitFilter(), $eventBus.$emit('toggleMasterDrawer','filter')"/>
     </div>
   </div>
+  </q-card>
+    </q-dialog>
 </template>
 <script>
 export default {
-  props: {},
+  inject: {
+    filterPlugin: {
+      from: 'filterPlugin',
+      default: {
+        name: false,
+        fields: {},
+        values: {},
+        callBack: false,
+        pagination: {},
+        load: false,
+        hasValues: false,
+        storeFilter: false,
+      }
+    }
+  },
+  props : {
+    show: {
+      type: Boolean,
+      default: () => false,
+    },
+  },
   components: {},
   watch: {
     '$filter': {
@@ -96,23 +127,23 @@ export default {
     '$route.name': {
       deep: true,
       handler: function (newValue) {
-        this.$filter.reset()
+        this.filterPlugin.reset()
       }
     },
     readOnlyData: {
       deep: true,
       handler: async function () {
-        if(this.$filter.storeFilter && this.currentUrlFilter.length > 0 ) {
+        if(this.filterPlugin.storeFilter && this.currentUrlFilter.length > 0 ) {
           const obj = await this.$helper.convertStringToObject();
           Object.keys(this.readOnlyData).forEach((key) => {
             if(obj.hasOwnProperty(key)) {
               this.readOnlyData[key].value = obj[key];
             }
           })
-          this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData))
+          this.$set(this.filterPlugin, 'readValues', this.$clone(this.readOnlyData))
           return;
         }
-        this.$root.$emit('page.data.filter.read', this.$clone(this.readOnlyData));
+        this.$set(this.filterPlugin, 'readValues', this.$clone(this.readOnlyData))
       }
     }
   },
@@ -132,16 +163,17 @@ export default {
       pagination: {},
       readOnlyData: {},
       currentUrlFilter: '',
+      dynamicFieldCache: true
     }
   },
   computed: {
     filter() {
-      if(this.$filter.storeFilter && this.currentUrlFilter.length > 0) {
+      if(this.filterPlugin.storeFilter && this.currentUrlFilter.length > 0) {
         this.filterValues = this.$helper.convertStringToObject();
       }
-      if (!this.$filter.storeFilter && this.$filter.values) this.filterValues = this.$clone(this.$filter.values)
-      if (this.$filter.pagination) this.pagination = this.$clone(this.$filter.pagination)
-      return this.$filter
+      if (!this.filterPlugin.storeFilter && this.filterPlugin.values) this.filterValues = this.$clone(this.filterPlugin.values)
+      if (this.filterPlugin.pagination) this.pagination = this.$clone(this.filterPlugin.pagination)
+      return this.filterPlugin
     },
     dateFields() {
       let filterDate = this.$clone(this.filterValues.date)
@@ -247,7 +279,7 @@ export default {
   },
   methods: {
     async init() {
-      const filterValues = this.$filter.storeFilter && this.currentUrlFilter.length > 0 
+      const filterValues = this.filterPlugin.storeFilter && this.currentUrlFilter.length > 0
         ? await this.$helper.convertStringToObject() 
         : this.filterValues;
       this.filterValues = filterValues || {};
@@ -256,7 +288,7 @@ export default {
     //Emit filter
     async emitFilter(filterBtn = false) {
       if(!filterBtn) {
-        if(this.$filter.storeFilter) {
+        if(this.filterPlugin.storeFilter) {
           const objUrl = await this.$helper.convertStringToObject();
           const type = objUrl.type ? {type: objUrl.type} : {};
           const date = objUrl.dateStart && objUrl.dateEnd 
@@ -267,8 +299,8 @@ export default {
         this.currentUrlFilter = '';
       }
       this.changeDate();
-      this.$filter.addValues(this.filterValues);
-      if(this.$filter.storeFilter) {
+      this.filterPlugin.addValues(this.filterValues);
+      if(this.filterPlugin.storeFilter) {
         this.mutateCurrentURL();
       };
       //Emit Filter
@@ -282,7 +314,7 @@ export default {
       try {
         let paramsUrl = '';
         Object.keys(this.filterValues).forEach((item, index) => {
-          if(this.$filter.fields.hasOwnProperty(item)) {
+          if(this.filterPlugin.fields.hasOwnProperty(item)) {
             if(index === 0) {
               paramsUrl += this.validateObjectFilter('?', item);
             } else {

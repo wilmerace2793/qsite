@@ -1,5 +1,5 @@
 <template>
-  <master-modal
+  <superModal
       v-model="show"
       :persistent="true"
       customPosition
@@ -31,9 +31,10 @@
         </div>
       </div>
     </div>
-  </master-modal>
+  </superModal>
 </template>
 <script>
+import superModal from '@imagina/qsite/_components/master/superModal/view';
 export default {
   props: {
     funnelId: {
@@ -64,6 +65,9 @@ export default {
       default: () => false,
     },
   },
+  components: {
+    superModal
+  },
   data() {
     return {
       show: false,
@@ -85,36 +89,15 @@ export default {
     formFields() {
       const userData = this.$store.state.quserAuth.userData;
       return {
-        createdBy: {
-          value: null,
-          type: 'crud',
-          permission: 'requestable.requestables.edit-created-by',
-          props: {
-            crudType: 'select',
-            crudData: import('@imagina/quser/_crud/users'),
-            crudProps: {
-              label: this.$tr('isite.cms.form.createdBy'),
-              rules: [
-                val => !!val || this.$tr('isite.cms.message.fieldRequired')
-              ],
-            },
-            config: {
-              filterByQuery: true,
-              options: {
-                label: 'fullName', value: 'id'
-              }
-            }
-          },
-        },
-        requestedBy: {
+         requestedById: {
           value: null,
           type: 'crud',
           permission: "requestable.requestables.filter-requested-by",
           props: {
             crudType: 'select',
-            crudData: import('@imagina/quser/_crud/users'),
+            crudData: import('@imagina/qrequestable/_crud/sources'),
             crudProps: {
-              label: this.$tr('isite.cms.form.requestedBy'),
+              label: this.$tr('requestable.cms.requestables.table.requestedBy'),
               rules: [
                 val => !!val || this.$tr('isite.cms.message.fieldRequired')
               ],
@@ -122,7 +105,7 @@ export default {
             config: {
               filterByQuery: true,
               options: {
-                label: 'fullName', value: 'id'
+                label: 'title', value: 'id'
               }
             },
             customData: {
@@ -150,6 +133,48 @@ export default {
             }
           },
         },
+        sourceId: {
+          value: this.$store.state.quserAuth.userId,
+          type: 'crud',
+          permission: 'requestable.requestables.edit-created-by',
+          props: {
+            crudType: 'select',
+            crudData: import('@imagina/qrequestable/_crud/sources'),
+            crudProps: {
+              label: this.$tr('requestable.cms.requestables.table.createdBy'),
+              rules: [
+                val => !!val || this.$tr('isite.cms.message.fieldRequired')
+              ],
+            },
+            config: {
+              filterByQuery: true,
+              options: {
+                label: 'title', value: 'id'
+              }
+            }
+          },
+        },
+        responsibleId: {
+          value: null,
+          type: 'crud',
+          permission: 'requestable.requestables.edit-created-by',
+          props: {
+            crudType: 'select',
+            crudData: import('@imagina/qrequestable/_crud/sources'),
+            crudProps: {
+              label: this.$tr('requestable.cms.label.responsible'),
+              rules: [
+                val => !!val || this.$tr('isite.cms.message.fieldRequired')
+              ],
+            },
+            config: {
+              filterByQuery: true,
+              options: {
+                label: 'title', value: 'id',
+              }
+            }
+          },
+        }
       }
     },
   },
@@ -183,7 +208,7 @@ export default {
           type: this.funnelForm.type,
           statusId: this.statusId,
           ...this.dynamicFieldForm,
-          requestedBy: this.dynamicFieldForm.requestedBy || this.$store.state.quserAuth.userId
+          requestedById: this.dynamicFieldForm.requestedById || this.$store.state.quserAuth.userId
         };
         await this.$crud.create(route.apiRoute, form);
         await this.addCard(this.statusId);

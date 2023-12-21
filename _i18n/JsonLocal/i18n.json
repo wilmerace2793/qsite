@@ -1349,6 +1349,7 @@
         "perzonalizationTitle": "Welcome to the editor of your website",
         "perzonalizationDescription": "Easily change the logo, colors and the main information of your website",
         "label": {
+          "resposible": "Responsible",
           "clickToAction": "Click to Action",
           "informationTitle": "Site Information",
           "top": "Top",
@@ -1702,10 +1703,13 @@
           "createNewAccount": "Create new account",
           "continue": "Continue",
           "plan": "Plan",
+          "analytics": "Analytics",
+          "automationRules": "Automation rules",
           "copyEmbedHtml": "Copy HTML",
           "createChildForm": "Create child form",
           "copy": "Copy",
           "insert": "Insert",
+          "phoneNumber": "Phone number",
           "quickLook": "Quick look"
         },
         "message": {
@@ -1787,7 +1791,8 @@
           "selectedTemplate": "Selected template",
           "noTemplates": "No templates",
           "recordModalTitle": "Congratulations on completing your account registration!",
-          "recordModalMessage": "<p>You've taken the first important step by signing up, and now we're ready to take you through our simple process to customize and create the perfect website that reflects your vision and goals.</p><p>Welcome and go ahead! 👋</p>"
+          "recordModalMessage": "<p>You've taken the first important step by signing up, and now we're ready to take you through our simple process to customize and create the perfect website that reflects your vision and goals.</p><p>Welcome and go ahead! 👋</p>",
+          "emailInvalid": "Email invalid"
         },
         "form": {
           "whatsappNumber": "Número de Whatsapp",
@@ -3211,6 +3216,7 @@
         "perzonalizationTitle": "Bienvenid@ al editor de tu sitio web",
         "perzonalizationDescription": "De manera fácil, cambia el logo, colores y la información principal de tu página web",
         "label": {
+          "resposible": "Responsable",
           "clickToAction": "Click para Acción",
           "top": "Arriba",
           "bottom": "Abajo",
@@ -3562,10 +3568,13 @@
           "createNewAccount": "Crear Nueva Cuenta",
           "continue": "Continuar",
           "plan": "Plan",
+          "analytics": "Analytics",
+          "automationRules": "Reglas de automatizacións",
           "copyEmbedHtml": "Copiar HTML",
           "createChildForm": "Crear formulario hijo",
           "copy": "Copiar",
           "insert": "Insertar",
+          "phoneNumber": "Número de teléfono",
           "quickLook": "Vistazo rápido"
 
         },
@@ -3648,7 +3657,8 @@
           "selectedTemplate": "Plantilla seleccionada",
           "noTemplates": "No existen plantillas",
           "recordModalTitle": "¡Felicidades por completar el registro de tu cuenta!",
-          "recordModalMessage": "<p>Has dado el primer paso importante al registrarte, y ahora estamos listos para llevarte a  través de nuestro sencillo proceso para personalizar y crear el sitio web perfecto que refleje tu visión y objetivos.</p><p> ¡Bienvenid@ y adelante! 👋</p>"
+          "recordModalMessage": "<p>Has dado el primer paso importante al registrarte, y ahora estamos listos para llevarte a  través de nuestro sencillo proceso para personalizar y crear el sitio web perfecto que refleje tu visión y objetivos.</p><p> ¡Bienvenid@ y adelante! 👋</p>",
+          "emailInvalid": "Correo invalido"
         },
         "form": {
           "whatsappNumber": "Número de Whatsapp",
