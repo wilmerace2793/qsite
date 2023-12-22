@@ -1,7 +1,7 @@
 <template>
   <div v-show="showMenu">
     <div id="listMenu">
-      <q-no-ssr v-for="(item,key) in menuData" :key="key" :class="`content-item ${inLine ? 'inline-block' : ''}`">
+      <q-no-ssr v-for="(item,key) in menuData" :key="key" :class="`content-item ${inLine ? 'inline-block' : ''} ${showSelected ? 'select-items': ''}`">
         <!--ToolTip-->
         <q-tooltip v-if="withTooltip" v-bind="tooltipProps || {}">{{
             translatable ? $tr(item.title) : item.title
@@ -45,7 +45,8 @@ export default {
     inLine: {type: Boolean, default: false},
     group: {type: Boolean, defualt: false},
     tooltipProps: {type: Object, default: null},
-    rightIcon: {type: Boolean, default: false}
+    rightIcon: {type: Boolean, default: false},
+    showSelected: {type: Boolean, default: true}
   },
   setup(props, {emit}) {
     return controller(props, emit)
@@ -68,6 +69,36 @@ export default {
 
     .q-icon
       font-size 16px
+
+  .select-items
+    .q-expansion-item__container
+      .q-expansion-item__content
+        .q-item
+          cursor pointer
+          color $grey-9
+
+          .q-item__section--avatar
+            min-width 20px
+            padding-right 10px
+
+            .q-icon
+              font-size 16px
+              color $blue-grey
+
+          &:hover
+            background-color $grey-4
+            color $primary
+
+            .q-icon
+              color $primary
+              font-size 22px
+
+          &.item-is-active
+            background-color $custom-accent-color
+
+            .q-item__section, .q-icon
+              color $primary
+
+          .expansion-selected
+            background-color $primary
 </style>
-
-

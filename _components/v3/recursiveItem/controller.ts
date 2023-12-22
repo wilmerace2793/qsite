@@ -1,4 +1,4 @@
-import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance} from "vue";
+import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance, onUnmounted} from "vue";
 import store from '@imagina/qsite/_components/v3/recursiveItem/store'
 
 export default function controller(props: any, emit: any) {
@@ -14,7 +14,6 @@ export default function controller(props: any, emit: any) {
     showMenu: false,
     listUid: proxy.$uid().toString(),
     props: {},
-    itemSelected: {}
     // Key: Default Value
   })
 
@@ -140,8 +139,11 @@ export default function controller(props: any, emit: any) {
 
       return response
     },
-    selectItem(item) {
-      if(item.action) store.itemSelected = item
+    async selectItem(item) {
+      if(item.action) {
+        const change = await item.action(item)
+        if(change) store.itemSelected = item
+      }
     }
   }
 
@@ -154,6 +156,10 @@ export default function controller(props: any, emit: any) {
     proxy.$nextTick(function () {
       methods.init()
     })
+  })
+
+  onUnmounted(() => {
+    store.itemSelected = {}
   })
 
   // Watch
