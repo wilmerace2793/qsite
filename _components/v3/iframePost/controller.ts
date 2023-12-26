@@ -8,8 +8,15 @@ export default function controller(props: any, emit: any) {
     // refKey: ref(defaultValue)
   }
 
+  interface StateProps {
+    loading: Boolean,
+    count: number,
+    actionUrl: any,
+    inputsForm: HTMLInputElement[]
+  }
+
   // States
-  const state = reactive({
+  const state = reactive<StateProps>({
     loading: false,
     count: 0,
     actionUrl: null,
@@ -24,16 +31,13 @@ export default function controller(props: any, emit: any) {
   const methods = {
     loadIframe(actionUrl, attributes) {
       state.loading = true
-      //@ts-ignore
       state.actionUrl = proxy.$clone(actionUrl)
-      let newInputsForm = []
+      let newInputsForm: HTMLInputElement[] = []
       Object.keys(attributes).forEach(field => {
-        //@ts-ignore
         const input = document.createElement("input");
         input.name = field;
         input.value = JSON.stringify(attributes[field]);
         input.type = "hidden";
-        //@ts-ignore
         newInputsForm.push(input);
       });
       state.inputsForm = newInputsForm
