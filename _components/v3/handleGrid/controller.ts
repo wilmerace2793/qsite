@@ -32,9 +32,7 @@ export default function controller(props: any, emit: any) {
     },
     updateSortOrder() {
       // Update sort_order based on the new position in the array
-      //@ts-ignore
       const orderedItems = !props.orderBy ? state.items : state.items.map((item, index) => ({
-        //@ts-ignore
         ...item,
         [props.orderBy]: index + 1
       }));
@@ -47,7 +45,7 @@ export default function controller(props: any, emit: any) {
     },
     onCreate(index, newItem) {
       if(index >= 0) {
-        const newArray: any = proxy.$clone(state.items)
+        const newArray = proxy.$clone<any[]>(state.items)
         newArray.splice(index + 1, 0, newItem)
         // Insert the new object at the specified position
         state.items = newArray;
