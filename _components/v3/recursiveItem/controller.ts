@@ -83,6 +83,7 @@ export default function controller(props: any, emit: any) {
     checkCollapsibles() {
       let collapsibles = proxy.$el.getElementsByClassName('q-expansion-item')
 
+      //@ts-ignore
       for (let group of collapsibles) {
         let items = group.getElementsByClassName('single-item')
         if (!items.length) group.style.display = 'none'
