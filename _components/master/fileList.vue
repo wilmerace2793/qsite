@@ -525,7 +525,7 @@ export default {
       if(msFileExtensions.includes(file.extension)){
         this.modalDocs = {
           show: true,
-          src: file.path,
+          src: file.url,
           fileName: file.filename
         }
       }
@@ -533,7 +533,7 @@ export default {
       if (file.extension == 'pdf') {
         this.modalPdf = {
           show: true,
-          src: file.path,
+          src: file.url,
           fileName: file.filename
         }
       }
@@ -541,7 +541,7 @@ export default {
       if (file.extension == 'mp3') {
         this.modalAudio = {
           show: true,
-          src: file.path,
+          src: file.url,
           fileName: file.filename
         }
       }
@@ -549,7 +549,7 @@ export default {
       if (file.extension == 'mp4') {
         this.modalVideo = {
           show: true,
-          src: file.path,
+          src: file.url,
           fileName: file.filename
         }
       }
@@ -587,7 +587,7 @@ export default {
       this.$emit('selected', this.$clone(this.selectedFiles))
     },
     downloadFile(file) {
-      const fileUrl = file.path;
+      const fileUrl = file.url;
       const fileName = file.filename;
       const downloadLink = document.createElement('a');
       downloadLink.href = fileUrl;
