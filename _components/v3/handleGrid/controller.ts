@@ -41,7 +41,7 @@ export default function controller(props: any, emit: any) {
     },
     addItem(currentItem) {
       const index = state.items.findIndex(i => i.id === currentItem.id);
-      emit('create', { onCreate: (val) => methods.onCreate(index, val) })
+      emit('create', { index, onCreate: (val) => methods.onCreate(index, val) })
     },
     onCreate(index, newItem) {
       if(index >= 0) {
