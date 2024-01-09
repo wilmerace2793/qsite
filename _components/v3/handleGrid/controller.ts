@@ -8,8 +8,12 @@ export default function controller(props: any, emit: any) {
     // refKey: ref(defaultValue)
   }
 
+  interface StateProps {
+    items: any[]
+  }
+
   // States
-  const state = reactive({
+  const state = reactive<StateProps>({
     items: []
   })
 
@@ -28,9 +32,7 @@ export default function controller(props: any, emit: any) {
     },
     updateSortOrder() {
       // Update sort_order based on the new position in the array
-      //@ts-ignore
       const orderedItems = !props.orderBy ? state.items : state.items.map((item, index) => ({
-        //@ts-ignore
         ...item,
         [props.orderBy]: index + 1
       }));
@@ -39,11 +41,11 @@ export default function controller(props: any, emit: any) {
     },
     addItem(currentItem) {
       const index = state.items.findIndex(i => i.id === currentItem.id);
-      emit('create', { onCreate: (val) => methods.onCreate(index, val) })
+      emit('create', { index, onCreate: (val) => methods.onCreate(index, val) })
     },
     onCreate(index, newItem) {
       if(index >= 0) {
-        const newArray = proxy.$clone(state.items)
+        const newArray = proxy.$clone<any[]>(state.items)
         newArray.splice(index + 1, 0, newItem)
         // Insert the new object at the specified position
         state.items = newArray;
@@ -53,7 +55,7 @@ export default function controller(props: any, emit: any) {
 
       methods.updateSortOrder();
     },
-    setState(items) {
+    setState(items = null) {
       const data = items ?? props.value
       state.items = methods.orderedItems(data)
     }

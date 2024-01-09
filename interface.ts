@@ -1,5 +1,6 @@
 import {openURL, uid} from "quasar";
 import Vue from 'vue';
+import {AxiosInstance} from "axios";
 
 declare module 'vue/types/vue' {
   export interface Vue {
@@ -13,12 +14,14 @@ declare module 'vue/types/vue' {
     $tour: any,
     $hook: any,
     $notification: any,
-    $clone: (dataToClone: any) => {},
+    $clone: <T>(dataToClone: T) => T,
     $crud: any,
     $openUrl: typeof openURL,
     $eventBus: any,
     $filter: any,
     $uid: typeof uid,
-    $tr: any
+    $tr: any,
+    $axios: AxiosInstance,
+    $auth: any
   }
 }

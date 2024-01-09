@@ -1092,3 +1092,121 @@ export const componentShareLink = {
     }
   ]
 }
+
+export const componentHandleGrid = {
+  "tabs": [
+    {
+      "title": "Props",
+      "table": {
+        "data": [
+          [
+            'value',
+            {
+              type: <code>Array</code>,
+              default: <code>[]</code>,
+              description: "Represents the list of elements that will be displayed in the grid. This property is used to set the initial state of the component."
+            },
+          ],
+          [
+            'orderBy',
+            {
+              type: <code>String</code>,
+              default: <code>null</code>,
+              description: "Indicates the property by which the list of elements in the grid should be sorted. If this property is set, the elements will be sorted based on the value of this property."
+            },
+          ],
+          [
+            'gridPosField',
+            {
+              type: <code>String</code>,
+              default: <code>'gridPosition'</code>,
+              description: "Defines the name of the field that stores the position in the grid for each element. This field is used in editing the position of the elements."
+            },
+          ],
+          [
+            'titleField',
+            {
+              type: <code>String</code>,
+              default: <code>'title'</code>,
+              description: "Defines the name of the field that stores the title of each element. This field is used to display the title of the elements in the interface."
+            },
+          ],
+          [
+            'canAddNewItem',
+            {
+              type: <code>String</code>,
+              default: <code>'gridPosition'</code>,
+              description: <>Indicates whether adding new elements to the grid is allowed. If set to <code>true</code>, a button to add new elements is displayed.</>
+            },
+          ],
+        ]
+      }
+    },
+    {
+      "title": "States",
+      "table": {
+        "data": [
+          [
+            'items',
+            { type: <code>Array(any)</code>, description: <>Stores the elements of the grid that come from the <code>props</code> since it is a reactive element.</>},
+          ],
+        ]
+      }
+    },
+    {
+      "title": "Methods",
+      "table": {
+        "data": [
+          [
+            'orderedItems',
+            {
+              params: <code>{`(data: Array)`}</code>,
+              description: <>Sorts the elements based on the property specified in <code>orderBy</code>. If <code>orderBy</code> does not exist, it returns them without sorting.</>
+            },
+          ],
+          [
+            'updateSortOrder',
+            { description: <>Updates the order of the elements, emits an <code>input</code> event to notify the parent component, and occurs whenever there is an update in the <code>draggable</code>.</>},
+          ],
+          [
+            'addItem',
+            {
+              params: <code>{`(currentItem: Object)`}</code>,
+              description: <>Adds a new element after the selected element and emits a <code>create</code> event.</>
+            },
+          ],
+          [
+            'onCreate',
+            {
+              params: <code>{`(index: number, newItem: Object)`}</code>,
+              description: "Handles the creation of a new element and updates the array accordingly."
+            },
+          ],
+          [
+            'setState',
+            {
+              params: <code>{`(items: Array)`}</code>,
+              default: <code>null</code>,
+              description: "Sets the initial state of the component, sorting the elements if necessary."
+            },
+          ],
+        ]
+      }
+    },
+    {
+      "title": "Emits",
+      "table": {
+        "data": [
+          [
+            'input',
+            { description: <>Notifies of any modifications to the <code>value</code> props that were passed.</>},
+          ],
+          [
+            'create',
+            { description: <>Notifies the parent when a new object is being added to the <code>array</code>.</>},
+          ],
+        ]
+      }
+    },
+  ]
+}
