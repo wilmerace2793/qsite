@@ -23,8 +23,8 @@
         <q-expansion-item v-else-if="checkItemMultiple(item)" :icon="item.icon" :key="key"
                           :label="translatable ? $tr(item.label) : item.label"
                           v-bind="group ? {group : listUid} : {}"
-                          :header-class="selectedChildren(item)" :default-opened="selectedChildren(item) ? true : false"
-                          :class="selectedChildren(item) ? 'expansion-selected' : ''">
+                          :header-class="`${item.headerClass} ${selectedChildren(item)}`" :default-opened="selectedChildren(item) ? true : false"
+                          :class="`${item.customClass} ${selectedChildren(item) ? 'expansion-selected' : ''}`">
           <!--Recursive item-->
           <recursive-menu :translatable="translatable" :show-icons="showIcons" :key="key" :menu="item.children"
                           :group="group" :right-icon="rightIcon" />
