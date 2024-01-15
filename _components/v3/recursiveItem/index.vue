@@ -4,7 +4,7 @@
       <q-no-ssr v-for="(item,key) in menuData" :key="key" :class="`content-item ${inLine ? 'inline-block' : ''} ${showSelected ? 'select-items': ''}`">
         <!--ToolTip-->
         <q-tooltip v-if="withTooltip" v-bind="tooltipProps || {}">{{
-            translatable ? $tr(item.title) : item.title
+            translatable ? $tr(item.label) : item.label
           }}
         </q-tooltip>
         <!--Single Item-->
@@ -13,16 +13,18 @@
           <q-item-section v-if="item.icon && showIcons" avatar>
             <q-icon :name="item.icon"/>
           </q-item-section>
-          <q-item-section class="text-capitalize"> {{ translatable ? $tr(item.title) : item.title }}
+          <q-item-section class="text-capitalize">
+            <q-item-label>{{ translatable ? $tr(item.label) : item.label }}</q-item-label>
+            <q-item-label caption lines="2">{{ translatable ? $tr(item.subLabel) : item.subLabel }}</q-item-label>
           </q-item-section>
         </q-item>
 
         <!-- Dropdwon Item -->
         <q-expansion-item v-else-if="checkItemMultiple(item)" :icon="item.icon" :key="key"
-                          :label="translatable ? $tr(item.title) : item.title"
+                          :label="translatable ? $tr(item.label) : item.label"
                           v-bind="group ? {group : listUid} : {}"
-                          :header-class="selectedChildren(item)" :default-opened="selectedChildren(item) ? true : false"
-                          :class="selectedChildren(item) ? 'expansion-selected' : ''">
+                          :header-class="`${item.headerClass} ${selectedChildren(item)}`" :default-opened="selectedChildren(item) ? true : false"
+                          :class="`${item.customClass} ${selectedChildren(item) ? 'expansion-selected' : ''}`">
           <!--Recursive item-->
           <recursive-menu :translatable="translatable" :show-icons="showIcons" :key="key" :menu="item.children"
                           :group="group" :right-icon="rightIcon" />
