@@ -15,6 +15,8 @@ import CKEditor from 'ckeditor4-vue';
 import pluginCollapsibleItem from '@imagina/qsite/_plugins/ckEditorPlugins/collapsibleItem/plugin'
 import pluginGrid from '@imagina/qsite/_plugins/ckEditorPlugins/grid/plugin'
 import pluginEmbed from '@imagina/qsite/_plugins/ckEditorPlugins/embed/plugin'
+import pluginFa from '@imagina/qsite/_plugins/ckEditorPlugins/ckeditorfa-fa6/plugin'
+
 
 export default {
   props: {
@@ -44,8 +46,9 @@ export default {
       configEditor: {
         allowedContent: true,
         filebrowserBrowseUrl: this.$router.resolve({name: 'app.media.select'}).href,
-        extraPlugins: 'colorbutton,colordialog,justify,collapsibleItem,font,btgrid,simplebox',
+        extraPlugins: 'colorbutton,colordialog,justify,collapsibleItem,font,btgrid,simplebox,ckeditorfa',
         embed_provider: '//iframe.ly/api/oembed?url={url}&callback={callback}&api_key=7e0aa12b0cd2c01651346b',
+        contentsCss: 'https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css'
       }
     }
   },
@@ -64,6 +67,8 @@ export default {
       pluginCollapsibleItem.load(CKEDITOR)
       pluginGrid.load(CKEDITOR);
       pluginEmbed.load(CKEDITOR);
+      pluginFa.load(CKEDITOR);
+      CKEDITOR.dtd.$removeEmpty['span'] = false;
     }
   }
 }
@@ -85,5 +90,57 @@ export default {
   #iconToolbarEmbed
     background-image url("../../_plugins/ckEditorPlugins/embed/embed.png")
 
+  .cke_button__ckeditorfa_icon
+    background-image url("../../_plugins/ckEditorPlugins/ckeditorfa-fa6/icons/ckeditorfa.png") !important
 
+
+/* ckeditor-fa pluging */
+#ckeditor-fa-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px
+}
+
+#ckeditor-fa-icons{
+  text-align:center;
+  white-space:normal;
+  width:100%;
+  height: 400px;
+  padding-top : 20px;
+  padding-bottom: 20px;
+  overflow:auto
+  background-color: #f0f1f3;
+}
+#ckeditor-fa-icons button {
+  display:inline-block;
+  width: 100px;
+  padding: 5px;
+  text-align:center;
+  vertical-align:top
+  background-color: #ffffff;
+  border-radius: 4px !important
+  border: 2px solid #f0f1f3 !important
+}
+
+#ckeditor-fa-icons button:hover {
+  /* transform: scale(1.2) */
+  transition: all 0.1s ease-in-out;
+  border: 2px solid $primary !important
+}
+
+#ckeditor-fa-icons button span{
+  font-size: 28px;
+  display:block;
+  text-align:center
+}
+
+#ckeditor-fa-icons button p {
+  font-size: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis
+}
+
+.faSelect{display:block !important}
 </style>
