@@ -460,6 +460,10 @@ export const dynamicFieldProps = [
   [
     'sortOptions',
     { description: 'In the case of type:"select/treeSelect", by default the options are ordered alphabetically, so if you set this prop to FALSE you can disable this.' }
+  ],[
+    'imageField',
+    { description: 'In the case of type:"select/treeSelect", Allows to show an image before the item label, You have to set this prop with the path of the item atribute, example: "mediaFiles.mainimage.url"' }
+
   ]
 ]
 
