@@ -17,6 +17,9 @@ import pluginGrid from '@imagina/qsite/_plugins/ckEditorPlugins/grid/plugin'
 import pluginEmbed from '@imagina/qsite/_plugins/ckEditorPlugins/embed/plugin'
 import pluginFa from '@imagina/qsite/_plugins/ckEditorPlugins/ckeditorfa-fa6/plugin'
 
+/* range 7px to 36px*/
+let fontSizes =  Array.from({length: 30}, (_, index) => `${7+index * 1}/${7 +index * 1}px;`)
+fontSizes.push('48/48px;72/72px;96/96px;')
 
 export default {
   props: {
@@ -48,7 +51,8 @@ export default {
         filebrowserBrowseUrl: this.$router.resolve({name: 'app.media.select'}).href,
         extraPlugins: 'colorbutton,colordialog,justify,collapsibleItem,font,btgrid,simplebox,ckeditorfa',
         embed_provider: '//iframe.ly/api/oembed?url={url}&callback={callback}&api_key=7e0aa12b0cd2c01651346b',
-        contentsCss: 'https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css'
+        contentsCss: 'https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css',
+        fontSize_sizes: fontSizes.join('')
       }
     }
   },
