@@ -165,6 +165,15 @@
               <q-item-section v-else-if="scope.opt.icon" avatar>
                 <q-icon size="20px" :name="scope.opt.icon" class="q-mr-sm"/>
               </q-item-section>
+              <!--Image-->
+              <q-item-section avatar v-if="field.props.imageField">
+                <q-avatar>
+                  <img
+                    :src="getImageField(scope.opt.id)"
+                    :style="'height: 24px; width: 24px; border-radius: 50%;'"
+                  >
+                </q-avatar>
+              </q-item-section>
               <!--Labels-->
               <q-item-section>
                 <div :class="{'tw-flex': field.props.selectColor }">
@@ -206,6 +215,18 @@
                  v-bind="fieldProps.fieldComponent" :class="`${field.help ? 'treeselect-dynamic-field' : ''}`">
           <tree-select v-model="responseValue" :options="formatOptions" placeholder="" v-bind="fieldProps.field"
                        @select="(node, instanceId) => $emit('select', {node, instanceId})">
+              <template slot="option-label" slot-scope="{node}">
+                <label>
+                  <!-- Image -->
+                  <q-img
+                    class="q-mr-xs"
+                    v-if="field.props.imageField"
+                    :src="getImageField(node.id)"
+                    :style="'height: 24px; width: 24px; border-radius: 50%;'"
+                  />
+                  {{ node.label }}
+                </label>
+              </template>
             <!--Before options slot-->
             <template slot="before-list">
               <slot name="before-options"></slot>
@@ -537,7 +558,8 @@ export default {
           ['fullscreen']
         ]
       },
-      sortOptions: true
+      sortOptions: true,
+      imageFields: [],
     }
   },
   computed: {
@@ -1069,6 +1091,7 @@ export default {
           if (item.id || item.id >= 0) item.id = item.id.toString()
           //convert children
           if (item.children) item.children = toString(item.children)
+          this.addImageField(item)
         })
 
         //sort by label
@@ -1459,6 +1482,11 @@ export default {
               this.$helper.setDynamicSelectList(keyData);
             }
             this.rootOptionsData = this.$clone(response.data)
+
+            this.rootOptionsData.forEach(item => { 
+              this.addImageField(item)
+            })
+
             let formatedOptions = []
             //Format response
             response.data = response.data.map((item, index) => ({...item, id: item.id >= 0 ? item.id : (index + 1)}))
@@ -1648,7 +1676,17 @@ export default {
           }
         }
       }
-    }
+    },
+    addImageField(item){
+      if(this.field.props.imageField) {
+        const src = _.get(item, this.field.props.imageField, '')
+        this.imageFields.push({id: item.id, src: src})
+      }
+    },
+    getImageField(id){      
+      const item = this.imageFields.find((e) => e.id == id )
+      return item.src      
+    },
   }
 }
 </script>
