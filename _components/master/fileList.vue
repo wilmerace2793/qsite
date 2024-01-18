@@ -100,7 +100,7 @@
                 <div
                   v-if="itemRow.isImage"
                   class="file-card_img img-as-bg"
-                  :style="`background-image: url('${itemRow.mediumThumb}')`"
+                  :style="`background-image: url('${getImage(itemRow)}')`"
                   @click="markAsSelected($event, itemRow.filename)"
                 >
                   <!--Tooltip-->
@@ -148,7 +148,7 @@
               <div v-else-if="gridType == 'chip'" :class="`file-chip ${draggable ? 'drag-handle' : 'cursor-pointer'}`">
                 <!--Image Preview-->
                 <div v-if="itemRow.isImage" class="file-chip__img img-as-bg" @click="fileAction(itemRow)"
-                     :style="`background-image: url('${itemRow.mediumThumb}')`">
+                     :style="`background-image: url('${getImage(itemRow)}')`">
                 </div>
                 <!--Icon-->
                 <q-icon v-else :name="`fas fa-${itemRow.isFolder ? 'folder' : 'file'}`" class="file-chip__icon"
@@ -188,7 +188,7 @@
             <!--Icon-->
             <q-icon v-if="!props.row.isImage" :name="`fas fa-${props.row.isFolder ? 'folder' : 'file'}`"/>
             <!--Image-->
-            <div class="file-image" v-else :style="`background-image: url('${props.row.mediumThumb}')`"></div>
+            <div class="file-image" v-else :style="`background-image: url('${getImage(props.row)}')`"></div>
             <!--Filename-->
             {{ props.value }}
           </div>
@@ -519,7 +519,8 @@ export default {
 
       //Action if is image
       if (file.isImage) {
-        this.$refs.avatarImage.open(file.mediumThumb)
+        const src = this.getImage(file)
+        this.$refs.avatarImage.open(src)
       }
       //Action if is MS doc
       if(msFileExtensions.includes(file.extension)){
@@ -607,6 +608,10 @@ export default {
         this.table.selected.push(name)
       }
       this.handlerSelectedFiles()
+    },
+    //Get Image Url depends of Disk
+    getImage(file) {
+      return file.disk == "privatemedia" ? file.url : file.mediumThumb
     }
   }
 }
