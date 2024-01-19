@@ -89,6 +89,26 @@ export default {
     formFields() {
       const userData = this.$store.state.quserAuth.userData;
       return {
+        sourceId: {
+          value: null,
+          type: 'crud',
+          props: {
+            crudType: 'select',
+            crudData: import('@imagina/qrequestable/_crud/sources'),
+            crudProps: {
+              label: this.$tr('isite.cms.label.source'),
+              rules: [
+                val => !!val || this.$tr('isite.cms.message.fieldRequired')
+              ],
+            },
+            config: {
+              filterByQuery: true,
+              options: {
+                label: 'title', value: 'id'
+              }
+            }
+          },
+        },
          requestedById: {
           value: null,
           type: 'crud',
@@ -97,7 +117,7 @@ export default {
             crudType: 'select',
             crudData: import('@imagina/quser/_crud/users'),
             crudProps: {
-              label: this.$tr('requestable.cms.requestables.table.requestedBy'),
+              label: this.$tr('isite.cms.form.requestedBy'),
               rules: [
                 val => !!val || this.$tr('isite.cms.message.fieldRequired')
               ],
@@ -129,26 +149,6 @@ export default {
                   data.roles = role ? [role] : []
                   resolve(data)
                 })
-              }
-            }
-          },
-        },
-        sourceId: {
-          value: null,
-          type: 'crud',
-          props: {
-            crudType: 'select',
-            crudData: import('@imagina/qrequestable/_crud/sources'),
-            crudProps: {
-              label: this.$tr('isite.cms.label.source'),
-              rules: [
-                val => !!val || this.$tr('isite.cms.message.fieldRequired')
-              ],
-            },
-            config: {
-              filterByQuery: true,
-              options: {
-                label: 'title', value: 'id'
               }
             }
           },
