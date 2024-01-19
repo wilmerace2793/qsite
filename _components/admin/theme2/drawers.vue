@@ -152,9 +152,9 @@ export default {
         if (drawer != drawerName) {
           if ((drawer == 'menu') && (this.windowSize != 'mobile')) {
             this.miniState = true
-          } else if (drawer == 'recommendation') {
-            this.drawer[drawer] = (this.windowSize == 'mobile') ? false : true
-          } else this.drawer[drawer] = false
+          } else {
+            this.drawer[drawer] = false
+          }
         }
       }
       //Toogle drawer
