@@ -42,9 +42,11 @@
                 </div>
                 <!--Fields-->
                 <div class="row q-col-gutter-x-md q-mb-sm">
-                  <div v-for="(field, key) in block.fields" :key="key"
-                       v-if="(field.type != 'hidden') && (field.vIf != undefined ? field.vIf : true)"
-                       :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)">
+                  <div 
+                    v-for="(field, key) in block.fields" :key="key"
+                    v-if="hidenFields(field)"
+                    :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)"
+                  >
                     <!--fake field-->
                     <div v-if="field.type === 'fileList'">
                       <fileListComponent v-bind="field.files" @selected="files => selectedFile(files)"/>
@@ -194,7 +196,8 @@ export default {
     noResetWithBlocksUpdate: {type: Boolean, default: false},
     boxStyle: {type: Boolean, default: true},
     noSave: {type: Boolean, default: false},
-    withFeedBack: {type: Boolean, default: false}
+    withFeedBack: {type: Boolean, default: false},
+    hideSystemTypeLike: {type: String, default: null},
   },
   watch: {
     value: {
@@ -616,6 +619,13 @@ export default {
     //Returns success text after submit
     successText(){
       return this.formBlocks.successText ?? this.$tr('iforms.cms.feedBack.message')
+    },
+    hidenFields() {
+      return field => (field.type != 'hidden') && 
+                      (field.vIf != undefined ? field.vIf : true) && 
+                      field.visibility != 'internalHidden' && 
+                      (this.hideSystemTypeLike == null || !field.systemType.includes(this.hideSystemTypeLike))
+
     }
   },
   methods: {
