@@ -5,25 +5,34 @@
         <div :class="element[gridPosField]" v-for="element in items" :key="element.id">
           <div class="panel-editor-component__component">
             <div class="absolute-right q-ma-sm">
-              <q-btn v-if="element[gridPosField]" icon="fa-regular fa-objects-column" outline round color="cyan" size="10px">
-                <q-popup-edit
-                    v-model="element[gridPosField]"
-                    :title="element[titleField]"
-                    buttons
-                    :label-set="$tr('isite.cms.label.save')"
-                    :label-cancel="$tr('isite.cms.label.cancel')"
-                    v-slot="scope"
-                >
-                  <dynamic-field v-model="scope.value"
-                                 :field="{type: 'input', props: {autofocus : true, label: $tr('isite.cms.label.gridPosition')}}"/>
-                </q-popup-edit>
-                <q-tooltip>{{$tr('isite.cms.label.gridPosition')}}</q-tooltip>
-              </q-btn>
+              <div class="row q-gutter-xs">
+                <!--Actions-->
+                <q-btn v-for="(action, actIndex) in actions" :key="actIndex" :icon="action.icon"
+                       v-bind="actionButtonProps" @click="action.action(element)">
+                  <q-tooltip>{{ action.label }}</q-tooltip>
+                </q-btn>
+                <!--Grid position action-->
+                <q-btn v-if="element[gridPosField]" v-bind="actionButtonProps">
+                  <q-popup-edit
+                      v-model="element[gridPosField]"
+                      :title="element[titleField]"
+                      buttons
+                      :label-set="$tr('isite.cms.label.save')"
+                      :label-cancel="$tr('isite.cms.label.cancel')"
+                      v-slot="scope"
+                  >
+                    <dynamic-field v-model="scope.value"
+                                   :field="{type: 'input', props: {autofocus : true, label: $tr('isite.cms.label.gridPosition')}}"/>
+                  </q-popup-edit>
+                  <q-tooltip>{{ $tr('isite.cms.label.gridPosition') }}</q-tooltip>
+                </q-btn>
+              </div>
             </div>
             {{ element[titleField] }}
-            <q-btn v-if="canAddNewItem" class="add-btn" unelevated no-caps rounded color="cyan" @click="addItem(element)" >
+            <q-btn v-if="canAddNewItem" class="add-btn" unelevated no-caps rounded color="cyan"
+                   @click="addItem(element)">
               <div class="row items-center no-wrap">
-                <q-icon left name="fa-regular fa-grid-2-plus" size="xs" />
+                <q-icon left name="fa-regular fa-grid-2-plus" size="xs"/>
                 <div class="text-center">
                   Añadir
                 </div>
@@ -69,7 +78,8 @@ export default defineComponent({
     canAddNewItem: {
       type: Boolean,
       default: false
-    }
+    },
+    actions: {type: Object, default: () => ({})}
   },
   components: {
     draggable
