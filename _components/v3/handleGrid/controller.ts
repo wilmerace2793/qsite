@@ -19,6 +19,13 @@ export default function controller(props: any, emit: any) {
 
   // Computed
   const computeds = {
+    actionButtonProps: computed(() => ({
+      icon: 'fa-light fa-objects-column',
+      outline: true,
+      round: true,
+      color: 'cyan',
+      size: '10px'
+    }))
   }
 
   // Methods
@@ -41,10 +48,10 @@ export default function controller(props: any, emit: any) {
     },
     addItem(currentItem) {
       const index = state.items.findIndex(i => i.id === currentItem.id);
-      emit('create', { index, onCreate: (val) => methods.onCreate(index, val) })
+      emit('create', {index, onCreate: (val) => methods.onCreate(index, val)})
     },
     onCreate(index, newItem) {
-      if(index >= 0) {
+      if (index >= 0) {
         const newArray = proxy.$clone<any[]>(state.items)
         newArray.splice(index + 1, 0, newItem)
         // Insert the new object at the specified position
