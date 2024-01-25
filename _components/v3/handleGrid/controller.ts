@@ -65,7 +65,17 @@ export default function controller(props: any, emit: any) {
     setState(items = null) {
       const data = items ?? props.value
       state.items = methods.orderedItems(data)
-    }
+    },
+    //Updated Item
+    updateItem(newValue, keySearch = 'id') {
+      //Search if exist the item
+      const itemIndex = state.items.findIndex(i=> i[keySearch] === newValue.id);
+
+      //If exist replace the item with the new item value
+      if(itemIndex) {
+        state.items.splice(itemIndex, 1, newValue)
+      }
+    },
   }
 
   // Mounted
