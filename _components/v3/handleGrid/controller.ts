@@ -20,7 +20,7 @@ export default function controller(props: any, emit: any) {
   // Computed
   const computeds = {
     actionButtonProps: computed(() => ({
-      icon: 'fa-light fa-objects-column',
+      icon: 'fa-regular fa-objects-column',
       outline: true,
       round: true,
       color: 'cyan',
