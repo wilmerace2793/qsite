@@ -72,7 +72,7 @@ export default function controller(props: any, emit: any) {
       const itemIndex = state.items.findIndex(i=> i[keySearch] === newValue.id);
 
       //If exist replace the item with the new item value
-      if(itemIndex) {
+      if(itemIndex >= 0) {
         state.items.splice(itemIndex, 1, newValue)
       }
     },
