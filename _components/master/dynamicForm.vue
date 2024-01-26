@@ -197,7 +197,7 @@ export default {
     boxStyle: {type: Boolean, default: true},
     noSave: {type: Boolean, default: false},
     withFeedBack: {type: Boolean, default: false},
-    hideSystemTypeLike: {type: String, default: null},
+    requestParams: { type: Object, default: {} },
   },
   watch: {
     value: {
@@ -622,9 +622,7 @@ export default {
     },
     hidenFields() {
       return field => (field.type != 'hidden') && 
-                      (field.vIf != undefined ? field.vIf : true) && 
-                      field.visibility != 'internalHidden' && 
-                      (this.hideSystemTypeLike == null || !field.systemType.includes(this.hideSystemTypeLike))
+                      (field.vIf != undefined ? field.vIf : true)
 
     }
   },
@@ -650,7 +648,10 @@ export default {
         //Request Params
         let requestParams = {
           refresh: true,
-          params: {include: 'blocks.fields'}
+          params: {
+            include: 'blocks.fields',
+            ...this.requestParams,
+          },
         }
 
         //Request
