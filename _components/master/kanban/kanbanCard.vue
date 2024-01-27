@@ -221,7 +221,6 @@ export default {
       return this.crudfieldActions(this.cardData);
     },
     fullName() {
-      console.log(this.cardData)
       const firstName = this.cardData?.creator?.firstName || ''
       const lastName = this.cardData?.creator?.lastName || ''
       return [ firstName, lastName ]
