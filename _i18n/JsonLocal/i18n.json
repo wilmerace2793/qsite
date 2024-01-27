@@ -687,7 +687,8 @@
           "decimal_place": "Decimal",
           "value": "Value",
           "status": "Status",
-          "default_currency": "Default Currency"
+          "default_currency": "Default Currency",
+          "warehouses": "Warehouses"
         },
         "newProduct": "New Product",
         "updateProduct": "Update Product",
@@ -736,6 +737,8 @@
         "subtotal": "Subtotal",
         "shipping": "Shipping",
         "orderHistory": "Order History",
+        "newWarehouse": "New Warehouse",
+        "updateWarehouse": "Edit Warehouse",
         "form": {
           "formContent": "Here you can find the information related to the name, slug, summary and description.",
           "statusContent": "Here you can change the status of your product.",
@@ -831,7 +834,8 @@
           "symbolLeft": "Símbolo Izquierdo",
           "symbolRight": "Símbolo Derecho",
           "running": "Activo",
-          "finished": "Finalizado"
+          "finished": "Finalizado",
+          "mapHelp": "Search for the address or locate the warehouse on the map."
         },
         "message": {
           "warnAddOpt": "To add options, you must first create the product",
@@ -1916,7 +1920,8 @@
           "printName": "Print Name",
           "requestedBy": "Requested By",
           "feature": "Feature | Features",
-          "fieldsDetails": "Fields Details"
+          "fieldsDetails": "Fields Details",
+          "warehouse": "Warehouse"
         },
         "configList": {
           "loggedAs": "logged as",
@@ -2686,7 +2691,8 @@
           "decimal_place": "Decimal",
           "value": "valor",
           "status": "Estado",
-          "default_currency": "Moneda predeterminada"
+          "default_currency": "Moneda predeterminada",
+          "warehouses": "Bodegas"
         },
         "newProduct": "Nuevo Producto",
         "updateProduct": "Actualizar Producto",
@@ -2735,6 +2741,8 @@
         "subtotal": "Total parcial",
         "shipping": "Envío",
         "orderHistory": "Historial de Orden",
+        "newWarehouse": "Nueva Bodega",
+        "updateWarehouse": "Editar Bodega",
         "form": {
           "formContent": "Aquí podrás encontrar la información relacionada al nombre, slug, resumen y descripción.",
           "statusContent": "Aquí podrás cambiar el estado de tu producto.",
@@ -2830,7 +2838,8 @@
           "symbolLeft": "Símbolo Izquierdo",
           "symbolRight": "Símbolo Derecho",
           "running": "Activo",
-          "finished": "Finalizado"
+          "finished": "Finalizado",
+          "mapHelp": "Busca la dirección o localíza la bodega en el mapa."
         },
         "message": {
           "warnAddOpt": "Para agregar opciones, primero debe crear el producto",
@@ -3784,7 +3793,8 @@
           "availableDate": "Disponible desde",
           "requestedBy": "Solicitado Por",
           "feature": "Característica | Características",
-          "fieldsDetails": "Detalles de la Característica"
+          "fieldsDetails": "Detalles de la Característica",
+          "warehouse": "Bodega"
         },
         "configList": {
           "loggedAs": "Registrado como",
