@@ -154,7 +154,9 @@
         :offset="[10, 10]"
         :delay="100" 
       >
-        <p>{{ fullName[0] + ' ' + fullName[1] }}</p>
+        <p>
+          {{ fullName.firstName + ' ' + fullName.lastName }}
+        </p>
       </q-tooltip>
     </figure>
   </div>
@@ -209,6 +211,7 @@ export default {
         fields: [],
         creator: {
           firstName: '',
+          lastName: '',
         },
       },
     };
@@ -221,9 +224,10 @@ export default {
       return this.crudfieldActions(this.cardData);
     },
     fullName() {
+      console.log('this.cardData', this.cardData)
       const firstName = this.cardData?.creator?.firstName || ''
       const lastName = this.cardData?.creator?.lastName || ''
-      return [ firstName, lastName ]
+      return { firstName, lastName }
     },
     urlAvatar() {
       return  this.cardData?.creator?.mediaFiles?.profile?.largeThumb || 
