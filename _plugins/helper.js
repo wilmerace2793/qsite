@@ -616,14 +616,14 @@ class Helper {
 
     return true;
   }
-  
+
   //Copy to clipboard Base64
   async copyBase64ToClipboard(base64 = '', message = 'isite.cms.messages.copyToClipboard') {
     try {
       //Get blob of base64Image
       const blob = await fetch(base64).then(r => r.blob())
       //Transform in a clipboard
-      const image = new ClipboardItem({ 'image/png': blob })
+      const image = new ClipboardItem({'image/png': blob})
 
       navigator.clipboard.write([image]).then(function () {
         alert.info({
@@ -642,6 +642,25 @@ class Helper {
         message: Vue.prototype.$tr('isite.cms.messages.failedCopyToClipboard')
       });
     }
+  }
+
+  //Depp merge objects
+  deepMergeObjects(obj1, obj2) {
+    // Create a new object to hold the merged values
+    let result = {...obj1};
+
+    // Iterate over the properties of the second object
+    for (let key in obj2) {
+      // If the property is an object and exists in both, merge them
+      if (typeof obj2[key] === 'object' && obj1[key]) {
+        result[key] = this.deepMergeObjects(obj1[key], obj2[key]);
+      } else {
+        // Otherwise, just use the property from the second object
+        result[key] = obj2[key];
+      }
+    }
+
+    return result;
   }
 }
 
