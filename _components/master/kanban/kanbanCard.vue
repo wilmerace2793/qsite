@@ -209,7 +209,7 @@ export default {
         type: '',
         createdAt: '',
         fields: [],
-        creator: {
+        responsible: {
           firstName: '',
           lastName: '',
         },
@@ -224,12 +224,12 @@ export default {
       return this.crudfieldActions(this.cardData);
     },
     fullName() {
-      const firstName = this.cardData?.creator?.firstName || ''
-      const lastName = this.cardData?.creator?.lastName || ''
+      const firstName = this.cardData?.responsible?.firstName || ''
+      const lastName = this.cardData?.responsible?.lastName || ''
       return { firstName, lastName }
     },
     urlAvatar() {
-      return  this.cardData?.creator?.mediaFiles?.profile?.largeThumb || 
+      return  this.cardData?.responsible?.mediaFiles?.profile?.largeThumb || 
               this.quserState.userData.mainImage
     },
     actionsAutomations() {
