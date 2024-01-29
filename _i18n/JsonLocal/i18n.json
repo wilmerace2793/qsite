@@ -835,7 +835,13 @@
           "symbolRight": "Símbolo Derecho",
           "running": "Activo",
           "finished": "Finalizado",
-          "mapHelp": "Search for the address or locate the warehouse on the map."
+          "mapHelp": "Search for the address or locate the warehouse on the map.",
+          "productWarehouse": "Warehouses",
+          "productWarehouseContent" : "Select the different warehouses where your product is located.",
+          "generalWarehouse": "General warehouse",
+          "generalWarehouseHelp": "You can efficiently manage detailed information for each product, segmented according to the different warehouses. This way, you can organize and centrally manage specific data for your products at each location, simplifying inventory management and optimizing your operational control.",
+          "warehouseByOptions": "Warehouse by options",
+          "warehouseByOptionsHelp": "We provide you with the ability to efficiently manage detailed information for each product option, organized according to different warehouses. This allows you to centralize the management of specific data for each variant at each location, simplifying inventory administration and optimizing operational control effectively."
         },
         "message": {
           "warnAddOpt": "To add options, you must first create the product",
@@ -2839,7 +2845,13 @@
           "symbolRight": "Símbolo Derecho",
           "running": "Activo",
           "finished": "Finalizado",
-          "mapHelp": "Busca la dirección o localíza la bodega en el mapa."
+          "mapHelp": "Busca la dirección o localíza la bodega en el mapa.",
+          "productWarehouse": "Bodegas",
+          "productWarehouseContent" : "Selecciona las diferentes bodegas donde se encuentra ubicado tu producto.",
+          "generalWarehouse": "Bodega general",
+          "generalWarehouseHelp": "Puedes gestionar de manera eficiente la información detallada de cada producto, segmentada de acuerdo a las distintas bodegas. Así, puedes organizar y administrar de forma centralizada los datos específicos de tus productos en cada ubicación, simplificando la gestión de inventario y optimizando tu control operativo.",
+          "warehouseByOptions": "Bodega por Opcion",
+          "warehouseByOptionsHelp": "Te brindamos la capacidad de administrar de manera eficiente la información detallada de cada opción de producto, organizada según las distintas bodegas. Esto te permite centralizar la gestión de datos específicos para cada variante en cada ubicación, simplificando la administración del inventario y mejorando el control operativo de manera óptima."
         },
         "message": {
           "warnAddOpt": "Para agregar opciones, primero debe crear el producto",
