@@ -116,6 +116,11 @@ export default {
     documentation: { 
       default: () => {}
     },
+    help: {
+      required: false,
+      type: Object,
+      default: () => {}
+    },
   },
   components: {masterExport, masterSynchronizable},
   watch: {},
@@ -295,6 +300,16 @@ export default {
     },
     //Page Documentation
     pageDocumentation() {
+      //crud's help
+      if(this.help?.title && this.help?.description){
+        return  {
+          title: this.help.title,
+          description: this.help.description,
+          icon: this.help?.icon || this.$route.meta.icon,
+          class: this.help?.class || 'q-ml-sm'
+        }
+      }
+
       let response = null
       //Get params from page permission
       let params = this.$helper.getInfoFromPermission(this.$route.meta.permission)
