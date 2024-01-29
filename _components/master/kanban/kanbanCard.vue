@@ -26,7 +26,7 @@
               tw-w-full
             "
           >
-            ID: {{ cardData.id }} {{ cardData.title }}
+            {{ cardData.title }}
           </span>
           <q-btn-dropdown
             round
@@ -136,8 +136,9 @@
       class="
         tw-flex
         tw-mt-4
+        tw-cursor-pointer
       "
-      v-if="lastName"
+      v-if="fullName"
     >
       <img 
         class="
@@ -153,7 +154,9 @@
         :offset="[10, 10]"
         :delay="100" 
       >
-        <p>{{ lastName }}</p>
+        <p>
+          {{ fullName.firstName + ' ' + fullName.lastName }}
+        </p>
       </q-tooltip>
     </figure>
   </div>
@@ -206,7 +209,8 @@ export default {
         type: '',
         createdAt: '',
         fields: [],
-        creator: {
+        responsible: {
+          firstName: '',
           lastName: '',
         },
       },
@@ -219,11 +223,13 @@ export default {
     actions() {
       return this.crudfieldActions(this.cardData);
     },
-    lastName() {
-      return this.cardData?.creator?.lastName || ''
+    fullName() {
+      const firstName = this.cardData?.responsible?.firstName || ''
+      const lastName = this.cardData?.responsible?.lastName || ''
+      return { firstName, lastName }
     },
     urlAvatar() {
-      return  this.cardData?.creator?.mediaFiles?.profile?.largeThumb || 
+      return  this.cardData?.responsible?.mediaFiles?.profile?.largeThumb || 
               this.quserState.userData.mainImage
     },
     actionsAutomations() {

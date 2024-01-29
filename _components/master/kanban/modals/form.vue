@@ -22,6 +22,7 @@
           </div>
           <div v-if="funnelForm">
             <dynamic-form
+                :requestParams="requestParams"
                 v-if="formCategory.vIf"
                 v-model="form"
                 :form-id="formCategory.formId"
@@ -77,6 +78,11 @@ export default {
       dynamicFieldForm: {},
       loading: false,
       title: null,
+      requestParams: {
+        filter: {
+          renderLocation: 'requestable'
+        }
+      },
     };
   },
   computed: {
@@ -92,6 +98,7 @@ export default {
         sourceId: {
           value: null,
           type: 'crud',
+          permission: 'requestable.sources.index',
           props: {
             crudType: 'select',
             crudData: import('@imagina/qrequestable/_crud/sources'),
@@ -109,58 +116,37 @@ export default {
             }
           },
         },
-         requestedById: {
+        requestedById: {
           value: null,
-          type: 'crud',
-          permission: "requestable.requestables.filter-requested-by",
+          type: "crud",
+          permission: 'profile.user.index',
           props: {
-            crudType: 'select',
-            crudData: import('@imagina/quser/_crud/users'),
+            crudType: "select",
+            crudData: import("@imagina/quser/_crud/users"),
             crudProps: {
               label: this.$tr('isite.cms.form.requestedBy'),
               rules: [
-                val => !!val || this.$tr('isite.cms.message.fieldRequired')
+                (val) => !!val || this.$tr("isite.cms.message.fieldRequired"),
               ],
             },
             config: {
               filterByQuery: true,
               options: {
-                label: 'fullName', value: 'id'
-              }
+                label: "fullName",
+                value: "id",
+              },
             },
-            customData: {
-              create : {
-                title: this.$tr('requestable.cms.newRequestedBy')
-              },
-              formLeft: {
-                userName: {value: null},
-                isActivated: {value: 1},
-                changePassword: {value: null},
-                password: {value: null},
-                passwordConfirmation: {value: null}
-              },
-              formRight: false,
-              getDataForm: (data) => {
-                return new Promise(resolve => {
-                  let password = this.$uid()
-                  let role = this.$store.getters['qsiteApp/getSettingValueByName']('requestable::defaultContactRole')
-                  data.password = password
-                  data.passwordConfirmation = password
-                  data.roles = role ? [role] : []
-                  resolve(data)
-                })
-              }
-            }
           },
         },
         responsibleId: {
           value: null,
           type: 'crud',
-          permission: 'requestable.requestables.edit-created-by',
+          permission: 'profile.user.index',
           props: {
             crudType: 'select',
             crudData: import('@imagina/quser/_crud/users'),
             crudProps: {
+              vIf: this.$auth.hasAccess('profile.user.index') && this.$auth.hasAccess('requestable.requestables.assign-responsible'),
               label: this.$tr('requestable.cms.label.responsible'),
               rules: [
                 val => !!val || this.$tr('isite.cms.message.fieldRequired')

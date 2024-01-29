@@ -88,9 +88,17 @@
                     tw-mb-4
                     tw-z-10"
                     @click="showModalForm"
+                    v-if="isEditForm"
                   >
-                    <span class="tw-border-dashed 
-                    tw-border-b tw-cursor-pointer">Editar este formulario</span> 
+                    <span 
+                      class="
+                        tw-border-dashed 
+                        tw-border-b 
+                        tw-cursor-pointer
+                      "
+                    >
+                      {{ $tr('iforms.cms.label.editForm') }}
+                    </span> 
                   </div>
                 <!--Actions-->
                 <div :class="`tw-space-x-1 actions__content row justify-${step == 0 ? 'end' : 'between'}`"
@@ -624,6 +632,9 @@ export default {
       return field => (field.type != 'hidden') && 
                       (field.vIf != undefined ? field.vIf : true)
 
+    },
+    isEditForm() {
+      return this.$auth.hasAccess('iforms.forms.edit')
     }
   },
   methods: {
