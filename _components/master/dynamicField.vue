@@ -1293,6 +1293,11 @@ export default {
           class: 'absolute-right',
           margin: '1em',
           load: true
+        },
+        positionMarkerMap: {
+          class: 'absolute-right',
+          margin: '1em',
+          load: true
         }
       }
       return objectOptions[this.field.type] || result
