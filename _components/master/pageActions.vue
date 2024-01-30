@@ -54,8 +54,8 @@
       </div>
     </div>
     <!--Description-->
-    <span 
-      v-if="description" 
+    <span
+      v-if="description"
       class="col-12 description-content"
     >
       {{ description }}
@@ -428,6 +428,8 @@ export default {
       width 100%
 
   .actions-content
+    .q-field
+      padding-bottom 0 !important
     .q-field__append .q-icon
       color: $tertiary
     @media screen and (max-width: $breakpoint-md)
