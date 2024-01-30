@@ -113,9 +113,6 @@ export default {
       default: () => false,
     },
     tourName: {default: null},
-    documentation: { 
-      default: () => {}
-    },
     help: {
       required: false,
       type: Object,
@@ -299,7 +296,7 @@ export default {
       return response
     },
     //Page Documentation
-    pageDocumentation() {
+    pageDocumentation(){
       //crud's help
       if(this.help?.title && this.help?.description){
         return  {
@@ -320,14 +317,15 @@ export default {
         response = this.$store.getters['qsiteApp/getConfigApp'](configName)
       }
 
-      const tooltipInfo = {
-        title: this.title,
-        description: response,
-        icon: this.$route.meta.icon,
-        class: 'q-ml-sm'
+      if (response){
+        return {
+          title: this.title,
+          description: response,
+          icon: this.$route.meta.icon,
+          class: 'q-ml-sm'
+        }
       }
-      if (response) return tooltipInfo
-      if (!response && this.documentation) return this.documentation
+      return false
     }
   },
   methods: {
