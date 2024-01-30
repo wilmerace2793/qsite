@@ -113,7 +113,9 @@ export default {
       default: () => false,
     },
     tourName: {default: null},
-    documentation: { 
+    help: {
+      required: false,
+      type: Object,
       default: () => {}
     },
   },
@@ -294,7 +296,17 @@ export default {
       return response
     },
     //Page Documentation
-    pageDocumentation() {
+    pageDocumentation(){
+      //crud's help
+      if(this.help?.title && this.help?.description){
+        return  {
+          title: this.help.title,
+          description: this.help.description,
+          icon: this.help?.icon || this.$route.meta.icon,
+          class: this.help?.class || 'q-ml-sm'
+        }
+      }
+
       let response = null
       //Get params from page permission
       let params = this.$helper.getInfoFromPermission(this.$route.meta.permission)
@@ -305,14 +317,15 @@ export default {
         response = this.$store.getters['qsiteApp/getConfigApp'](configName)
       }
 
-      const tooltipInfo = {
-        title: this.title,
-        description: response,
-        icon: this.$route.meta.icon,
-        class: 'q-ml-sm'
+      if (response){
+        return {
+          title: this.title,
+          description: response,
+          icon: this.$route.meta.icon,
+          class: 'q-ml-sm'
+        }
       }
-      if (response) return tooltipInfo
-      if (!response && this.documentation) return this.documentation
+      return false
     }
   },
   methods: {
