@@ -460,7 +460,8 @@ export const dynamicFieldProps = [
   [
     'sortOptions',
     { description: 'In the case of type:"select/treeSelect", by default the options are ordered alphabetically, so if you set this prop to FALSE you can disable this.' }
-  ],[
+  ],
+  [
     'imageField',
     { description: 'In the case of type:"select/treeSelect", Allows to show an image before the item label, You have to set this prop with the path of the item atribute, example: "mediaFiles.mainimage.url"' }
 
@@ -499,12 +500,16 @@ export const dynamicFieldLoadOptionsData = [
     'filterByQuery',
     { type: <code>String</code>, description: 'Get options data from the request only for the search value.'},
   ],
+  [
+    'loadedOptions',
+    { type: <code>Function</code>, description: 'This function will called when the dynamicFiled gots the request to load options and return an unique param with the response'},
+  ]
 ]
 
 export const dynamicFieldLoadOptionsSelectData = [
   [
     'label',
-    { type: <code>String</code>, description: 'Key from data to load label option.'},
+    { type: <code>String|Function</code>, description: 'Key from data to load label option. you can set a string with the field name to use as label or you can define as a function to get the record data and return the lavel customized'},
   ],
   [
     'id',
