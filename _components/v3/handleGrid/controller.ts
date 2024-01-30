@@ -19,6 +19,13 @@ export default function controller(props: any, emit: any) {
 
   // Computed
   const computeds = {
+    actionButtonProps: computed(() => ({
+      icon: 'fa-regular fa-objects-column',
+      outline: true,
+      round: true,
+      color: 'cyan',
+      size: '10px'
+    }))
   }
 
   // Methods
@@ -41,10 +48,10 @@ export default function controller(props: any, emit: any) {
     },
     addItem(currentItem) {
       const index = state.items.findIndex(i => i.id === currentItem.id);
-      emit('create', { index, onCreate: (val) => methods.onCreate(index, val) })
+      emit('create', {index, onCreate: (val) => methods.onCreate(index, val)})
     },
     onCreate(index, newItem) {
-      if(index >= 0) {
+      if (index >= 0) {
         const newArray = proxy.$clone<any[]>(state.items)
         newArray.splice(index + 1, 0, newItem)
         // Insert the new object at the specified position
@@ -58,7 +65,17 @@ export default function controller(props: any, emit: any) {
     setState(items = null) {
       const data = items ?? props.value
       state.items = methods.orderedItems(data)
-    }
+    },
+    //Updated Item
+    updateItem(newValue, keySearch = 'id') {
+      //Search if exist the item
+      const itemIndex = state.items.findIndex(i=> i[keySearch] === newValue.id);
+
+      //If exist replace the item with the new item value
+      if(itemIndex >= 0) {
+        state.items.splice(itemIndex, 1, newValue)
+      }
+    },
   }
 
   // Mounted
