@@ -42,9 +42,11 @@
                 </div>
                 <!--Fields-->
                 <div class="row q-col-gutter-x-md q-mb-sm">
-                  <div v-for="(field, key) in block.fields" :key="key"
-                       v-if="(field.type != 'hidden') && (field.vIf != undefined ? field.vIf : true)"
-                       :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)">
+                  <div 
+                    v-for="(field, key) in block.fields" :key="key"
+                    v-if="hidenFields(field)"
+                    :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)"
+                  >
                     <!--fake field-->
                     <div v-if="field.type === 'fileList'">
                       <fileListComponent v-bind="field.files" @selected="files => selectedFile(files)"/>
@@ -77,8 +79,29 @@
                     </div>
                   </div>
                 </div>
+                <div 
+                   class="
+                    tw-text-left
+                    tw-text-xs 
+                    tw-text-gray-600
+                    tw-ml-1
+                    tw-mb-4
+                    tw-z-10"
+                    @click="showModalForm"
+                    v-if="isEditForm"
+                  >
+                    <span 
+                      class="
+                        tw-border-dashed 
+                        tw-border-b 
+                        tw-cursor-pointer
+                      "
+                    >
+                      {{ $tr('iforms.cms.label.editForm') }}
+                    </span> 
+                  </div>
                 <!--Actions-->
-                <div :class="`actions__content row justify-${step == 0 ? 'end' : 'between'}`"
+                <div :class="`tw-space-x-1 actions__content row justify-${step == 0 ? 'end' : 'between'}`"
                      v-if="(formType == 'stepper') && !noActions">
                   <q-btn v-for="(action, keyAction) in formActions" :key="keyAction" v-bind="action"
                          unelevated rounded no-caps @click="action.action(keyBlock)" type="button"
@@ -99,6 +122,7 @@
       <!--Innerloading-->
       <inner-loading :visible="(loading || innerLoading) ? true : false"/>
     </div>
+    <newFormModal />
     <!-- Feedback after submit-->
     <div v-if="withFeedBack && showFeedBack">
       <div class="box box-auto-height justify-center">
@@ -138,10 +162,13 @@
 <script>
 import fileListComponent from '@imagina/qsite/_components/master/fileList';
 import layoutStore from '@imagina/qsite/_store/layoutStore.js'
+import newFormModal from '@imagina/qrequestable/_components/modals/information/components/newFormModal.vue'
+import newFormModalStore from '@imagina/qrequestable/_components/modals/information/stores/newFormModal.ts'
 
 export default {
   components: {
-    fileListComponent
+    fileListComponent,
+    newFormModal,
   },
   props: {
     value: {
@@ -176,7 +203,9 @@ export default {
     },
     noResetWithBlocksUpdate: {type: Boolean, default: false},
     boxStyle: {type: Boolean, default: true},
-    withFeedBack: {type: Boolean, default: false}
+    noSave: {type: Boolean, default: false},
+    withFeedBack: {type: Boolean, default: false},
+    requestParams: { type: Object, default: {} },
   },
   watch: {
     value: {
@@ -566,12 +595,12 @@ export default {
         submit: {
           color: "green",
           icon: "fas fa-save",
+          vIf: !this.noSave,
           label: this.formBlocks.submitText ?? this.$tr('isite.cms.label.save'),
           ...(this.actions.submit || {}),
           action: () => this.changeStep('next', true)
         },
       }
-
       //Instance Response
       let response = {previous: actions.previous, next: (isLastStep ? actions.submit : actions.next)}
 
@@ -598,6 +627,14 @@ export default {
     //Returns success text after submit
     successText(){
       return this.formBlocks.successText ?? this.$tr('iforms.cms.feedBack.message')
+    },
+    hidenFields() {
+      return field => (field.type != 'hidden') && 
+                      (field.vIf != undefined ? field.vIf : true)
+
+    },
+    isEditForm() {
+      return this.$auth.hasAccess('iforms.forms.edit')
     }
   },
   methods: {
@@ -622,7 +659,10 @@ export default {
         //Request Params
         let requestParams = {
           refresh: true,
-          params: {include: 'blocks.fields'}
+          params: {
+            include: 'blocks.fields',
+            ...this.requestParams,
+          },
         }
 
         //Request
@@ -841,6 +881,9 @@ export default {
     selectedFile(file) {
       const fileId = file.length === 0 ? null : file[0].id;
       layoutStore().setSelectedLayout(fileId);
+    },
+    showModalForm() {
+      newFormModalStore.showModal = true;
     },
     setNewForm(){
       this.reset()

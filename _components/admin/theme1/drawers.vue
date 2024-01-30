@@ -30,10 +30,6 @@
       <chat-list/>
     </q-drawer>
 
-    <!--Master filter-->
-    <q-drawer bordered id="drawerFilterMaster" v-model="drawer.filter" side="right" v-if="filter.load" :overlay="false">
-      <master-filter/>
-    </q-drawer>
 
     <!--Recommendation-->
     <q-drawer id="drawerRecommendationMaster" v-model="drawer.recommendation" side="right" behavior="mobile"
@@ -56,7 +52,6 @@ import sidebarMixins from '@imagina/qsite/_mixins/sidebarMixins'
 import configList from '@imagina/qsite/_components/master/configList'
 import chatList from '@imagina/qchat/_components/drawerChatList'
 import menuList from '@imagina/qsite/_components/master/recursiveItem'
-import masterFilter from '@imagina/qsite/_components/master/masterFilter'
 import checkin from '@imagina/qcheckin/_components/checkin'
 import masterRecommendation from '@imagina/qsite/_components/master/masterRecommendations'
 import masterNotifications from '@imagina/qnotification/_components/drawerNotifications'
@@ -68,7 +63,7 @@ export default {
   },
   mixins: [sidebarMixins],
   props: {},
-  components: {menuList, configList, chatList, masterFilter, checkin, masterRecommendation, masterNotifications},
+  components: {menuList, configList, chatList, checkin, masterRecommendation, masterNotifications},
   watch: {},
   mounted() {
     this.$nextTick(function () {
@@ -85,13 +80,11 @@ export default {
         menu: this.$q.platform.is.mobile ? false : true,
         config: false,
         chat: false,
-        filter: false,
         checkin: false,
         recommendation: false,
         notification: false
       },
-      appConfig: config('app'),
-      filter: this.$filter
+      appConfig: config('app')
     }
   },
   computed: {

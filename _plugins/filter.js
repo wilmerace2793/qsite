@@ -211,6 +211,14 @@ class Filter {
       }
     }
   }
+  // returns a new intance with custom cache name
+  getInstance(cacheName = false){
+    const filter = new Filter()
+    if(cacheName){
+      filter.cacheName = `${filter.cacheName}__${cacheName}`
+    }
+    return filter
+  }
 }
 
 //Define new class
