@@ -1504,7 +1504,10 @@ export default {
             }
             this.rootOptionsData = this.$clone(response.data)
 
-            this.rootOptionsData.forEach(item => { 
+            //Emit the loadedOptions
+            if(loadOptions.loadedOptions) loadOptions.loadedOptions(response.data)
+
+            this.rootOptionsData.forEach(item => {
               this.addImageField(item)
             })
 
@@ -1690,6 +1693,8 @@ export default {
                 ...this.rootOptions,
                 ...this.$array.select(response.data, fieldSelect),
               ]
+              //Emit the loadedOptions
+              if(loadOptions.loadedOptions) loadOptions.loadedOptions(response.data)
             }).catch(error => {
               this.$apiResponse.handleError(error, () => {
               })
@@ -1704,9 +1709,9 @@ export default {
         this.imageFields.push({id: item.id, src: src})
       }
     },
-    getImageField(id){      
+    getImageField(id){
       const item = this.imageFields.find((e) => e.id == id )
-      return item.src      
+      return item.src
     },
   }
 }
