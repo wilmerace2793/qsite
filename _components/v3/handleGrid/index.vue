@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <section id="panel-editor-component" class="full-width">
-      <draggable class="row q-col-gutter-md" v-model="items" group="components" @update="updateSortOrder">
+      <draggable class="row q-col-gutter-md q-pb-md" v-model="items" group="components" @update="updateSortOrder">
         <div :class="element[gridPosField]" v-for="element in items" :key="element.id">
           <div class="panel-editor-component__component">
             <div class="absolute-right q-ma-sm">
