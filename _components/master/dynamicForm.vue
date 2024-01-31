@@ -9,6 +9,16 @@
         <div class="text-body2 q-mb-md text-grey-8" v-if="formProps.description" v-html="formProps.description"></div>
       </div>
 
+      <!--Actions-->
+      <div class="absolute-right q-my-sm q-mx-md" v-if="(loading || innerLoading) ? false : true">
+        <q-btn text-color="primary" outline rounded v-if="canEditForm" dense class="btn-small" icon="fa-solid fa-pencil"
+               style="border: 1px solid rgba(0, 13, 71, 0.15)" @click="$refs.editFormModal.editForm(formId)">
+          <q-tooltip>
+            {{ $tr('iforms.cms.label.editForm') }}
+          </q-tooltip>
+        </q-btn>
+      </div>
+
       <!--Progress bar-->
       <div v-bind="structure.wrapperProgress.props" v-if="structure.wrapperProgress.directives.vIf">
         <q-linear-progress :value="progress" color="primary" rounded/>
@@ -18,7 +28,6 @@
       <q-form v-bind="structure.form.props" v-if="structure.form.directives.vIf"
               @validation-error="structure.form.events.validateError()">
         <!--Language-->
-
         <div v-bind="structure.wrapperLocales.props" v-show="structure.wrapperLocales.directives.vShow">
           <locales v-model="locale" ref="localeComponent" :form="$refs.formContent"/>
         </div>
@@ -90,25 +99,6 @@
                 </div>
               </div>
             </component>
-            <div 
-              class="
-              tw-text-left
-              tw-text-xs 
-              tw-text-gray-600
-              tw-ml-1
-              tw-mb-4
-              tw-z-10"
-              v-if="canEditForm"
-            >
-              <q-btn 
-                @click="$refs.editFormModal.editForm(formId)"
-                icon="fa-solid fa-pencil"
-              >
-                <q-tooltip>
-                  {{ $tr('iforms.cms.label.editForm') }}
-                </q-tooltip>
-              </q-btn>
-            </div>
           </component>
         </component>
         <!--Actions-->
@@ -888,7 +878,7 @@ export default {
       const fileId = file.length === 0 ? null : file[0].id;
       layoutStore().setSelectedLayout(fileId);
     },
-    setNewForm(){
+    setNewForm() {
       this.reset()
       this.locale.form = false
       this.init()
