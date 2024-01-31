@@ -27,8 +27,10 @@
           <!--Columns-->
           <component v-for="(column, keyColumn) in structure.columns()" :key="keyColumn" v-bind="column.props">
             <!--Blocks-->
-            <component v-for="(block, keyBlock) in column.blocks" :key="keyBlock" v-bind="block.props" class="position-relative">
-              <help-text v-if="block.help" :title="block.help.title" :description="block.help.description" class="position-right"/>
+            <component v-for="(block, keyBlock) in column.blocks" :key="keyBlock" v-bind="block.props"
+                       class="position-relative">
+              <help-text v-if="block.help" :title="block.help.title" :description="block.help.description"
+                         class="position-right"/>
               <div :class="block.childClass">
                 <!--Top step Info-->
                 <div class="step-top-content" v-if="block.title || block.description">
@@ -42,10 +44,10 @@
                 </div>
                 <!--Fields-->
                 <div class="row q-col-gutter-x-md q-mb-sm">
-                  <div 
-                    v-for="(field, key) in block.fields" :key="key"
-                    v-if="hidenFields(field)"
-                    :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)"
+                  <div
+                      v-for="(field, key) in block.fields" :key="key"
+                      v-if="hidenFields(field)"
+                      :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)"
                   >
                     <!--fake field-->
                     <div v-if="field.type === 'fileList'">
@@ -127,9 +129,9 @@
           <div class="col-12 text-center q-gutter-y-sm">
             <div>
               <q-icon
-                name="fa-light fa-envelope-circle-check"
-                color="green"
-                size="xl"
+                  name="fa-light fa-envelope-circle-check"
+                  color="green"
+                  size="xl"
               />
             </div>
             <div>
@@ -139,14 +141,14 @@
             </div>
             <div>
               <q-btn
-                unelevated
-                rounded
-                no-caps
-                @click="setNewForm"
-                :label="$tr('iforms.cms.feedBack.newForm')"
-                type="button"
-                color="primary"
-                icon="fa-light fa-envelope"
+                  unelevated
+                  rounded
+                  no-caps
+                  @click="setNewForm"
+                  :label="$tr('iforms.cms.feedBack.newForm')"
+                  type="button"
+                  color="primary"
+                  icon="fa-light fa-envelope"
               />
             </div>
           </div>
@@ -176,8 +178,8 @@ export default {
     },
     help: {
       type: Object,
-      default(){
-        return { description: "Some description..." }
+      default() {
+        return {description: "Some description..."}
       }
     },
     loading: {type: Boolean, default: false},
@@ -203,7 +205,12 @@ export default {
     boxStyle: {type: Boolean, default: true},
     noSave: {type: Boolean, default: false},
     withFeedBack: {type: Boolean, default: false},
-    requestParams: { type: Object, default: () => {} },
+    requestParams: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
   },
   watch: {
     value: {
@@ -512,13 +519,13 @@ export default {
       }
 
       //Add captcha field
-      if (this.useCaptcha && blocks.length){
+      if (this.useCaptcha && blocks.length) {
         const lastBlock = blocks[blocks.length - 1]
 
-        if(!Array.isArray(lastBlock.fields)){
+        if (!Array.isArray(lastBlock.fields)) {
           lastBlock.fields.captcha = {type: 'captcha'}
-        }else {
-          lastBlock.fields.push({type: 'captcha' , name: 'captcha', value: ''})
+        } else {
+          lastBlock.fields.push({type: 'captcha', name: 'captcha', value: ''})
         }
       }
 
@@ -623,12 +630,13 @@ export default {
       return fields
     },
     //Returns success text after submit
-    successText(){
+    successText() {
       return this.formBlocks.successText ?? this.$tr('iforms.cms.feedBack.message')
     },
     hidenFields() {
-      return field => (field.type != 'hidden') && 
-                      (field.vIf != undefined ? field.vIf : true)
+      return field => (field.type != 'hidden') &&
+          (field.vIf != undefined ? field.vIf : true)
+
     },
     // Validate if the dynamicForm is a backendForm and can edit it
     canEditForm() {
@@ -849,7 +857,7 @@ export default {
               this.$emit('sent', this.$clone(this.locale.form))
 
               //feedBack
-              if(this.withFeedBack && response?.data){
+              if (this.withFeedBack && response?.data) {
                 this.showForm = false;
                 this.showFeedBack = true
                 this.$emit('feedBack', this.$clone(response.data))
@@ -893,12 +901,15 @@ export default {
 <style lang="stylus">
 #dynamicFormComponentContent
   //min-height 150px
-  .position-relative{
+
+  .position-relative {
     position: relative
   }
+
   .position-right
     position absolute
     right 16px
+
   #stepperContent
     padding 0
 
