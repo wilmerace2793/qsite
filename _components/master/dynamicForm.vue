@@ -81,27 +81,6 @@
                     </div>
                   </div>
                 </div>
-                <div
-                    class="
-                    tw-text-left
-                    tw-text-xs
-                    tw-text-gray-600
-                    tw-ml-1
-                    tw-mb-4
-                    tw-z-10"
-                    @click="showModalForm"
-                    v-if="isEditForm"
-                >
-                    <span
-                        class="
-                        tw-border-dashed
-                        tw-border-b
-                        tw-cursor-pointer
-                      "
-                    >
-                      {{ $tr('iforms.cms.label.editForm') }}
-                    </span>
-                </div>
                 <!--Actions-->
                 <div :class="`tw-space-x-1 actions__content row justify-${step == 0 ? 'end' : 'between'}`"
                      v-if="(formType == 'stepper') && !noActions">
@@ -111,6 +90,25 @@
                 </div>
               </div>
             </component>
+            <div 
+              class="
+              tw-text-left
+              tw-text-xs 
+              tw-text-gray-600
+              tw-ml-1
+              tw-mb-4
+              tw-z-10"
+              v-if="canEditForm"
+            >
+              <q-btn 
+                @click="$refs.editFormModal.editForm(formId)"
+                icon="fa-solid fa-pencil"
+              >
+                <q-tooltip>
+                  {{ $tr('iforms.cms.label.editForm') }}
+                </q-tooltip>
+              </q-btn>
+            </div>
           </component>
         </component>
         <!--Actions-->
@@ -124,7 +122,6 @@
       <!--Innerloading-->
       <inner-loading :visible="(loading || innerLoading) ? true : false"/>
     </div>
-    <newFormModal/>
     <!-- Feedback after submit-->
     <div v-if="withFeedBack && showFeedBack">
       <div class="box box-auto-height justify-center">
@@ -158,19 +155,20 @@
         </div>
       </div>
     </div>
+    <!-- Edit form Modal-->
+    <edit-form-modal ref="editFormModal" @hide="init"/>
   </div>
 </template>
 
 <script>
 import fileListComponent from '@imagina/qsite/_components/master/fileList';
 import layoutStore from '@imagina/qsite/_store/layoutStore.js'
-import newFormModal from '@imagina/qrequestable/_components/modals/information/components/newFormModal.vue'
-import newFormModalStore from '@imagina/qrequestable/_components/modals/information/stores/newFormModal.ts'
+import editFormModal from '@imagina/qform/_components/editFormModal/index.vue'
 
 export default {
   components: {
     fileListComponent,
-    newFormModal,
+    editFormModal,
   },
   props: {
     value: {
@@ -253,7 +251,7 @@ export default {
       innerLoading: false,
       formBlocks: false,
       showForm: true,
-      showFeedBack: false
+      showFeedBack: false,
     }
   },
   computed: {
@@ -640,8 +638,9 @@ export default {
           (field.vIf != undefined ? field.vIf : true)
 
     },
-    isEditForm() {
-      return this.$auth.hasAccess('iforms.forms.edit')
+    // Validate if the dynamicForm is a backendForm and can edit it
+    canEditForm() {
+      return this.formId && this.$auth.hasAccess('iforms.forms.edit')
     }
   },
   methods: {
@@ -889,10 +888,7 @@ export default {
       const fileId = file.length === 0 ? null : file[0].id;
       layoutStore().setSelectedLayout(fileId);
     },
-    showModalForm() {
-      newFormModalStore.showModal = true;
-    },
-    setNewForm() {
+    setNewForm(){
       this.reset()
       this.locale.form = false
       this.init()
