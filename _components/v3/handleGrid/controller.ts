@@ -37,7 +37,7 @@ export default function controller(props: any, emit: any) {
       }
       return tmpItems
     },
-    updateSortOrder() {
+    updateSortOrder(scope = '') {
       // Update sort_order based on the new position in the array
       const orderedItems = !props.orderBy ? state.items : state.items.map((item, index) => ({
         ...item,
@@ -45,6 +45,11 @@ export default function controller(props: any, emit: any) {
       }));
       // Emit an event to notify the parent component about the change
       emit('input', orderedItems);
+      if(scope == 'child') {
+        setTimeout(() => {
+          emit('update')
+        }, 100)
+      }
     },
     addItem(currentItem) {
       const index = state.items.findIndex(i => i.id === currentItem.id);
@@ -76,6 +81,11 @@ export default function controller(props: any, emit: any) {
         state.items.splice(itemIndex, 1, newValue)
       }
     },
+    //Check if exist key in the element
+    verifyKeys(element, key) {
+      const arrayKeys = Object.keys(element);
+      return arrayKeys.includes(key)
+    }
   }
 
   // Mounted

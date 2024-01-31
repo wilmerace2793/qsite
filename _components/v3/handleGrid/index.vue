@@ -1,7 +1,8 @@
 <template>
   <div class="row">
     <section id="panel-editor-component" class="full-width">
-      <draggable class="row q-col-gutter-md q-pb-md" v-model="items" group="components" @update="updateSortOrder">
+      <draggable class="row q-col-gutter-md q-pb-md" v-model="items" :group="{ name: 'items' }"
+                 @change="updateSortOrder" @remove="() => updateSortOrder('child')">
         <div :class="element[gridPosField]" v-for="element in items" :key="element.id">
           <div class="panel-editor-component__component">
             <div class="absolute-right q-ma-sm">
@@ -12,7 +13,7 @@
                   <q-tooltip>{{ action.label }}</q-tooltip>
                 </q-btn>
                 <!--Grid position action-->
-                <q-btn v-if="element[gridPosField]" v-bind="actionButtonProps">
+                <q-btn v-if="verifyKeys(element,gridPosField)" v-bind="actionButtonProps">
                   <q-popup-edit
                       v-model="element[gridPosField]"
                       :title="element[titleField]"
@@ -28,7 +29,7 @@
                 </q-btn>
               </div>
             </div>
-            {{ element[titleField] }}
+            <p>{{ element[titleField] }}</p>
             <q-btn v-if="canAddNewItem" class="add-btn" unelevated no-caps rounded color="cyan"
                    @click="addItem(element)">
               <div class="row items-center no-wrap">
@@ -38,6 +39,11 @@
                 </div>
               </div>
             </q-btn>
+
+            <div v-if="element[childsFieldName]" class="full-width q-px-md">
+              <handle-grid v-model="element[childsFieldName]" v-bind="childProps" @update="updateSortOrder" />
+            </div>
+
           </div>
         </div>
       </draggable>
@@ -57,7 +63,7 @@ import controller from "@imagina/qsite/_components/v3/handleGrid/controller";
 import draggable from 'vuedraggable'
 
 export default defineComponent({
-  name: "Panel",
+  name: "handleGrid",
   props: {
     value: {
       type: Array,
@@ -79,7 +85,9 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    actions: {type: Object, default: () => ({})}
+    actions: {type: Object, default: () => ({})},
+    childsFieldName: { type: String, default: ''},
+    childProps: {type: Object, default: () => {}}
   },
   components: {
     draggable
@@ -93,7 +101,6 @@ export default defineComponent({
 #panel-editor-component
   margin: 0 auto;
   padding 10px
-  min-height: 80vh;
   background-color: white;
   border-radius: 10px;
   //border: 1px solid #ccc;
@@ -102,8 +109,9 @@ export default defineComponent({
     position relative;
     user-select: none;
     cursor: pointer;
-    height: 100px;
+    min-height: 100px;
     display: flex;
+    flex-direction column
     align-items: center;
     justify-content: center;
     border: dashed 3px $blue-grey;
