@@ -1,10 +1,10 @@
 <template>
   <div class="row">
     <section id="panel-editor-component" class="full-width">
-      <draggable class="row q-col-gutter-md q-pb-md" v-model="items" :group="{ name: 'items' }"
-                 @change="updateSortOrder" @remove="() => updateSortOrder('child')">
+      <draggable class="row q-col-gutter-lg q-pb-md" v-model="items" :group="{ name: 'items' }"
+                 @input="updateSortOrder">
         <div :class="element[gridPosField]" v-for="element in items" :key="element.id">
-          <div class="panel-editor-component__component">
+          <div :class="`panel-editor-component__component ${verifyKeys(element,childsFieldName) ? 'hasChild' : ''}`">
             <div class="absolute-right q-ma-sm">
               <div class="row q-gutter-xs">
                 <!--Actions-->
@@ -21,6 +21,7 @@
                       :label-set="$tr('isite.cms.label.save')"
                       :label-cancel="$tr('isite.cms.label.cancel')"
                       v-slot="scope"
+                      @save="() => saveGrid()"
                   >
                     <dynamic-field v-model="scope.value"
                                    :field="{type: 'input', props: {autofocus : true, label: $tr('isite.cms.label.gridPosition')}}"/>
@@ -40,8 +41,9 @@
               </div>
             </q-btn>
 
-            <div v-if="element[childsFieldName]" class="full-width q-px-md">
-              <handle-grid v-model="element[childsFieldName]" v-bind="childProps" @update="updateSortOrder" />
+            <div v-if="verifyKeys(element,childsFieldName)" class="full-width q-px-md">
+              <handle-grid v-model="element[childsFieldName]" v-bind="childProps" @input="updateSortOrder"
+                @create="(val) => addedChildItem(val.index, element.id, val)"/>
             </div>
 
           </div>
@@ -105,6 +107,10 @@ export default defineComponent({
   border-radius: 10px;
   //border: 1px solid #ccc;
 
+  .hasChild
+    padding 20px
+    min-height: 120px;
+
   .panel-editor-component__component
     position relative;
     user-select: none;
@@ -118,9 +124,9 @@ export default defineComponent({
 
     .add-btn
       position absolute;
-      bottom: -15%;
+      bottom: 0%;
       left: 50%;
-      transform: translate(-50%);
+      transform: translate(-50%, 50%);
 
   .add-new-item
     display grid;
