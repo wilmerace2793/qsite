@@ -1,4 +1,5 @@
 import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance} from "vue";
+import {debounce} from 'quasar';
 
 export default function controller(props: any, emit: any) {
   const proxy = getCurrentInstance()!.proxy
@@ -37,7 +38,7 @@ export default function controller(props: any, emit: any) {
       }
       return tmpItems
     },
-    updateSortOrder(scope = '') {
+    updateSortOrder() {
       // Update sort_order based on the new position in the array
       const orderedItems = !props.orderBy ? state.items : state.items.map((item, index) => ({
         ...item,
@@ -45,15 +46,10 @@ export default function controller(props: any, emit: any) {
       }));
       // Emit an event to notify the parent component about the change
       emit('input', orderedItems);
-      if(scope == 'child') {
-        setTimeout(() => {
-          emit('update')
-        }, 100)
-      }
     },
     addItem(currentItem) {
       const index = state.items.findIndex(i => i.id === currentItem.id);
-      emit('create', {index, onCreate: (val) => methods.onCreate(index, val)})
+      emit('create', {index, parentId: 0, onCreate: (val) => methods.onCreate(index, val)})
     },
     onCreate(index, newItem) {
       if (index >= 0) {
@@ -85,7 +81,18 @@ export default function controller(props: any, emit: any) {
     verifyKeys(element, key) {
       const arrayKeys = Object.keys(element);
       return arrayKeys.includes(key)
-    }
+    },
+    //Update when change grid
+    saveGrid: debounce(() => methods.updateSortOrder(), 1000),
+    //Add child in Grid
+    addedChildItem(index, parentId, childObj) {
+      let response = childObj
+      if(response.parentId == 0) {
+        response.parentId = parentId
+      }
+
+      emit('create', response)
+    },
   }
 
   // Mounted
