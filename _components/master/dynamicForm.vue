@@ -9,16 +9,6 @@
         <div class="text-body2 q-mb-md text-grey-8" v-if="formProps.description" v-html="formProps.description"></div>
       </div>
 
-      <!--Actions-->
-      <div class="absolute-right q-my-sm q-mx-md" v-if="(loading || innerLoading) ? false : true">
-        <q-btn text-color="primary" outline rounded v-if="canEditForm" dense class="btn-small" icon="fa-solid fa-pencil"
-               style="border: 1px solid rgba(0, 13, 71, 0.15)" @click="$refs.editFormModal.editForm(formId)">
-          <q-tooltip>
-            {{ $tr('iforms.cms.label.editForm') }}
-          </q-tooltip>
-        </q-btn>
-      </div>
-
       <!--Progress bar-->
       <div v-bind="structure.wrapperProgress.props" v-if="structure.wrapperProgress.directives.vIf">
         <q-linear-progress :value="progress" color="primary" rounded/>
@@ -42,14 +32,26 @@
                          class="position-right"/>
               <div :class="block.childClass">
                 <!--Top step Info-->
-                <div class="step-top-content" v-if="block.title || block.description">
+                <div class="step-top-content row items-center q-mb-md"
+                     v-if="block.title || block.description || (canEditForm && (keyBlock == 0))">
                   <!--Title-->
-                  <div class="box-title q-mb-md"
-                       v-if="block.title && !['stepVertical','collapsible'].includes(formType)">
+                  <div class="box-title col-6"
+                       v-show="block.title && !['stepVertical','collapsible'].includes(formType)">
                     {{ block.title }}
                   </div>
+                  <!--Actions-->
+                  <div :class="`col-6 text-right ${block.title ? '' : 'offset-6'}`">
+                    <q-btn text-color="primary" outline rounded v-if="canEditForm && (keyBlock == 0)" dense class="btn-small"
+                           icon="fa-solid fa-pencil"
+                           style="border: 1px solid rgba(0, 13, 71, 0.15)"
+                           @click="$refs.editFormModal.editForm(formId)">
+                      <q-tooltip>
+                        {{ $tr('iforms.cms.label.editForm') }}
+                      </q-tooltip>
+                    </q-btn>
+                  </div>
                   <!--Description-->
-                  <div class="text-caption q-mb-md text-grey-8" v-if="block.description">{{ block.description }}</div>
+                  <div class="text-caption text-grey-8 col-12" v-if="block.description">{{ block.description }}</div>
                 </div>
                 <!--Fields-->
                 <div class="row q-col-gutter-x-md q-mb-sm">
