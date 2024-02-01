@@ -190,7 +190,7 @@
 
   }
 </script>
-<style lang="stylus">
+<style lang="sass">
   #logo-imagina-svg
     .imaginalogo
       fill white

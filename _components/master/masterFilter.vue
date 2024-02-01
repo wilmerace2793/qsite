@@ -280,7 +280,7 @@ export default {
   methods: {
     async init() {
       const filterValues = this.filterPlugin.storeFilter && this.currentUrlFilter.length > 0
-        ? await this.$helper.convertStringToObject() 
+        ? await this.$helper.convertStringToObject()
         : this.filterValues;
       this.filterValues = filterValues || {};
       await this.emitFilter(true);
@@ -291,8 +291,8 @@ export default {
         if(this.filterPlugin.storeFilter) {
           const objUrl = await this.$helper.convertStringToObject();
           const type = objUrl.type ? {type: objUrl.type} : {};
-          const date = objUrl.dateStart && objUrl.dateEnd 
-          ? { dateEnd: objUrl.dateEnd, dateStart: objUrl.dateStart} 
+          const date = objUrl.dateStart && objUrl.dateEnd
+          ? { dateEnd: objUrl.dateEnd, dateStart: objUrl.dateStart}
           : {};
           this.filterValues = {...this.filterValues, ...type, ...date};
         }
@@ -332,7 +332,7 @@ export default {
     // validate Object Filter
     validateObjectFilter(operator = '?', item) {
       if(this.filterValues[item]) {
-        if(typeof this.filterValues[item] === 'object' 
+        if(typeof this.filterValues[item] === 'object'
           || Array.isArray(this.filterValues[item])) {
           return  `${operator}${item}=${JSON.stringify(this.filterValues[item])}`;
         }
@@ -438,16 +438,16 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #masterFilterComponent
   #tabsContent
     .q-tab__content
       min-width auto
-  .q-field.q-field--float .q-field__label 
-    color: $primary  
-  .q-field__control  
+  .q-field.q-field--float .q-field__label
+    color: $primary
+  .q-field__control
     .q-field__append .q-icon
-      color: $tertiary 
+      color: $tertiary
     .q-field__append:last-child .q-icon
-      color: $primary   
+      color: $primary
 </style>

@@ -530,7 +530,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #settingPage
   #quickSettingsContent
     .block__content

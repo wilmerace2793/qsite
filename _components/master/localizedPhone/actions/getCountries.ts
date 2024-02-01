@@ -1,12 +1,14 @@
 
 import Vue from 'vue';
+import crud from '@imagina/qcrud/_services/baseService.js'
+
 export default async function getCountries(refresh = false) {
     try {
         const params = {
             refresh,
             params: {},
         };
-        const response = await Vue.prototype.$crud.index(
+        const response = await crud.index(
             "apiRoutes.qlocations.countries",
             params,
         );

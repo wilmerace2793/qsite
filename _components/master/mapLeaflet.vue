@@ -179,7 +179,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="sass">
 #mapLeafletcomponent
   #lMap
     width 100%

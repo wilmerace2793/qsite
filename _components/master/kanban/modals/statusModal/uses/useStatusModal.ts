@@ -3,10 +3,12 @@ import Vue, {
     inject,
     ref,
     onBeforeUnmount,
+    getCurrentInstance
 } from "vue";
 import kanbanStore from "../../../store/kanbanStore.js";
 
 export default function useModalAnalytics() {
+    const proxy = getCurrentInstance()!.appContext.config.globalProperties
     const statusList: any = ref({
         inProgress: [],
         success: [],
@@ -78,27 +80,27 @@ export default function useModalAnalytics() {
     async function deleteStatus(id, type) {
         try {
             if (!isNaN(id)) {
-                await Vue.prototype.$crud.delete(routes.column.apiRoute, id).then(res => {
+                await proxy.$crud.delete(routes.column.apiRoute, id).then(res => {
                     statusList.value[type] = statusList.value[type].filter(
                         (item) => item.id !== id
                     );
-                    Vue.prototype.$alert.info({ message: Vue.prototype.$tr('isite.cms.message.recordDeleted') });
+                    proxy.$alert.info({ message: proxy.$tr('isite.cms.message.recordDeleted') });
                 })
                 .catch(err => {
-                    
+
                 });
-                
+
             } else {
                 statusList.value[type] = statusList.value[type].filter(
                     (item) => item.id !== id
                 );
-                Vue.prototype.$alert.info({ message: Vue.prototype.$tr('isite.cms.message.recordDeleted') });
+                proxy.$alert.info({ message: proxy.$tr('isite.cms.message.recordDeleted') });
             }
         } catch (error) {
             console.log(error);
         }
     }
-    
+
 
     async function hideModal() {
         showModal.value = false;
@@ -117,7 +119,7 @@ export default function useModalAnalytics() {
             const statusId = statusList.value[type].map((item) => ({
                 id: item.id,
             }));
-            Vue.prototype.$crud.create(route.apiRoute, {
+            proxy.$crud.create(route.apiRoute, {
                 [route.filter.name]: statusId,
             });
         } catch (error) {

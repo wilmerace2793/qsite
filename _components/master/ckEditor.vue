@@ -77,7 +77,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #ckEditorComponent
   .btn-content-toolbar
     background-size 16px

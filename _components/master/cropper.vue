@@ -238,7 +238,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #modalCropperComponent
   #cropperContent
     position relative

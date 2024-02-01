@@ -364,7 +364,7 @@
   }
 </script>
 
-<style lang="stylus">
+<style lang="sass">
   #componentLocales
     .config-buttom
       .q-icon

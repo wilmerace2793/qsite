@@ -276,7 +276,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="sass">
 #layoutMaster {
   #routerPageContent {
     position: relative;

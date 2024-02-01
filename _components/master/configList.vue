@@ -381,7 +381,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #configList
   color $grey-9
 

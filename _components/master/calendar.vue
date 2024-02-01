@@ -234,7 +234,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #calendarComponent
   #componentContent
     #btnCalendarType

@@ -108,7 +108,7 @@
     }
   }
 </script>
-<style lang="stylus">
+<style lang="sass">
   #searchComponent
     height 40px
     #content

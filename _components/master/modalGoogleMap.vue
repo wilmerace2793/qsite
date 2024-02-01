@@ -40,7 +40,7 @@
     }
   }
 </script>
-<style lang="stylus">
+<style lang="sass">
   #modalGoogleMap
     #map
       height 90vh

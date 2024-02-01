@@ -20,7 +20,7 @@
         class="tw-p-3 tw-h-auto tw-flex tw-space-x-4 tw-overflow-x-auto"
         @change="reorderColumns"
       >
-        <div v-if="!loading" v-for="(column, index) in kanbanColumns" 
+        <div v-if="!loading" v-for="(column, index) in kanbanColumns"
          :class="{'notMoveBetweenColumns': column.type !== 1}"
         >
           <kanbanColumn
@@ -35,7 +35,7 @@
               tw-bg-gray-100 tw-rounded-lg tw-shadow
             "
           />
-          
+
         </div>
         <q-skeleton
           animation="blink"
@@ -266,8 +266,8 @@ export default {
             icon: 'fa-duotone fa-swap-arrows',
             padding: "3px 15px",
           },
-          action: () => { 
-            kanbanStore().setModalStatus(true) 
+          action: () => {
+            kanbanStore().setModalStatus(true)
           },
         }];
     },
@@ -364,7 +364,7 @@ export default {
         setTimeout(() => {
           this.loading = false;
         }, 100);
-        
+
       } catch (error) {
         this.loading = false;
         this.kanbanColumns = [];
@@ -422,9 +422,9 @@ export default {
         const parameters = { params: {}, refresh };
         const search = this.automation && !this.search ? {} : { search: this.search };
         parameters.params.include = route.include;
-        parameters.params.filter = { 
-          [route.filter.name]: column.id, 
-          ...this.filterPlugin.values, 
+        parameters.params.filter = {
+          [route.filter.name]: column.id,
+          ...this.filterPlugin.values,
           ...search,
           order: {way: 'desc'}
         };
@@ -441,10 +441,10 @@ export default {
       return {
         total: response.meta.page.total,
         data: response.data.map((card) => {
-          const nameCreator = card.creator 
-            ? `${card.creator.firstName} ${card.creator.lastName}` 
+          const nameCreator = card.creator
+            ? `${card.creator.firstName} ${card.creator.lastName}`
             : null;
-          return { 
+          return {
             title: card.name || nameCreator || card.title,
             type: card.type || null,
             fields: card.fields || [],
@@ -641,7 +641,7 @@ export default {
 };
 </script>
 
-<style lang="stylus">
+<style lang="sass">
 .kanbanBtnCtn .q-btn {
   border-radius: 10px;
 }

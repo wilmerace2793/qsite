@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
     class="statuses-ctn tw-mr-8"
     @mouseover="hover = true"
     @mouseleave="hover = false"
@@ -33,11 +33,11 @@
         <div
             v-if="!isEdit && hover"
             class="
-              tw-w-1/12 
-              tw-text-xs 
-              tw-cursor-pointer 
+              tw-w-1/12
+              tw-text-xs
+              tw-cursor-pointer
               icon-edit"
-            :class="{ 'tw-text-white': status.color }" 
+            :class="{ 'tw-text-white': status.color }"
           >
             <q-btn
               flat
@@ -126,9 +126,9 @@ export default defineComponent({
         type: Boolean,
         default: true
     }
-  },  
+  },
   setup(props, {emit}) {
-    const proxy = (getCurrentInstance() as any).proxy as any;
+    const proxy = getCurrentInstance()!.appContext.config.globalProperties
     const hover = ref(false);
     const isEdit = ref(props.status.edit);
     const status = computed(() => props.status);
@@ -148,8 +148,8 @@ export default defineComponent({
     }
     function deleteStatus() {
         proxy.$q.dialog({
-          ok: Vue.prototype.$tr('isite.cms.label.delete'),
-          message: Vue.prototype.$tr('isite.cms.message.deleteRecord'),
+          ok: proxy.$tr('isite.cms.label.delete'),
+          message: proxy.$tr('isite.cms.message.deleteRecord'),
           cancel: true,
           persistent: true
         }).onOk(async() => {

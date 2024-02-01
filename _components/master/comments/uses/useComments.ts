@@ -1,5 +1,5 @@
 import Vue,
-{ computed, ref, getCurrentInstance, onBeforeUnmount }
+{ computed, ref, getCurrentInstance, onBeforeUnmount, getCurrentScope }
   from "vue";
 import {
   CommentModelContract,
@@ -17,7 +17,7 @@ import {
  * @returns {object} An object containing methods and data related to comments.
  */
 export default function useComments(props: any) {
-  const proxy = (getCurrentInstance() as any).proxy as any;
+  const proxy = getCurrentInstance()!.appContext.config.globalProperties
   const dataComment: any = ref({
     edit: false,
     id: null,
@@ -27,7 +27,7 @@ export default function useComments(props: any) {
     value: null,
     type: 'uploader',
     props: {
-      title: Vue.prototype.$trp('isite.cms.label.file'),
+      title: proxy.$trp('isite.cms.label.file'),
       gridColClass: 'col-3 col-md-3 col-lg-4',
       maxFiles: 3,
     }
@@ -40,14 +40,14 @@ export default function useComments(props: any) {
     return item => item.userProfile && item.userProfile?.mainImage
       ? item.userProfile.mainImage : commentModelConst.avatar;
   })
-  const tr = ref(Vue.prototype.$tr);
+  const tr = ref(proxy.$tr);
   const comments = ref<commentsContract[]>([]);
   const loading = ref<boolean>(false);
   const permisionComments = computed(() => ({
-    create: Vue.prototype.$auth.hasAccess(`${props.permisionComments}.create`),
-    edit: Vue.prototype.$auth.hasAccess(`${props.permisionComments}.edit`),
-    index: Vue.prototype.$auth.hasAccess(`${props.permisionComments}.index`),
-    destroy: Vue.prototype.$auth.hasAccess(`${props.permisionComments}.destroy`),
+    create: proxy.$auth.hasAccess(`${props.permisionComments}.create`),
+    edit: proxy.$auth.hasAccess(`${props.permisionComments}.edit`),
+    index: proxy.$auth.hasAccess(`${props.permisionComments}.index`),
+    destroy: proxy.$auth.hasAccess(`${props.permisionComments}.destroy`),
   }));
   const dataBase = ref<any>({ ...commentModel.value });
   const textPlaceholder = ref<string>(tr.value(`requestable.cms.message.writeComment`));
@@ -61,7 +61,7 @@ export default function useComments(props: any) {
    * @returns {Date|null} Formatted date or null if input is invalid.
    */
   function formatDate(date: string): Date {
-    return date ? Vue.prototype.$moment(date).format("DD MMM YYYY, h:mm a") : null;
+    return date ? proxy.$moment(date).format("DD MMM YYYY, h:mm a") : null;
   };
   /**
     * Activates the comment text input field.
@@ -80,7 +80,7 @@ export default function useComments(props: any) {
  */
   function cancelText(): void {
     if (dataBase.value.text.length > 0) {
-      Vue.prototype.$q
+      proxy.$q
         .dialog({
           ok: "Si",
           message: tr.value(`requestable.cms.message.undoComment`),
@@ -128,7 +128,7 @@ export default function useComments(props: any) {
    */
   function cancelComment(comment: commentsContract): void {
     if (comment.comment !== comment.textEdit) {
-      Vue.prototype.$q
+      proxy.$q
         .dialog({
           ok: tr.value('isite.cms.label.yes'),
           message: tr.value(`requestable.cms.message.undoComment`),
@@ -163,7 +163,7 @@ export default function useComments(props: any) {
         is_internal: comment.is_internal,
         options: comment.options,
       };
-      Vue.prototype.$crud
+      proxy.$crud
         .update(route.value, id, { ...params })
         .then((response) => {
           const commentUpdate = response.data;
@@ -171,14 +171,14 @@ export default function useComments(props: any) {
           comment.loading = false;
           comment.active = false;
           comment.edit = false;
-          Vue.prototype.$alert.info({
+          proxy.$alert.info({
             message: tr.value(`requestable.cms.message.updateComment`),
           });
         })
         .catch((error) => {
           comment.loading = false;
           console.log(error);
-          Vue.prototype.$alert.error({
+          proxy.$alert.error({
             message: tr.value(`requestable.cms.message.updateNoComment`),
           });
         });
@@ -225,16 +225,16 @@ export default function useComments(props: any) {
         is_internal: false,
         options: null,
       };
-      await Vue.prototype.$crud.create(route.value, params);
+      await proxy.$crud.create(route.value, params);
       await getCommentsList(props.commentableId);
       dataBase.value = { ...commentModel.value };
-      await Vue.prototype.$alert.info({
+      await proxy.$alert.info({
         message: tr.value(`requestable.cms.message.savedComment`),
       });
     } catch (error) {
       console.log(error);
       dataBase.value.loading = false;
-      Vue.prototype.$alert.error({
+      proxy.$alert.error({
         message: tr.value(`requestable.cms.message.savedNoComment`),
       });
     }
@@ -244,7 +244,7 @@ export default function useComments(props: any) {
    * @param {number} id - ID of the comment to be deleted.
    */
   async function deleteComment(id: number): Promise<void> {
-    Vue.prototype.$q
+    proxy.$q
       .dialog({
         ok: tr.value("isite.cms.label.delete"),
         message: tr.value("isite.cms.message.deleteRecord"),
@@ -252,19 +252,19 @@ export default function useComments(props: any) {
         persistent: true,
       })
       .onOk(async () => {
-        Vue.prototype.$crud
+        proxy.$crud
           .delete(route.value, id)
           .then((response) => {
             comments.value = comments.value.filter(
               (item) => item.id !== id
             );
-            Vue.prototype.$alert.info({
+            proxy.$alert.info({
               message: tr.value("isite.cms.message.recordDeleted"),
             });
           })
           .catch((error) => {
             console.log(error);
-            Vue.prototype.$alert.error({
+            proxy.$alert.error({
               message: tr.value("isite.cms.message.recordNoDeleted"),
             });
           });
@@ -286,7 +286,7 @@ export default function useComments(props: any) {
         },
         include: "userProfile",
       };
-      Vue.prototype.$crud
+      proxy.$crud
         .get(route.value, params)
         .then((response) => {
           const data = response.data;
@@ -302,7 +302,7 @@ export default function useComments(props: any) {
         })
         .catch((error) => {
           loading.value = false;
-          Vue.prototype.$alert.error({ message: error });
+          proxy.$alert.error({ message: error });
           console.log(error);
         });
     } catch (error) {
@@ -313,7 +313,7 @@ export default function useComments(props: any) {
    * Retrieves the comment configuration from the server.
    */
   async function configComment() {
-    let routeParams = Vue.prototype.$helper.getInfoFromPermission(proxy.$route.meta.permission);
+    let routeParams = proxy.$helper.getInfoFromPermission(proxy.$route.meta.permission);
     if (!routeParams) return;
     let requestParams = {
       refresh: true,
@@ -324,7 +324,7 @@ export default function useComments(props: any) {
       }
     }
     //Request
-    return await Vue.prototype.$crud.index('apiRoutes.qsite.configs', requestParams);
+    return await proxy.$crud.index('apiRoutes.qsite.configs', requestParams);
   }
   // Initialize the comments list when the component is created
   getCommentsList(props.commentableId);

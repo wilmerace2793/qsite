@@ -259,7 +259,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #modalScheduleContent
   .modal-content
     padding-right 45px

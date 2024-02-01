@@ -211,7 +211,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #panelFooterContent
   background-color white
   color $grey-7

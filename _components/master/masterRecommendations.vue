@@ -185,7 +185,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #recommendationsComponent
   padding 16px
   background $custom-accent-color

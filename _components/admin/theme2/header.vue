@@ -5,7 +5,7 @@
       <!-- Toolbar  -->
       <div :class="'q-hide q-md-show'">
         <q-toolbar id="toolbarTop">
-          <q-btn v-if="appConfig.mode === 'iadmin'" icon="fas fa-bars" unelevated 
+          <q-btn v-if="appConfig.mode === 'iadmin'" icon="fas fa-bars" unelevated
             class="text-primary buttonToogleMenuClose" @click="$eventBus.$emit('toggleMasterDrawer','menu')"/>
           <q-toolbar-title/>
           <!--Site Actions-->
@@ -89,7 +89,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #masterAdminHeader
   .q-header
     background-color white

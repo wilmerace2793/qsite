@@ -116,5 +116,5 @@ export default function ({app, router, store, Vue, ssrContext}) {
   //axios.defaults.httpsAgent = new https.Agent({rejectUnauthorized: false})
 
   //============= Set as global
-  Vue.prototype.$axios = axios
+  app.config.globalProperties.$axios = axios
 }

@@ -84,9 +84,9 @@
                   />
                 </div>
                 <div class="tw-absolute tw-right-0" :class="{'showOnHover' : isDesktop}">
-                    <q-btn 
-                      round 
-                      color="primary" 
+                    <q-btn
+                      round
+                      color="primary"
                       icon="fa-light fa-file-arrow-down"
                       size="sm"
                       @click="downloadFile(itemRow)"
@@ -616,7 +616,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #fileListComponent
   .q-table__container
     width 100%

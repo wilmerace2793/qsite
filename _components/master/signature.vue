@@ -123,7 +123,7 @@ export default {
 };
 </script>
 
-<style lang="stylus">
+<style lang="sass">
 #signatureContent
   border 1px solid $grey-5
   border-radius $custom-radius

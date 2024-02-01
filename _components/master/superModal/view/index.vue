@@ -23,19 +23,19 @@
             <b>{{ title }}</b>
         </div>
         <!--Close Button-->
-        <div 
+        <div
             class="
-            tw-absolute 
-            tw-right-0 
-            tw-mr-20 
+            tw-absolute
+            tw-right-0
+            tw-mr-20
             tw-space-x-2"
             >
-            <q-btn 
+            <q-btn
                 v-for="(btn, keyBtn) in multiActions"
                 v-if="btn.props.vIf != undefined ? btn.props.vIf : true"
                 :key="keyBtn"
                 v-bind="{ ...actionBtnProps, ...(btn.props || {}) }"
-                @click="btn.action ? btn.action() : null" 
+                @click="btn.action ? btn.action() : null"
             />
         </div>
         <q-btn
@@ -98,9 +98,9 @@ export default defineComponent({
     },
     setup(props, { emit }) {
        return { ...useSuperModal(props, emit) }
-    }, 
+    },
 });
 </script>
 
-<style scoped src="../assets/styles/superModal.style.styl" lang="stylus">
+<style scoped src="../assets/styles/superModal.style.styl" lang="sass">
 </style>

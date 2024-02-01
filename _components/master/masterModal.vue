@@ -105,7 +105,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="sass">
 .master-dialog
   &__content
     background white

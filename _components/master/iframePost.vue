@@ -52,7 +52,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #iframePostcomponent
   height 100%
   width 100%

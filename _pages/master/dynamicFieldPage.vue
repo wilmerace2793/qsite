@@ -261,9 +261,9 @@ export default {
                         value : null,
                         type : 'input',
                         colClass: "col-12",
-                        props : { 
+                        props : {
                           label: 'Email'
-                        } 
+                        }
                     }
                 }
             }
@@ -277,5 +277,5 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 </style>

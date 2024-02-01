@@ -376,7 +376,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #settingPage
   .q-item
     font-size 14px

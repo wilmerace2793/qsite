@@ -120,7 +120,7 @@
     }
   }
   </script>
-  <style lang="stylus">
+  <style lang="sass">
   #blackDrawers2
     background-color $primary
     #menuMaster2

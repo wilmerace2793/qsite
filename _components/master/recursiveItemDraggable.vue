@@ -81,7 +81,7 @@ export default {
 };
 </script>
 
-<style lang="stylus">
+<style lang="sass">
 #recurisveItemDraggable
   .drag-group
     margin-top 5px

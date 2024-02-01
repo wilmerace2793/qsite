@@ -169,7 +169,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #listMenu
   .q-expansion-item__container
     .q-expansion-item__content

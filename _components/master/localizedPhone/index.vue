@@ -66,7 +66,7 @@
     </div>
   </div>
 </template>
-  
+
 <script lang="ts">
 import { defineComponent } from "vue";
 import useLocalizedPhone from "./useLocalizedPhone";
@@ -85,7 +85,7 @@ export default defineComponent({
   },
 });
 </script>
-<style lang="stylus">
+<style lang="sass">
 #localized-phone-dropdown
   border-right: 1px solid;
   border-color: #E5E7EB;

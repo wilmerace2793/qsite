@@ -158,7 +158,7 @@
     }
   }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #shareLinkModal
   .platform:hover
     transform: scale(1.1)

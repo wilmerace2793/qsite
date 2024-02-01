@@ -1,7 +1,7 @@
 import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance} from "vue";
 
 export default function controller(props: any, emit: any) {
-  const proxy = getCurrentInstance()!.proxy
+  const proxy = getCurrentInstance()!.appContext.config.globalProperties
 
   // Refs
   const refs = {

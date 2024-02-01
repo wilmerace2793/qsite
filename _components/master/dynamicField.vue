@@ -385,7 +385,7 @@
             :fieldProps="fieldProps"
         />
 
-        <multipleDynamicFields 
+        <multipleDynamicFields
           v-if="loadField('multiplier')"
           v-model="responseValue"
           :fieldProps="fieldProps"
@@ -571,7 +571,7 @@ export default {
   computed: {
     selectImg() {
       const data = this.rootOptions.find(item => item.id == this.responseValue) || {};
-      
+
       return data.img || null;
     },
     //Return label to field
@@ -1575,7 +1575,7 @@ export default {
     watchValue() {
       let value = this.$clone(this.value)
       let response = this.$clone(this.responseValue)
-      
+
       if (JSON.stringify(value) !== JSON.stringify(response)) {
                 //decode when is json
         if (this.field.type == "json" && (typeof response == "string"))
@@ -1716,7 +1716,7 @@ export default {
   }
 }
 </script>
-<style lang="stylus">
+<style lang="sass">
 #dynamicFieldComponent
 
   .q-field--outlined .q-field__control {
