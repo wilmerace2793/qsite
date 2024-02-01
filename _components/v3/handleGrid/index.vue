@@ -89,7 +89,7 @@ export default defineComponent({
   }
 })
 </script>
-<style lang="sass">
+<style lang="scss">
 #panel-editor-component
   margin: 0 auto;
   padding 10px

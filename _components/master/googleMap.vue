@@ -289,7 +289,7 @@
     }
   }
 </script>
-<style lang="sass">
+<style lang="scss">
   #googleMapComponent
     width 100%
 

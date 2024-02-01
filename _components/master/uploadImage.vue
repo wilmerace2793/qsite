@@ -138,7 +138,7 @@
   }
 </script>
 
-<style lang="sass">
+<style lang="scss">
   #uploadImageComponent
     margin 0 auto
     position relative

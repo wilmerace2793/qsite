@@ -616,7 +616,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 #fileListComponent
   .q-table__container
     width 100%

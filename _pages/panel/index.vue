@@ -34,7 +34,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 #panelIndexPage
   min-height calc(100vh - 131px) !important
 

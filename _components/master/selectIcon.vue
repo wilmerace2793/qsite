@@ -160,7 +160,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 #modalIconListContent
   .icon-list-content
     max-height 500px

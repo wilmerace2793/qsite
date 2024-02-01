@@ -179,7 +179,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="scss">
 #mapLeafletcomponent
   #lMap
     width 100%

@@ -413,7 +413,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 #pageActionscomponent
   #titleCrudTable
     font-size 20px

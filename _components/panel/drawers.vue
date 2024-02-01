@@ -210,7 +210,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 .q-layout-drawer-delimiter
   box-shadow $shadow-1
 

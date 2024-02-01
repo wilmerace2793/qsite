@@ -102,7 +102,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="scss">
 #masterCaptchaComponent
   #g-recaptcha
     width max-content

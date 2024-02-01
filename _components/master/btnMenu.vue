@@ -94,7 +94,7 @@ export default {
   },
 };
 </script >
-<style lang="sass">
+<style lang="scss">
 .btn-menu-component__menu
   padding 8px
   min-width auto

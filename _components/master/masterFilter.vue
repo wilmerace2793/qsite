@@ -438,7 +438,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 #masterFilterComponent
   #tabsContent
     .q-tab__content

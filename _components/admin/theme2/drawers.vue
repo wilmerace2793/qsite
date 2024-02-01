@@ -173,7 +173,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 #masterDrawers2
   background-color $primary
 

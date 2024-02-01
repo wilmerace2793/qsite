@@ -147,7 +147,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 
 #masterDrawers1
   background-color $custom-accent-color !important

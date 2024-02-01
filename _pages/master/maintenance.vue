@@ -36,7 +36,7 @@
     methods: {}
   }
 </script>
-<style lang="sass">
+<style lang="scss">
   #pageMaintenanceMaster
     min-height 100vh
 </style>

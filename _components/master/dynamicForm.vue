@@ -890,7 +890,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="scss">
 #dynamicFormComponentContent
   //min-height 150px
 

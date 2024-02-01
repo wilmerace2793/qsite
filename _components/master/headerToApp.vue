@@ -34,7 +34,7 @@
     methods: {}
   }
 </script>
-<style lang="sass">
+<style lang="scss">
   #backPageComponent
     height 50px
     width 100%

@@ -462,7 +462,7 @@
 export default {};
 </script>
 
-<style lang="sass">
+<style lang="scss">
 #componentCrudIndex {
   th {
     color: $blue-grey;

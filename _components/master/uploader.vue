@@ -254,7 +254,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 #uploaderMasterComponent
   color $grey-9
   //display inline-grid

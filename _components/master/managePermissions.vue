@@ -347,7 +347,7 @@
     }
   }
 </script>
-<style lang="sass">
+<style lang="scss">
   #barTitle
     border 1px solid $grey-4
 

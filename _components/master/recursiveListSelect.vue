@@ -73,7 +73,7 @@
     }
   }
 </script>
-<style lang="sass">
+<style lang="scss">
   #treeListSelect
     .header-list
       border-bottom 1px solid $grey-4

@@ -214,7 +214,7 @@
     }
   }
 </script>
-<style lang="sass">
+<style lang="scss">
   #chatComponentMaster
     background-color transparent
 

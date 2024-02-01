@@ -78,7 +78,7 @@ export default {
   methods: {}
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 .flex-break
   flex: 1 0 100% !important
   height: 0 !important

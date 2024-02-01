@@ -30,7 +30,7 @@ export default defineComponent({
   }
 })
 </script>
-<style lang="sass">
+<style lang="scss">
 #iframePostcomponent
   height 100%
   width 100%

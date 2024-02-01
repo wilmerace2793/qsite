@@ -48,7 +48,7 @@ export default {
   methods: {}
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 #helpTextMenu
   border 2px solid $info
   padding 10px 15px

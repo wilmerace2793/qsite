@@ -1716,7 +1716,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 #dynamicFieldComponent
 
   .q-field--outlined .q-field__control {

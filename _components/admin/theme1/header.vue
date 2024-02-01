@@ -87,7 +87,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 #masterAdminHeader
   .q-header
     background-color white

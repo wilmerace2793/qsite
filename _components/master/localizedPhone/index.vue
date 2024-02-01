@@ -85,7 +85,7 @@ export default defineComponent({
   },
 });
 </script>
-<style lang="sass">
+<style lang="scss">
 #localized-phone-dropdown
   border-right: 1px solid;
   border-color: #E5E7EB;

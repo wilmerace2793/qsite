@@ -39,7 +39,7 @@
 
   }
 </script>
-<style lang="sass">
+<style lang="scss">
   #innerLoadingMaster
     z-index 10
     border-radius $custom-radius

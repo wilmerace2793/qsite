@@ -55,7 +55,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 #listMenu
   .q-expansion-item__container
     .q-expansion-item__content

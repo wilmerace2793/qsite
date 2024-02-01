@@ -105,7 +105,7 @@
     }
   }
 </script>
-<style lang="sass">
+<style lang="scss">
   #componentSelectSettings
     border 1px solid $grey-4
 

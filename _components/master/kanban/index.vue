@@ -641,7 +641,7 @@ export default {
 };
 </script>
 
-<style lang="sass">
+<style lang="scss">
 .kanbanBtnCtn .q-btn {
   border-radius: 10px;
 }

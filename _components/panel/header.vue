@@ -97,7 +97,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 #masterPanelHeader
   .q-header {
     background: linear-gradient(180deg, #F1F4FA 0%, #FFFFFF 100%)

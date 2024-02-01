@@ -213,7 +213,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 #footerContent
   background-color $primary
   color white

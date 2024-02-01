@@ -59,7 +59,7 @@ export default {
   }
 }
 </script>
-<style lang="sass">
+<style lang="scss">
 #avatarImageComponent
   padding 0
   height max-content
