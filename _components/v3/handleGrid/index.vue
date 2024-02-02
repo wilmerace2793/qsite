@@ -42,10 +42,9 @@
             </q-btn>
 
             <div v-if="verifyKeys(element,childsFieldName)" class="full-width q-px-md">
-              <handle-grid v-model="element[childsFieldName]" v-bind="childProps" @input="updateSortOrder"
+              <handle-grid v-model="element[childsFieldName]" v-bind="$props" @input="updateSortOrder"
                 @create="(val) => addedChildItem(val.index, element.id, val)" ref="refHandleGrid"/>
             </div>
-
           </div>
         </div>
       </draggable>
@@ -88,8 +87,7 @@ export default defineComponent({
       default: false
     },
     actions: {type: Object, default: () => ({})},
-    childsFieldName: { type: String, default: ''},
-    childProps: {type: Object, default: () => {}}
+    childsFieldName: { type: String, default: 'children'}
   },
   components: {
     draggable
