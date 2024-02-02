@@ -1,9 +1,10 @@
 <template>
   <div class="row">
     <section id="panel-editor-component" class="full-width">
-      <draggable class="row q-col-gutter-md q-pb-md" v-model="items" group="components" @update="updateSortOrder">
+      <draggable class="row q-col-gutter-lg q-pb-md" v-model="items" :group="{ name: 'items' }"
+                 @input="updateSortOrder">
         <div :class="element[gridPosField]" v-for="element in items" :key="element.id">
-          <div class="panel-editor-component__component">
+          <div :class="`panel-editor-component__component ${verifyKeys(element,childsFieldName) ? 'hasChild' : ''}`">
             <div class="absolute-right q-ma-sm">
               <div class="row q-gutter-xs">
                 <!--Actions-->
@@ -12,7 +13,7 @@
                   <q-tooltip>{{ action.label }}</q-tooltip>
                 </q-btn>
                 <!--Grid position action-->
-                <q-btn v-if="element[gridPosField]" v-bind="actionButtonProps">
+                <q-btn v-if="verifyKeys(element,gridPosField)" v-bind="actionButtonProps">
                   <q-popup-edit
                       v-model="element[gridPosField]"
                       :title="element[titleField]"
@@ -20,6 +21,7 @@
                       :label-set="$tr('isite.cms.label.save')"
                       :label-cancel="$tr('isite.cms.label.cancel')"
                       v-slot="scope"
+                      @save="() => saveGrid()"
                   >
                     <dynamic-field v-model="scope.value"
                                    :field="{type: 'input', props: {autofocus : true, label: $tr('isite.cms.label.gridPosition')}}"/>
@@ -28,7 +30,7 @@
                 </q-btn>
               </div>
             </div>
-            {{ element[titleField] }}
+            <p>{{ element[titleField] }}</p>
             <q-btn v-if="canAddNewItem" class="add-btn" unelevated no-caps rounded color="cyan"
                    @click="addItem(element)">
               <div class="row items-center no-wrap">
@@ -38,6 +40,12 @@
                 </div>
               </div>
             </q-btn>
+
+            <div v-if="verifyKeys(element,childsFieldName)" class="full-width q-px-md">
+              <handle-grid v-model="element[childsFieldName]" v-bind="childProps" @input="updateSortOrder"
+                @create="(val) => addedChildItem(val.index, element.id, val)" ref="refHandleGrid"/>
+            </div>
+
           </div>
         </div>
       </draggable>
@@ -57,7 +65,7 @@ import controller from "@imagina/qsite/_components/v3/handleGrid/controller";
 import draggable from 'vuedraggable'
 
 export default defineComponent({
-  name: "Panel",
+  name: "handleGrid",
   props: {
     value: {
       type: Array,
@@ -79,7 +87,9 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    actions: {type: Object, default: () => ({})}
+    actions: {type: Object, default: () => ({})},
+    childsFieldName: { type: String, default: ''},
+    childProps: {type: Object, default: () => {}}
   },
   components: {
     draggable
@@ -93,26 +103,30 @@ export default defineComponent({
 #panel-editor-component
   margin: 0 auto;
   padding 10px
-  min-height: 80vh;
   background-color: white;
   border-radius: 10px;
   //border: 1px solid #ccc;
+
+  .hasChild
+    padding 20px
+    min-height: 120px;
 
   .panel-editor-component__component
     position relative;
     user-select: none;
     cursor: pointer;
-    height: 100px;
+    min-height: 100px;
     display: flex;
+    flex-direction column
     align-items: center;
     justify-content: center;
     border: dashed 3px $blue-grey;
 
     .add-btn
       position absolute;
-      bottom: -15%;
+      bottom: 0%;
       left: 50%;
-      transform: translate(-50%);
+      transform: translate(-50%, 50%);
 
   .add-new-item
     display grid;
