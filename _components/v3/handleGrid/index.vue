@@ -8,8 +8,9 @@
             <div class="absolute-right q-ma-sm">
               <div class="row q-gutter-xs">
                 <!--Actions-->
-                <q-btn v-for="(action, actIndex) in actions" :key="actIndex" :icon="action.icon"
-                       v-bind="actionButtonProps" @click="action.action(element)">
+                <q-btn v-for="(action, actIndex) in actions" :key="actIndex" v-bind="actionButtonProps"
+                       :icon="action.icon" :color="action.color || actionButtonProps.color"
+                       @click="action.action(element)">
                   <q-tooltip>{{ action.label }}</q-tooltip>
                 </q-btn>
                 <!--Grid position action-->
@@ -43,7 +44,7 @@
 
             <div v-if="verifyKeys(element,childsFieldName)" class="full-width q-px-md">
               <handle-grid v-model="element[childsFieldName]" v-bind="$props" @input="updateSortOrder"
-                @create="(val) => addedChildItem(val.index, element.id, val)" ref="refHandleGrid"/>
+                           @create="(val) => addedChildItem(val.index, element.id, val)" ref="refHandleGrid"/>
             </div>
           </div>
         </div>
@@ -87,7 +88,7 @@ export default defineComponent({
       default: false
     },
     actions: {type: Object, default: () => ({})},
-    childsFieldName: { type: String, default: 'children'}
+    childsFieldName: {type: String, default: 'children'}
   },
   components: {
     draggable
