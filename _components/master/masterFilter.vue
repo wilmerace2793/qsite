@@ -439,15 +439,22 @@ export default {
 }
 </script>
 <style lang="scss">
-#masterFilterComponent
-  #tabsContent
-    .q-tab__content
-      min-width auto
-  .q-field.q-field--float .q-field__label
-    color: $primary
-  .q-field__control
-    .q-field__append .q-icon
-      color: $tertiary
-    .q-field__append:last-child .q-icon
-      color: $primary
+#masterFilterComponent {
+  #tabsContent {
+    .q-tab__content {
+      min-width: auto;
+    }
+  }
+  .q-field.q-field--float .q-field__label {
+    color: $primary;
+  }
+  .q-field__control {
+    .q-field__append .q-icon {
+      color: $tertiary;
+    }
+    .q-field__append:last-child .q-icon {
+      color: $primary;
+    }
+  }
+}
 </style>

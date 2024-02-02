@@ -174,104 +174,136 @@ export default {
 }
 </script>
 <style lang="scss">
-#masterDrawers2
-  background-color $primary
+#masterDrawers2 {
+  background-color: $primary;
 
-  #menuMaster2
-    aside
-      background $primary
-      z-index 3000
+  #menuMaster2 {
+    aside {
+      background: $primary;
+      z-index: 3000;
+    }
 
-    #logoSite2
-      padding 20px 25px 26px 25px
-      height 120px
-      background-color #FFFFFF
+    #logoSite2 {
+      padding: 20px 25px 26px 25px;
+      height: 120px;
+      background-color: #FFFFFF;
+    }
 
-    #miniLogoSite
-      padding 30px 7px
-      height 120px
-      background-color #FFFFFF
+    #miniLogoSite {
+      padding: 30px 7px;
+      height: 120px;
+      background-color: #FFFFFF;
+    }
 
-    #versionContent
-      padding 3px 15px
-      font-size 13px
+    #versionContent {
+      padding: 3px 15px;
+      font-size: 13px;
+    }
 
-    .q-item
-      padding-left 0
-      background-color $primary
-      min-height 50px
-      color var(--q-color-contrast)
+    .q-item {
+      padding-left: 0;
+      background-color: $primary;
+      min-height: 50px;
+      color: var(--q-color-contrast);
 
-      .q-focus-helper
-        opacity 0
+      .q-focus-helper {
+        opacity: 0;
+      }
 
-      .q-item__section--avatar
-        padding 0 18px !important
+      .q-item__section--avatar {
+        padding: 0 18px !important;
+      }
 
-      .q-item__section
-        font-weight 600
+      .q-item__section,
+      .q-icon {
+        color: var(--q-color-contrast);
+      }
+    }
 
-      .q-item__section, .q-icon
-        color var(--q-color-contrast)
+    .content-item {
+      > .q-item {
+        .q-item__section--main {
+          font-size: 16px;
+        }
 
-    .content-item
-      > .q-item
-        .q-item__section--main
-          font-size 16px
+        .q-icon {
+          font-size: 20px;
+        }
 
-        .q-icon
-          font-size: 20px
+        &:hover,
+        &.item-is-active {
+          background-color: $secondary;
+          border-radius: 0 15px 15px 0;
+          font-weight: 900;
+        }
+      }
 
-        &:hover, &.item-is-active
-          background-color $secondary
-          border-radius: 0 15px 15px 0
-          font-weight 900
+      > .q-expansion-item {
+        background-color: $primary;
 
-      > .q-expansion-item
-        background-color $primary
+        .q-expansion-item__container > .q-item {
+          .q-item__label {
+            font-size: 15px;
+          }
 
-        .q-expansion-item__container > .q-item
-          .q-item__label
-            font-size 15px
+          .q-icon {
+            font-size: 20px;
+          }
 
-          .q-icon
-            font-size: 20px
+          &:hover,
+          &.item-is-active {
+            border-radius: 0 15px 15px 0;
+            background-color: $secondary;
+            font-weight: 900;
+          }
+        }
 
-          &:hover, &.item-is-active
-            border-radius: 0 15px 15px 0
-            background-color $secondary
-            font-weight 900
+        .q-expansion-item__container > .q-expansion-item__content {
+          padding: 0 0 0 3px;
+          border-left: 18px solid $primary;
 
-        .q-expansion-item__container > .q-expansion-item__content
-          padding 0 0 0 3px
-          border-left 18px solid $primary
+          #listMenu {
+            .content-item {
+              border-left: 3px solid $secondary;
+            }
+          }
 
-          #listMenu
-            .content-item
-              border-left 3px solid $secondary
+          .q-item {
+            min-height: 40px;
+            margin-left: -1px;
 
-          .q-item
-            min-height 40px
-            margin-left -1px
+            .q-item__section,
+            .q-icon {
+              color: var(--q-color-contrast);
+              font-size: 14px;
+              font-weight: 600;
+            }
 
-            .q-item__section, .q-icon
-              color var(--q-color-contrast)
-              font-size 14px
-              font-weight 600
+            .q-icon {
+              display: none;
+            }
 
-            .q-icon
-              display none
+            &:hover,
+            &.item-is-active {
+              background-color: $secondary;
 
-            &:hover, &.item-is-active
-              background-color $secondary
+              .q-item__section,
+              .q-icon {
+                color: var(--q-color-contrast);
+              }
+            }
+          }
+        }
+      }
+    }
 
-              .q-item__section, .q-icon
-                color var(--q-color-contrast)
+    .expansion-selected {
+      background-color: $primary;
+    }
 
-    .expansion-selected
-      background-color $primary
-
-    .q-drawer--mini .q-item
-      border-radius 0 !important
-
+    .q-drawer--mini .q-item {
+      border-radius: 0 !important;
+    }
+  }
+}
 </style>

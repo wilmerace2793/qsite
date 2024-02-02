@@ -37,6 +37,7 @@
   }
 </script>
 <style lang="scss">
-  #pageMaintenanceMaster
-    min-height 100vh
+  #pageMaintenanceMaster {
+    min-height: 100vh;
+  }
 </style>

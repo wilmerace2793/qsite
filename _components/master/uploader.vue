@@ -255,42 +255,50 @@ export default {
 }
 </script>
 <style lang="scss">
-#uploaderMasterComponent
-  color $grey-9
-  //display inline-grid
+#uploaderMasterComponent {
+  color: $grey-9;
+  //display: inline-grid;
 
-  #contentUploader
-    .file-block
-      border 1px dashed $grey-5
-      border-color $blue
-      border-radius 5px
-      cursor pointer
-      position relative
+  #contentUploader {
+    .file-block {
+      border: 1px dashed $grey-5;
+      border-color: $blue;
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
 
-      .file-block_content
-        height 150px
+      .file-block_content {
+        height: 150px;
+      }
 
-      .file-block_loaded
-        background-color $grey-4
-        height 126px
+      .file-block_loaded {
+        background-color: $grey-4;
+        height: 126px;
+      }
 
-      .file-block_icon
-        font-size 50px
-        color $blue
+      .file-block_icon {
+        font-size: 50px;
+        color: $blue;
+      }
 
-      .file-block_title
-        font-size 12px
-        padding 3px 4px
+      .file-block_title {
+        font-size: 12px;
+        padding: 3px 4px;
+      }
+    }
 
-    .btn-delete
-      position absolute
-      top 5px
-      right -5px
-      background $red
-      color white
-      height 35px
-      width 35px
-      border-radius 50%
-      cursor pointer
-      z-index 99
+    .btn-delete {
+      position: absolute;
+      top: 5px;
+      right: -5px;
+      background: $red;
+      color: white;
+      height: 35px;
+      width: 35px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 99;
+    }
+  }
+}
 </style>

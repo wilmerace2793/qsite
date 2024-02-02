@@ -90,13 +90,17 @@ export default {
 }
 </script>
 <style lang="scss">
-#masterAdminHeader
-  .q-header
-    background-color white
-    .buttonToogleMenuClose
-      position absolute
-      top 8px
-      left 5px
-  #toolbarTop
-    position relative
+#masterAdminHeader {
+  .q-header {
+    background-color: white;
+    .buttonToogleMenuClose {
+      position: absolute;
+      top: 8px;
+      left: 5px;
+    }
+  }
+  #toolbarTop {
+    position: relative;
+  }
+}
 </style>

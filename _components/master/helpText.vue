@@ -49,14 +49,16 @@ export default {
 }
 </script>
 <style lang="scss">
-#helpTextMenu
-  border 2px solid $info
-  padding 10px 15px
-  border-radius $custom-radius-items
+#helpTextMenu {
+  border: 2px solid $info;
+  padding: 10px 15px;
+  border-radius: $custom-radius-items;
 
-  #contentHelp
-    max-width 20em
-    line-height 1.3
-    color $blue-grey
-    text-align justify
+  #contentHelp {
+    max-width: 20em;
+    line-height: 1.3;
+    color: $blue-grey;
+    text-align: justify;
+  }
+}
 </style>

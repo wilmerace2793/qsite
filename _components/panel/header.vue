@@ -98,32 +98,41 @@ export default {
 }
 </script>
 <style lang="scss">
-#masterPanelHeader
+#masterPanelHeader {
   .q-header {
-    background: linear-gradient(180deg, #F1F4FA 0%, #FFFFFF 100%)
+    background: linear-gradient(180deg, #F1F4FA 0%, #FFFFFF 100%);
   }
 
-  #toolbarTop
-    padding-left 0
-    padding-right 10px
+  #toolbarTop {
+    padding-left: 0;
+    padding-right: 10px;
 
-    #buttonToogleMenu
-      height 36px
-      width 36px
-      border-radius 0 10px 10px 0
+    #buttonToogleMenu {
+      height: 36px;
+      width: 36px;
+      border-radius: 0 10px 10px 0;
 
-      .q-icon
-        font-size 16px
+      .q-icon {
+        font-size: 16px;
+      }
+    }
 
-    .q-breadcrumbs
-      .q-breadcrumbs__el
-        font-size 14px
+    .q-breadcrumbs {
+      .q-breadcrumbs__el {
+        font-size: 14px;
+      }
 
-      .q-breadcrumbs__separator
-        font-size 14px
-        padding 0 3px
+      .q-breadcrumbs__separator {
+        font-size: 14px;
+        padding: 0 3px;
+      }
+    }
+  }
 
-  #siteActionscomponent
-    .q-btn
-      box-shadow $custom-box-shadow
+  #siteActionscomponent {
+    .q-btn {
+      box-shadow: $custom-box-shadow;
+    }
+  }
+}
 </style>

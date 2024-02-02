@@ -1717,81 +1717,101 @@ export default {
 }
 </script>
 <style lang="scss">
-#dynamicFieldComponent
-
+#dynamicFieldComponent {
   .q-field--outlined .q-field__control {
-    padding-letf 12px
+    padding-left: 12px;
   }
 
   .expression-dinamyc-field {
-    width: calc(100% - 40px)
+    width: calc(100% - 40px);
   }
 
-  .jsoneditor-vue
+  .jsoneditor-vue {
     width: 100%;
     height: 400px;
-
-  .checkbox-field
-    .q-field__control-container
-      padding-top 0 !important
-
-  .field-no-padding
-    .q-field__control
-      padding 0 !important
-      overflow hidden
-      border-radius $custom-radius-items
-
-      .q-field__control-container
-        padding 0 !important
-
-  .vue-treeselect
-    .vue-treeselect__control
-      background transparent !important
-      border 0
-      max-height 26px
-      padding-right 0px
-
-      .vue-treeselect__single-value
-        line-height 1.9
-        padding 0
-
-  .dynamic-field__color
-    .q-field__control
-      border-radius $custom-radius-items
-
-    &.text-t-dark
-      .q-icon, .q-field__label, input
-        color $dark
-
-    &.text-t-light
-      .q-icon, .q-field__label, input
-        color white
-
-  #bannerField
-    .content
-      border-radius $custom-radius-items
-      border 2px solid
-      overflow hidden
-
-      &__message
-        line-height 1
-
-#ckEditorComponent
-  width 100%
-
-// help padding-right
-.crud-dynamic-field,
-.input-dynamic-field,
-.search-dynamic-field,
-.date-dynamic-field,
-.hour-dynamic-field,
-.full-date-dynamic-field,
-.select-dynamic-field,
-.treeselect-dynamic-field,
-.input-color-dynamic-field,
-.copy-dynamic-field,
-.select-icon-dinamyc-field
-  .q-field__control {
-    padding-right 40px
   }
+
+  .checkbox-field {
+    .q-field__control-container {
+      padding-top: 0 !important;
+    }
+  }
+
+  .field-no-padding {
+    .q-field__control {
+      padding: 0 !important;
+      overflow: hidden;
+      border-radius: $custom-radius-items;
+
+      .q-field__control-container {
+        padding: 0 !important;
+      }
+    }
+  }
+
+  .vue-treeselect {
+    .vue-treeselect__control {
+      background: transparent !important;
+      border: 0;
+      max-height: 26px;
+      padding-right: 0px;
+
+      .vue-treeselect__single-value {
+        line-height: 1.9;
+        padding: 0;
+      }
+    }
+  }
+
+  .dynamic-field__color {
+    .q-field__control {
+      border-radius: $custom-radius-items;
+    }
+
+    &.text-t-dark {
+      .q-icon, .q-field__label, input {
+        color: $dark;
+      }
+    }
+
+    &.text-t-light {
+      .q-icon, .q-field__label, input {
+        color: white;
+      }
+    }
+  }
+
+  #bannerField {
+    .content {
+      border-radius: $custom-radius-items;
+      border: 2px solid;
+      overflow: hidden;
+
+      &__message {
+        line-height: 1;
+      }
+    }
+  }
+
+  #ckEditorComponent {
+    width: 100%;
+  }
+
+  // help padding-right
+  .crud-dynamic-field,
+  .input-dynamic-field,
+  .search-dynamic-field,
+  .date-dynamic-field,
+  .hour-dynamic-field,
+  .full-date-dynamic-field,
+  .select-dynamic-field,
+  .treeselect-dynamic-field,
+  .input-color-dynamic-field,
+  .copy-dynamic-field,
+  .select-icon-dinamyc-field {
+    .q-field__control {
+      padding-right: 40px;
+    }
+  }
+}
 </style>

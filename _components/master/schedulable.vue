@@ -289,26 +289,32 @@ export default {
 }
 </script>
 <style lang="scss">
-#scheduleComponent
-  border 1px solid $grey-4
-  border-radius $custom-radius
+#scheduleComponent {
+  border: 1px solid $grey-4;
+  border-radius: $custom-radius;
 
-  .day-work-time
-    border 1px solid $grey-4
-    border-radius $custom-radius
-    padding 10px 54px 10px 10px
-    position relative
+  .day-work-time {
+    border: 1px solid $grey-4;
+    border-radius: $custom-radius;
+    padding: 10px 54px 10px 10px;
+    position: relative;
 
-    .actions-content
-      position absolute
-      right 10px
+    .actions-content {
+      position: absolute;
+      right: 10px;
+    }
+  }
 
-#modalScheduleContent
-  .work-time-content
-    padding-right 54px
-    position relative
+  #modalScheduleContent {
+    .work-time-content {
+      padding-right: 54px;
+      position: relative;
 
-    .actions-content
-      position absolute
-      right 15px
+      .actions-content {
+        position: absolute;
+        right: 15px;
+      }
+    }
+  }
+}
 </style>

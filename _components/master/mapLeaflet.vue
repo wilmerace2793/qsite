@@ -180,7 +180,9 @@ export default {
 </script>
 
 <style lang="scss">
-#mapLeafletcomponent
-  #lMap
-    width 100%
+#mapLeafletcomponent {
+  #lMap {
+    width: 100%;
+  }
+}
 </style>

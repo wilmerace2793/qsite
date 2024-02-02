@@ -88,10 +88,13 @@ export default {
 }
 </script>
 <style lang="scss">
-#masterAdminHeader
-  .q-header
-    background-color white
+#masterAdminHeader {
+  .q-header {
+    background-color: white;
+  }
 
-  #toolbarTop
-    position relative
+  #toolbarTop {
+    position: relative;
+  }
+}
 </style>

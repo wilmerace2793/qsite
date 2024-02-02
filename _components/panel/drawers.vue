@@ -211,89 +211,106 @@ export default {
 }
 </script>
 <style lang="scss">
-.q-layout-drawer-delimiter
-  box-shadow $shadow-1
+.q-layout-drawer-delimiter {
+  box-shadow: $shadow-1;
+}
 
-.q-drawer--mini
-  width 57px !important
+.q-drawer--mini {
+  width: 57px !important;
+}
 
-  .q-item__section
-    padding 0px 20px !important
+.q-drawer--mini .q-item__section {
+  padding: 0px 20px !important;
+}
 
-#menuMaster
-  .q-drawer
-    background $custom-accent-color
+#menuMaster .q-drawer {
+  background: $custom-accent-color;
+}
 
-  .q-scrollarea
-    padding-top 5px
+#menuMaster .q-scrollarea {
+  padding-top: 5px;
+}
 
-  hr
-    background-color $grey-3
+#menuMaster hr {
+  background-color: $grey-3;
+}
 
-  .q-expansion-item
-    background-color $custom-accent-color
+#menuMaster .q-expansion-item {
+  background-color: $custom-accent-color;
+}
 
-    .content-item
-      background-color $custom-accent-color
+#menuMaster .q-expansion-item .content-item {
+  background-color: $custom-accent-color;
+}
 
-  .q-expansion-item__container
-    .q-expansion-item__content
-      padding 0 0 0 1px
-      border-left 15px solid $custom-accent-color
+#menuMaster .q-expansion-item__container .q-expansion-item__content {
+  padding: 0 0 0 1px;
+  border-left: 15px solid $custom-accent-color;
+}
 
-  .q-item
-    padding-left 0
-    min-height 40px
-    color $blue-grey
+#menuMaster .q-item {
+  padding-left: 0;
+  min-height: 40px;
+  color: $blue-grey;
+}
 
-    .q-item__section--avatar
-      padding 0 18px !important
+#menuMaster .q-item .q-item__section--avatar {
+  padding: 0 18px !important;
+}
 
-      .q-icon
-        font-size 20px
-        color $blue-grey
+#menuMaster .q-item .q-item__section--avatar .q-icon {
+  font-size: 20px;
+  color: $blue-grey;
+}
 
-    &:hover
-      background-color $grey-4
-      color $primary
+#menuMaster .q-item:hover {
+  background-color: $grey-4;
+  color: $primary;
+}
 
-      .q-icon
-        color $primary
-        font-size 22px
+#menuMaster .q-item:hover .q-icon {
+  color: $primary;
+  font-size: 22px;
+}
 
-    &.item-is-active
-      background-color $custom-accent-color
+#menuMaster .q-item.item-is-active {
+  background-color: $custom-accent-color;
+}
 
-      .q-item__section, .q-icon
-        color $primary
+#menuMaster .q-item.item-is-active .q-item__section,
+#menuMaster .q-item.item-is-active .q-icon {
+  color: $primary;
+}
 
-  .expansion-selected
-    background-color $primary
+#menuMaster .expansion-selected {
+  background-color: $primary;
+}
 
-  #btnProfile
-    cursor pointer
-    position absolute
-    bottom 0
-    left 0
-    background-color $primary
-    border-radius 0
-    color white
-    height 50px
-    width 100%
-    padding 7px 8.5px
+#menuMaster #btnProfile {
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: $primary;
+  border-radius: 0;
+  color: white;
+  height: 50px;
+  width: 100%;
+  padding: 7px 8.5px;
+}
 
-    #profileImage
-      height 36px
-      width 36px
-      border-radius 50%
+#menuMaster #btnProfile #profileImage {
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+}
 
-#masterDrawers
-  #drawerRecomendationMaster
-    .q-drawer
-      max-height max-content
-      background $bg-custom-accent-color
+#masterDrawers #drawerRecomendationMaster .q-drawer {
+  max-height: max-content;
+  background: $bg-custom-accent-color;
+}
 
-    .q-drawer__content
-      background #ebf1fa
-
+#masterDrawers #drawerRecomendationMaster .q-drawer__content {
+  background: #ebf1fa;
+}
 </style>

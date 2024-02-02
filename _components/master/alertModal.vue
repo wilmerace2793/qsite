@@ -118,8 +118,10 @@ export default {
 }
 </script>
 <style lang="scss">
-#alertModalComponent
-  #cardContent
-    width var(--modalWidth)
-    max-width 99%
+#alertModalComponent {
+  #cardContent {
+    width: var(--modalWidth);
+    max-width: 99%;
+  }
+}
 </style>

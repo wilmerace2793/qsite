@@ -139,9 +139,11 @@ export default {
 }
 </script>
 <style lang="scss">
-#googleMapComponent
-  width 100%
+#googleMapComponent {
+  width: 100%;
 
-  #map
-    height 300px
+  #map {
+    height: 300px;
+  }
+}
 </style>

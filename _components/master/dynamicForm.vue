@@ -891,33 +891,42 @@ export default {
 </script>
 
 <style lang="scss">
-#dynamicFormComponentContent
+#dynamicFormComponentContent {
   //min-height 150px
 
   .position-relative {
-    position: relative
+    position: relative;
   }
 
-  .position-right
-    position absolute
-    right 16px
+  .position-right {
+    position: absolute;
+    right: 16px;
+  }
 
-  #stepperContent
-    padding 0
+  #stepperContent {
+    padding: 0;
 
-    &.q-stepper--vertical
-      .q-stepper__tab
-        padding 12px 5px !important
+    &.q-stepper--vertical {
+      .q-stepper__tab {
+        padding: 12px 5px !important;
+      }
 
-      .q-stepper__step-inner
-        padding 0 10px 10px 40px
+      .q-stepper__step-inner {
+        padding: 0 10px 10px 40px;
+      }
+    }
 
-    &.q-stepper--horizontal
+    &.q-stepper--horizontal {
+      .q-stepper__step-inner {
+        padding: 0;
+      }
+    }
+  }
 
-      .q-stepper__step-inner
-        padding 0
-
-  .q-btn
-    .q-icon
-      font-size 14px
+  .q-btn {
+    .q-icon {
+      font-size: 14px;
+    }
+  }
+}
 </style>

@@ -272,8 +272,9 @@ export default {
 </script>
 <style lang="scss">
 #siteActionscomponent
-  #profileImage
-    height 25px
-    width 25px
-    border-radius 50%
+  #profileImage {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+  }
 </style>
