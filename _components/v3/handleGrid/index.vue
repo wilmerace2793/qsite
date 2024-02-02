@@ -43,7 +43,7 @@
 
             <div v-if="verifyKeys(element,childsFieldName)" class="full-width q-px-md">
               <handle-grid v-model="element[childsFieldName]" v-bind="childProps" @input="updateSortOrder"
-                @create="(val) => addedChildItem(val.index, element.id, val)"/>
+                @create="(val) => addedChildItem(val.index, element.id, val)" ref="refHandleGrid"/>
             </div>
 
           </div>

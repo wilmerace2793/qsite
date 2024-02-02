@@ -1,12 +1,13 @@
 import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance} from "vue";
 import {debounce} from 'quasar';
+import handleGrid from '@imagina/qsite/_components/v3/handleGrid/index.vue';
 
 export default function controller(props: any, emit: any) {
   const proxy = getCurrentInstance()!.proxy
 
   // Refs
   const refs = {
-    // refKey: ref(defaultValue)
+    refHandleGrid: ref<InstanceType<typeof handleGrid>>(),
   }
 
   interface StateProps {
@@ -66,6 +67,13 @@ export default function controller(props: any, emit: any) {
     setState(items = null) {
       const data = items ?? props.value
       state.items = methods.orderedItems(data)
+      if(refs.refHandleGrid.value) {
+        refs.refHandleGrid.value.forEach(ref => {
+          proxy.$nextTick(() => {
+            ref?.setState()
+          })
+        })
+      }
     },
     //Updated Item
     updateItem(newValue, keySearch = 'id') {
