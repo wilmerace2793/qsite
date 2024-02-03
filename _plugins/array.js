@@ -212,7 +212,7 @@ class Array {
     //Destroy tree
     data.forEach(item => {
       if (item.children) {
-        let children = item.children || []
+        let children = this.destroyTree(item.children || [])
         delete item.children
         response = [...response, item, ...children]
       } else {
