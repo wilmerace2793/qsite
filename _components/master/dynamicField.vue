@@ -447,14 +447,15 @@ import localizedPhone from '@imagina/qsite/_components/master/localizedPhone/ind
 import multipleDynamicFields from '@imagina/qsite/_components/master/multipleDynamicFields/views'
 //Code mirror
 import {codemirror} from 'vue-codemirror'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/mode/css/css.js'
-import 'codemirror/mode/sass/sass.js'
-import 'codemirror/mode/javascript/javascript.js'
-import 'codemirror/mode/htmlembedded/htmlembedded.js'
-import 'codemirror/mode/php/php.js'
-import 'codemirror/theme/base16-dark.css'
-import 'codemirror/addon/selection/active-line.js'
+//[ptc]
+// import 'codemirror/lib/codemirror.css'
+// import 'codemirror/mode/css/css.js'
+// import 'codemirror/mode/sass/sass.js'
+// import 'codemirror/mode/javascript/javascript.js'
+// import 'codemirror/mode/htmlembedded/htmlembedded.js'
+// import 'codemirror/mode/php/php.js'
+// import 'codemirror/theme/base16-dark.css'
+// import 'codemirror/addon/selection/active-line.js'
 
 export default {
   name: 'dynamicField',
