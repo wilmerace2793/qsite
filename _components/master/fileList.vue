@@ -617,119 +617,144 @@ export default {
 }
 </script>
 <style lang="scss">
-#fileListComponent
-  .q-table__container
-    width 100%
-    box-shadow none
-    color $grey-9
-    padding 10px
+#fileListComponent {
+  .q-table__container {
+    width: 100%;
+    box-shadow: none;
+    color: $grey-9;
+    padding: 10px;
 
-    .q-table__top
-      padding 0
+    .q-table__top {
+      padding: 0;
+    }
 
-    thead
-      th
-        font-size 16px
+    thead {
+      th {
+        font-size: 16px;
+      }
+    }
 
-    .td-filename //Table styles
+    .td-filename { //Table styles
+      .item-file {
+        width: max-content;
 
-      .item-file
-        width max-content
+        .q-icon {
+          font-size: 25px;
+          margin-right: 15px;
+        }
 
-        .q-icon
-          font-size 25px
-          margin-right 15px
+        .file-image {
+          margin-right: 15px;
+          height: 36px;
+          width: 36px;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+        }
+      }
+    }
 
-        .file-image
-          margin-right 15px
-          height 36px
-          width 36px
-          background-repeat no-repeat
-          background-position center
-          background-size cover
+    .file-card:hover .showOnHover {
+      display: block;
+    }
 
-    .file-card:hover .showOnHover
-      display: block
-
-    .file-card //Card styles
-      color $grey-9
-      background-color $grey-4
-      border 2px solid $grey-3
-      border-radius 4px
-      overflow hidden
-      position relative
-
-      .showOnHover
-        display: none
-
-      .file-card_img, .file-card_icon
-        height 120px
-        width 100%
-
-      .file-card_icon
-        .q-icon
-          font-size 50px
-
-      .file-card__bottom
-        width 100%
-        background-color white
-        position relative
-
-        &_title
-          font-size 12px
-          color $grey-9
-          text-transform lowercase
-
-    .file-chip
-      border 1px solid $grey-5
-      padding 5px
-      border-radius 5px
-      color $grey-8
+    .file-card { //Card styles
+      color: $grey-9;
+      background-color: $grey-4;
+      border: 2px solid $grey-3;
+      border-radius: 4px;
+      overflow: hidden;
       position: relative;
-      min-height 38px
 
-      .file-chip__img
-        position absolute
-        left 5px
-        top 6.5px
-        height 18px
-        width 18px
+      .showOnHover {
+        display: none;
+      }
 
-      .file-chip__icon
-        position absolute
-        left 5px
-        top 6.5px
-        font-size 18px
-        margin-right 5px
+      .file-card_img, .file-card_icon {
+        height: 120px;
+        width: 100%;
+      }
 
-      .file-chip__title
-        padding-left 23px
-        padding-right 20px
-        text-transform lowercase
+      .file-card_icon {
+        .q-icon {
+          font-size: 50px;
+        }
+      }
 
-      .file-chip__actions
-        position absolute
-        right 2px
-        top 0
+      .file-card__bottom {
+        width: 100%;
+        background-color: white;
+        position: relative;
 
-  .file-item-quantity
-    cursor pointer
-    height 188px
-    border 2px dotted $grey-5
-    border-radius 5px
-    color $grey-5
+        &_title {
+          font-size: 12px;
+          color: $grey-9;
+          text-transform: lowercase;
+        }
+      }
+    }
 
-  th:last-child, td:last-child
-    background-color white
-    position: sticky
-    right: 0
-    z-index: 1
+    .file-chip {
+      border: 1px solid $grey-5;
+      padding: 5px;
+      border-radius: 5px;
+      color: $grey-8;
+      position: relative;
+      min-height: 38px;
 
-  .drag-handle
-    cursor move
+      .file-chip__img {
+        position: absolute;
+        left: 5px;
+        top: 6.5px;
+        height: 18px;
+        width: 18px;
+      }
 
-  .scale-down
-    transition: all 0.2s ease-in-out;
-    transform: scale(0.9) !important
+      .file-chip__icon {
+        position: absolute;
+        left: 5px;
+        top: 6.5px;
+        font-size: 18px;
+        margin-right: 5px;
+      }
+
+      .file-chip__title {
+        padding-left: 23px;
+        padding-right: 20px;
+        text-transform: lowercase;
+      }
+
+      .file-chip__actions {
+        position: absolute;
+        right: 2px;
+        top: 0;
+      }
+    }
+
+    .file-item-quantity {
+      cursor: pointer;
+      height: 188px;
+      border: 2px dotted $grey-5;
+      border-radius: 5px;
+      color: $grey-5;
+    }
+
+    th:last-child, td:last-child {
+      background-color: white;
+      position: sticky;
+      right: 0;
+      z-index: 1;
+    }
+
+    .drag-handle {
+      cursor: move;
+    }
+
+    .scale-down {
+      transition: all 0.2s ease-in-out;
+      transform: scale(0.9) !important;
+    }
+  }
+}
 </style>
 

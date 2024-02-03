@@ -35,13 +35,17 @@ export default {
 }
 </script>
 <style lang="scss">
-#panelIndexPage
-  min-height calc(100vh - 131px) !important
+#panelIndexPage {
+  min-height: calc(100vh - 131px) !important;
+}
 
-  #gamificationActivities
-    width 100%
-    @media screen and (min-width: $breakpoint-md)
-      width 80%
-    @media screen and (min-width: $breakpoint-lg)
-      width 60%
+#gamificationActivities {
+  width: 100%;
+  @media screen and (min-width: $breakpoint-md) {
+    width: 80%;
+  }
+  @media screen and (min-width: $breakpoint-lg) {
+    width: 60%;
+  }
+}
 </style>

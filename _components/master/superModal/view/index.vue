@@ -102,5 +102,5 @@ export default defineComponent({
 });
 </script>
 
-<style scoped src="../assets/styles/superModal.style.styl" lang="scss">
+<style scoped src="../assets/styles/superModal.style.scss" lang="scss">
 </style>

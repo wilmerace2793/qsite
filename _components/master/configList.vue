@@ -382,15 +382,18 @@ export default {
 }
 </script>
 <style lang="scss">
-#configList
-  color $grey-9
+#configList {
+  color: $grey-9;
 
-  .q-icon
-    min-width max-content !important
+  .q-icon {
+    min-width: max-content !important;
+  }
 
-  .title-block
-    border-radius 5px
-    background-color $primary
-    color white
-    padding 4px 15px
+  .title-block {
+    border-radius: 5px;
+    background-color: $primary;
+    color: white;
+    padding: 4px 15px;
+  }
+}
 </style>

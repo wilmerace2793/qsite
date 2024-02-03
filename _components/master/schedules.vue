@@ -260,12 +260,15 @@ export default {
 }
 </script>
 <style lang="scss">
-#modalScheduleContent
-  .modal-content
-    padding-right 45px
+#modalScheduleContent {
+  .modal-content {
+    padding-right: 45px;
 
-    .remove-action
-      position absolute
-      top 6px
-      right 0
+    .remove-action {
+      position: absolute;
+      top: 6px;
+      right: 0;
+    }
+  }
+}
 </style>

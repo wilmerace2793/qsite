@@ -95,14 +95,18 @@ export default {
 };
 </script >
 <style lang="scss">
-.btn-menu-component__menu
-  padding 8px
-  min-width auto
-  border-radius 5px
-  .q-list
-    min-width 150px
-  .q-item
-    padding 8px
-    .q-icon
-      margin-right 10px
+.btn-menu-component__menu {
+  padding: 8px;
+  min-width: auto;
+  border-radius: 5px;
+  .q-list {
+    min-width: 150px;
+  }
+  .q-item {
+    padding: 8px;
+    .q-icon {
+      margin-right: 10px;
+    }
+  }
+}
 </style>

@@ -53,11 +53,13 @@ export default {
 }
 </script>
 <style lang="scss">
-#iframePostcomponent
-  height 100%
-  width 100%
+#iframePostcomponent {
+  height: 100%;
+  width: 100%;
 
-  iframe
-    height 100%
-    width 100%
+  iframe {
+    height: 100%;
+    width: 100%;
+  }
+}
 </style>

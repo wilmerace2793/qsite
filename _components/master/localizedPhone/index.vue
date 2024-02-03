@@ -86,10 +86,12 @@ export default defineComponent({
 });
 </script>
 <style lang="scss">
-#localized-phone-dropdown
+#localized-phone-dropdown {
   border-right: 1px solid;
   border-color: #E5E7EB;
 
-  .q-btn__wrapper
-    padding: 0px
+  .q-btn__wrapper {
+    padding: 0px;
+  }
+}
 </style>

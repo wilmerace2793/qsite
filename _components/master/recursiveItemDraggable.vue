@@ -82,14 +82,15 @@ export default {
 </script>
 
 <style lang="scss">
-#recurisveItemDraggable
-  .drag-group
-    margin-top 5px
-    margin-bottom 5px
-    cursor move
-    display block
-    padding 0 5px
-    border lightgray 1px solid
-    border-radius $custom-radius
-
+#recurisveItemDraggable {
+  .drag-group {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    cursor: move;
+    display: block;
+    padding: 0 5px;
+    border: lightgray 1px solid;
+    border-radius: $custom-radius;
+  }
+}
 </style>

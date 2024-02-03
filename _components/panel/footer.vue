@@ -212,31 +212,37 @@ export default {
 }
 </script>
 <style lang="scss">
-#panelFooterContent
-  background-color white
-  color $grey-7
+#panelFooterContent {
+  background-color: white;
+  color: $grey-7;
 
-  .item-footer
-    text-align center
-    font-size 11px
-    padding 10px 0
+  .item-footer {
+    text-align: center;
+    font-size: 11px;
+    padding: 10px 0;
 
-    .item-icon
-      font-size 20px
-      margin-bottom 3px
+    .item-icon {
+      font-size: 20px;
+      margin-bottom: 3px;
+    }
+  }
 
-  #item-main
-    border-radius 50%
-    width 50px
-    height 50px
-    margin auto
-    font-size 26px
-    color white
+  #item-main {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: auto;
+    font-size: 26px;
+    color: white;
+  }
+}
 
-#footerIpanel
-  background-color transparent
-  border-top 1px solid $grey-4
+#footerIpanel {
+  background-color: transparent;
+  border-top: 1px solid $grey-4;
 
-  #webComponent
-    all initial
+  #webComponent {
+    all: initial;
+  }
+}
 </style>

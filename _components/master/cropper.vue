@@ -239,35 +239,41 @@ export default {
 }
 </script>
 <style lang="scss">
-#modalCropperComponent
-  #cropperContent
-    position relative
-    background #000
+#modalCropperComponent {
+  #cropperContent {
+    position: relative;
+    background: #000;
 
-    #bottomActions
-      position absolute
-      right 10px
-      bottom 10px
+    #bottomActions {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
 
-      .btnActionCropper
-        cursor pointer
-        border-radius 20px
-        background #00000099
-        color white
-        padding 3px 10px
-        border 2px solid white
+      .btnActionCropper {
+        cursor: pointer;
+        border-radius: 20px;
+        background: #00000099;
+        color: white;
+        padding: 3px 10px;
+        border: 2px solid white;
 
-        .q-icon
-          font-size 16px
-          color white
+        .q-icon {
+          font-size: 16px;
+          color: white;
+        }
+      }
+    }
 
-    #topActions
-      padding 3px 5px
-      border-radius 20px
-      background #00000099
-      border 2px solid white
-      margin auto
-      position absolute
-      top 10px
-      left 10px
+    #topActions {
+      padding: 3px 5px;
+      border-radius: 20px;
+      background: #00000099;
+      border: 2px solid white;
+      margin: auto;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+  }
+}
 </style>

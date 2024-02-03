@@ -1,11 +1,13 @@
 import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance} from "vue";
+import {debounce} from 'quasar';
+import handleGrid from '@imagina/qsite/_components/v3/handleGrid/index.vue';
 
 export default function controller(props: any, emit: any) {
   const proxy = getCurrentInstance()!.appContext.config.globalProperties
 
   // Refs
   const refs = {
-    // refKey: ref(defaultValue)
+    refHandleGrid: ref<InstanceType<typeof handleGrid>>(),
   }
 
   interface StateProps {
@@ -48,7 +50,7 @@ export default function controller(props: any, emit: any) {
     },
     addItem(currentItem) {
       const index = state.items.findIndex(i => i.id === currentItem.id);
-      emit('create', {index, onCreate: (val) => methods.onCreate(index, val)})
+      emit('create', {index, parentId: 0, onCreate: (val) => methods.onCreate(index, val)})
     },
     onCreate(index, newItem) {
       if (index >= 0) {
@@ -65,6 +67,13 @@ export default function controller(props: any, emit: any) {
     setState(items = null) {
       const data = items ?? props.value
       state.items = methods.orderedItems(data)
+      if(refs.refHandleGrid.value) {
+        refs.refHandleGrid.value.forEach(ref => {
+          proxy.$nextTick(() => {
+            ref?.setState()
+          })
+        })
+      }
     },
     //Updated Item
     updateItem(newValue, keySearch = 'id') {
@@ -75,6 +84,22 @@ export default function controller(props: any, emit: any) {
       if(itemIndex >= 0) {
         state.items.splice(itemIndex, 1, newValue)
       }
+    },
+    //Check if exist key in the element
+    verifyKeys(element, key) {
+      const arrayKeys = Object.keys(element);
+      return arrayKeys.includes(key)
+    },
+    //Update when change grid
+    saveGrid: debounce(() => methods.updateSortOrder(), 1000),
+    //Add child in Grid
+    addedChildItem(index, parentId, childObj) {
+      let response = childObj
+      if(response.parentId == 0) {
+        response.parentId = parentId
+      }
+
+      emit('create', response)
     },
   }
 
