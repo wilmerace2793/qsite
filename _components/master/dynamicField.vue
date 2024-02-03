@@ -446,7 +446,7 @@ import expressionField from '@imagina/qsite/_components/master/expressionField/i
 import localizedPhone from '@imagina/qsite/_components/master/localizedPhone/index.vue';
 import multipleDynamicFields from '@imagina/qsite/_components/master/multipleDynamicFields/views'
 //Code mirror
-import {codemirror} from 'vue-codemirror'
+//[ptc]import {codemirror} from 'vue-codemirror'
 //[ptc]
 // import 'codemirror/lib/codemirror.css'
 // import 'codemirror/mode/css/css.js'

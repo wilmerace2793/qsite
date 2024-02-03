@@ -1,7 +1,7 @@
 <template>
   <q-dialog
       id="drawerFilterMaster"
-      v-model="show"
+      v-model="showDialog"
       persistent
       maximized
       position="right"
@@ -109,8 +109,13 @@ export default {
       default: () => false,
     },
   },
-  components: {},
+  components: {
+
+  },
   watch: {
+    show(newValue){
+      this.showDialog = this.$clone(newValue)
+    },
     '$filter': {
       deep: true,
       handler: function (newValue, oldValue) {
@@ -158,6 +163,7 @@ export default {
   },
   data() {
     return {
+      showDialog: false,
       tabName: 'tabForm',
       filterValues: {},
       pagination: {},
