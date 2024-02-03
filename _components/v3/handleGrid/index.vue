@@ -1,9 +1,9 @@
 <template>
   <div class="row">
     <section id="panel-editor-component" class="full-width">
-      <draggable class="row q-col-gutter-lg q-pb-md" v-model="items" :group="{ name: 'items' }"
-                 @input="updateSortOrder">
-        <div :class="element[gridPosField]" v-for="element in items" :key="element.id">
+      <draggable :list="elements" class="row q-col-gutter-lg q-pb-md" :group="{ name: 'items' }"
+                 @change="handleChangeDraggable">
+        <div :class="element[gridPosField]" v-for="(element, keyItems) in elements" :key="element.id">
           <div :class="`panel-editor-component__component ${verifyKeys(element,childsFieldName) ? 'hasChild' : ''}`">
             <div class="absolute-right q-ma-sm">
               <div class="row q-gutter-xs">
@@ -22,7 +22,7 @@
                       :label-set="$tr('isite.cms.label.save')"
                       :label-cancel="$tr('isite.cms.label.cancel')"
                       v-slot="scope"
-                      @save="() => saveGrid()"
+
                   >
                     <dynamic-field v-model="scope.value"
                                    :field="{type: 'input', props: {autofocus : true, label: $tr('isite.cms.label.gridPosition')}}"/>
@@ -43,13 +43,14 @@
             </q-btn>
 
             <div v-if="verifyKeys(element,childsFieldName)" class="full-width q-px-md">
-              <handle-grid v-model="element[childsFieldName]" v-bind="$props" @input="updateSortOrder"
-                           @create="(val) => addedChildItem(val.index, element.id, val)" ref="refHandleGrid"/>
+              <handle-grid :elements="element[childsFieldName]" v-bind="$props"
+                           :parent-value="element[parentValueField] || 0"
+                           @create="(val) => addedChildItem(val.index, element.id, val)"/>
             </div>
           </div>
         </div>
       </draggable>
-      <div v-if="canAddNewItem && value.length == 0" class="add-new-item" @click="addItem()">
+      <div v-if="canAddNewItem && elements.length == 0" class="add-new-item" @click="addItem()">
         <div class="text-center q-pa-lg">
           <q-icon name="fa-regular fa-grid-2-plus" size="60px" color="warning"/>
           <div class="q-mt-md text-h5 text-blue-grey">Añade un nuevo item</div>
@@ -67,22 +68,32 @@ import draggable from 'vuedraggable'
 export default defineComponent({
   name: "handleGrid",
   props: {
-    value: {
+    elements: {
       type: Array,
       default: []
-    },
-    orderBy: {
-      type: String,
-      default: null
-    },
-    gridPosField: {
-      type: String,
-      default: 'gridPosition'
     },
     titleField: {
       type: String,
       default: 'title'
     },
+    gridPosField: {
+      type: String,
+      default: 'gridPosition'
+    },
+    orderByField: {
+      type: String,
+      default: 'sortOrder'
+    },
+    parentField: {
+      type: String,
+      default: 'parentId'
+    },
+    parentValueField: {
+      type: String,
+      default: 'id'
+    },
+    parentValue: {default: 0},
+
     canAddNewItem: {
       type: Boolean,
       default: false
