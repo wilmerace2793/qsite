@@ -3,10 +3,8 @@ import config from '@imagina/qsite/_config/master/index'
 import cache from '@imagina/qsite/_plugins/cache'
 import crud from "@imagina/qcrud/_services/baseService";
 import cloneDeep from 'lodash.clonedeep'
-import {colors, AddressbarColor} from 'quasar'
-import Quasar from 'quasar'
 import axios from "axios";
-import {Loading} from 'quasar';
+import { Quasar, Loading, colors, AddressbarColor } from 'quasar';
 import filter from '@imagina/qsite/_plugins/filter'
 import helper from '@imagina/qsite/_plugins/helper'
 import configApp from "src/config/app"
