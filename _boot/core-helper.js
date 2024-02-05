@@ -51,7 +51,7 @@ export default function ({app, router, store, Vue, ssrContext}) {
   }
   app.config.globalProperties.$uid = uid
   app.config.globalProperties.$apiResponse = apiResponse
-  Vue.use(moment)
-  Vue.use(Vuelidate)
-  Vue.use(VueSignaturePad)
+  app.use(moment)
+  app.use(Vuelidate)
+  app.use(VueSignaturePad)
 }
