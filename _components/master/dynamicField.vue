@@ -398,7 +398,7 @@
             <div class="text-grey-8 q-mb-xs" v-if="fieldProps.field.label">
               {{ fieldProps.field.label }} [{{ fieldProps.field.options.mode }}]
             </div>
-            <codemirror v-model="responseValue" :options="fieldProps.field.options"/>
+<!--            <codemirror v-model="responseValue" :options="fieldProps.field.options"/>-->
           </div>
         </q-field>
 
@@ -493,7 +493,7 @@ export default {
     googleMapMarker,
     JsonEditorVue,
     expressionField,
-    codemirror,
+    //codemirror,
     localizedPhone,
     multipleDynamicFields,
   },

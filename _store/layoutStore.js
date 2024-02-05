@@ -1,7 +1,7 @@
 import Vue, {reactive, getCurrentInstance} from "vue";
 import baseService from '@imagina/qcrud/_services/baseService.js';
 
-const proxy = getCurrentInstance().appContext.config.globalProperties
+//[ptc]const proxy = getCurrentInstance().appContext.config.globalProperties
 const data = {
   title: "Layouts",
   description: null,
@@ -27,7 +27,7 @@ const state = reactive({
 
 export default function layoutStore() {
   function getPrototype() {
-    return proxy;
+    //[ptc]return proxy;
   }
 
   function getLayouts() {

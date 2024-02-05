@@ -11,10 +11,8 @@ export default async ({app, router, store, Vue}) => {
     store.dispatch('qsiteApp/GET_MODULE_CONFIGS', {refresh: false}),
     store.dispatch('qsiteApp/GET_SITE_HOOKS', {refresh: false}),
   ])
-  //Switch between new page config or old page config
-  const legacyStructure = parseInt(store.getters['qsiteApp/getSettingValueByName']('isite::legacyStructureCMS') || 0)
   //add all route from backend in router method later resolve all promise
-  let routesLocal = legacyStructure ? localRoutes.getRoutes() : serverRoutes.getRoutes(lodash.cloneDeep(store.state.qsiteApp.pages || []))
+  let routesLocal = localRoutes.getRoutes()
   //Add Routes
-  router.addRoutes(routesLocal)
+  routesLocal.forEach(route => router.addRoute(route))
 }

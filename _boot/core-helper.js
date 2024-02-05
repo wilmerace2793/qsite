@@ -8,7 +8,6 @@ import hook from '@imagina/qsite/_plugins/hook'
 import crud from '@imagina/qcrud/_services/baseService'
 import lodash from 'lodash'
 import moment from 'vue-moment'
-import Vuelidate from 'vuelidate'
 import {uid} from 'quasar'
 import {openURL} from 'quasar'
 import eventBus from '@imagina/qsite/_plugins/eventBus'
@@ -52,6 +51,5 @@ export default function ({app, router, store, Vue, ssrContext}) {
   app.config.globalProperties.$uid = uid
   app.config.globalProperties.$apiResponse = apiResponse
   app.use(moment)
-  app.use(Vuelidate)
   app.use(VueSignaturePad)
 }
