@@ -85,13 +85,13 @@ class LocalRoutes {
   addExtraRoutes() {
     //Add not found page
     if (process.env.MODE !== 'ssr') {
-      Route.view('*', () => import('@imagina/qsite/_layouts/blank.vue')).children(() => {
+      Route.view('/:catchAll(.*)', () => import('@imagina/qsite/_layouts/blank.vue')).children(() => {
         Route.view('/', () => import('@imagina/qsite/_pages/master/404')).options({
           name: 'app.not.found',
           meta: {
             permission: null,
             activated: true,
-            path: '*',
+            path: '/:catchAll(.*)',
             name: 'app.not.found',
             title: 'sidebar.pageNotFound',
             headerTitle: false,
