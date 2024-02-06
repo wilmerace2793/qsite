@@ -1,5 +1,5 @@
-//[ptc]
-// import Vue from 'vue'
-// const bus = new Vue()
-const bus = {}
+import { EventBus } from 'quasar'
+
+const bus = new EventBus()
+
 export default bus

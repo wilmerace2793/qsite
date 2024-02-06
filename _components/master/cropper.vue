@@ -36,10 +36,11 @@ import zoneConfigMixing from "@imagina/qmedia/_mixins/zoneConfigMixins"
 // Local
 import VueCropper from 'vue-cropperjs';
 import 'cropperjs/dist/cropper.css';
+import eventBus from '@imagina/qsite/_plugins/eventBus'
 
 export default {
   beforeDestroy() {
-    this.$eventBus.$off('master.cropper.image')
+    eventBus.off('master.cropper.image')
   },
   mixins: [zoneConfigMixing],
   props: {
@@ -62,7 +63,7 @@ export default {
       imgSrc: false,
       imgType: false,
       callBack: false,
-      aspectRatio: NaN
+      aspectRatio: NaN,
     }
   },
   computed: {
@@ -175,7 +176,7 @@ export default {
   methods: {
     init() {
       //Listen global event
-      this.$eventBus.$on('master.cropper.image', params => {
+      eventBus.on('master.cropper.image', params => {
         if (params.src) this.loadFile(params.src)
         if (params.type) this.imgType = this.$clone(params.type)
         if (params.callBack) this.callBack = params.callBack

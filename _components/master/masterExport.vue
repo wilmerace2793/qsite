@@ -61,10 +61,12 @@
   </master-modal>
 </template>
 <script>
+import eventBus from '@imagina/qsite/_plugins/eventBus'
+
 export default {
   beforeDestroy() {
     this.$root.$off('export.data.refresh')
-    this.$eventBus.$off('isite.export.ready')
+    eventBus.off('isite.export.ready')
   },
   props: {
     exportItem: {type: Boolean, default: false}
@@ -178,7 +180,7 @@ export default {
       //Get data
       this.getData()
       //Listen event to push new messages
-      this.$eventBus.$on('isite.export.ready', (response) => {
+      eventBus.on('isite.export.ready', (response) => {
         this.$alert.info({
           message: this.$tr('isite.cms.messages.exportReady', {fileName: response.data.fileName}),
           timeOut: 12000,

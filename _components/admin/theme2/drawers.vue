@@ -2,7 +2,7 @@
   <div id="masterDrawers2">
     <!-- MENU -->
     <q-drawer id="menuMaster2" class="no-shadow" v-model="drawer.menu" ref="menuMaster"
-              :mini="miniState" @click.capture="miniState ? $eventBus.$emit('toggleMasterDrawer','menu') : null">
+              :mini="miniState" @click.capture="miniState ? eventBus.emit('toggleMasterDrawer','menu') : null">
       <!--Logo-->
       <div v-show="!miniState" id="logoSite2" class="relative-position">
         <q-img contain :src="logo" style="height: 80px; min-height: 80px"/>
@@ -52,11 +52,12 @@ import menuList from '@imagina/qsite/_components/master/recursiveItem'
 import checkin from '@imagina/qcheckin/_components/checkin'
 import masterRecommendation from '@imagina/qsite/_components/master/masterRecommendations'
 import masterNotifications from '@imagina/qnotification/_components/drawerNotifications'
+import eventBus from '@imagina/qsite/_plugins/eventBus'
 
 export default {
   beforeDestroy() {
-    this.$eventBus.$off('toggleMasterDrawer')
-    this.$eventBus.$off('openMasterDrawer')
+    eventBus.off('toggleMasterDrawer')
+    eventBus.off('openMasterDrawer')
   },
   mixins: [sidebarMixins],
   props: {},
@@ -82,7 +83,8 @@ export default {
         recommendation: false,
         notification: false
       },
-      appConfig: config('app')
+      appConfig: config('app'),
+      eventBus
     }
   },
   computed: {
@@ -141,9 +143,9 @@ export default {
     },
     handlerEvent() {
       //handler toggleMasterDrawer
-      this.$eventBus.$on('toggleMasterDrawer', (drawerName) => this.toggleDrawer(drawerName))
+      eventBus.on('toggleMasterDrawer', (drawerName) => this.toggleDrawer(drawerName))
       //handler openMasterDrawer
-      this.$eventBus.$on('openMasterDrawer', (drawerName) => this.drawer[drawerName] = true)
+      eventBus.on('openMasterDrawer', (drawerName) => this.drawer[drawerName] = true)
     },
     //Show drawer specific
     toggleDrawer(drawerName) {

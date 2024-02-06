@@ -19,7 +19,7 @@
         </div>
         <!-- Close icon -->
         <q-icon name="fas fa-times" color="blue-grey" size="20px" class="cursor-pointer"
-                @click="$eventBus.$emit('toggleMasterDrawer', 'filter')"/>
+                @click="eventBus.emit('toggleMasterDrawer', 'filter')"/>
       </div>
 
       <!--Tabs-->
@@ -80,13 +80,15 @@
     <div class="absolute-bottom text-center bg-white tw-p-3" ref="footerContent">
       <q-separator class="tw-mb-3"/>
       <q-btn :label="$tr('isite.cms.label.search')" unelevated color="primary" no-caps class="tw-w-full" rounded
-             @click="emitFilter(), $eventBus.$emit('toggleMasterDrawer','filter')"/>
+             @click="emitFilter(), eventBus.emit('toggleMasterDrawer','filter')"/>
     </div>
   </div>
   </q-card>
     </q-dialog>
 </template>
 <script>
+import eventBus from '@imagina/qsite/_plugins/eventBus'
+
 export default {
   inject: {
     filterPlugin: {
@@ -169,7 +171,8 @@ export default {
       pagination: {},
       readOnlyData: {},
       currentUrlFilter: '',
-      dynamicFieldCache: true
+      dynamicFieldCache: true,
+      eventBus,
     }
   },
   computed: {

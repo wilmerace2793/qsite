@@ -72,9 +72,11 @@
   </div>
 </template>
 <script>
+import eventBus from '@imagina/qsite/_plugins/eventBus'
+
 export default {
   beforeDestroy() {
-    this.$eventBus.$off('header.badge.manage')
+    eventBus.off('header.badge.manage')
   },
   props: {
     gutter: {type: String, default: 'sm'},
@@ -160,7 +162,7 @@ export default {
               icon: 'fas fa-stopwatch',
               round: true
             },
-            action: () => this.$eventBus.$emit('toggleMasterDrawer', 'checkin')
+            action: () => eventBus.emit('toggleMasterDrawer', 'checkin')
           },
           //Chat
           {
@@ -172,7 +174,7 @@ export default {
               icon: 'fa-light fa-message-lines',
               class: `btn-small ${this.badge.chat ? 'active-badge' : ''}`
             },
-            action: () => this.$eventBus.$emit('toggleMasterDrawer', 'chat')
+            action: () => eventBus.emit('toggleMasterDrawer', 'chat')
           },
           //Notifications
           {
@@ -184,7 +186,7 @@ export default {
               icon: 'fa-light fa-bell',
               class: `btn-small ${this.badge.notification ? 'active-badge' : ''}`
             },
-            action: () => this.$eventBus.$emit('toggleMasterDrawer', 'notification')
+            action: () => eventBus.emit('toggleMasterDrawer', 'notification')
           },
           //Help Center
           {
@@ -201,7 +203,7 @@ export default {
                 {
                   icon: 'fa-light fa-question-circle',
                   label: 'FAQ',
-                  action: () => this.$eventBus.$emit('toggleHelpSection', {sectionName: 'faq'})
+                  action: () => eventBus.emit('toggleHelpSection', {sectionName: 'faq'})
                 }
               ]
             }
@@ -234,7 +236,7 @@ export default {
               rounded: true,
               align: "left"
             },
-            action: () => this.$eventBus.$emit('toggleMasterDrawer', 'config')
+            action: () => eventBus.emit('toggleMasterDrawer', 'config')
           },
           //logout
           {
@@ -260,7 +262,7 @@ export default {
   methods: {
     init() {
       //Manage badges to button actions
-      this.$eventBus.$on('header.badge.manage', (response) => {
+      eventBus.on('header.badge.manage', (response) => {
         Object.keys(response).forEach(name => this.badge[name] = response[name])
       })
     },
