@@ -72,7 +72,7 @@ export default function ({app, router, store, Vue, ssrContext}) {
         let status = error.response.status;
         switch (status) {
           case 401:
-            let routeName = router.currentRoute.name
+            let routeName = router.currentRoute.value.name
             //Logout
             if ((routeName != 'auth.login') && (routeName != 'auth.change.password'))
               router.push({name: 'auth.logout'})
