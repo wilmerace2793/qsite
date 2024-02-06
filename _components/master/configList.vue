@@ -8,7 +8,7 @@
       </div>
       <!-- Close icon -->
       <q-icon name="fas fa-times" color="blue-grey" size="20px" class="cursor-pointer"
-              @click="$eventBus.$emit('toggleMasterDrawer', 'config')"/>
+              @click="eventBus.emit('toggleMasterDrawer', 'config')"/>
     </div>
 
     <!--Separator-->
@@ -207,6 +207,7 @@
   </div>
 </template>
 <script>
+import eventBus from '@imagina/qsite/_plugins/eventBus'
 export default {
   props: {},
   components: {},
@@ -238,6 +239,7 @@ export default {
       loadingImpersonate: false,
       userList: [],
       loadingCacheClear: false,
+      eventBus
     }
   },
   computed: {

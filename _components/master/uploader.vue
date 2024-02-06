@@ -20,6 +20,7 @@
 import zoneConfigMixing from "@imagina/qmedia/_mixins/zoneConfigMixins"
 //components
 import fileList from '@imagina/qsite/_components/master/fileList'
+import eventBus from '@imagina/qsite/_plugins/eventBus'
 
 export default {
   name: 'uploaderComponentMaster',
@@ -154,7 +155,7 @@ export default {
                 .filter(item => !['gif'].includes(item))
             if (file.__img && extensions.includes(fileData.extension.toLowerCase())) {
               await new Promise((resolve, reject) => {
-                this.$eventBus.$emit('master.cropper.image', {
+                eventBus.emit('master.cropper.image', {
                   src: base64,
                   type: fileData.type,
                   ratio: this.ratio,

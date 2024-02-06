@@ -6,7 +6,7 @@
       <div id="footerContent" class="row q-md-hide items-center" v-if="appConfig.mode == 'iadmin'">
         <!-- Menu -->
         <div id="footerMobileMenu" class="item-footer col cursor-pointer"
-             @click="$eventBus.$emit('toggleMasterDrawer','menu')">
+             @click="eventBus.emit('toggleMasterDrawer','menu')">
           <q-icon class="item-icon" name="fas fa-bars"/>
           <div>Menu</div>
         </div>
@@ -62,7 +62,7 @@
         <q-card-section class="row items-center no-wrap q-pa-none">
           <q-list separator class="full-width" v-close-popup>
             <!--Settings-->
-            <q-item clickable v-ripple @click.native="$eventBus.$emit('toggleMasterDrawer','config')">
+            <q-item clickable v-ripple @click.native="eventBus.emit('toggleMasterDrawer','config')">
               <q-item-section avatar>
                 <q-icon color="primary" name="fa-light fa-folder-gear"/>
               </q-item-section>
@@ -70,14 +70,14 @@
             </q-item>
             <!--Chat action-->
             <q-item clickable v-ripple v-if="$auth.hasAccess('ichat.conversations.index')"
-                    @click.native="$eventBus.$emit('toggleMasterDrawer','chat')">
+                    @click.native="eventBus.emit('toggleMasterDrawer','chat')">
               <q-item-section avatar>
                 <q-icon color="primary" name="far fa-comment-alt"/>
               </q-item-section>
               <q-item-section class="ellipsis">Chat</q-item-section>
             </q-item>
             <!--Checking action-->
-            <q-item clickable v-ripple @click.native="$eventBus.$emit('toggleMasterDrawer','checkin')"
+            <q-item clickable v-ripple @click.native="eventBus.emit('toggleMasterDrawer','checkin')"
                     v-if="$auth.hasAccess('icheckin.shifts.create')">
               <q-item-section avatar>
                 <q-icon color="primary" name="fas fa-stopwatch"/>
@@ -85,7 +85,7 @@
               <q-item-section class="ellipsis">{{ $tr('icheckin.cms.sidebar.checkin') }}</q-item-section>
             </q-item>
             <!--Recommendation action-->
-            <q-item clickable v-ripple @click.native="$eventBus.$emit('toggleMasterDrawer','recommendation')"
+            <q-item clickable v-ripple @click.native="eventBus.emit('toggleMasterDrawer','recommendation')"
                     v-if="params.recommendations ? true : false">
               <q-item-section avatar>
                 <q-icon color="primary" name="fas fa-hat-wizard"/>
@@ -93,7 +93,7 @@
               <q-item-section class="ellipsis">{{ $trp('isite.cms.label.recommendation') }}</q-item-section>
             </q-item>
             <!--Notification action-->
-            <q-item clickable v-ripple @click.native="$eventBus.$emit('toggleMasterDrawer','notification')"
+            <q-item clickable v-ripple @click.native="eventBus.emit('toggleMasterDrawer','notification')"
                     v-if="$auth.hasAccess('notification.notifications.manage')">
               <q-item-section avatar>
                 <q-icon color="primary" name="fa-light fa-bell"/>
@@ -108,9 +108,11 @@
   </div>
 </template>
 <script>
+import eventBus from '@imagina/qsite/_plugins/eventBus'
+
 export default {
   beforeDestroy() {
-    this.$eventBus.$off('setMobileMainAction')
+    eventBus.off('setMobileMainAction')
   },
   props: {},
   components: {},
@@ -134,7 +136,8 @@ export default {
       loadFooterIpanel: false,
       modal: {
         show: false
-      }
+      },
+      eventBus
     }
   },
   computed: {
@@ -157,7 +160,7 @@ export default {
   },
   methods: {
     init() {
-      this.$eventBus.$on('setMobileMainAction', (data) => {
+      eventBus.on('setMobileMainAction', (data) => {
         this.mainAction = {...this.mainAction, ...data}
       })
       //Get footer ipanel

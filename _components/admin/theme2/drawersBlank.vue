@@ -11,11 +11,12 @@
   import sidebarMixins from '@imagina/qsite/_mixins/sidebarMixins'
   //Components
   import masterFilter from '@imagina/qsite/_components/master/masterFilter'
+  import eventBus from '@imagina/qsite/_plugins/eventBus'
 
   export default {
     beforeDestroy() {
-      this.$eventBus.$off('toggleMasterDrawer')
-      this.$eventBus.$off('openMasterDrawer')
+      eventBus.off('toggleMasterDrawer')
+      eventBus.off('openMasterDrawer')
     },
     mixins:[sidebarMixins],
     props: {},
@@ -88,9 +89,9 @@
       },
       handlerEvent() {
         //handler toggleMasterDrawer
-        this.$eventBus.$on('toggleMasterDrawer', (drawerName) => this.toggleDrawer(drawerName))
+        eventBus.on('toggleMasterDrawer', (drawerName) => this.toggleDrawer(drawerName))
         //handler openMasterDrawer
-        this.$eventBus.$on('openMasterDrawer', (drawerName) => this.drawer[drawerName] = true)
+        eventBus.on('openMasterDrawer', (drawerName) => this.drawer[drawerName] = true)
       },
       //Show drawer specific
       toggleDrawer(drawerName) {

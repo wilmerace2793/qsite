@@ -96,6 +96,7 @@
 import masterExport from "@imagina/qsite/_components/master/masterExport"
 import masterSynchronizable from "@imagina/qsite/_components/master/masterSynchronizable"
 import masterFilter from "@imagina/qsite/_components/master/masterFilter"
+import eventBus from '@imagina/qsite/_plugins/eventBus'
 
 export default {
   beforeDestroy() {
@@ -225,7 +226,7 @@ export default {
           props: {
             icon: 'fas fa-hat-wizard'
           },
-          action: () => this.$eventBus.$emit('toggleMasterDrawer', 'recommendation')
+          action: () => eventBus.emit('toggleMasterDrawer', 'recommendation')
         },
         //Filter
         {
@@ -358,7 +359,7 @@ export default {
       this.handlerEvent()
     },
     handlerEvent() {
-      this.$eventBus.$on('toggleMasterDrawer', () => this.toggleMasterFilter(false))
+      eventBus.on('toggleMasterDrawer', () => this.toggleMasterFilter(false))
     },
     refreshByTime(time) {
       this.timeRefresh = time;

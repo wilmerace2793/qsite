@@ -6,7 +6,7 @@
       <q-toolbar id="toolbarTop">
         <!--== Menu Button ==-->
         <q-btn id="buttonToogleMenu" icon="fas fa-bars" unelevated color="primary"
-               @click="$eventBus.$emit('toggleMasterDrawer','menu')"/>
+               @click="eventBus.emit('toggleMasterDrawer','menu')"/>
         <!--Breadcrumb-->
         <q-toolbar-title>
           <div id="breadCrumbContent" class="q-hide q-md-show">
@@ -25,10 +25,11 @@
 <script>
 //Components
 import siteActions from '@imagina/qsite/_components/master/siteActions'
+import eventBus from '@imagina/qsite/_plugins/eventBus'
 
 export default {
   beforeDestroy() {
-    this.$eventBus.$off('header.badge.manage')
+    eventBus.off('header.badge.manage')
   },
   props: {},
   components: {siteActions},
@@ -47,7 +48,8 @@ export default {
         chat: false,
         notification: false
       },
-      loadHeaderIpanel: false
+      loadHeaderIpanel: false,
+      eventBus
     }
   },
   computed: {
@@ -90,7 +92,7 @@ export default {
   methods: {
     init() {
       //Manage badges to button actions
-      this.$eventBus.$on('header.badge.manage', (response) => {
+      eventBus.on('header.badge.manage', (response) => {
         Object.keys(response).forEach(name => this.badge[name] = response[name])
       })
     },
