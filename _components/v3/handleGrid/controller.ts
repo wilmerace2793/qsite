@@ -50,7 +50,7 @@ export default function controller(props: any, emit: any) {
       } else {
         props.elements.push(newItem)
       }
-
+      //@ts-ignore
       methods.updateSortOrder();
     },
     //Updated Item
