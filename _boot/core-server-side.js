@@ -1,8 +1,4 @@
-import serverRoutes from '@imagina/qsite/_config/master/application/serverRoutes'
-import localRoutes from '@imagina/qsite/_config/master/application/localRoutes'
-import lodash from 'lodash'
-
-export default async ({app, router, store, Vue}) => {
+export default async ({ app, router, store }) => {
   await Promise.all([
     store.dispatch('qsiteApp/SET_AXIOS_TIMEZONE'),
     //store.dispatch('qsiteApp/GET_PAGES'),
@@ -11,9 +7,4 @@ export default async ({app, router, store, Vue}) => {
     store.dispatch('qsiteApp/GET_MODULE_CONFIGS', {refresh: false}),
     store.dispatch('qsiteApp/GET_SITE_HOOKS', {refresh: false}),
   ])
-  //add all route from backend in router method later resolve all promise
-  let routesLocal = localRoutes.getRoutes(router)
-  //Add Routes
-  //[ptc] router.addRoutes(routesLocal)
-  // routesLocal.forEach(route => router.addRoute(route))
 }
