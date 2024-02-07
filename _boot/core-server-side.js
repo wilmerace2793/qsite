@@ -14,5 +14,5 @@ export default async ({app, router, store, Vue}) => {
   //add all route from backend in router method later resolve all promise
   let routesLocal = localRoutes.getRoutes(router)
   //Add Routes
-  routesLocal.forEach(route => router.addRoute(route))
+  // routesLocal.forEach(route => router.addRoute(route))
 }
