@@ -1,4 +1,4 @@
-import {createI18n, useI18n} from 'vue-i18n'
+import { createI18n } from 'vue-i18n'
 import * as moment from 'moment'
 import cache from '@imagina/qsite/_plugins/cache'
 import helper from '@imagina/qsite/_plugins/helper'
@@ -9,7 +9,7 @@ import numberFormats from '@imagina/qsite/_i18n/master/formats/currencyFormats'
 import dateTimeFormats from '@imagina/qsite/_i18n/master/formats/dateTimeFormats'
 import messagesLocal from '@imagina/qsite/_i18n/JsonLocal/i18n.json'
 
-export default async ({router, app, store, ssrContext}) => {
+export default async ({ app, store, ssrContext }) => {
   //Request messages
   const useLocalTranslations = config('app.useLocalTranslations')
   const messagesServer = useLocalTranslations ? {} : await store.dispatch('qtranslationMaster/GET_TRANSLATIONS', {refresh: false})
@@ -33,6 +33,7 @@ export default async ({router, app, store, ssrContext}) => {
     silentTranslationWarn: true,
     messages
   })
+  
   //===== Change language to quasar components
   await store.dispatch('qsiteApp/SET_LOCALE', {
     locale: defaultLanguage,
@@ -53,15 +54,11 @@ export default async ({router, app, store, ssrContext}) => {
   }
   //Singular translate
   app.config.globalProperties.$tr = (key, params = {}) => {
-    //[ptc] return i18n.tc(key, 1, params)
-    // return i18n.tc(key, 1, params)
-    return useI18n().t(key, params)
+    return i18n.global.tc(key, 1, params)
   }
   //Plural translate
   app.config.globalProperties.$trp = (key, params = {}) => {
-    //[ptc] return i18n.tc(key, 2, params)
-    // return i18n.tc(key, 2, params)
-    return useI18n().t(key, params)
+    return i18n.global.tc(key, 2, params)
   }
   //Date translate
   app.config.globalProperties.$trd = (date, params = {type: 'short', fromUTC: false}) => {
@@ -76,6 +73,6 @@ export default async ({router, app, store, ssrContext}) => {
     return moment(date).format(format);
   }
 
-  //Set i18nn
+  //Set i18n
   app.use(i18n)
 }
