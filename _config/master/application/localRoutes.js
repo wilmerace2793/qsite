@@ -1,4 +1,3 @@
-import Route from 'vue-routisan'
 import appConfig from 'src/config/app'
 import pagesConfig from 'src/config/pages'
 
@@ -10,14 +9,14 @@ class LocalRoutes {
   }
 
   //Return object of routes
-  getRoutes() {
-    this.loadRoutes()
-    this.addExtraRoutes()
-    return Route.all()
+  getRoutes(router) {
+    this.loadRoutes(router)
+    this.addExtraRoutes(router)
+    return router.getRoutes()
   }
 
   //Load main routes
-  loadRoutes() {
+  loadRoutes(router) {
     for (var nameGroupPage in this.pages) {
       let groupPages = this.pages[nameGroupPage]//Get group pages
       //Loop group pages
@@ -30,14 +29,33 @@ class LocalRoutes {
             //Get localization paths
             let pagePath = this.getPathPage(page)
             //Create main route
-            Route.view(pagePath.default, page.layout).children(() => {
-              Route.view('/', page.page).options(this.getOptionsPage(page));
-            })
-            //Create localization routes
+            const route = {
+              path: pagePath.default,
+              component: page.layout,
+              children: [
+                {
+                  path: '',
+                  component: page.page,
+                  ...this.getOptionsPage(page)
+                }
+              ]
+            }
+
+            router.addRoute(route)
+            // Create localization routes
             this.availablesLanguages.forEach(locale => {
-              Route.view(pagePath[locale], page.layout).children(() => {
-                Route.view('/', page.page).options(this.getOptionsPage(page, locale));
-              })
+              const localeRoute = {
+                path: pagePath[locale],
+                component: page.layout,
+                children: [
+                  {
+                    path: '/',
+                    component: page.page,
+                    ...this.getOptionsPage(page, locale)
+                  }
+                ]
+              }
+              router.addRoute(localeRoute)
             })
           }
         }
@@ -82,28 +100,35 @@ class LocalRoutes {
   }
 
   //Add extra routes
-  addExtraRoutes() {
-    //Add not found page
+  addExtraRoutes(router) {
+    // Add not found page
     const notFound = '/:catchAll(.*)'
     if (process.env.MODE !== 'ssr') {
-      Route.view(notFound, () => import('@imagina/qsite/_layouts/blank.vue')).children(() => {
-        Route.view('/', () => import('@imagina/qsite/_pages/master/404')).options({
-          name: 'app.not.found',
-          meta: {
-            permission: null,
-            activated: true,
-            path: notFound,
+      const notFoundRoute = {
+        path: notFound,
+        component: () => import('@imagina/qsite/_layouts/blank.vue'),
+        children: [
+          {
+            path: '',
+            component: () => import('@imagina/qsite/_pages/master/404'),
             name: 'app.not.found',
-            title: 'sidebar.pageNotFound',
-            headerTitle: false,
-            icon: 'fas fa-chart-bar',
-            authenticated: false,
-            subHeader: {}
-          },
-          props: true,
-          beforeEnter: [],
-        });
-      })
+            meta: {
+              permission: null,
+              activated: true,
+              path: notFound,
+              name: 'app.not.found',
+              title: 'sidebar.pageNotFound',
+              headerTitle: false,
+              icon: 'fas fa-chart-bar',
+              authenticated: false,
+              subHeader: {}
+            },
+            props: true,
+            beforeEnter: [],
+          }
+        ]
+      }
+      router.addRoute(notFoundRoute)
     }
   }
 }

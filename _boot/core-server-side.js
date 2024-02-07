@@ -12,7 +12,8 @@ export default async ({app, router, store, Vue}) => {
     store.dispatch('qsiteApp/GET_SITE_HOOKS', {refresh: false}),
   ])
   //add all route from backend in router method later resolve all promise
-  let routesLocal = localRoutes.getRoutes()
+  let routesLocal = localRoutes.getRoutes(router)
   //Add Routes
-  routesLocal.forEach(route => router.addRoute(route))
+  //[ptc] router.addRoutes(routesLocal)
+  // routesLocal.forEach(route => router.addRoute(route))
 }
