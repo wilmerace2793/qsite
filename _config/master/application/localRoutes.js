@@ -1,11 +1,9 @@
-import appConfig from 'src/config/app'
 import pagesConfig from 'src/config/pages'
 
 class LocalRoutes {
   constructor() {
-    this.availablesLanguages = appConfig.languages.availables
-    this.defaultLanguage = appConfig.languages.default
     this.pages = pagesConfig
+    this.routes = [];
   }
 
   getRoutes(router) {
@@ -23,14 +21,13 @@ class LocalRoutes {
       for (const [namePage, page] of Object.entries(groupPages)) {
         if (page.activated) {
           this.createAndAddRoute(router, page);
-          this.createAndAddLocalizationRoutes(router, page);
         }
       }
     }
   }
 
   createAndAddRoute(router, page) {
-    const pagePath = this.getPathPage(page);
+    const pagePath = { default: page.path[this.defaultLanguage] || page.path };
     const route = {
       path: pagePath.default,
       component: page.layout,
@@ -46,46 +43,16 @@ class LocalRoutes {
     router.addRoute(route);
   }
 
-  createAndAddLocalizationRoutes(router, page) {
-    this.availablesLanguages.forEach(locale => {
-      const pagePath = this.getPathPage(page);
-      const localeRoute = {
-        path: pagePath[locale],
-        component: page.layout,
-        children: [
-          {
-            path: '',
-            component: page.page,
-            ...this.getOptionsPage(page, locale),
-          },
-        ],
-      };
-
-      router.addRoute(localeRoute);
-    });
-  }
-
-  getPathPage(page) {
-    let response = { default: page.path[this.defaultLanguage] || page.path };
-
-    this.availablesLanguages.forEach(locale => {
-      response[locale] = `/${locale}${page.path[locale] || page.path}`;
-    });
-
-    return response;
-  }
-
   getOptionsPage(page, locale = false) {
     let middlewares = page.middleware || [];
-    let routeName = locale ? `${locale}.${page.name}` : page.name;
 
     return {
-      name: routeName,
+      name: page.name,
       meta: {
         ...page,
         permission: page.permission || null,
         activated: page.activated,
-        path: locale ? `${locale}.${page.path}` : page.path,
+        path: page.path,
         title: page.title,
         headerTitle: page.headerTitle || false,
         icon: page.icon,
