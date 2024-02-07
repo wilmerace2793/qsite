@@ -3,7 +3,7 @@
     <div :class="`row q-gutter-${gutter}`">
       <!--Actions-->
       <q-btn v-for="(btn, keyAction) in actions.buttons" :key="keyAction" v-bind="btn.props"
-             v-if="btn.vIf != undefined ? btn.vIf : true" @click="btn.action != undefined ? btn.action() : null">
+             v-if="btn?.vIf != undefined ? btn.vIf : true" @click="btn.action != undefined ? btn.action() : null">
         <q-menu v-if="btn.menu" fit>
           <div class="q-py-sm q-px-md">
             <div class="text-subtitle1 text-primary">{{ btn.label }}</div>
@@ -62,7 +62,7 @@
             <!--Right content-->
             <div class="column text-left">
               <q-btn v-for="(btn, keyAction) in actions.menu" :key="keyAction" v-bind="btn.props"
-                     v-if="btn.vIf != undefined ? btn.vIf : true" v-close-popup padding="xs md"
+                     v-if="btn?.vIf != undefined ? btn.vIf : true" v-close-popup padding="xs md"
                      @click="btn.action != undefined ? btn.action() : null"/>
             </div>
           </div>

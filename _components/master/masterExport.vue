@@ -65,7 +65,7 @@ import eventBus from '@imagina/qsite/_plugins/eventBus'
 
 export default {
   beforeDestroy() {
-    this.$root.$off('export.data.refresh')
+    eventBus.off('export.data.refresh')
     eventBus.off('isite.export.ready')
   },
   props: {
@@ -197,7 +197,7 @@ export default {
         })
       })
       //Listen refresh report
-      this.$root.$on('export.data.refresh', () => this.getData(true))
+      eventBus.on('export.data.refresh', () => this.getData(true))
     },
     //Get data
     async getData() {
