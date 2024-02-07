@@ -8,101 +8,97 @@ class LocalRoutes {
     this.pages = pagesConfig
   }
 
-  //Return object of routes
   getRoutes(router) {
     this.loadRoutes(router)
     this.addExtraRoutes(router)
     return router.getRoutes()
   }
 
-  //Load main routes
   loadRoutes(router) {
-    for (var nameGroupPage in this.pages) {
-      let groupPages = this.pages[nameGroupPage]//Get group pages
-      //Loop group pages
-      if (Object.keys(groupPages).length) {
-        for (var namePage in groupPages) {
-          let page = groupPages[namePage]//Get page
+    for (const [nameGroupPage, groupPages] of Object.entries(this.pages)) {
+      if (Object.keys(groupPages).length === 0) {
+        continue;
+      }
 
-          //Create Route if is active
-          if (page.activated) {
-            //Get localization paths
-            let pagePath = this.getPathPage(page)
-            //Create main route
-            const route = {
-              path: pagePath.default,
-              component: page.layout,
-              children: [
-                {
-                  path: '',
-                  component: page.page,
-                  ...this.getOptionsPage(page)
-                }
-              ]
-            }
-
-            router.addRoute(route)
-            // Create localization routes
-            this.availablesLanguages.forEach(locale => {
-              const localeRoute = {
-                path: pagePath[locale],
-                component: page.layout,
-                children: [
-                  {
-                    path: '/',
-                    component: page.page,
-                    ...this.getOptionsPage(page, locale)
-                  }
-                ]
-              }
-              router.addRoute(localeRoute)
-            })
-          }
+      for (const [namePage, page] of Object.entries(groupPages)) {
+        if (page.activated) {
+          this.createAndAddRoute(router, page);
+          this.createAndAddLocalizationRoutes(router, page);
         }
       }
     }
   }
 
-  //Get localization page path
-  getPathPage(page) {
-    //Default language
-    let response = {default: page.path[this.defaultLanguage] || page.path}
-    //Add localizations path
-    this.availablesLanguages.forEach(locale => {
-      response[locale] = `/${locale}${(page.path[locale] || page.path)}`
-    })
-    //Response
-    return response
+  createAndAddRoute(router, page) {
+    const pagePath = this.getPathPage(page);
+    const route = {
+      path: pagePath.default,
+      component: page.layout,
+      children: [
+        {
+          path: '',
+          component: page.page,
+          ...this.getOptionsPage(page),
+        },
+      ],
+    };
+
+    router.addRoute(route);
   }
 
-  //Return meta data to route
+  createAndAddLocalizationRoutes(router, page) {
+    this.availablesLanguages.forEach(locale => {
+      const pagePath = this.getPathPage(page);
+      const localeRoute = {
+        path: pagePath[locale],
+        component: page.layout,
+        children: [
+          {
+            path: '',
+            component: page.page,
+            ...this.getOptionsPage(page, locale),
+          },
+        ],
+      };
+
+      router.addRoute(localeRoute);
+    });
+  }
+
+  getPathPage(page) {
+    let response = { default: page.path[this.defaultLanguage] || page.path };
+
+    this.availablesLanguages.forEach(locale => {
+      response[locale] = `/${locale}${page.path[locale] || page.path}`;
+    });
+
+    return response;
+  }
+
   getOptionsPage(page, locale = false) {
-    let middlewares = (page.middleware || [])
-    let routeName = locale ? `${locale}.${page.name}` : page.name
+    let middlewares = page.middleware || [];
+    let routeName = locale ? `${locale}.${page.name}` : page.name;
 
     return {
       name: routeName,
       meta: {
         ...page,
-        permission: (page.permission ? page.permission : null),
+        permission: page.permission || null,
         activated: page.activated,
         path: locale ? `${locale}.${page.path}` : page.path,
-        name: routeName,
         title: page.title,
         headerTitle: page.headerTitle || false,
         icon: page.icon,
         authenticated: page.authenticated,
-        subHeader: page.subHeader || {}
+        subHeader: page.subHeader || {},
       },
       props: page.props || true,
       beforeEnter: middlewares,
-    }
+    };
   }
 
-  //Add extra routes
   addExtraRoutes(router) {
-    // Add not found page
-    const notFound = '/:catchAll(.*)'
+    const notFound = '/:catchAll(.*)';
     if (process.env.MODE !== 'ssr') {
       const notFoundRoute = {
         path: notFound,
@@ -121,21 +117,18 @@ class LocalRoutes {
               headerTitle: false,
               icon: 'fas fa-chart-bar',
               authenticated: false,
-              subHeader: {}
+              subHeader: {},
             },
             props: true,
             beforeEnter: [],
-          }
-        ]
-      }
-      router.addRoute(notFoundRoute)
+          },
+        ],
+      };
+      router.addRoute(notFoundRoute);
     }
   }
 }
 
+const localRoutes = new LocalRoutes();
 
-//Create new clase
-const localRoutes = new LocalRoutes()
-
-//Response
-export default localRoutes
+export default localRoutes;
