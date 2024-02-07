@@ -234,7 +234,7 @@ export default {
         departments: false,
         locales: false
       },
-      fullScreen: this.$q.fullscreen.isActive,
+      fullScreen: this.$q?.fullscreen?.isActive,
       userToImpersonate: null,
       loadingImpersonate: false,
       userList: [],
@@ -277,7 +277,7 @@ export default {
   methods: {
     //Toggle fullscreen
     toggleFullscreen() {
-      this.$q.fullscreen.toggle()
+      this.$q?.fullscreen?.toggle()
     },
 
     //Set departments and roles to options

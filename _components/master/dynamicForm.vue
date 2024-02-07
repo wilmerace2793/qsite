@@ -41,14 +41,15 @@
                   </div>
                   <!--Actions-->
                   <div :class="`col-6 text-right ${block.title ? '' : 'offset-6'}`">
-                    <q-btn text-color="primary" outline rounded v-if="canEditForm && (keyBlock == 0)" dense class="btn-small"
+                    <!--[ptc]-->
+                    <!--<q-btn text-color="primary" outline rounded v-if="canEditForm && (keyBlock == 0)" dense class="btn-small"
                            icon="fa-solid fa-pencil"
                            style="border: 1px solid rgba(0, 13, 71, 0.15)"
                            @click="$refs.editFormModal.editForm(formId)">
                       <q-tooltip>
                         {{ $tr('iforms.cms.label.editForm') }}
                       </q-tooltip>
-                    </q-btn>
+                    </q-btn>-->
                   </div>
                   <!--Description-->
                   <div class="text-caption text-grey-8 col-12" v-if="block.description">{{ block.description }}</div>
@@ -148,19 +149,22 @@
       </div>
     </div>
     <!-- Edit form Modal-->
-    <edit-form-modal ref="editFormModal" @hide="init"/>
+    <!--[ptc]-->
+    <!-- <edit-form-modal ref="editFormModal" @hide="init"/>-->
   </div>
 </template>
 
 <script>
 import fileListComponent from '@imagina/qsite/_components/master/fileList';
 import layoutStore from '@imagina/qsite/_store/layoutStore.js'
-import editFormModal from '@imagina/qform/_components/editFormModal/index.vue'
+//[ptc]
+//import editFormModal from '@imagina/qform/_components/editFormModal/index.vue'
 
 export default {
   components: {
     fileListComponent,
-    editFormModal,
+    //[ptc]
+    //editFormModal,
   },
   props: {
     value: {

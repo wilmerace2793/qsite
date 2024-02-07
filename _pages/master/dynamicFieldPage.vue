@@ -56,7 +56,8 @@ export default {
           props: {
             crudType: 'select',
             imageField: 'mediaFiles.mainimage.url',
-            crudData: import('@imagina/qblog/_crud/categories'),
+            //[ptc]
+            //crudData: import('@imagina/qblog/_crud/categories'),
             customData: {
               read: {
                 requestParams: {include: 'parent', filter: {status: 1}}
