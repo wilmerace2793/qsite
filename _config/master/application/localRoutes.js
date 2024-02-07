@@ -6,13 +6,13 @@ class LocalRoutes {
     this.routes = [];
   }
 
-  getRoutes(router) {
-    this.loadRoutes(router)
-    this.addExtraRoutes(router)
-    return router.getRoutes()
+  getRoutes() {
+    this.loadRoutes()
+    this.addExtraRoutes()
+    return this.routes;
   }
 
-  loadRoutes(router) {
+  loadRoutes() {
     for (const [nameGroupPage, groupPages] of Object.entries(this.pages)) {
       if (Object.keys(groupPages).length === 0) {
         continue;
@@ -20,13 +20,13 @@ class LocalRoutes {
 
       for (const [namePage, page] of Object.entries(groupPages)) {
         if (page.activated) {
-          this.createAndAddRoute(router, page);
+          this.createAndAddRoute(page);
         }
       }
     }
   }
 
-  createAndAddRoute(router, page) {
+  createAndAddRoute(page) {
     const pagePath = { default: page.path[this.defaultLanguage] || page.path };
     const route = {
       path: pagePath.default,
@@ -40,7 +40,7 @@ class LocalRoutes {
       ],
     };
 
-    router.addRoute(route);
+    this.routes.push(route);
   }
 
   getOptionsPage(page, locale = false) {
@@ -64,7 +64,7 @@ class LocalRoutes {
     };
   }
 
-  addExtraRoutes(router) {
+  addExtraRoutes() {
     const notFound = '/:catchAll(.*)';
     if (process.env.MODE !== 'ssr') {
       const notFoundRoute = {
@@ -91,7 +91,8 @@ class LocalRoutes {
           },
         ],
       };
-      router.addRoute(notFoundRoute);
+
+      this.routes.push(notFoundRoute);
     }
   }
 }
