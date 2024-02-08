@@ -287,8 +287,8 @@ export default {
     width: -webkit-fill-available;
     position: fixed;
     z-index: 2;
-    background: linear-gradient(180deg, #F1F4FA 0%, #FFFFFF 100%) #subContent {
-
+    background: linear-gradient(180deg, #F1F4FA 0%, #FFFFFF 100%);
+    #subContent {
       padding: 8px 10px 8px 16px;
       border-radius: $custom-radius 0 0 0;
       background: linear-gradient(180deg, #F1F4FA 0%, #FFFFFF 100%)
