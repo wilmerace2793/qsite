@@ -2,35 +2,41 @@
   <div id="siteActionscomponent">
     <div :class="`row q-gutter-${gutter}`">
       <!--Actions-->
-      <q-btn v-for="(btn, keyAction) in actions.buttons" :key="keyAction" v-bind="btn.props"
-             v-if="btn?.vIf != undefined ? btn.vIf : true" @click="btn.action != undefined ? btn.action() : null">
-        <q-menu v-if="btn.menu" fit>
-          <div class="q-py-sm q-px-md">
-            <div class="text-subtitle1 text-primary">{{ btn.label }}</div>
-            <!--Separator-->
-            <q-separator class="q-my-sm"/>
-            <!-- Description -->
-            <div class="text-caption text-blue-grey">{{ $tr('isite.cms.message.descriptionHelpCenter') }}.</div>
-            <!--Actions-->
-            <q-list separator class="no-shadow" style="min-width: 260px">
-              <q-item v-for="(act, keyAction) in btn.menu.actions" :key="keyAction" clickable v-ripple
-                      v-close-popup @click.native="act.action != undefined ? act.action() : null">
-                <q-item-section class="text-blue-grey">
-                  <div>
-                    <q-icon :name="act.icon" class="q-mr-sm" color="primary" size="xs"/>
-                    {{ act.label }}
-                  </div>
-                </q-item-section>
-                <q-item-section side>
-                  <q-icon name="fa-light fa-chevron-right" size="12px"/>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </div>
-        </q-menu>
-        <!-- Tooltip -->
-        <q-tooltip>{{ btn.label }}</q-tooltip>
-      </q-btn>
+      <template v-for="(btn, keyAction) in actions.buttons">
+        <q-btn  
+          v-if="btn?.vIf != undefined ? btn.vIf : true" 
+          :key="keyAction" 
+          v-bind="btn.props"
+          @click="btn.action != undefined ? btn.action() : null"
+        >
+          <q-menu v-if="btn.menu" fit>
+            <div class="q-py-sm q-px-md">
+              <div class="text-subtitle1 text-primary">{{ btn.label }}</div>
+              <!--Separator-->
+              <q-separator class="q-my-sm"/>
+              <!-- Description -->
+              <div class="text-caption text-blue-grey">{{ $tr('isite.cms.message.descriptionHelpCenter') }}.</div>
+              <!--Actions-->
+              <q-list separator class="no-shadow" style="min-width: 260px">
+                <q-item v-for="(act, keyAction) in btn.menu.actions" :key="keyAction" clickable v-ripple
+                        v-close-popup @click.native="act.action != undefined ? act.action() : null">
+                  <q-item-section class="text-blue-grey">
+                    <div>
+                      <q-icon :name="act.icon" class="q-mr-sm" color="primary" size="xs"/>
+                      {{ act.label }}
+                    </div>
+                  </q-item-section>
+                  <q-item-section side>
+                    <q-icon name="fa-light fa-chevron-right" size="12px"/>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </div>
+          </q-menu>
+          <!-- Tooltip -->
+          <q-tooltip>{{ btn.label }}</q-tooltip>
+        </q-btn>
+      </template>
       <!--Auth section-->
       <q-btn v-if="quserState.authenticated && (configMode == 'iadmin')" id="profileButton" rounded no-caps
              padding="2px 8px" color="white" unelevated>
@@ -61,9 +67,14 @@
             <q-separator vertical inset class="q-ml-lg q-mr-sm"/>
             <!--Right content-->
             <div class="column text-left">
-              <q-btn v-for="(btn, keyAction) in actions.menu" :key="keyAction" v-bind="btn.props"
-                     v-if="btn?.vIf != undefined ? btn.vIf : true" v-close-popup padding="xs md"
-                     @click="btn.action != undefined ? btn.action() : null"/>
+              <template v-for="(btn, keyAction) in actions.menu">
+                <q-btn 
+                  :key="keyAction" 
+                  v-bind="btn.props"
+                  v-if="btn?.vIf != undefined ? btn.vIf : true" v-close-popup padding="xs md"
+                  @click="btn.action != undefined ? btn.action() : null"
+                />
+              </template>
             </div>
           </div>
         </q-menu>

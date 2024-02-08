@@ -19,10 +19,18 @@
           <!--Actions-->
           <div id="tableActions" class="row q-gutter-sm" v-if="!readonly">
             <!--customActions-->
-            <q-btn v-for="(item, itemKey) in actions" :key="itemKey" class="btn-small" v-bind="item"
-                   v-if="item?.vIf != undefined ? item?.vIf : true" @click="item.action()" no-caps>
-              <q-tooltip v-if="item.tooltip">{{ item.tooltip }}.</q-tooltip>
-            </q-btn>
+            <template v-for="(item, itemKey) in actions">
+              <q-btn 
+                :key="itemKey" 
+                class="btn-small" 
+                v-bind="item"
+                v-if="item?.vIf != undefined ? item?.vIf : true" 
+                @click="item.action()" 
+                no-caps
+              >
+                <q-tooltip v-if="item.tooltip">{{ item.tooltip }}.</q-tooltip>
+              </q-btn>
+            </template>
             <!--Order-->
             <q-btn v-if="allowOrder" class="btn-small" round unelevated outline color="blue-grey"
                    :icon="`fas fa-arrow-${table.filter.order.way == 'asc' ? 'up' : 'down'}`" @click="toggleOrder()">
