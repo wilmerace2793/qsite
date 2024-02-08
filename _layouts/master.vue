@@ -41,10 +41,10 @@
     <cropper-component ref="cropperComponent"/>
 
     <!-- Admin popUp -->
-    <activities v-bind="globalActivities.adminPopup"/>
+    <!--    <activities v-bind="globalActivities.adminPopup"/>-->
 
     <!-- Activities Actions -->
-    <activities-actions/>
+    <!--    <activities-actions/>-->
 
     <!-- FOOTER -->
     <component :is="components.footer"/>
@@ -52,7 +52,6 @@
 </template>
 
 <script>
-import chat from '@imagina/qchat/_components/advancedChat'
 //Components Admin
 import headerAdminTheme1 from '@imagina/qsite/_components/admin/theme1/header'
 import headerAdminTheme2 from '@imagina/qsite/_components/admin/theme2/header'
@@ -66,7 +65,7 @@ import drawersPanel from '@imagina/qsite/_components/panel/drawers'
 import footerPanel from '@imagina/qsite/_components/panel/footer'
 //Components
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
-import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
+//[ptc]import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
 //[ptc]
 //import Alert from '@imagina/qoffline/_components/alert.vue'
 
@@ -88,9 +87,8 @@ export default {
     }
   },
   components: {
-    chat,
     cropperComponent,
-    activitiesActions,
+    //[ptc]activitiesActions,
     //Admin
     headerAdminTheme1,
     headerAdminTheme2,
@@ -182,14 +180,14 @@ export default {
       const page = this.pagesConfig.find(item => item.system_name.toLowerCase() === this.homePage)
       //Set Home page and current page
       const pages = this.useLegacyStructure ? this.$route.name.indexOf("app.home") == -1 ? [config(`pages.mainqsite.home`), this.$route.meta] : [config(`pages.mainqsite.home`)]
-          : this.$route.name.indexOf("app.home") == -1 ? [page, this.$route.meta] : [page]
+        : this.$route.name.indexOf("app.home") == -1 ? [page, this.$route.meta] : [page]
       //Get page from breadcrum
       breadcrumbs.forEach((pageName) => {
         if (this.useLegacyStructure) {
           pages.splice(1, 0, config(`pages.${pageName}`))
         } else {
           const base = this.pagesConfig.find(
-              (item) => item.system_name.toLowerCase() == pageName.toLowerCase()
+            (item) => item.system_name.toLowerCase() == pageName.toLowerCase()
           );
           pages.splice(1, 0, base)
         }
@@ -289,9 +287,7 @@ export default {
     width: -webkit-fill-available;
     position: fixed;
     z-index: 2;
-    background: linear-gradient(180deg, #F1F4FA 0%, #FFFFFF 100%)
-
-    #subContent {
+    background: linear-gradient(180deg, #F1F4FA 0%, #FFFFFF 100%) #subContent {
 
       padding: 8px 10px 8px 16px;
       border-radius: $custom-radius 0 0 0;
