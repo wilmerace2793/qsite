@@ -41,10 +41,10 @@
     <cropper-component ref="cropperComponent"/>
 
     <!-- Admin popUp -->
-    <!--    <activities v-bind="globalActivities.adminPopup"/>-->
+        <activities v-bind="globalActivities.adminPopup"/>
 
     <!-- Activities Actions -->
-    <!--    <activities-actions/>-->
+        <activities-actions/>
 
     <!-- FOOTER -->
     <component :is="components.footer"/>
@@ -65,7 +65,7 @@ import drawersPanel from '@imagina/qsite/_components/panel/drawers'
 import footerPanel from '@imagina/qsite/_components/panel/footer'
 //Components
 import cropperComponent from '@imagina/qsite/_components/master/cropper'
-//[ptc]import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
+import activitiesActions from '@imagina/qgamification/_components/activitiesActions/index.vue'
 //[ptc]
 //import Alert from '@imagina/qoffline/_components/alert.vue'
 
@@ -88,7 +88,7 @@ export default {
   },
   components: {
     cropperComponent,
-    //[ptc]activitiesActions,
+    activitiesActions,
     //Admin
     headerAdminTheme1,
     headerAdminTheme2,
