@@ -1601,7 +1601,7 @@ export default {
       //Validate permission
       if (field.permission && !this.$auth.hasAccess(field.permission)) response = false
       //Validate vIf prop
-      if (response && field.props && (field.props?.vIf != undefined)) response = field.props.vIf
+      if (response && field.props && (field.props?.vIf != undefined)) response = field.props?.vIf
       //Response
       return response
     },

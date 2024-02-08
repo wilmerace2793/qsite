@@ -32,7 +32,7 @@
         <div class="row justify-end q-gutter-sm">
           <q-btn
             v-for="(btn, keyBtn) in actions"
-            v-if="btn.props?.vIf != undefined ? btn.props.vIf : true"
+            v-if="btn.props?.vIf != undefined ? btn.props?.vIf : true"
             :key="keyBtn"
             v-bind="{...actionBtnProps, ...(btn.props || {})}"
             @click="btn.action ? btn.action() : null"

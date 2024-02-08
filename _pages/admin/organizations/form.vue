@@ -29,7 +29,6 @@
   </div>
 </template>
 <script>
-import layout from "src/modules/app/_i18n/en-us/layout"
 import layoutStore from '@imagina/qsite/_store/layoutStore.js'
 
 export default {

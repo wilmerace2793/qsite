@@ -33,11 +33,11 @@ export default async ({ app, store, ssrContext }) => {
     silentTranslationWarn: true,
     messages
   })
-  
+
   //===== Change language to quasar components
   await store.dispatch('qsiteApp/SET_LOCALE', {
     locale: defaultLanguage,
-    ssrContext: ssrContext,
+    ssrContext: false,
     vue: app
   })
 
