@@ -21,8 +21,7 @@ import crudComponent from '@imagina/qcrud/_components/v2/crud'
 import kanban from '@imagina/qsite/_components/master/kanban/index.vue';
 import folders from '@imagina/qsite/_components/master/folders/index.vue';
 import promiseTemplate from '@imagina/qsite/_components/master/promiseTemplate/index.vue';
-//[ptc]
-// import activities from '@imagina/qgamification/_components/categoryView/index.vue';
+import activities from '@imagina/qgamification/_components/categoryView/index.vue';
 import helpText from '@imagina/qsite/_components/master/helpText.vue';
 
 
@@ -50,8 +49,7 @@ export default ({ app, router, store }) => {
     {name: 'kanban', component: kanban},
     {name: 'folders', component: folders},
     {name: 'promiseTemplate', component: promiseTemplate},
-    //[ptc]
-    // {name: 'activities', component: activities},
+    {name: 'activities', component: activities},
     {name: 'help-text', component: helpText},
   ]
 
