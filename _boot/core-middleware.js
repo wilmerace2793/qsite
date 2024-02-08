@@ -195,7 +195,7 @@ export default async ({router, store, ssrContext}) => {
     //Validate if go to next route
     if (!middleware.allowNavigate) {
       middleware.allowNavigate = true
-      return next(false)
+      next(false)
     }
 
     //Validate route authentication and permissions
