@@ -108,7 +108,7 @@
         <div class="box box-auto-height row justify-end" v-if="(formType == 'grid') && !noActions">
           <q-btn v-for="(action, keyAction) in formActions" :key="keyAction" v-bind="action"
                  unelevated rounded no-caps @click="action.action('next')" type="button"
-                 v-if="action?.vIf != undefined ? action.vIf : true"/>
+                 v-if="action?.vIf != undefined ? action?.vIf : true"/>
         </div>
       </q-form>
 
