@@ -98,7 +98,7 @@
                      v-if="(formType == 'stepper') && !noActions">
                   <q-btn v-for="(action, keyAction) in formActions" :key="keyAction" v-bind="action"
                          unelevated rounded no-caps @click="action.action(keyBlock)" type="button"
-                         v-if="action?.vIf != undefined ? action.vIf : true"/>
+                         v-if="action?.vIf != undefined ? action?.vIf : true"/>
                 </div>
               </div>
             </component>
