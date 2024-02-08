@@ -445,6 +445,7 @@ import JsonEditorVue from 'json-editor-vue'
 import expressionField from '@imagina/qsite/_components/master/expressionField/index.vue';
 import localizedPhone from '@imagina/qsite/_components/master/localizedPhone/index.vue';
 import multipleDynamicFields from '@imagina/qsite/_components/master/multipleDynamicFields/views'
+import eventBus from '@imagina/qsite/_plugins/eventBus'
 //Code mirror
 //[ptc]import {codemirror} from 'vue-codemirror'
 //[ptc]
@@ -1446,7 +1447,7 @@ export default {
           let componentCrud = this.$refs.crudComponent
           if (componentCrud) {
             //Activate listen to chanel
-            this.$root.$on(`crudForm${componentCrud.params.apiRoute}Created`, async () => {
+            eventBus.on(`crudForm${componentCrud.params.apiRoute}Created`, async () => {
               this.getOptions()//Get options
             })
           }
@@ -1600,7 +1601,7 @@ export default {
       //Validate permission
       if (field.permission && !this.$auth.hasAccess(field.permission)) response = false
       //Validate vIf prop
-      if (response && field.props && (field.props.vIf != undefined)) response = field.props.vIf
+      if (response && field.props && (field.props?.vIf != undefined)) response = field.props?.vIf
       //Response
       return response
     },

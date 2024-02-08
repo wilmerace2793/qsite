@@ -9,7 +9,7 @@
         </q-tooltip>
         <!--Single Item-->
         <q-item :id="`menuItem-${parseIdItem(item.name)}` || `menuItem-${key}`" v-bind="item.itemProps"
-                v-if="item.itemProps.vIf != undefined ? item.itemProps.vIf : true">
+                v-if="item.itemProps?.vIf != undefined ? item.itemProps?.vIf : true">
           <q-item-section v-if="item.icon && showIcons" avatar>
             <q-icon :name="item.icon"/>
           </q-item-section>
