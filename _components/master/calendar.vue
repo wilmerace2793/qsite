@@ -138,6 +138,7 @@
 <script>
 //Components
 import QCalendar from '@quasar/quasar-ui-qcalendar'
+import eventBus from '@imagina/qsite/_plugins/eventBus'
 
 export default {
   props: {
@@ -201,7 +202,7 @@ export default {
   methods: {
     init() {
       //Listen refresh event
-      this.$root.$on('page.data.refresh', () => this.componentId = this.$uid())
+      eventBus.on('page.data.refresh', () => this.componentId = this.$uid())
     },
     //Return events
     getEventsList(timestamp = false) {

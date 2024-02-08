@@ -80,7 +80,7 @@ export default {
       return this.actions && this.actions.length && this.actionsData.length;
     },
     showActionMenu() {
-      return (action) => (action.vIf != undefined ? action.vIf : true);
+      return (action) => (action?.vIf != undefined ? action.vIf : true);
     },
   },
   methods: {

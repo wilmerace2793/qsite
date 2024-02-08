@@ -4,7 +4,7 @@ import cache from '@imagina/qsite/_plugins/cache'
 import crud from "@imagina/qcrud/_services/baseService";
 import cloneDeep from 'lodash.clonedeep'
 import axios from "axios";
-import { Quasar, Loading, colors, AddressbarColor } from 'quasar';
+import { Quasar, Loading, setCssVar, AddressbarColor } from 'quasar';
 import filter from '@imagina/qsite/_plugins/filter'
 import helper from '@imagina/qsite/_plugins/helper'
 import configApp from "src/config/app"
@@ -167,7 +167,7 @@ export const SET_SITE_COLORS = ({state, commit, dispatch}) => {
       //Validate if exist color
       if (color) {
         if (nameBrand.indexOf('addressbar') != -1) AddressbarColor.set(color)//Set bar color
-        else colors.setBrand(nameBrand, color)//Set color
+        else setCssVar(nameBrand, color)//Set color
       }
     }
   }

@@ -138,10 +138,11 @@
 </template>
 <script>
 import QCharts from '@imagina/qsite/_components/master/charts.vue';
+import eventBus from '@imagina/qsite/_plugins/eventBus'
 
 export default {
   beforeDestroy() {
-    this.$root.$off('page.data.refresh')
+    eventBus.off('page.data.refresh')
   },
   props: {
     params: {type: Object, default: false}
@@ -194,7 +195,7 @@ export default {
       if (this.params.filters) this.setFilters()//Set filters
       else this.getData()//Get data
       //Listen refresh page event
-      this.$root.$on('page.data.refresh', () => this.getData())
+      eventBus.on('page.data.refresh', () => this.getData())
     },
     //Get data
     getData() {

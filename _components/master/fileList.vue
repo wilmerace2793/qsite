@@ -20,7 +20,7 @@
           <div id="tableActions" class="row q-gutter-sm" v-if="!readonly">
             <!--customActions-->
             <q-btn v-for="(item, itemKey) in actions" :key="itemKey" class="btn-small" v-bind="item"
-                   v-if="item.vIf != undefined ? item.vIf : true" @click="item.action()" no-caps>
+                   v-if="item?.vIf != undefined ? item.vIf : true" @click="item.action()" no-caps>
               <q-tooltip v-if="item.tooltip">{{ item.tooltip }}.</q-tooltip>
             </q-btn>
             <!--Order-->

@@ -58,7 +58,7 @@
                 v-for="(action, keyAction) in actionsAutomations"
                 :key="keyAction"
                 v-bind="action.props"
-                v-if="action.vIf != undefined ? action.vIf : true"
+                v-if="action?.vIf != undefined ? action.vIf : true"
                 @click.native="runAction(action)"
               >
                 <q-item-section avatar>
