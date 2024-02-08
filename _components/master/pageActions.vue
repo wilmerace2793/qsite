@@ -313,7 +313,7 @@ export default {
                 ...fieldfilter,
                 colClass: "col-12 col-md-4 col-xl-3"
               }
-              if (!this.filterData[fieldName]) this.$set(this.filterData, fieldName, fieldfilter.value || null)
+              if (!this.filterData[fieldName]) this.filterData[fieldName] = (fieldfilter.value || null)
             }
           })
         }

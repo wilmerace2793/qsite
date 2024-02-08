@@ -70,7 +70,7 @@
             <!--others Fields-->
             <dynamic-field v-for="(field, key) in filter.fields" :key="key" v-model="filterValues[field.name || key]"
                            v-if="['search','pagination'].indexOf(key) == -1" class="q-mb-sm" :field="field" :enableCache="dynamicFieldCache"
-                           @inputReadOnly="data => $set(readOnlyData, (field.name || key), data)"/>
+                           @inputReadOnly="data => readOnlyData[field.name || key] = data"/>
           </div>
         </q-tab-panel>
       </q-tab-panels>
@@ -147,10 +147,10 @@ export default {
               this.readOnlyData[key].value = obj[key];
             }
           })
-          this.$set(this.filterPlugin, 'readValues', this.$clone(this.readOnlyData))
+          this.filterPlugin.readValues = this.$clone(this.readOnlyData)
           return;
         }
-        this.$set(this.filterPlugin, 'readValues', this.$clone(this.readOnlyData))
+        this.filterPlugin.readValues = this.$clone(this.readOnlyData)
       }
     }
   },

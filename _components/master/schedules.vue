@@ -172,7 +172,7 @@ export default {
             },
             action: () => {
               let dayIndex = this.schedule.findIndex(day => day.iso == this.dayEdit.iso)
-              this.$set(this.schedule, dayIndex, this.$clone(this.dayEdit))
+              this.schedule[dayIndex] = this.$clone(this.dayEdit)
               this.modal.show = false
             }
           }

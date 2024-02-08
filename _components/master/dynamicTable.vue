@@ -7,7 +7,7 @@
         <!--Table-->
         <q-table
           :grid="table.grid"
-          :data="table.data"
+          :rows="table.data"
           :columns="tableColumns"
           :pagination.sync="table.pagination"
           :rows-per-page-options="rowsPerPageOption"
@@ -236,7 +236,7 @@
         <!--Table-->
         <q-table
           :grid="table.grid"
-          :data="table.data"
+          :rows="table.data"
           :columns="tableColumns"
           :pagination.sync="table.pagination"
           :rows-per-page-options="rowsPerPageOption"

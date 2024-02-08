@@ -1,7 +1,7 @@
 <template>
   <div id="fileListComponent">
     <!--Table-->
-    <q-table :data="tableData" :columns="tableColumns" :pagination.sync="table.pagination" :grid="table.grid"
+    <q-table :rows="tableData" :columns="tableColumns" :pagination.sync="table.pagination" :grid="table.grid"
              :hide-pagination="!allowPagination" :rows-per-page-options="table.rowsPerPageOptions"
              @request="getDataTable" :loading="loading" hide-no-data :hide-header="hideHeader">
       <!---Top content-->
@@ -20,12 +20,12 @@
           <div id="tableActions" class="row q-gutter-sm" v-if="!readonly">
             <!--customActions-->
             <template v-for="(item, itemKey) in actions">
-              <q-btn 
-                :key="itemKey" 
-                class="btn-small" 
+              <q-btn
+                :key="itemKey"
+                class="btn-small"
                 v-bind="item"
-                v-if="item?.vIf != undefined ? item?.vIf : true" 
-                @click="item.action()" 
+                v-if="item?.vIf != undefined ? item?.vIf : true"
+                @click="item.action()"
                 no-caps
               >
                 <q-tooltip v-if="item.tooltip">{{ item.tooltip }}.</q-tooltip>
