@@ -132,7 +132,7 @@ class Filter {
       if (this.name) {
         let filters = await cache.get.item(this.cacheName) || {}
         filters[this.name] = {...(filters[this.name] || {}), values: this.values}
-        await cache.set(this.cacheName, filters)
+        //await cache.set(this.cacheName, filters)
       }
       //Response
       resolve(true)
@@ -177,7 +177,7 @@ class Filter {
 
       //Save in cache
       filters[this.name] = {...(filters[this.name] || {}), pagination: this.pagination}
-      cache.set(this.cacheName, filters)
+      //cache.set(this.cacheName, filters)
 
       //Response
       resolve(true)
