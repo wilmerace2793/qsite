@@ -631,7 +631,7 @@ export default {
     },
     hidenFields() {
       return field => (field.type != 'hidden') &&
-          (field?.vIf != undefined ? field.vIf : true)
+          (field?.vIf != undefined ? field?.vIf : true)
 
     },
     // Validate if the dynamicForm is a backendForm and can edit it
