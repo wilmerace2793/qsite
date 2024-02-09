@@ -1,7 +1,5 @@
 import axios from 'axios'
-import alert from '@imagina/qsite/_plugins/alert'
-import cache from '@imagina/qsite/_plugins/cache'
-import Vue from 'vue';
+import alert from 'modules/qsite/_plugins/alert'
 import {Loading} from 'quasar'
 
 export default function ({app, router, store, Vue, ssrContext}) {
