@@ -36,12 +36,6 @@
           <div>{{ $trp('isite.cms.label.other') }}</div>
         </div>
       </div>
-      <!--Footer panel-->
-      <div id="footerIpanel" v-else>
-        <div id="webComponent">
-          <embedded-footer-ipanel v-if="loadFooterIpanel"></embedded-footer-ipanel>
-        </div>
-      </div>
     </q-footer>
     <!--Dialog other actions-->
     <q-dialog v-model="modal.show" position="bottom" v-if="appConfig.mode == 'iadmin' ? true : false">
@@ -160,46 +154,6 @@ export default {
       eventBus.on('setMobileMainAction', (data) => {
         this.mainAction = {...this.mainAction, ...data}
       })
-      //Get footer ipanel
-      //this.getFooterIpanel()
-    },
-    getFooterIpanel() {
-      if (config('app.mode') == 'ipanel') {
-        this.$remember.async({
-          key: 'footerIpanelHTML',
-          seconds: (3600 * 3),
-          refresh: false,
-          callBack: () => {
-            return new Promise((resolve, reject) => {
-              let baseUrl = this.$store.state.qsiteApp.baseUrl
-              this.$axios.get(baseUrl + '/isite/footer').then(response => {
-                resolve(response)
-              }).catch(error => {
-                console.error('[FOOTER-IPANEL]', error.response)
-                reject(error.response)
-              })
-            })
-          }
-        }).then(response => {
-          //Define Template
-          var template = document.createElement('template')
-          template.innerHTML = response.data
-
-          //Load weeb component
-          window.customElements.define('embedded-footer-ipanel', class EmbeddedWebview extends HTMLElement {
-              connectedCallback() {
-                const shadow = this.attachShadow({mode: 'open'});
-                shadow.appendChild(document.importNode(template.content, true))
-              }
-            }
-          );
-
-          //Allow load header web component
-          this.loadFooterIpanel = true
-        }).catch(error => {
-          console.error('[FOOTER-IPANEL]', error)
-        })
-      }
     },
     //Do main action
     doMainAction() {
