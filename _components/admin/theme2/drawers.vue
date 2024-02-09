@@ -40,6 +40,12 @@
               v-if="$auth.hasAccess('notification.notifications.manage')">
       <master-notifications/>
     </q-drawer>
+
+    <!--Offline-->
+    <q-drawer bordered id="drawerOfflineMaster" v-model="drawer.offline" side="right" overlay
+              v-if="offlineDrawer">
+      <offline/>
+    </q-drawer>
   </div>
 </template>
 <script>
@@ -52,6 +58,7 @@ import menuList from '@imagina/qsite/_components/master/recursiveItem'
 import checkin from '@imagina/qcheckin/_components/checkin'
 import masterRecommendation from '@imagina/qsite/_components/master/masterRecommendations'
 import masterNotifications from '@imagina/qnotification/_components/drawerNotifications'
+import offline from '@imagina/qoffline/_components/drawerOffline'
 import eventBus from '@imagina/qsite/_plugins/eventBus'
 
 export default {
@@ -81,13 +88,17 @@ export default {
         chat: false,
         checkin: false,
         recommendation: false,
-        notification: false
+        notification: false,
+        offline: false
       },
       appConfig: config('app'),
       eventBus
     }
   },
   computed: {
+    offlineDrawer() {
+      return this.$store.getters['qsiteApp/getSettingValueByName']('isite::offline')
+    },
     windowSize() {
       return this.windowWith >= '992' ? 'desktop' : 'mobile'
     },
