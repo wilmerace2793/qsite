@@ -12,22 +12,24 @@ export default {
 }
 </script>
 
-<style lang="stylus">
-    #offline-alert
-        position: relative;
-        min-height: 30px;
-    .offline-alert
-        position: fixed;
-        top: 0;
-        padding: 5px;
-        text-align: center;
-        color: #FFFFFF;
-        width: 100%;
-        z-index: 1000;
-        @media(min-width: 1024px){
-            top: 50px;
-            border-radius: 10px 0 0 0;
-        }
-        
-    
+<style lang="scss">
+#offline-alert {
+  position: relative;
+  min-height: 30px;
+
+  .offline-alert {
+    position: fixed;
+    top: 0;
+    padding: 5px;
+    text-align: center;
+    color: #FFFFFF;
+    width: 100%;
+    z-index: 1000;
+
+    @media(min-width: 1024px) {
+      top: 50px;
+      border-radius: 10px 0 0 0;
+    }
+  }
+}
 </style>
