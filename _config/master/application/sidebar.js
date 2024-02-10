@@ -30,7 +30,7 @@ class AutoLoadSidebar {
       let sidebarNode = false
       //Search module in node_modules
       try {
-        sidebarNode = require(`@imagina/${name}/_config/${params.name}`).default
+        sidebarNode = require(`modules/${name}/_config/${params.name}`).default
       } catch (e) {
       }
 

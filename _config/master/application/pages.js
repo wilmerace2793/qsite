@@ -1,5 +1,5 @@
 import appConfig from 'src/config/app'
-import mainConfigs from '@imagina/qsite/_config/master/application/main'
+import mainConfigs from 'modules/qsite/_config/master/application/main'
 
 class AutoLoadPages {
   constructor() {
@@ -27,7 +27,7 @@ class AutoLoadPages {
 
       //Search module in node_modules
       try {
-        configPage = require(`@imagina/${moduleName}/_config/${params.name}`)
+        configPage = require(`modules/${moduleName}/_config/${params.name}`)
       } catch (e) {
       }
 
@@ -61,8 +61,8 @@ class AutoLoadPages {
           activated: true,
           path: `/${moduleMainConfig.moduleName}/personalization`,
           name: `${moduleName}.admin.personalization`,
-          page: () => import('@imagina/qsite/_pages/admin/settings/settingsByModule'),
-          layout: () => import('@imagina/qsite/_layouts/master.vue'),
+          page: () => import('modules/qsite/_pages/admin/settings/settingsByModule'),
+          layout: () => import('layouts/master.vue'),
           title: 'isite.cms.label.personalization',
           icon: 'fas fa-brush',
           authenticated: true,
