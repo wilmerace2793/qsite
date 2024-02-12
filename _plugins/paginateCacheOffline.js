@@ -1,10 +1,10 @@
 
-import cache from "@imagina/qsite/_plugins/cache";
+import cache from "modules/qsite/_plugins/cache";
 
 export default async function paginateCacheOffline(fountain, search=null, page=1, perPage=10) {
     let data = null
-    
-    if (typeof fountain === 'string') 
+
+    if (typeof fountain === 'string')
         data = await cache.get.item(`${fountain}::offline`) || { data: [] }
 
     if (typeof fountain === 'object') data = fountain

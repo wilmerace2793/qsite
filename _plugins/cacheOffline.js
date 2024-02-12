@@ -1,4 +1,4 @@
-import cache from "@imagina/qsite/_plugins/cache";
+import cache from "modules/qsite/_plugins/cache";
 
 class cacheOffline {
   constructor() {}
@@ -19,7 +19,7 @@ class cacheOffline {
     const cacheResponse = await cache.get.item(route) || { data: [] };
 
     const dataInCache = structuredClone(cacheResponse)
-    const records = await dataInCache.data.map(item => 
+    const records = await dataInCache.data.map(item =>
       String(item.id) === String(id) ? {...item, ...data} : item
     );
     const newData = {

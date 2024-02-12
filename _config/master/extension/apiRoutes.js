@@ -1,4 +1,4 @@
-import appConfig from '@imagina/qsite/_config/master/extension/app'
+import appConfig from 'modules/qsite/_config/master/extension/app'
 
 class AutoLoadApiRoutes {
   constructor() {
