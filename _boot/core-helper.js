@@ -7,7 +7,7 @@ import {remember} from 'modules/qsite/_plugins/remember'
 import hook from 'modules/qsite/_plugins/hook'
 import crud from 'modules/qcrud/_services/baseService'
 import lodash from 'lodash'
-import moment from 'vue-moment'
+import moment from 'moment'
 import {uid} from 'quasar'
 import {openURL} from 'quasar'
 import eventBus from 'modules/qsite/_plugins/eventBus'
@@ -50,7 +50,6 @@ export default function ({app, router, store, Vue, ssrContext}) {
   }
   app.config.globalProperties.$uid = uid
   app.config.globalProperties.$apiResponse = apiResponse
-  //[ptc] app.use(moment)
-  // app.use(moment)
+  app.config.globalProperties.$moment = moment
   app.use(VueSignaturePad)
 }
