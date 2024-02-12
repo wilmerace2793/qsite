@@ -69,7 +69,7 @@
         <label
             v-for="(item, itemKey) in filter.readValues"
             :key="itemKey"
-            v-if="item.value && item.label !== ''"
+            v-if="item?.value && item.label !== ''"
             class="q-ml-xs text-grey-7">
           {{ item.label }} {{ item.value }},
         </label>
