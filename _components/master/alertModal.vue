@@ -38,7 +38,6 @@ export default {
     params: {default: false}
   },
   components: {},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
       this.init()

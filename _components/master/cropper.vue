@@ -47,7 +47,6 @@ export default {
     props: {type: Object}
   },
   components: {VueCropper},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
       this.init()

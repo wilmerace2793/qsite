@@ -9,9 +9,6 @@
 </template>
 <script>
 export default {
-  props: {},
-  components: {},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
     })

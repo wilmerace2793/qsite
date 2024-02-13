@@ -12,8 +12,6 @@
       visible: {default: false},
       label: {default: false}
     },
-    components: {},
-    watch: {},
     mounted() {
       this.$nextTick(function () {
         this.init()

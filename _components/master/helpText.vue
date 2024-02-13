@@ -32,8 +32,6 @@ export default {
     description: {type: String, required: true},
     btnStyle: {type: String, default: ''}
   },
-  components: {},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
     })

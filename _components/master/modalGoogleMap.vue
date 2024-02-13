@@ -22,7 +22,6 @@
       mapType: {default: 'route'}
     },
     components: {googleMap},
-    watch: {},
     mounted() {
       this.$nextTick(function () {
       })

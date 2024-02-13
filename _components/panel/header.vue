@@ -31,9 +31,7 @@ export default {
   beforeDestroy() {
     eventBus.off('header.badge.manage')
   },
-  props: {},
   components: {siteActions},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
       this.init()

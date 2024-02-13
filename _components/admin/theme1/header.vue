@@ -20,7 +20,6 @@ import siteActions from 'modules/qsite/_components/master/siteActions'
 export default {
   props: {},
   components: {siteActions},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
       this.init()

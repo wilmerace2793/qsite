@@ -34,8 +34,6 @@
 </template>
 <script>
 export default {
-  props: {},
-  watch: {},
   created() {
     this.loading = true;
   },

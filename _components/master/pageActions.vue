@@ -139,7 +139,6 @@ export default {
     }
   },
   components: {masterExport, masterSynchronizable, masterFilter},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
       this.init()

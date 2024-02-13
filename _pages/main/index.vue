@@ -13,9 +13,7 @@ import indexPanel from 'modules/qsite/_pages/panel/index'
 import 'modules/qsite/interface'
 
 export default {
-  props: {},
   components: {indexAdmin, indexPanel},
-  watch: {},
   mounted() {
     this.$nextTick(async function () {
     })

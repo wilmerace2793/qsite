@@ -19,8 +19,6 @@
     props: {
       logo: {default: false}
     },
-    components: {},
-    watch: {},
     mounted() {
       this.$nextTick(function () {
       })
