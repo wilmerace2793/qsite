@@ -33,6 +33,7 @@
   </div>
 </template>
 <script>
+import { markRaw } from 'vue';
 export default {
   props: {},
   watch: {},
@@ -59,7 +60,7 @@ export default {
     quickCards() {
       //Get quick cards
       let quickCards = []
-      let mainConfigs = Object.values(config('main')).map(item => item.quickCards || [])
+      let mainConfigs = markRaw(Object.values(config('main')).map(item => item.quickCards || []))
       mainConfigs.forEach(item => quickCards = quickCards.concat(item))
       //Validate Permissions
       let quickCardsToShow = []
