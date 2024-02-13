@@ -21,8 +21,6 @@
       fixed: {type: Boolean, default: true},
       backButton: {type: Boolean, default: false}
     },
-    components: {},
-    watch: {},
     mounted() {
       this.$nextTick(function () {
       })

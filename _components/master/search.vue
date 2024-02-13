@@ -54,7 +54,6 @@
       name: {default: false}
     },
     components: {dynamicField},
-    watch: {},
     mounted() {
       this.$nextTick(function () {
         this.init()

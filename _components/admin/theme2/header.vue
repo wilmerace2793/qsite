@@ -21,9 +21,7 @@ import siteActions from 'modules/qsite/_components/master/siteActions'
 import eventBus from 'modules/qsite/_plugins/eventBus'
 
 export default {
-  props: {},
   components: {siteActions},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
       this.init()

@@ -145,8 +145,6 @@ export default {
     eventsData: {default: false},
     eventActions: {default: false}
   },
-  components: {},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
       this.init()

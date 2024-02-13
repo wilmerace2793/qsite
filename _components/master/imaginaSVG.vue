@@ -177,8 +177,6 @@
     props: {
       color : {default : 'white'}
     },
-    components: {},
-    watch: {},
     mounted() {
       this.$nextTick(function () {
       })

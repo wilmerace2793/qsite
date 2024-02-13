@@ -127,7 +127,6 @@ export default {
   mixins: [sidebarMixins],
   props: {},
   components: {menuList, configList, chatList, masterFilter, checkin, masterRecommendation, masterNotifications},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
       this.init()

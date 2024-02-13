@@ -42,8 +42,6 @@ export default {
     actions: { default: false },
     actionData: { default: false },
   },
-  components: {},
-  watch: {},
   mounted() {
     this.$nextTick(function () {});
   },

@@ -223,9 +223,6 @@
 <script>
 import eventBus from 'modules/qsite/_plugins/eventBus'
 export default {
-  props: {},
-  components: {},
-  watch: {},
   mounted() {
     this.$nextTick(async function () {
       this.setOptions()

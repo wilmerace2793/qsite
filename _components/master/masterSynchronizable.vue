@@ -167,9 +167,6 @@
 export default {
   beforeDestroy() {
   },
-  props: {},
-  components: {},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
       this.init()

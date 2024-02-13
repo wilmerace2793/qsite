@@ -11,8 +11,6 @@ export default {
   props: {
     btnProps: {type: Object}
   },
-  components: {},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
       this.init()

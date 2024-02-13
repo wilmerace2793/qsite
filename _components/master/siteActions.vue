@@ -93,8 +93,6 @@ export default {
     gutter: {type: String, default: 'sm'},
     size: {type: String, default: 'small'},
   },
-  components: {},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
       this.init()

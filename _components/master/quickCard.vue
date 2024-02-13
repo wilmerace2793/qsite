@@ -157,7 +157,6 @@ export default {
     params: {type: Object, default: false}
   },
   components: {QCharts},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
       this.init()

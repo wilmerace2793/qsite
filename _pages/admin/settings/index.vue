@@ -52,9 +52,6 @@
 </template>
 <script>
 export default {
-  props: {},
-  components: {},
-  watch: {},
   mounted() {
     this.$nextTick(async function () {
       this.init()

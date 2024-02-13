@@ -8,9 +8,6 @@ export default {
   beforeDestroy() {
     this.$root.$off('page.data.refresh')
   },
-  props: {},
-  components: {},
-  watch: {},
   mounted() {
     this.$nextTick(function () {
       this.init()

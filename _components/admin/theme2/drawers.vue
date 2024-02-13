@@ -77,7 +77,6 @@ export default {
     masterNotifications,
     offline
   },
-  watch: {},
   mounted() {
     this.$nextTick(function () {
       this.init()

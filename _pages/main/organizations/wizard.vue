@@ -112,9 +112,6 @@ import {
 
 export default {
   beforeDestroy() {},
-  props: {},
-  components: {},
-  watch: {},
   computed: {
     siteName() {
       return this.$store.getters['qsiteApp/getSettingValueByName']('core::site-name')

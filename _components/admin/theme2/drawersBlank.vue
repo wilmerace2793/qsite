@@ -21,7 +21,6 @@
     mixins:[sidebarMixins],
     props: {},
     components: {masterFilter},
-    watch: {},
     mounted() {
       this.$nextTick(function () {
         this.init()
