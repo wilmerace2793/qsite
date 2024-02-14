@@ -218,8 +218,7 @@
         <!--tree select-->
         <q-field v-model="responseValue" v-if="loadField('treeSelect')" :label="fieldLabel"
                  v-bind="fieldProps.fieldComponent" :class="`${field.help ? 'treeselect-dynamic-field' : ''}`">
-          <tree-select v-model="responseValue" :options="formatOptions" placeholder="" v-bind="fieldProps.field"
-                       @select="(node, instanceId) => $emit('select', {node, instanceId})">
+          <tree-select v-model="responseValue" :options="formatOptions" placeholder="">
               <template slot="option-label" slot-scope="{node}">
                 <label>
                   <!-- Image -->
