@@ -71,9 +71,7 @@ export default {
       this.show = this.$clone(newValue);
     },
     show(newValue, oldValue) {
-      if (newValue != oldValue) {
-        this.$emit('update:modelValue', this.$clone(newValue));
-      }
+      this.$emit('update:modelValue', this.$clone(newValue));
     }
   },
   mounted() {
