@@ -23,7 +23,7 @@
             </div>
             <!--Float calendar-->
             <q-dialog v-model="modalQDate">
-              <q-date v-model="calendarDate" @input="modalQDate = false" mask="YYYY-MM-DD"/>
+              <q-date v-model="calendarDate" @update:modelValue="modalQDate = false" mask="YYYY-MM-DD"/>
             </q-dialog>
             <!--Next date-->
             <q-btn v-if="calendarType != 'all'" @click="$refs.calendarComponent.next()" icon="fas fa-chevron-right"

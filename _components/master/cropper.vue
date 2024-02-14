@@ -17,7 +17,7 @@
           <!--pupop edit-->
           <q-popup-edit v-if="item.popupName" v-model="cropperSize[item.popupName]" auto-save>
             <q-input v-model="cropperSize[item.popupName]" dense autofocus outlined type="number"
-                     :label="item.label" @input="item.action()">
+                     :label="item.label" @update:modelValue="item.action()">
               <template v-slot:append>
                 <q-icon :name="item.icon" class="cursor-pointer" v-close-popup/>
               </template>

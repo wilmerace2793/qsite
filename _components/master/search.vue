@@ -3,7 +3,7 @@
     <div id="content">
       <!--Search and filter-->
       <q-input outlined dense v-model="filter.search" :placeholder="labelText" debounce="800"
-               class="input-search" ref="inputSearch" @input="emitFilter()">
+               class="input-search" ref="inputSearch" @update:modelValue="emitFilter()">
         <template v-slot:append>
           <q-icon name="search" class="q-mr-sm"/>
           <!--Button filter-->

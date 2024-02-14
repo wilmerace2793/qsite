@@ -3,7 +3,7 @@
     <!-- search geolocation -->
 <!--    <q-select :options="geolocations" v-model="address" emit-value behavior="menu" input-debounce="700"-->
 <!--              use-input map-options outlined dense bg-color="white" :label="label" clearable class="q-mb-md"-->
-<!--              @filter="filterFn" @input="emitResponseValue" :loading="searchLoading" v-if="!readOnly"-->
+<!--              @filter="filterFn" @update:modelValue="emitResponseValue" :loading="searchLoading" v-if="!readOnly"-->
 <!--              hint="eg. Avenida la francia, calle San Bernando 34..."/>-->
 
 <!--    &lt;!&ndash;Map&ndash;&gt;-->

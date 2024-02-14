@@ -28,7 +28,7 @@
         tick-strategy="leaf-filtered"
         :filter="search"
         node-key="id"
-        @input.sync="changeSelectedItems()"
+        @update:modelValue.sync="changeSelectedItems()"
       />
     </q-scroll-area>
   </div>

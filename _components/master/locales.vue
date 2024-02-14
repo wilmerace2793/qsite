@@ -50,7 +50,7 @@
       text-color="grey-9"
       v-if="languageOptions.length >= 2"
       :options="languageOptions"
-      @input="updateFormTempleate()"
+      @update:modelValue="updateFormTempleate()"
       unelevated
       rounded
       no-caps

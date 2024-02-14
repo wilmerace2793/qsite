@@ -2,7 +2,7 @@
   <div class="row">
     <section id="panel-editor-component" class="full-width">
       <draggable class="row q-col-gutter-lg q-pb-md" v-model="items" :group="{ name: 'items' }"
-                 @input="updateSortOrder">
+                 @update:modelValue="updateSortOrder">
         <div :class="element[gridPosField]" v-for="element in items" :key="element.id">
           <div :class="`panel-editor-component__component ${verifyKeys(element,childsFieldName) ? 'hasChild' : ''}`">
             <div class="absolute-right q-ma-sm">
@@ -42,7 +42,7 @@
             </q-btn>
 
             <div v-if="verifyKeys(element,childsFieldName)" class="full-width q-px-md">
-              <handle-grid v-model="element[childsFieldName]" v-bind="childProps" @input="updateSortOrder"
+              <handle-grid v-model="element[childsFieldName]" v-bind="childProps" @update:modelValue="updateSortOrder"
                 @create="(val) => addedChildItem(val.index, element.id, val)" ref="refHandleGrid"/>
             </div>
 

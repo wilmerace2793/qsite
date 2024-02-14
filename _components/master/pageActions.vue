@@ -13,7 +13,7 @@
       <q-input v-model="search" bg-color="white" debounce="800" rounded outlined dense clearable
                :placeholder="$tr('isite.cms.label.search')" class="page-input-search"
                v-if="extraActions && extraActions.includes('search') && searchAction"
-               @input="$emit('search', $clone(search))">
+               @update:modelValue="$emit('search', $clone(search))">
         <template v-slot:prepend>
           <q-icon color="tertiary" size="xs" name="fa-light fa-magnifying-glass"/>
         </template>
@@ -79,7 +79,7 @@
         <dynamic-field v-for="(field, keyField) in quickFilters" :key="keyField" :field="field"
                        v-model="filterData[keyField]"
                        :class="field.colClass"
-                       @input="emitFilter"
+                       @update:modelValue="emitFilter"
                        :keyField="keyField"
         />
       </div>

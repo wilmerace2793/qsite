@@ -30,7 +30,7 @@
         </template>
         <!--Field-->
         <div class="q-px-sm q-mt-sm">
-          <dynamic-field :key="key" v-model="response[key].value" :field="setting" @input="emitResponse()"/>
+          <dynamic-field :key="key" v-model="response[key].value" :field="setting" @update:modelValue="emitResponse()"/>
         </div>
       </q-expansion-item>
     </q-expansion-item>

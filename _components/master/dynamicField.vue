@@ -88,7 +88,7 @@
                     class="cursor-pointer"
                     color="blue-grey">
               <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                <q-date v-model="responseValue" @input="() => $refs.qDateProxy.hide()"
+                <q-date v-model="responseValue" @update:modelValue="() => $refs.qDateProxy.hide()"
                         v-bind="fieldProps.slot"/>
               </q-popup-proxy>
             </q-icon>
@@ -108,7 +108,7 @@
                     class="cursor-pointer"
                     color="blue-grey">
               <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
-                <q-time v-model="responseValue" @input="() => $refs.qTimeProxy.hide()" v-bind="fieldProps.slot"/>
+                <q-time v-model="responseValue" @update:modelValue="() => $refs.qTimeProxy.hide()" v-bind="fieldProps.slot"/>
               </q-popup-proxy>
             </q-icon>
           </template>
@@ -122,7 +122,7 @@
           <template v-slot:prepend>
             <q-icon name="fa-light fa-calendar-day" class="cursor-pointer" color="blue-grey">
               <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                <q-date v-model="responseValue" @input="() => $refs.qDateProxy.hide()"
+                <q-date v-model="responseValue" @update:modelValue="() => $refs.qDateProxy.hide()"
                         v-bind="fieldProps.slot"/>
               </q-popup-proxy>
             </q-icon>
@@ -131,7 +131,7 @@
             <q-icon name="fa-light fa-clock" class="cursor-pointer" color="blue-grey">
               <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
                 <q-time v-model="responseValue" :format24h="fieldProps.field.format24h"
-                        @input="() => $refs.qTimeProxy.hide()"
+                        @update:modelValue="() => $refs.qTimeProxy.hide()"
                         v-bind="fieldProps.slot"/>
               </q-popup-proxy>
             </q-icon>
@@ -139,7 +139,7 @@
         </q-input>
         <!--Select-->
         <q-select v-model="responseValue" :options="formatOptions" :label="fieldLabel" use-input v-bind="fieldProps"
-                  @input="matchTags(field)" v-if="loadField('select')" @filter="filterSelectOptions"
+                  @update:modelValue="matchTags(field)" v-if="loadField('select')" @filter="filterSelectOptions"
                   @clear="val => field.props.multiple ? responseValue = [] : ''"
                   :class="`${field.help ? 'select-dynamic-field' : ''}`">
           <!--No options slot-->
@@ -277,10 +277,10 @@
         </q-field>
         <!--Manage Permission-->
         <manage-permissions v-model="responseValue" class="q-mb-sm" v-if="loadField('permissions')"
-                            @input="watchValue" :allow-inherit="field.allowInherit ? true : false"/>
+                            @update:modelValue="watchValue" :allow-inherit="field.allowInherit ? true : false"/>
         <!--Manage Settings-->
         <manage-settings v-model="responseValue" class="q-mb-sm" :settings="field.settings"
-                         v-if="loadField('settings')" @input="watchValue"/>
+                         v-if="loadField('settings')" @update:modelValue="watchValue"/>
         <!--Schedules form-->
         <div class="round bg-white" v-if="loadField('schedule')">
           <schedules-form v-model="responseValue" @input="watchValue" class="q-mb-sm"
