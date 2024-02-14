@@ -121,6 +121,7 @@
 
   export default {
     props: ['setting', 'label'],
+    emits: ['update:modelValue'],
     components: {
       mediaForm,
       textMulti,
@@ -151,8 +152,8 @@
       }
     },
     watch: {
-      '$attrs.value' () {
-        this.vModel = JSON.parse(JSON.stringify(this.$attrs.value))
+      modelValue (newValue) {
+        this.vModel = JSON.parse(JSON.stringify(newValue))
       }
     },
     created () {
@@ -167,7 +168,7 @@
     },
     methods: {
       emitValue () {
-        this.$emit('input', this.vModel)
+        this.$emit('update:modelValue', this.vModel)
       },
 
     }

@@ -83,6 +83,7 @@ import services from 'modules/qsite/_components/organizations/wizard/steps/servi
 import { LIMIT_PAGE } from './model/constant.js';
 
 export default {
+  emits: ['updateData'],
   data() {
     return {
       loading: false,

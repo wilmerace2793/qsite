@@ -53,6 +53,7 @@
       },
       name: {default: false}
     },
+    emits: ['update:modelValue'],
     components: {dynamicField},
     mounted() {
       this.$nextTick(function () {
@@ -100,7 +101,7 @@
         dataFilter[`filter.${this.name}`] = this.$clone(this.filter)
         if (this.name) this.$store.dispatch('qsiteApp/SET_EXTRA', dataFilter)
         //Emit filter
-        this.$emit('input', this.filter)
+        this.$emit('update:modelValue', this.filter)
         //Close mdoal
         this.showModal = false
       }

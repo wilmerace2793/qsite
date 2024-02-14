@@ -23,18 +23,19 @@ fontSizes.push('48/48px;72/72px;96/96px;')
 
 export default {
   props: {
-    value: {default: ''},
+    modelValue: {default: ''},
     name: {default: null}
   },
+  emits: ['update:modelValue'],
   components: {ckEditor: CKEditor.component},
   watch: {
-    value(newValue, oldValue) {
+    modelValue(newValue, oldValue) {
       if (JSON.stringify(newValue) != JSON.stringify(oldValue))
         this.responseValue = this.$clone(newValue)
     },
     responseValue(newValue, oldValue) {
       if (JSON.stringify(newValue) != JSON.stringify(oldValue))
-        this.$emit('input', this.$clone(newValue))
+        this.$emit('update:modelValue', this.$clone(newValue))
 
     }
   },
@@ -63,7 +64,7 @@ export default {
   },
   methods: {
     init() {
-      this.responseValue = this.$clone(this.value)
+      this.responseValue = this.$clone(this.modelValue)
     },
     //On name space loaded
     onNamespaceLoaded(CKEDITOR) {

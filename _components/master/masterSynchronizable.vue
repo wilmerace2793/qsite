@@ -165,6 +165,7 @@
 </template>
 <script>
 export default {
+  emits: ['update:modelValue'],
   beforeDestroy() {
   },
   mounted() {
@@ -255,7 +256,7 @@ export default {
           this.params = this.$clone(response.data)
           //Configure the link to access the file
           this.linkToFile = `https://docs.google.com/spreadsheets/d/${this.params.sheetId}`
-          this.$emit('input', this.$clone(response.data))
+          this.$emit('update:modelValue', this.$clone(response.data))
           this.loading = false
           resolve(response.data)
         }).catch(error => {

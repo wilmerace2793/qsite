@@ -123,6 +123,7 @@ export default {
       default: () => {}
     },
   },
+  emits: ['search','new','refresh'],
   inject: {
     filterPlugin: {
       from: 'filterPlugin',

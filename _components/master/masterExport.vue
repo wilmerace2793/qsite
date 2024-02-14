@@ -71,6 +71,7 @@ export default {
   props: {
     exportItem: {type: Boolean, default: false}
   },
+  emits: ['update:modelValue'],
   inject: {
     filterPlugin: {
       from: 'filterPlugin',
@@ -237,7 +238,7 @@ export default {
         //Request
         this.$crud.index('apiRoutes.qsite.configs', requestParams).then(response => {
           this.params = this.$clone(response.data)
-          this.$emit('input', this.$clone(response.data))
+          this.$emit('update:modelValue', this.$clone(response.data))
           resolve(response.data)
         }).catch(error => {
           resolve(false)

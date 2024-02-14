@@ -46,6 +46,7 @@ export default {
   props: {
     props: {type: Object}
   },
+  emits: ['cropped','canceled'],
   components: {VueCropper},
   mounted() {
     this.$nextTick(function () {

@@ -38,6 +38,7 @@
         default: ''
       },
     },
+    emits: ['getData'],
     components: {
       field
     },

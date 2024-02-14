@@ -465,7 +465,7 @@ export default {
 
   },
   props: {
-    value: {default: null},
+    modelValue: {default: null},
     field: {default: false},
     language: {default: false},
     itemId: {default: ''},
@@ -476,6 +476,7 @@ export default {
     },
     enableCache: {default: false}
   },
+  emits: ['update:modelValue','inputReadOnly','filter'],
   components: {
     managePermissions,
     manageSettings,
@@ -499,7 +500,7 @@ export default {
     multipleDynamicFields,
   },
   watch: {
-    value: {
+    modelValue: {
       deep: true,
       handler: function (newValue, oldValue) {
         if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
@@ -1322,7 +1323,7 @@ export default {
     //init
     async init() {
       if (this.field.type) {
-        this.setDefaultVModel((this.value != undefined) ? this.value : this.field.value)//Set default values by field type
+        this.setDefaultVModel((this.modelValue != undefined) ? this.modelValue : this.field.value)//Set default values by field type
         this.listenEventCrud()//config dynamic component
         this.success = true//sucess
         //Set options if is type select
@@ -1575,7 +1576,7 @@ export default {
     },
     //Check if value change
     watchValue() {
-      let value = this.$clone(this.value)
+      let value = this.$clone(this.modelValue)
       let response = this.$clone(this.responseValue)
 
       if (JSON.stringify(value) !== JSON.stringify(response)) {
@@ -1583,7 +1584,7 @@ export default {
         if (this.field.type == "json" && (typeof response == "string"))
           response = JSON.parse(response)
         //Emit input data
-        this.$emit('input', response)
+        this.$emit('update:modelValue', response)
       }
 
       //Load option for value

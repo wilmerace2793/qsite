@@ -39,12 +39,13 @@
 <script>
   export default {
     props: {
-      value: { default: false },
+      modelValue: { default: false },
       settings: { default: false }
     },
+    emits: ['update:modelValue'],
     components: {},
     watch: {
-      value () {
+      modelValue () {
         this.setValues()
       }
     },
@@ -85,8 +86,8 @@
       },
       //Set values from prop value
       setValues () {
-        if (this.value && this.value.length) {
-          let values = this.$clone(this.$helper.convertToFrontField(this.value))
+        if (this.modelValue && this.modelValue.length) {
+          let values = this.$clone(this.$helper.convertToFrontField(this.modelValue))
           let response = this.$clone(this.response)
           this.response = Object.assign({}, response, values)
         }
@@ -94,12 +95,12 @@
       },
       //Emit format repsonse
       emitResponse () {
-        let value = this.$clone(this.value)
+        let value = this.$clone(this.modelValue)
         let response = this.$clone(this.$helper.convertToBackField(this.response))
 
         //If is not same, emit
         if (JSON.stringify(value) != JSON.stringify(response)) {
-          this.$emit('input', response)
+          this.$emit('update:modelValue', response)
         }
       }
     }
