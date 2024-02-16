@@ -84,7 +84,6 @@
     </div>
     <!-- Export Component -->
     <master-export
-      v-if="exportParams"
       v-model="exportParams"
       ref="exportComponent"
     />
@@ -95,7 +94,7 @@
     />
     <master-synchronizable
       v-model="syncParams"
-      v-if="syncParams && $auth.hasAccess('isite.synchronizables.index')"
+      v-if="$auth.hasAccess('isite.synchronizables.index')"
       ref="syncComponent"
     />
   </div>
