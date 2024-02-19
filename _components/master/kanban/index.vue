@@ -350,8 +350,8 @@ export default {
       try {
         if (!this.routes.column) return;
         this.loading = true;
-                const response = await this.getStatus(isModal ? !refresh : refresh);
-                //Set the initial data for kanbanColumns
+        const response = await this.getStatus(isModal ? !refresh : refresh);
+        //Set the initial data for kanbanColumns
         this.kanbanColumns = response.data.map((item, index) => {
           return {
             id: item.id,
