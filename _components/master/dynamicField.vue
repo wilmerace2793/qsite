@@ -499,16 +499,13 @@ export default {
     multipleDynamicFields,
   },
   watch: {
-    modelValue: {
+    responseValue: {
       deep: true,
       handler: function (newValue, oldValue) {
         if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
-          this.setDefaultVModel(newValue)//Order Value
+          this.watchValue(newValue)
         }
       }
-    },
-    responseValue(newValue, oldValue) {
-      this.watchValue(newValue)
     },
     rootOptions(newValue) {
       this.options = this.rootOptions
@@ -619,10 +616,9 @@ export default {
 
           //Add rule to validate field
           if (this.field.validateField && this.field.validateField.apiRoute) {
-            if (!props.debounce) props.debounce = '800' //Add debounce
             props.rules = [...(props.rules || []), this.validateField]//Add rule to validate field
           }
-
+          props.debounce = '500' //Add debounce
           //Extra logic to input type password
           if (this.isFieldPassword) props.type = this.showPassword ? 'text' : 'password'
 
@@ -637,9 +633,9 @@ export default {
 
           //Add rule to validate field
           if (this.field.validateField && this.field.validateField.apiRoute) {
-            if (!props.debounce) props.debounce = '800' //Add debounce
             props.rules = [...(props.rules || []), this.validateField]//Add rule to validate field
           }
+          props.debounce = '500' //Add debounce
 
           //Extra logic to input type password
           if (this.isFieldPassword) props.type = this.showPassword ? 'text' : 'password'
@@ -752,12 +748,12 @@ export default {
           break;
         case'select':
           props = {
-            emitValue: true,
-            mapOptions: true,
-            outlined: true,
-            dense: true,
-            bgColor: 'white',
-            dropdownIcon: 'fa-solid fa-caret-down',
+            'emit-value': true,
+            'map-options': true,
+            'outlined': true,
+            'dense': true,
+            'bg-color': 'white',
+            'dropdown-icon': 'fa-solid fa-caret-down',
             //style: 'width: 100%',
             behavior: "menu",
             class: "q-pb-md custom-btn",
@@ -779,7 +775,7 @@ export default {
           break;
         case'treeSelect':
           props = {
-            emitValue: true,
+            'emit-value': true,
             field: {
               appendToBody: true,
               sortValueBy: 'INDEX',
@@ -1422,6 +1418,7 @@ export default {
           this.responseValue = propValue || null
           break
       }
+      this.$emit('update:modelValue', this.responseValue)
     },
     //Order options
     orderOptions(propValue) {
@@ -1584,7 +1581,7 @@ export default {
         if (this.field.type == "json" && (typeof response == "string"))
           response = JSON.parse(response)
         //Emit input data
-        this.$emit('update:modelValue', response)
+        this.setDefaultVModel(response)
       }
 
       //Load option for value
