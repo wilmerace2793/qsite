@@ -102,8 +102,7 @@ export default {
           permission: 'requestable.sources.index',
           props: {
             crudType: 'select',
-            //[ptc]
-            //crudData: import('modules/qrequestable/_crud/sources'),
+            crudData: import('modules/qrequestable/_crud/sources'),
             crudProps: {
               label: this.$tr('isite.cms.label.source'),
               rules: [
@@ -146,8 +145,7 @@ export default {
           permission: 'profile.user.index',
           props: {
             crudType: 'select',
-            //[ptc]
-            //crudData: import('modules/quser/_crud/users'),
+            crudData: import('modules/quser/_crud/users'),
             crudProps: {
               vIf: this.$hasAccess('profile.user.index') && this.$hasAccess('requestable.requestables.assign-responsible'),
               label: this.$tr('requestable.cms.label.responsible'),
