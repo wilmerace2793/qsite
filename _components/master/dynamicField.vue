@@ -757,7 +757,7 @@ export default {
           break;
         case'select':
           props = {
-            'emit-value': true,
+            'emit-value': props?.emitValue || true,
             'map-options': true,
             'outlined': true,
             'dense': true,
@@ -1434,7 +1434,7 @@ export default {
         if (Array.isArray(propValue)) {
           this.responseValue = []
           propValue.forEach(item => {
-            if (this.fieldProps.emitValue) {
+            if (this.fieldProps['emit-value']) {
               let value = (typeof item == 'object') ? item.id : item
               this.responseValue.push(value.toString())
             } else {
@@ -1442,7 +1442,7 @@ export default {
             }
           })
         } else {
-          this.responseValue = propValue || propValue == 0 ? this.$clone(this.fieldProps.emitValue ? propValue.toString() : propValue) : propValue
+          this.responseValue = propValue || propValue == 0 ? this.$clone(this.fieldProps['emit-value'] ? propValue.toString() : propValue) : propValue
         }
       }
     },
