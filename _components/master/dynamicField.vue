@@ -1500,8 +1500,8 @@ export default {
               return resolve(false)
             }
           }
-          const parametersUrl = loadOptions.parametersUrl || {};
-          const crud = Object.keys(parametersUrl).length > 0 ? this.$crud.get : this.$crud.index;
+          const parametersUrl = Object.keys(loadOptions?.parametersUrl ?? {}).length ? loadOptions.parametersUrl : false ;
+          const crud = parametersUrl ? this.$crud.get : this.$crud.index;
           //Request
           crud(loadOptions.apiRoute, params, parametersUrl).then(response => {
             if (this.keyField !== '') {
