@@ -307,7 +307,8 @@
         "updateZone": "Update Zone",
         "maxFileSize": "Max File size (MB)",
         "maxFiles": "Max files selected",
-        "directUpload": "Direct Upload"
+        "directUpload": "Direct Upload",
+        "thumbnailsConfig": "Thumbnails config"
       }
     },
     "igamification": {
@@ -2374,7 +2375,8 @@
         "updateZone": "Actualizar Zona",
         "maxFileSize": "Tamaño maximo por archivo (MB)",
         "maxFiles": "Cantidad maxima de archivos seleccionados",
-        "directUpload": "Subida directa"
+        "directUpload": "Subida directa",
+        "thumbnailsConfig": "Configuración de Miniaturas"
       }
     },
     "igamification": {

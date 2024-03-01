@@ -25,13 +25,13 @@
                      :btn-style="`margin:${helpLoad.margin}`"/>
         </div>
         <!--Crud-->
-        <crud v-model="responseValue" @created="getOptions" v-bind="fieldProps" :key="field.name"
+        <crud v-model="responseValue" v-bind="fieldProps" @created="getOptions"  :key="field.name"
               :type="field.props.crudType || 'select'" ref="crudComponent"
               v-if="loadField('crud') || (field.props && field.props.crudData)"
               :class="`q-mb-xs ${field.help ? 'crud-dynamic-field' : ''} ${(field.props && field.props.crudType == 'button-create') ? 'absolute-right' : ''}`"/>
         <!--Input-->
-        <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('input')"
-                 :label="fieldLabel" v-bind="fieldProps" :class="`${field.help ? 'input-dynamic-field' : ''}`">
+        <q-input v-model="responseValue" v-bind="fieldProps" @keyup.enter="$emit('enter')" v-if="loadField('input')"
+                 :label="fieldLabel"  :class="`${field.help ? 'input-dynamic-field' : ''}`">
           <template v-slot:prepend v-if="fieldProps.icon">
             <q-icon :name="fieldProps.icon" size="18px"/>
           </template>
@@ -41,8 +41,7 @@
           </template>
         </q-input>
         <!--Input Standard-->
-        <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('inputStandard')"
-                 v-bind="fieldProps" style="margin-bottom: 20px">
+        <q-input v-model="responseValue" v-bind="fieldProps" @keyup.enter="$emit('enter')" v-if="loadField('inputStandard')" style="margin-bottom: 20px">
           <template v-slot:prepend v-if="fieldProps.icon">
             <q-icon :name="fieldProps.icon" size="18px"/>
           </template>
@@ -58,7 +57,7 @@
                    @click="field.value = responseValue > 0  ? --responseValue: 0" :disable="fieldProps.readonly"/>
           </div>
           <div class="tw-w-11/12">
-            <q-input v-bind="fieldProps" v-model="responseValue" class="bg-white col-8"></q-input>
+            <q-input v-model="responseValue" v-bind="fieldProps" class="bg-white col-8"></q-input>
           </div>
           <div>
             <q-btn class="" size="md" flat round color="primary" icon="fa-light fa-plus" @click="field.value = ++responseValue"
@@ -66,8 +65,8 @@
           </div>
         </div>
         <!--Search-->
-        <q-input v-model="responseValue" @keyup.enter="$emit('enter')" v-if="loadField('search')"
-                 v-bind="fieldProps" :class="`${field.help ? 'search-dynamic-field' : ''}`">
+        <q-input v-model="responseValue" v-bind="fieldProps" @keyup.enter="$emit('enter')" v-if="loadField('search')"
+                  :class="`${field.help ? 'search-dynamic-field' : ''}`">
           <template v-slot:append>
             <q-icon v-if="(fieldProps.icon === undefined) || fieldProps.icon"
                     :name="fieldProps.icon || 'fa-duotone fa-magnifying-glass'"
@@ -77,8 +76,8 @@
         <!--Date-->
         <q-input v-if="loadField('date')"
                  v-model="responseValue"
-                 :label="fieldLabel"
                  v-bind="fieldProps.field"
+                 :label="fieldLabel"
                  :class="`${field.help ? 'date-dynamic-field' : ''}`">
           <template v-slot:prepend>
             <!--Float calendar-->
@@ -88,8 +87,7 @@
                     class="cursor-pointer"
                     color="blue-grey">
               <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                <q-date v-model="responseValue" @update:modelValue="() => $refs.qDateProxy.hide()"
-                        v-bind="fieldProps.slot"/>
+                <q-date v-model="responseValue" v-bind="fieldProps.slot" @update:modelValue="() => $refs.qDateProxy.hide()" />
               </q-popup-proxy>
             </q-icon>
           </template>
@@ -97,8 +95,8 @@
         <!--Hour-->
         <q-input v-if="loadField('hour')"
                  v-model="responseValue"
-                 :label="fieldLabel"
                  v-bind="fieldProps.field"
+                 :label="fieldLabel"
                  :class="`${field.help ? 'hour-dynamic-field' : ''}`">
           <template v-slot:prepend>
             <!--Float Time-->
@@ -108,7 +106,7 @@
                     class="cursor-pointer"
                     color="blue-grey">
               <q-popup-proxy ref="qTimeProxy" transition-show="scale" transition-hide="scale">
-                <q-time v-model="responseValue" @update:modelValue="() => $refs.qTimeProxy.hide()" v-bind="fieldProps.slot"/>
+                <q-time v-model="responseValue" v-bind="fieldProps.slot" @update:modelValue="() => $refs.qTimeProxy.hide()" />
               </q-popup-proxy>
             </q-icon>
           </template>
@@ -116,14 +114,13 @@
         <!--Full date-->
         <q-input v-if="loadField('fullDate')"
                  v-model="responseValue"
-                 :label="fieldLabel"
                  v-bind="fieldProps.field"
+                 :label="fieldLabel"
                  :class="`${field.help ? 'full-date-dynamic-field' : ''}`">
           <template v-slot:prepend>
             <q-icon name="fa-light fa-calendar-day" class="cursor-pointer" color="blue-grey">
               <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                <q-date v-model="responseValue" @update:modelValue="() => $refs.qDateProxy.hide()"
-                        v-bind="fieldProps.slot"/>
+                <q-date v-model="responseValue" v-bind="fieldProps.slot" @update:modelValue="() => $refs.qDateProxy.hide()" />
               </q-popup-proxy>
             </q-icon>
           </template>
@@ -138,7 +135,7 @@
           </template>
         </q-input>
         <!--Select-->
-        <q-select v-model="responseValue" :options="formatOptions" :label="fieldLabel" use-input v-bind="fieldProps"
+        <q-select v-model="responseValue" v-bind="fieldProps" :label="fieldLabel" use-input  :options="formatOptions"
                   @update:modelValue="matchTags(field)" v-if="loadField('select')" @filter="filterSelectOptions"
                   @clear="val => field.props.multiple ? responseValue = [] : ''"
                   :class="`${field.help ? 'select-dynamic-field' : ''}`">
@@ -202,11 +199,11 @@
             <q-icon :name="fieldProps.icon" size="18px" :color="fieldProps.color"/>
           </template>
           <!-- Before Options -->
-          <template slot="before-options">
+          <template v-slot:before-options>
             <slot name="before-options"></slot>
           </template>
           <!-- After Options -->
-          <template slot="after-options">
+          <template v-slot:after-options>
             <slot name="after-options"></slot>
           </template>
           <template v-slot:before v-if="selectImg">
@@ -216,13 +213,13 @@
           </template>
         </q-select>
         <!--tree select-->
-        <q-field v-model="responseValue" v-if="loadField('treeSelect')" :label="fieldLabel"
-                 v-bind="fieldProps.fieldComponent" :class="`${field.help ? 'treeselect-dynamic-field' : ''}`">
+        <q-field v-model="responseValue" v-bind="fieldProps.fieldComponent" v-if="loadField('treeSelect')" :label="fieldLabel"
+          :class="`${field.help ? 'treeselect-dynamic-field' : ''}`">
           <tree-select
             v-model="responseValue"
+            v-bind="fieldProps.field"
             :options="formatOptions"
             placeholder=""
-            v-bind="fieldProps.field"
             @select="(node, instanceId) => $emit('select', {node, instanceId})"
           >
               <template #option-label="{node}">
@@ -244,8 +241,7 @@
           </tree-select>
         </q-field>
         <!--HTML-->
-        <q-field v-model="responseValue" v-if="loadField('html')" label="" class="field-no-padding"
-                 v-bind="fieldProps.fieldComponent">
+        <q-field v-model="responseValue" v-bind="fieldProps.fieldComponent" v-if="loadField('html')" label="" class="field-no-padding">
           <ck-editor v-model="responseValue" :name="field.name"/>
         </q-field>
         <!--multiSelect-->
@@ -292,7 +288,7 @@
                           @converted="value => $emit('converted', value)"/>
         </div>
         <!--input color-->
-        <q-input v-model="responseValue" :label="fieldLabel" v-if="loadField('inputColor')" v-bind="fieldProps.field"
+        <q-input v-model="responseValue" v-bind="fieldProps.field" :label="fieldLabel" v-if="loadField('inputColor')"
                  @click="$refs.qColorProxi.show()" :ref="`inputColor-${fieldKey}`"
                  :class="`${field.help ? 'input-color-dynamic-field' : ''}`">
           <template v-slot:append>
@@ -305,10 +301,10 @@
           </template>
         </q-input>
         <!--Toggle-->
-        <q-toggle v-model="responseValue" :label="fieldLabel" v-if="loadField('toggle')" v-bind="fieldProps.field"/>
+        <q-toggle v-model="responseValue" v-bind="fieldProps.field" :label="fieldLabel" v-if="loadField('toggle')" />
         <!--position Marker (MAP)-->
-        <q-field v-model="responseValue" v-if="loadField('positionMarkerMap')" label=""
-                 class="field-no-padding no-border" v-bind="fieldProps.fieldComponent">
+        <q-field v-model="responseValue" v-bind="fieldProps.fieldComponent" v-if="loadField('positionMarkerMap')" label=""
+                 class="field-no-padding no-border">
           <!--Google map-->
           <google-map-marker v-model="responseValue" v-bind="fieldProps.field" v-if="settings.mapType == 'googleMaps'"/>
           <!--open street map-->
@@ -340,7 +336,7 @@
         </q-field>
         <!--Schedulable-->
         <div class="round bg-white" v-if="loadField('schedulable')">
-          <schedulable v-model="responseValue" @input="watchValue" class="q-mb-sm" v-bind="fieldProps"/>
+          <schedulable v-model="responseValue" v-bind="fieldProps" @input="watchValue" class="q-mb-sm" />
         </div>
         <!--Json Editor-->
         <q-field v-model="responseValue" v-if="loadField('json')" v-bind="fieldProps.fieldComponent"
@@ -757,7 +753,7 @@ export default {
           break;
         case'select':
           props = {
-            'emit-value': true,
+            'emit-value': props?.emitValue ?? true,
             'map-options': true,
             'outlined': true,
             'dense': true,
@@ -1116,8 +1112,10 @@ export default {
         //sort by label
         if (this.sortOptions) {
           items.sort((a, b) => {
-            if (a.label > b.label) return 1
-            if (a.label < b.label) return -1
+            if( a?.label && b?.label){
+              if (a.label.toLowerCase() > b.label.toLowerCase()) return 1
+              if (a.label.toLowerCase() < b.label.toLowerCase()) return -1
+            }
             return 0;
           })
         }
@@ -1434,7 +1432,7 @@ export default {
         if (Array.isArray(propValue)) {
           this.responseValue = []
           propValue.forEach(item => {
-            if (this.fieldProps.emitValue) {
+            if (this.fieldProps['emit-value']) {
               let value = (typeof item == 'object') ? item.id : item
               this.responseValue.push(value.toString())
             } else {
@@ -1442,7 +1440,7 @@ export default {
             }
           })
         } else {
-          this.responseValue = propValue || propValue == 0 ? this.$clone(this.fieldProps.emitValue ? propValue.toString() : propValue) : propValue
+          this.responseValue = propValue || propValue == 0 ? this.$clone(this.fieldProps['emit-value'] ? propValue.toString() : propValue) : propValue
         }
       }
     },
@@ -1502,8 +1500,8 @@ export default {
               return resolve(false)
             }
           }
-          const parametersUrl = loadOptions.parametersUrl || {};
-          const crud = Object.keys(parametersUrl).length > 0 ? this.$crud.get : this.$crud.index;
+          const parametersUrl = Object.keys(loadOptions?.parametersUrl ?? {}).length ? loadOptions.parametersUrl : false ;
+          const crud = parametersUrl ? this.$crud.get : this.$crud.index;
           //Request
           crud(loadOptions.apiRoute, params, parametersUrl).then(response => {
             if (this.keyField !== '') {
