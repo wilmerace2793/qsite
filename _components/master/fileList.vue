@@ -182,8 +182,10 @@
                     <btn-menu class="" :actions="itemActions" :action-data="element" />
                   </div>
                 </div>
-
-                <!--Quantity files-->
+              </div>
+            </template>
+            <!--Quantity files-->
+            <template v-slot:footer>
                 <template
                   v-for="itemNum in emptyQuantityFiles"
                   :key="`item${itemNum}`"
@@ -205,7 +207,6 @@
                     </div>
                   </div>
                 </template>
-              </div>
             </template>
           </draggable>
         </div>
