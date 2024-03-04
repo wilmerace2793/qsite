@@ -43,7 +43,7 @@
 
     <!--Offline-->
     <q-drawer
-      class="tw-bg-white tw-border-l"
+      class="tw-bg-gray-100"
       id="drawerOfflineMaster"
       v-model="drawer.offline"
       side="right"
