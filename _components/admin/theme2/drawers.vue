@@ -42,8 +42,14 @@
     </q-drawer>
 
     <!--Offline-->
-    <q-drawer bordered id="drawerOfflineMaster" v-model="drawer.offline" side="right" overlay
-              v-if="offlineDrawer">
+    <q-drawer
+      class="tw-bg-gray-100"
+      id="drawerOfflineMaster"
+      v-model="drawer.offline"
+      side="right"
+      overlay
+      v-if="offlineDrawer"
+    >
       <offline/>
     </q-drawer>
   </div>
