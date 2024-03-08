@@ -30,10 +30,7 @@
             avatar
             class="f-cursor-grab"
           >
-            <q-icon
-              name="fa-solid fa-bars"
-              class="drag_handle"
-            />
+            <i class="fa-solid fa-bars drag_handle"/>
           </q-item-section>
           <q-item-section>
             <q-item-label

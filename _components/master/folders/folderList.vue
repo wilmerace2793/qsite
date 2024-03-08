@@ -11,24 +11,20 @@
         >
           <template v-slot:header>
             <q-item-section avatar>
-              <q-icon 
-                name="folder" 
-                color="primary" 
-                size="1.5rem" 
-              />
+              <i class="fa-solid fa-folder tw-text-base tw-text-blue-900" />
             </q-item-section>
             <q-item-section
               class="
-               folder-title-drag 
-               tw-py-4 
+               folder-title-drag
+               tw-py-4
                f-cursor-grab"
               @mouseover="showCollapse"
             >
-              <q-item-label 
+              <q-item-label
                 class="
-                  tw-text-base 
+                  tw-text-base
                   tw-font-bold
-                  tw-lowercase" 
+                  tw-lowercase"
                 lines="1"
               >
                 <p class="capitalize-first">
@@ -50,8 +46,8 @@
             class="tw-pt-2 tw-rounded-b-xl"
             v-show="!folder.loading"
           >
-            <reportList   
-              :folder="folder" 
+            <reportList
+              :folder="folder"
             />
           </q-list>
           <div
