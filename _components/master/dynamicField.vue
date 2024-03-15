@@ -1520,9 +1520,11 @@ export default {
             let formatedOptions = []
             //Format response
             response.data = response.data.map((item, index) => ({...item, id: item.id >= 0 ? item.id : (index + 1)}))
-            formatedOptions = ['select', 'expression'].includes(this.field.type) ?
-                this.$array.select(response.data, loadOptions.select || fieldSelect) :
-                this.$array.tree(response.data, loadOptions.select || fieldSelect)
+            if (loadOptions.format) formatedOptions = loadOptions.format(response.data)
+            else if (['select', 'expression'].includes(this.field.type))
+              formatedOptions = this.$array.select(response.data, loadOptions.select || fieldSelect)
+            else
+              formatedOptions = this.$array.tree(response.data, loadOptions.select || fieldSelect)
 
             //Assign options
             this.rootOptions = this.$clone(defaultOptions.concat(formatedOptions))
