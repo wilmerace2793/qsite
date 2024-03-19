@@ -1102,6 +1102,7 @@ export default {
           //Convert value and id to string
           if (item.value || item.value >= 0) item.value = item.value.toString()
           if (item.id || item.id >= 0) item.id = item.id.toString()
+          if (item.label) item.label = item.label.toString()
           //convert children
           if (item.children) item.children = toString(item.children)
           this.addImageField(item)
@@ -1676,7 +1677,7 @@ export default {
           let responseValueTmp = (this.responseValue || [])
           responseValueTmp = Array.isArray(responseValueTmp) ? responseValueTmp : [responseValueTmp]
           const includeAll = responseValueTmp.every(val =>
-              this.rootOptions.map(val => (val.value || val.id).toString()).includes(val.toString())
+              this.rootOptions.map(val => (val.value || val.id || '' ).toString()).includes(val.toString())
           )
           //Validate if there is the option for the value
           if (loadOptions.filterByQuery && !includeAll) {
