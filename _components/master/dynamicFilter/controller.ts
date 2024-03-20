@@ -2,7 +2,7 @@ import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance} f
 import { debounce } from 'quasar'
 import _ from "lodash";
 import service from 'modules/qsite/_components/master/dynamicFilter/services'
-import { i18n, clone, store} from 'src/plugins/utils';
+import { i18n, clone, store, router } from 'src/plugins/utils';
 
 export default function controller(props: any, emit: any) {
   // Refs
@@ -71,10 +71,9 @@ export default function controller(props: any, emit: any) {
 
     async init(){      
       state.userData = clone(store.state.quserAuth.userData)
-      console.dir(state.userData.fields)
       state.props = clone(props)
       state.systemName = state.props?.systemName || ''
-      //await methods.getUrlFilters()
+      await methods.getUrlFilters()
       await methods.addLoadedOptionsCallback()      
       await methods.setQuickFilters()
       methods.emitValues()
@@ -146,7 +145,6 @@ export default function controller(props: any, emit: any) {
     },
 
     restoreFilterValues(){
-      console.log('restore')
       if(Object.keys(state.readValues).length > 0){        
         Object.keys(state.readValues).forEach(key => {
           if(state.readValues[key].value != null && state.readValues[key].value != undefined){
@@ -190,8 +188,7 @@ export default function controller(props: any, emit: any) {
         }
       })
       methods.setReadValues()
-      methods.mutateURLFilters(filters)      
-      console.dir(filters)
+      methods.mutateURLFilters(filters)
       methods.emitInput(filters)
       if(updateUserData){
         methods.setAdminFilter(filters)
@@ -204,10 +201,9 @@ export default function controller(props: any, emit: any) {
     mutateURLFilters(filters) {
       if(!state.systemName) return
 
-      // const urlParams = {...proxy.$route.query}
-      const urlParams = ''
-      let paramsUrl = ''      
-       
+      const urlParams = {...router.route.query}
+      let paramsUrl = ''
+
       if(Object.keys(urlParams).length == 0){
         //no params
         if(Object.keys(filters).length !== 0){
@@ -216,7 +212,8 @@ export default function controller(props: any, emit: any) {
       } else {
         Object.keys(urlParams).forEach((key, index) => {          
           let operator = (index === 0 ) ? '?' : '&'
-          //paramsUrl += `${operator}${key}=${filters[key]}`          
+          //paramsUrl += `${operator}${key}=${filters[key]}`
+
           if(state.systemName == key){
             if(Object.keys(filters).length !== 0){
               paramsUrl += `${operator}${state.systemName}=${JSON.stringify(filters)}`
@@ -225,7 +222,7 @@ export default function controller(props: any, emit: any) {
             paramsUrl += `${operator}${key}=${JSON.stringify(urlParams[key])}`
           }
         });
-      }      
+      }
 
       const origin = window.location.href.split('?');
       const urlBase = `${origin[0]}${encodeURI(paramsUrl)}`
@@ -236,9 +233,7 @@ export default function controller(props: any, emit: any) {
       if(!state.systemName) return        
       
       let filterValues = {}
-      ///const urlParams = {...proxy.$route.query}
-      const urlParams = ''
-
+      const urlParams = {...router.route.query}
       if(Object.keys(urlParams).length !== 0){
         if(urlParams[state.systemName]){
           filterValues = JSON.parse(urlParams[state.systemName])
@@ -246,11 +241,9 @@ export default function controller(props: any, emit: any) {
       }      
 
       if(Object.keys(filterValues).length === 0){
-        console.log('no filters in url')
         const filters = methods.getAdminFilter()
         filterValues = {...filters[state.systemName]}
-      }      
-      console.dir(filterValues)
+      }
 
       if(Object.keys(filterValues).length !== 0){
         Object.keys(filterValues).forEach(key => {
@@ -274,8 +267,6 @@ export default function controller(props: any, emit: any) {
     },
 
     getAdminFilter(){
-      console.warn('reading setting filters')
-      
       let filters = {}
       
       if(state.userData?.fields){
@@ -283,8 +274,6 @@ export default function controller(props: any, emit: any) {
           if(state.userData.fields.length > 0){
             const adminFilters = state.userData.fields.find((element) => element.name == 'adminFilters') || false
             if(adminFilters && adminFilters?.value){
-              console.log('found adminFilters')
-              console.dir(adminFilters.value)
               return adminFilters.value
             }          
           }
@@ -294,8 +283,6 @@ export default function controller(props: any, emit: any) {
     },
 
     async setAdminFilter(filters){
-      console.warn('seting setting filters')
-      
       const adminFilters = methods.getAdminFilter()      
       
       if(Object.keys(adminFilters).length !== 0){
@@ -305,10 +292,7 @@ export default function controller(props: any, emit: any) {
             //delete element.id
             element.value[state.systemName] = filters            
           }
-        }) 
-        console.log('adm 1')
-
-
+        })
       } else {
         const valueFilter = {}
         valueFilter[state.systemName] = filters
@@ -319,10 +303,7 @@ export default function controller(props: any, emit: any) {
           }
         }
         state.userData.fields.push(fields)
-        console.log('adm 2')
       }
-
-      console.dir(state.userData.fields)
       
       const data = { 
         email: state.userData.email,
@@ -348,7 +329,6 @@ export default function controller(props: any, emit: any) {
   watch(props, (newField, oldField): void => {
     const model = newField.modelValue
     if(model) {
-      console.log('watch')
       methods.restoreFilterValues()
     } 
     
