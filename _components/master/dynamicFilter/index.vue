@@ -39,7 +39,7 @@
             <q-tab-panels v-model="tabName" animated keep-alive>
               <!--Tab form-->
               <q-tab-panel name="tabForm" class="q-pa-none q-px-xs">
-                <div id="filtersContent" class="q-px-sm">                  
+                <div id="filtersContent" class="q-px-sm" style="height: calc(100vh - 253px)">
                   <!--Search-->
                   <div v-if="filter.fields && filter.fields.search" class="q-mb-sm">
                     <!--Label-->
@@ -95,7 +95,6 @@
         </div>
       </q-card>
     </q-dialog>
-
     <!-- quick filters --->    
       <div class="col-12 tw-mt-3" v-if="(Object.keys(readValues).length > 0) || (Object.keys(quickFilters).length > 0)">
       <!--<q-separator class="q-mb-sm"/>-->
@@ -129,7 +128,7 @@
           <dynamic-field v-for="(field, keyField) in quickFilters" :key="keyField" :field="field"
                          v-model="quickFilterValues[keyField]"
                          class="col-12 col-md-4 col-xl-3"
-                         @input="quickFilterHandler(keyField)"
+                         @update:modelValue="quickFilterHandler(keyField)"
                          :keyField="keyField" 
          />    
         </div>
