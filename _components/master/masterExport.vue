@@ -73,23 +73,8 @@ export default {
     eventBus.off('isite.export.ready');
   },
   props: {
-    exportItem: { type: Boolean, default: false }
-  },
-  emits: ['update:modelValue'],
-  inject: {
-    filterPlugin: {
-      from: 'filterPlugin',
-      default: {
-        name: false,
-        fields: {},
-        values: {},
-        callBack: false,
-        pagination: {},
-        load: false,
-        hasValues: false,
-        storeFilter: false
-      }
-    }
+    exportItem: {type: Boolean, default: false},
+    dynamicFilterValues: {}
   },
   components: {},
   watch: {
@@ -251,9 +236,9 @@ export default {
     //Get data
     getExportData() {
       return new Promise(async (resolve, reject) => {
-        if (!this.params) return resolve(false);
-        this.loading = true;
-        const filter = await this.storeFilter();
+        if (!this.params) return resolve(false)
+        this.loading = true
+        const filter = this.dynamicFilterValues;
         //Request params
         let requestParams = {
           refresh: true,
@@ -277,8 +262,8 @@ export default {
       return new Promise(async (resolve, reject) => {
         this.loading = true;
         //Instance de apiRoute
-        const apiRoute = this.params.apiRoute || 'apiRoutes.qsite.export';
-        const filter = await this.storeFilter();
+        const apiRoute = this.params.apiRoute || 'apiRoutes.qsite.export'
+        const filter = this.dynamicFilterValues;
         //Request params
         let requestParams = {
           exportParams: {
@@ -337,6 +322,7 @@ export default {
         console.log(error);
       }
     },
+    /*
     async storeFilter() {
       const filterClone = this.filterPlugin.storeFilter
         ? { values: await this.$helper.convertStringToObject() }
@@ -356,6 +342,7 @@ export default {
       }
       return filter;
     }
+    */
   }
 };
 </script>
