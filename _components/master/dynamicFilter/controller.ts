@@ -178,17 +178,18 @@ export default function controller(props: any, emit: any) {
     emitValues(updateUserData = false){
       const filters = clone(state.readOnlyData)
       Object.keys(filters).forEach(key => {
+        if(state.props.filters[key]?.quickFilter){
+          state.quickFilterValues[key] = filters[key].value
+        }
         if ( (filters[key].value === null) || (filters[key].value === undefined) || (filters[key].value === false) || filters[key].value === 0) {
           delete filters[key];
         } else {
-          if(state.props.filters[key]?.quickFilter){
-           state.quickFilterValues[key] = filters[key].value
-          }
           filters[key] = filters[key].value
         }
+        
       })
-      console.dir(filters)
       methods.setReadValues()
+      //methods.mutateQuickFilters()
       methods.mutateURLFilters(filters)
       methods.emitModelValue(filters)
       if(updateUserData){
@@ -201,59 +202,27 @@ export default function controller(props: any, emit: any) {
     /*url handlers */
     mutateURLFilters(filters) {
       if(!state.systemName) return
-      console.warn('state.systemName', state.systemName)
-
       //const urlParams = {...router.route.query}
       const urlParams = methods.getUrlQueries()
       let paramsUrl = ''
 
-      console.log(urlParams)
-
-      if(Object.keys(urlParams).length == 0){
-        //no params
-        console.log('no params')
-        console.warn('filters', filters)
-        if(Object.keys(filters).length !== 0){
-          console.log('filters true')
-          paramsUrl += `?${state.systemName}=${JSON.stringify(filters)}`
-          console.warn('paramsUrl', paramsUrl)
-          
+      urlParams[state.systemName] = JSON.stringify(filters)
+      // remove from url if filters are empty
+      if(urlParams[state.systemName]){
+        if(Object.keys(filters).length === 0){
+          delete urlParams[state.systemName]
         }
-      } else {
-        console.log('yes params')
-         
-        Object.keys(urlParams).forEach((key, index) => {       
-          if(Object.keys(filters).length !== 0){
-            if(index === 0){
-              paramsUrl += `?${state.systemName}=${JSON.stringify(filters)}`
-            } else {
-              paramsUrl += `&${key}=${JSON.stringify(urlParams[key])}`
-            }
-          }
-        });
-
-        /*
-        Object.keys(urlParams).forEach((key, index) => {          
-          let operator = (index === 0 ) ? '?' : '&'
-          //paramsUrl += `${operator}${key}=${filters[key]}`
-
-          if(state.systemName == key){
-            console.log('yes params 2 ')
-            if(Object.keys(filters).length !== 0){
-              paramsUrl += `${operator}${state.systemName}=${JSON.stringify(filters)}`
-            }
-          } else {
-            console.log('yes params 3')
-            paramsUrl += `${operator}${key}=${JSON.stringify(urlParams[key])}`
-          }
-        });
-        */
       }
-      //router.push({ path: router.route.path, query: { users: JSON.stringify(filters) } })
+
+      //remove key
+      Object.keys(urlParams).forEach((key, index) => {
+        const operator = (index === 0) ? '?' : '&'
+        paramsUrl += `${operator}${key}=${urlParams[key]}`
+      });
+
       const origin = window.location.href.split('?');
-      const urlBase = `${origin[0]}${encodeURI(paramsUrl)}`
+      const urlBase = `${origin[0]}${encodeURI(paramsUrl)}`;
       window.history.replaceState({}, '', urlBase);
-      
     },
 
     async getUrlFilters(){
@@ -348,7 +317,6 @@ export default function controller(props: any, emit: any) {
 
     getUrlQueries(){
       const params = decodeURI(window.location).split('?')
-      console.log(params)
 
       if(Array.isArray(params) ){
         if(params.length > 1){

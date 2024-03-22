@@ -85,9 +85,6 @@
 
           <!--footer -->
           <div class="absolute-bottom text-center bg-white tw-p-3" ref="footerContent">
-            
-            DEV {{ JSON.stringify(filterValues, null, 4) }}
-            
             <q-separator class="tw-mb-3"/>
             <q-btn :label="$tr('isite.cms.label.search')" unelevated color="primary" no-caps class="tw-w-full" rounded
                    @click="emitValues(true)"/>
@@ -129,7 +126,7 @@
                          v-model="quickFilterValues[keyField]"
                          class="col-12 col-md-4 col-xl-3"
                          @update:modelValue="quickFilterHandler(keyField)"
-                         :keyField="keyField" 
+                         :keyField="keyField"
          />    
         </div>
       </div>
