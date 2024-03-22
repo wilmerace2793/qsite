@@ -187,53 +187,81 @@ export default function controller(props: any, emit: any) {
           filters[key] = filters[key].value
         }
       })
+      console.dir(filters)
       methods.setReadValues()
       methods.mutateURLFilters(filters)
-      methods.emitInput(filters)
+      methods.emitModelValue(filters)
       if(updateUserData){
         methods.setAdminFilter(filters)
       }
     },
     //emit 
-    emitInput:debounce((filters) => emit('input', filters) , 800),
+    emitModelValue:debounce((filters) => emit('update:modelValue', filters) , 800),
 
     /*url handlers */
     mutateURLFilters(filters) {
       if(!state.systemName) return
+      console.warn('state.systemName', state.systemName)
 
-      const urlParams = {...router.route.query}
+      //const urlParams = {...router.route.query}
+      const urlParams = methods.getUrlQueries()
       let paramsUrl = ''
+
+      console.log(urlParams)
 
       if(Object.keys(urlParams).length == 0){
         //no params
+        console.log('no params')
+        console.warn('filters', filters)
         if(Object.keys(filters).length !== 0){
+          console.log('filters true')
           paramsUrl += `?${state.systemName}=${JSON.stringify(filters)}`
+          console.warn('paramsUrl', paramsUrl)
+          
         }
       } else {
+        console.log('yes params')
+         
+        Object.keys(urlParams).forEach((key, index) => {       
+          if(Object.keys(filters).length !== 0){
+            if(index === 0){
+              paramsUrl += `?${state.systemName}=${JSON.stringify(filters)}`
+            } else {
+              paramsUrl += `&${key}=${JSON.stringify(urlParams[key])}`
+            }
+          }
+        });
+
+        /*
         Object.keys(urlParams).forEach((key, index) => {          
           let operator = (index === 0 ) ? '?' : '&'
           //paramsUrl += `${operator}${key}=${filters[key]}`
 
           if(state.systemName == key){
+            console.log('yes params 2 ')
             if(Object.keys(filters).length !== 0){
               paramsUrl += `${operator}${state.systemName}=${JSON.stringify(filters)}`
             }
           } else {
+            console.log('yes params 3')
             paramsUrl += `${operator}${key}=${JSON.stringify(urlParams[key])}`
           }
         });
+        */
       }
-
+      //router.push({ path: router.route.path, query: { users: JSON.stringify(filters) } })
       const origin = window.location.href.split('?');
       const urlBase = `${origin[0]}${encodeURI(paramsUrl)}`
       window.history.replaceState({}, '', urlBase);
+      
     },
 
     async getUrlFilters(){
       if(!state.systemName) return        
       
       let filterValues = {}
-      const urlParams = {...router.route.query}
+      //const urlParams = {...router.route.query}
+      const urlParams = methods.getUrlQueries()
       if(Object.keys(urlParams).length !== 0){
         if(urlParams[state.systemName]){
           filterValues = JSON.parse(urlParams[state.systemName])
@@ -316,8 +344,26 @@ export default function controller(props: any, emit: any) {
       }
       //update value on store..      
       const response = service.updateUserData(false, state.userData.id, data)
-    }
+    },
 
+    getUrlQueries(){
+      const params = decodeURI(window.location).split('?')
+      console.log(params)
+
+      if(Array.isArray(params) ){
+        if(params.length > 1){
+          const query =  params[1]
+            .split('&')
+            .map(param => param.split('='))
+            .reduce((values, [ key, value ]) => {
+              values[ key ] = value
+              return values
+            }, {})
+          return query
+        }
+      }
+      return {}
+    },
   }
 
   // Mounted
