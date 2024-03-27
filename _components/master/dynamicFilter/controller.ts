@@ -1,4 +1,4 @@
-import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance} from "vue";
+import {computed, reactive, ref, onMounted, toRefs, watch} from "vue";
 import { debounce } from 'quasar'
 import _ from "lodash";
 import service from 'modules/qsite/_components/master/dynamicFilter/services'
@@ -201,8 +201,7 @@ export default function controller(props: any, emit: any) {
 
     /*url handlers */
     mutateURLFilters(filters) {
-      if(!state.systemName) return
-      //const urlParams = {...router.route.query}
+      if(!state.systemName) return      
       const urlParams = methods.getUrlQueries()
       let paramsUrl = ''
 
@@ -229,7 +228,6 @@ export default function controller(props: any, emit: any) {
       if(!state.systemName) return        
       
       let filterValues = {}
-      //const urlParams = {...router.route.query}
       const urlParams = methods.getUrlQueries()
       if(Object.keys(urlParams).length !== 0){
         if(urlParams[state.systemName]){
@@ -283,10 +281,8 @@ export default function controller(props: any, emit: any) {
       const adminFilters = methods.getAdminFilter()      
       
       if(Object.keys(adminFilters).length !== 0){
-
         state.userData.fields.find((element) => {
           if(element.name == 'adminFilters'){
-            //delete element.id
             element.value[state.systemName] = filters            
           }
         })
@@ -311,13 +307,12 @@ export default function controller(props: any, emit: any) {
         is_activated: state.userData.isActivated,
         last_name: state.userData.lastName,
       }
-      //update value on store..      
+      //update value on backend...      
       const response = service.updateUserData(false, state.userData.id, data)
     },
 
     getUrlQueries(){
       const params = decodeURI(window.location).split('?')
-
       if(Array.isArray(params) ){
         if(params.length > 1){
           const query =  params[1]

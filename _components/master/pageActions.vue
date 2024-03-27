@@ -117,8 +117,20 @@ export default {
       }
     },
     expiresIn: {type: Number},
-    dynamicFilter: false, 
-    dynamicFilterValues: {}
+    dynamicFilter: { 
+      required: false,
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }, 
+    dynamicFilterValues: {
+      required: false,
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
   },
   emits: ['search', 'new', 'refresh', 'toggleDynamicFilterModal'],
   /*
@@ -234,14 +246,14 @@ export default {
         //Filter
         {
           label: this.$tr('isite.cms.label.filter'),
-          vIf: (this.dynamicFilter && !excludeActions.includes('filter') && !this.isAppOffline),
+          vIf: ( Object.keys(this.dynamicFilter).length && !excludeActions.includes('filter') && !this.isAppOffline),
           props: {
             icon: 'fa-light fa-filter',
             id: 'filter-button-crud'
-          },
-          //action: () => this.toggleMasterFilter(true)
+          },          
           action: () => this.$emit('toggleDynamicFilterModal')
         },
+
         //Refresh
         {
           label: this.$trp('isite.cms.label.refresh'),
