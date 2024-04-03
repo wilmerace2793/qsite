@@ -450,7 +450,7 @@ export default {
     //Table data
     tableData() {
       //Get data table
-      let items = this.table.data || [];
+      let items = this.$clone(this.table.data) || [];
       if (this.selectedFile) {
         const fileName = this.table.data.filter(item => item.id === this.selectedFile).map(item => item.filename);
         this.table.selected = fileName;
