@@ -100,6 +100,7 @@
 import { eventBus } from 'src/plugins/utils';
 
 export default {
+  /*
   inject: {
     filterPlugin: {
       from: 'filterPlugin',
@@ -115,6 +116,7 @@ export default {
       }
     }
   },
+  */
   props: {
     show: {
       type: Boolean,
@@ -142,7 +144,7 @@ export default {
     '$route.name': {
       deep: true,
       handler: function(newValue) {
-        this.filterPlugin.reset();
+        //this.filterPlugin.reset();
       }
     },
     readOnlyData: {
@@ -155,10 +157,10 @@ export default {
               this.readOnlyData[key].value = obj[key];
             }
           });
-          this.filterPlugin.readValues = this.$clone(this.readOnlyData);
+          //this.filterPlugin.readValues = this.$clone(this.readOnlyData);
           return;
         }
-        this.filterPlugin.readValues = this.$clone(this.readOnlyData);
+        //this.filterPlugin.readValues = this.$clone(this.readOnlyData);
       }
     }
   },
