@@ -9,10 +9,15 @@
           "providers": "Providers"
         },
         "message": {
-          "noMessages": "There isn't messages..."
+          "noMessages": "There isn't messages...",
+          "couldNotSend": "Message could not be sent"
         },
         "newProvider": "New Provider",
-        "updateProvider": "Update Provider"
+        "updateProvider": "Update Provider",
+        "label": {
+          "resend": "Resend",
+          "sendMessage": "Send a Message..."
+        }
       }
     },
     "ievent": {
@@ -63,6 +68,9 @@
           "messageLimitFiles": "The file limit is <b>{quantity}</b>. to select another file you must first remove some of the selected ones",
           "failedUploadFiles": "Error uploading files",
           "errorMaxFileSize": "Files exceed the allowed size of {size}MB"
+        },
+        "documentation": {
+          "providers": "With the notification module you can send different types of messages for some actions of the application how to notify a new purchase order from the store by mail, it is necessary to configure the providers that allow to notify."
         }
       }
     },
@@ -93,6 +101,9 @@
           "internal": "Page Internal",
           "external": "Page External",
           "frontend": "Frontend Page"
+        },
+        "documentation": {
+          "menus": "Your WEB site has one or more minuses that help navigate your WEB site This functionality allows you to manage these menus, modifying positions, elements and texts of each menu"
         }
       }
     },
@@ -111,7 +122,14 @@
           "showAsPopup": "Show as Popup",
           "buttonText": "Button Text"
         },
-        "createSlider": "Crear Slider"
+        "createSlider": "Crear Slider",
+        "documentation": {
+          "sliders": "Sliders are rotating elements that are commonly displayed at the top of the home page of your WEB site, allow you to display images, videos or texts with a fairly visible size"
+        },
+        "form": {
+          "slider": "Slider",
+          "banner": "Banner"
+        }
       }
     },
     "iredirect": {
@@ -124,6 +142,9 @@
         "label": {
           "redirectFrom": "Redirect from",
           "redirectTo": "Redirect to"
+        },
+        "documentation": {
+          "redirects": "When a page is removed or changed, as good practice for a good SEO of your WEB site is necessary to create redirections of these urls so that you always upload content to your website. Redirects help with this"
         }
       }
     },
@@ -150,7 +171,8 @@
           "adminSubscriptionLimits": "Límites de Suscripción",
           "createSubscriptionLimits": "Crear Límite de Suscripción",
           "editSubscriptionLimits": "Editar Límite de Suscripción",
-          "panelSubscriptions": "Mis Suscripciones"
+          "panelSubscriptions": "Mis Suscripciones",
+          "adminMySubscriptions": "My Suscripciones"
         },
         "newCategory": "Nueva Categoría",
         "updateCategory": "Actualizar Categoría",
@@ -184,7 +206,15 @@
         "options": {
           "yes": "Sí",
           "no": "No"
-        }
+        },
+        "documentation": {
+          "plans": "With plans you can design features and capabilities that a module offers to your users. These plans are designed so that the user can choose from among the options which one is best suited according to the use you need to give your application.",
+          "limits": "You can limit or restrict the features and capabilities of each plan, according to each module. These Limits can include quantities or deadlines",
+          "categories": "It is possible to create categories in your Plan, with a name, description and organize them in tree mode (parent categories and child categories) in order to categorize all your plans.",
+          "entityplans": "It is necessary to specify which modules should be limited by the plans, in this way the application will know how and when to limit the features that are defined in a plan.",
+          "subscriptions": "Each plan that a user purchases will be called a subscription, this way your application is able to identify what features and capabilities you are allowing your users."
+        },
+        "helpFieldTrial": "To enable a trial version, enter the number of days for the plan"
       }
     },
     "iplaces": {
@@ -206,6 +236,10 @@
           "untilDay": "Until day",
           "fromTime": "From time",
           "untilTime": "Until time"
+        },
+        "documentation": {
+          "places": "With Places, you can publish on your site information about real places, with title, description images and a location within a map with address. This information is used to give information about your company headquarters.",
+          "categories": "It is possible to create categories, with a name, description and organize them in tree mode (parent categories and child categories) in order to categorize all your places."
         }
       }
     },
@@ -269,6 +303,14 @@
           "code": "Code",
           "points": "Points",
           "geozone": "Geo zone"
+        },
+        "documentation": {
+          "countries": "For different functionalities within your application and WEB site it is necessary to have a list of countries, here you will find an extensive list that we provide and you can also add new ones if necessary.",
+          "provinces": "For different functionalities within your application and WEB site it is necessary to have a list of provinces/departments/states, here you will find an extensive list that we offer you and you can also add new ones if necessary.",
+          "cities": "For different functionalities within your application and WEB site it is necessary to have a list of cities, here you will find an extensive list that we offer you and you can also add new ones if necessary.",
+          "neighborhoods": "For different functionalities within your application and WEB site it is necessary to have a List of neighborhoods, here you will find an extensive list that we offer you and you can also add new ones if necessary.",
+          "polygons": "For different functionalities it is necessary to define a boundary area within a map, to provide We call these areas polygons.",
+          "geozones": "GeoZones are used to group multiple polygons"
         }
       }
     },
@@ -301,14 +343,20 @@
           "addYourFiles": "Add your files here",
           "addYourImages": "Add your images here",
           "limitFiles": "Limit Files",
-          "messageLimitFiles": "The file limit is <b>{quantity}</b>. to select another file you must first remove some of the selected ones"
+          "messageLimitFiles": "The file limit is <b>{quantity}</b>. to select another file you must first remove some of the selected ones",
+          "failedUploadFiles": "Error uploading files",
+          "errorMaxFileSize": "Files exceed the allowed size of {size}MB"
         },
         "newZone": "New Zone",
         "updateZone": "Update Zone",
         "maxFileSize": "Max File size (MB)",
         "maxFiles": "Max files selected",
         "directUpload": "Direct Upload",
-        "thumbnailsConfig": "Thumbnails config"
+        "thumbnailsConfig": "Thumbnails config",
+        "documentation": {
+          "medias": "All the files that are loaded in your application are stored here, and they are sorted by folders",
+          "zones": "The application identifies files related to other modules by zones, these zones define how many files and how to select it in relation"
+        }
       }
     },
     "igamification": {
@@ -329,6 +377,9 @@
         "activities": {
           "repeatAction": "Tour",
           "repeatActionDescription": "From here you can repeat this tour whenever you want"
+        },
+        "documentation": {
+          "categories": "The gamification module is used to improve the user experience in the application, With this functionality it is possible to create tours, popups, or specific activities per module. It is possible to create a category that current as the grouping element and assigned to this one or several activities that the user will be available to view."
         }
       }
     },
@@ -377,7 +428,8 @@
             "full": "Full Width"
           },
           "successText": "Success text",
-          "submitText": "Submit text"
+          "submitText": "Submit text",
+          "formNotExist": "Form ID: {id} <b class='text-red-7'>(Not exist)</b>"
         },
         "message": {
           "helpToOptionsField": "Type the option and press enter...",
@@ -389,6 +441,10 @@
         "feedBack": {
           "newForm": "Fill another Form",
           "message": "¡Done!, Your Form has been successfully sent!"
+        },
+        "documentation": {
+          "forms": "Forms allow you to capture information of different types, you can create forms and configure each field of the, names, types... the forms can be used by other modules as relations to allow capturing more information than the standard in each case.",
+          "leads": "Leads are the information captured from the forms, you can list, filter and export this information, as well as identifying from which form I enter this information."
         }
       }
     },
@@ -464,6 +520,11 @@
           "noRequested": "Your ad is not verified yet, you must create a request for it to be reviewed",
           "requested": "Just a little more, we are verifying your ad",
           "rejected": "Your ad could not be verified, check your information and recreate the request for it to be reviewed"
+        },
+        "documentation": {
+          "ads": "Ads are published on your WEB site. They are used to promote or boost some external product to the application",
+          "categories": "It is possible to create categories, with a name, description and organize them in tree mode (parent categories and child categories) in order to categorize all your plans.",
+          "ups": "When an announcement is published, it is put on a list that constantly grows with each new ad, with this functionality of Uploads it is possible to tell your application to improve the position of each ad with some definite rules,"
         }
       }
     },
@@ -534,7 +595,8 @@
         "auction": "Auction | Auctions",
         "bid": "Bids | Bids",
         "setAsWinner": "Set as Winner",
-        "existBid": "Already exist a bid from this auction"
+        "existBid": "Already exist a bid from this auction",
+        "description": "Description"
       }
     },
     "ibanners": {
@@ -551,6 +613,9 @@
         "label": {
           "codeAds": "Code ADS",
           "showAsPopup": "Show as Popup"
+        },
+        "documentation": {
+          "banners": "Banners are static elements in defined locations within the WEB site that display a normally large advertising content"
         }
       }
     },
@@ -598,7 +663,13 @@
             "success": "Everything is ready! We take care of creating Zoom meetings for you ..."
           }
         },
-        "helpShareUserResource": "You can copy the links of your services and/or your resource to share them in an easier way"
+        "helpShareUserResource": "You can copy the links of your services and/or your resource to share them in an easier way",
+        "documentation": {
+          "categories": "It is possible to create categories, with a name, description and organize them in tree mode (parent categories and child categories) in order to categorize all your services.",
+          "services": "These are the services that your users can book within your application, these services include a time that can last each turn and a price in addition to all the necessary information to describe it",
+          "resources": "The resource is in charge of executing a reserved service, each resource can have one or more assigned services but can perform only one at a time, in each resource it is possible to configure a schedule of availability so that one of your services can be reserved.",
+          "reservations": "When a user purchases a service it is called a `Reservation` so the application is able to identify which service a user reserved next to her resource ."
+        }
       }
     },
     "icheckin": {
@@ -685,7 +756,21 @@
           "value": "Value",
           "status": "Status",
           "default_currency": "Default Currency",
-          "warehouses": "Warehouses"
+          "warehouses": "Warehouses",
+          "updateTaxClass": "Update Tax Class",
+          "newWeightClasses": "New Weight Class",
+          "updateWeightClasses": "Update Weight Class",
+          "weightClasses": " Weight Classes",
+          "newLengthClasses": "New Length Class",
+          "updateLengthClasses": "Update Length Class",
+          "lengthClasses": " Length Classes",
+          "newVolumeClasses": "New Volume Class",
+          "updateVolumeClasses": "Update Volume Class",
+          "volumeClasses": " Volume Classes",
+          "newQuantityClasses": "New Quantity Class",
+          "updateQuantityClasses": "Update Quantity Class",
+          "quantityClasses": "Quantity Classes",
+          "decimals": "Decimal"
         },
         "newProduct": "New Product",
         "updateProduct": "Update Product",
@@ -828,17 +913,23 @@
           "allOrder": "Apply to all order?",
           "productHint": "Please type the product name",
           "withDiscount": "With discount",
-          "symbolLeft": "Símbolo Izquierdo",
-          "symbolRight": "Símbolo Derecho",
-          "running": "Activo",
-          "finished": "Finalizado",
+          "symbolLeft": "Left Symbol",
+          "symbolRight": "Right Symbol",
+          "running": "Running",
+          "finished": "Finished",
           "mapHelp": "Search for the address or locate the warehouse on the map.",
           "productWarehouse": "Warehouses",
           "productWarehouseContent" : "Select the different warehouses where your product is located.",
           "generalWarehouse": "General warehouse",
           "generalWarehouseHelp": "You can efficiently manage detailed information for each product, segmented according to the different warehouses. This way, you can organize and centrally manage specific data for your products at each location, simplifying inventory management and optimizing your operational control.",
           "warehouseByOptions": "Warehouse by options",
-          "warehouseByOptionsHelp": "We provide you with the ability to efficiently manage detailed information for each product option, organized according to different warehouses. This allows you to centralize the management of specific data for each variant at each location, simplifying inventory administration and optimizing operational control effectively."
+          "warehouseByOptionsHelp": "We provide you with the ability to efficiently manage detailed information for each product option, organized according to different warehouses. This allows you to centralize the management of specific data for each variant at each location, simplifying inventory administration and optimizing operational control effectively.",
+          "decimals": "Decimals",
+          "decimalSeparator": "Decimal Separator",
+          "thousandsSeparator": "Thousands Separator",
+          "volume": "Volume",
+          "advancedSummaryHelp": "Adds detailed and complex content, appears at the top right of the product, offering tables, collapsible sections and more.",
+          "showPriceIsCall": "Show Price when is for Quote"
         },
         "message": {
           "warnAddOpt": "To add options, you must first create the product",
@@ -847,7 +938,7 @@
           "selectProduct": "Select a product option",
           "warnAddDiscount": "To add discounts, you must first create the product",
           "viewProduct": "View product",
-          "advanceEdit": "Advanced Edit",
+          "advanceEdit": "Go to advanced Form",
           "quickEdit": "Quick Edit",
           "btnAddProduct": "Add Product",
           "chooseProduct": "Choose Product",
@@ -872,7 +963,30 @@
           "lastOrders": "Commerce - Last Orders",
           "productsToSoldOut": "Tienda - Products to sold out"
         },
-        "advancedSummary": "Advanced Summary"
+        "advancedSummary": "Advanced Summary",
+        "documentation": {
+          "products": "The products are those that you can sell through your store, each product can have many characteristics such as a unique SKU, quantity or existence, price or value, you can also categorize them so that in your store they can be filtered in a more organized way, add options such as color, size and many other features that allow you to have a complete enough store.",
+          "categories": "It is possible to create categories in your store, with a name, description and organize them in tree mode (parent categories and child categories) in order to categorize all your products.",
+          "options": "You can create options such as Colors (red, green, yellow...), sizes (xs, sm, md...) and all options that your products need.",
+          "payment-methods": "In order to sell your products, we offer you the option to configure one or several payment methods payment which will be shown as options at the check-out of your customers when making a purchase.",
+          "shipping-methods": "You can configure which shipping methods you will provide to your customers so that they receive all the products that you sell them and also define an extra cost for each method.",
+          "orders": "Orders are all the purchases you receive through your store, you can accept or reject them, verify payments, leave feedback, and process purchases.",
+          "coupons": "Coupons are a promotional tool that allows your users to get discounts on specific products of your store.",
+          "manufacturers": "Manufacturers refer to the companies or organizations that produce or supply the products that are sold in your store. Manufacturers can play an important role in your store, providing information about the origin of your products.",
+          "taxclasses": "Taxes are a way of categorizing your products based on the tax rate that it applies to them. This allows the application to calculate and apply the correct taxes during the checkout process. payment according to the product you are buying.",
+          "currencies": "You can configure one or several types of currency such as Pesos or Dollars, which will be used for charge for products purchased through your store. It is important to note that the value of the Traditional currencies can be subject to volatility and may not always hold their perceived value over time.",
+          "quotes": "A quote refers to a request for a custom price quote for a product specific or group of products. Quotes are often used for products that have variable prices or require customization, such as large orders or specialized products."
+        },
+        "newWarehouse": "New Warehouse",
+        "updateWarehouse": "Edit Warehouse",
+        "fieldEditableOnlyWarehouse": "This field must be updated by the warehouse",
+        "changeOnlyNestedOptionValue": "This option has child options, you can only modify this field in them",
+        "label": {
+          "warehouse": "Warehouse | Warehouses",
+          "bannerPriceList": "Head to your personal product list to start exploring. Enjoy the best prices!",
+          "explorePriceList": "Browse Product List",
+          "dataSheet": "Data sheet"
+        }
       }
     },
     "ioffline": {
@@ -901,7 +1015,7 @@
     },
     "idocs": {
       "cms": {
-        "sideba": {
+        "sidebar": {
           "adminGroup": "Documents",
           "adminDocuments": "List Documents",
           "adminCategories": "Document Categories",
@@ -911,11 +1025,9 @@
         "updateDocument": "Update Document",
         "newCategory": "New Category",
         "updateCategory": "Update Category",
-        "sidebar": {
-          "adminGroup": "Documentos",
-          "adminDocuments": "Lista de Documentos",
-          "adminCategories": "Categorias de Documentos",
-          "panelDocuments": "Mis Documentos"
+        "documentation": {
+          "documents": "The documents that are published with this module have extra functionalities when it comes to controlling which users, user groups or roles can have access to these both in your CMS and on your WEB site",
+          "categories": "It is possible to create categories, with a name, description and organize them in tree mode (parent categories and child categories) in order to categorize all your documents."
         }
       }
     },
@@ -974,7 +1086,9 @@
           "userGroup": "User Group | User Groups",
           "registerAs": "Register as",
           "incognitoProfile": "Incognito profile",
-          "reset": "Restablecer Contraseña"
+          "reset": "Restablecer Contraseña",
+          "withPassword": "With password",
+          "withEmail": "Only with email"
         },
         "form": {
           "lastLogin": "Last login",
@@ -1009,6 +1123,11 @@
         },
         "quickCard": {
           "lastUsers": "Users - Last registered users"
+        },
+        "documentation": {
+          "user": "Users are the way a person has access to your application through a username/email and password. Each user can have one or several Roles which define the permissions to the functionalities of the application. Thanks to the users, the application can identify who performs each action, such as who created a certain record or who updated it.",
+          "departments": "In this way it is possible to group several Users, with this functionality it is possible to filter, limit or assign certain functionalities to users in a faster and easier way.",
+          "role": "With the roles it is possible to assign permissions to the users with which they will be given access to each functionality of the application. You can also link a Form to each role, with this it is possible to capture more data when a user registers with this role"
         }
       }
     },
@@ -1025,6 +1144,7 @@
         "newCategory": "New Category",
         "updateCategory": "Update Category",
         "post": "Post",
+        "category": "Category",
         "quickCard": {
           "lastPosts": "Blog - Last Posts"
         },
@@ -1033,6 +1153,10 @@
           "featured": "Featured",
           "sortOrder": "Sort Order",
           "availableDate": "Available Date"
+        },
+        "documentation": {
+          "posts": "The articles are the content published on the Blog pages on your WEB site, these articles are important for your site because they help to keep your site constantly updated. You may edit them adding images, videos or external links, as well as being able to modify the content of your texts.",
+          "categories": "It is possible to create categories in your Blog, with a name, description and organize them in tree mode (parent categories and child categories) in order to categorize all your articles."
         }
       }
     },
@@ -1043,7 +1167,8 @@
           "status": "Status",
           "categories": "Categories",
           "mainRequestable": "Request",
-          "mainRequestableCreate": "New Request"
+          "mainRequestableCreate": "New Request",
+          "sources": "Sources"
         },
         "newRequest": "New Request",
         "updateRequest": "Update Request",
@@ -1064,7 +1189,29 @@
         },
         "newRule": "New Rule",
         "updateRule": "Update Rule",
-        "newRequestedBy": "New Contact"
+        "newRequestedBy": "New Contact",
+        "updateSource": "Update Source",
+        "newSource": "New Source",
+        "documentation": {
+          "requestables": "Requests are records with a more complex flow, functionalities may vary around defined rules such as when the record enters or changes to a specific state. is functionality lends itself to work as a sales funnel",
+          "categories": "It is possible to create categories, with a name, description and organize them in tree mode (parent categories and child categories) in order to categorize all your requests.",
+          "statuses": "Each request can have a status that can vary its flow or functionality, it is possible manage these states."
+        },
+        "label": {
+          "plan": "Plan",
+          "analytics": "Analytics",
+          "automationRules": "Automation Rules",
+          "responsible": "Responsible"
+        },
+        "requestables": {
+          "table": {
+            "requestedBy": "Requested by",
+            "createdBy": "Created by"
+          }
+        },
+        "hints": {
+          "categoryFormField": "If you leave this field empty we will create an initial form for your funnel."
+        }
       }
     },
     "page": {
@@ -1073,7 +1220,11 @@
           "adminPages": "Pages"
         },
         "newPage": "New Page",
-        "updatePage": "Update Page"
+        "updatePage": "Update Page",
+        "page": "Page",
+        "documentation": {
+          "pages": "You can manage the static pages of your WEB site so that you can modify the content that is displayed, such as titles, paragraphs, text colors, adding images, tec..."
+        }
       }
     },
     "ifly": {
@@ -1320,6 +1471,14 @@
           "location": {
             "title": "Location",
             "description": "Here you have the ability to share your exact location with the visitors of your website. You can enter details such as the province and city, as well as the exact address of your office."
+          },
+          "layouts": {
+            "title": "Templates",
+            "description": "In the 'Templates' section, you can choose the design that best suits your website's needs. We have a variety of predefined templates that have been carefully designed to offer you a wide range of styles and functionalities. By selecting a template, you will be defining the structure and overall appearance of your page, so we suggest you choose the one that best reflects the identity of your brand."
+          },
+          "meta": {
+            "title": "Metadata",
+            "description": "Tse tags to improve your site's visibility in the search engine"
           }
         },
         "sidebar": {
@@ -1745,7 +1904,18 @@
           "copy": "Copy",
           "insert": "Insert",
           "phoneNumber": "Phone number",
-          "quickLook": "Quick look"
+          "quickLook": "Quick look",
+          "wantToCreateAChildForm": "Do you want to create a child form of {title}?",
+          "gridPosition": "Grid Position",
+          "us": "Us",
+          "contactUs": "Contact",
+          "massiveSynchronization": "Massive Synchronization",
+          "migration": "Migration",
+          "print": "Print",
+          "whatsappNumber": "Whatsapp Number",
+          "codeCountry": "Code country",
+          "defaultMessage": "Default message",
+          "trial": "Trial"
         },
         "message": {
           "requestAdded": "Request added to the offline queue successfully",
@@ -1828,7 +1998,12 @@
           "noTemplates": "No templates",
           "recordModalTitle": "Congratulations on completing your account registration!",
           "recordModalMessage": "<p>You've taken the first important step by signing up, and now we're ready to take you through our simple process to customize and create the perfect website that reflects your vision and goals.</p><p>Welcome and go ahead! 👋</p>",
-          "emailInvalid": "Email invalid"
+          "emailInvalid": "Email invalid",
+          "organizationNoCreated": "We are excited to let you know that we are in the process of creating your site! We appreciate your patience while we provide you with an improved online experience. As soon as everything is ready, you will receive an email notification",
+          "creatingTenant": "We are excited to let you know that we are in the process of creating your site! We appreciate your patience while we provide you with an improved online experience. as soon as everything is ready, we will take you to your site!",
+          "advanceEdit": "Advanced Edit",
+          "organizationCreated": "We are pleased to inform you that your site is ready! We are excited to provide you with an improved online experience. You can access your new site by clicking the button below. If you have any questions or need help, please do not hesitate to contact us. We hope you enjoy exploring your new site!",
+          "showDemo": "Demo"
         },
         "form": {
           "whatsappNumber": "Número de Whatsapp",
@@ -1951,7 +2126,10 @@
           "feature": "Feature | Features",
           "fieldsDetails": "Fields Details",
           "filtersDetails": "Filters Details",
-          "warehouse": "Warehouse"
+          "warehouse": "Warehouse",
+          "slider": "Slider",
+          "banner": "Banner",
+          "h1": "Título H1"
         },
         "configList": {
           "loggedAs": "logged as",
@@ -1973,7 +2151,50 @@
         "selectedRows": "{num} selected rows",
         "reportQueue": "You already have a report in progress, you requested it on <b>{date}</b>. As soon as it is finished we will enable the 'create' function for you... We do this to make the app work much better!",
         "sessionFound": "There is an active session",
-        "alreadyInUse": "Oops! It looks like the name you've chosen is already in use. Could you please try selecting a different name? We want to make sure your unique identity shines bright!"
+        "alreadyInUse": "Oops! It looks like the name you've chosen is already in use. Could you please try selecting a different name? We want to make sure your unique identity shines bright!",
+        "usersToNotify": "Users To notify",
+        "emailsToNotify": "Emails To Notify",
+        "dateCache": "Last update: {date}. Refresh whenever you want.",
+        "modal": {
+          "welcomeMassiveSync": "Welcome to the Functionality of massive import and export!",
+          "integrateCloudFramework": "We have integrated a powerful cloud-based tool. This functionality allows you to carry out these tasks easily, without complications, and in a centralized way. Optimize your processes and save time!",
+          "generateStepOne": "Step 1: Specify emails address",
+          "generateBodyStepOne": "You will be asked to enter at least one valid email address. This is crucial to ensure the security of your data and restrict access only to authorized individuals.",
+          "generateStepTwo": "Step 2: Automatic Spreadsheet generation",
+          "generateBodyStepTwo": "After you enter the emails addresses and clicking the “Activate” button, the system will automatically generate a spreadsheet in our cloud service. This spreadsheet will be ready and available for you to import and export your products in efficiently and conveniently.",
+          "generateStepThree": "Step 3: Accessing the Spreadsheet and Import/Export Functions",
+          "generateBodyStepThree": "You will be provided with a link that will take you directly to the spreadsheet generated in the cloud service. Here, you can use the Import and Export functions to effectively manage.",
+          "importantNote": "Important Note",
+          "importantNoteBody": "Remember, to maintain the security of your data, only those individuals with access to the spreadsheet will able to make changes to the products. Be sure to share the emails with precaution and only with the people that you need.",
+          "activate": "Activate",
+          "syncNow": "Sync Now!",
+          "syncStepOne": "Step 1: Access Your Document",
+          "syncBodyStepOne": "To access your document, simply click on the link below:",
+          "syncBodyLinkStepOne": "Access Here",
+          "syncStepTwo": "Step 2: Export Dependencies",
+          "syncBodyStepTwo": "Before effectively importing data, make sure to first perform an export of dependencies. This step is essential for a successful import.",
+          "syncImportantNoteBody": "If the buttons are not enabled, it means that a bulk synchronization process is running for this module. You won't have access to actions until this process is completed.",
+          "import": "Import",
+          "exportDataTitle": "Export your Data",
+          "exportDataBody": "When you are ready to export the information, simply press the “Export” button. Please note that it may take some time to process the information before you can take another actions.",
+          "importDataTitle": "Import your data",
+          "importDataBody": "You can process with the importation of your data pressing the “Import” button. Please note that it may take some time to process the information before you take another action.",
+          "registerEmails": "Valid email addresses must be entered",
+          "generateSuccess": "The file has been successfully generated",
+          "syncSuccess": "The Synchronization has been initiated successfully",
+          "categories": "Categories",
+          "products": "Products",
+          "generateFile": "Generating File, please wait a moment...",
+          "inProgress": "In Progress...",
+          "failedSync": "Synchronization failed",
+          "syncFinished": "Synchronization of :entity has successfully completed!",
+          "syncCompleted": "Sync Data completed",
+          "dependencies": "Dependencies",
+          "updateNewVersion": "<b>We have new improvements for you!</b><br/>It's necessary to update one of your files. It's important for you to know that when performing this update, the information contained in the current file will be erased. We recommend backing up any relevant information you want to keep before proceeding with the update."
+        },
+        "documentation": {
+          "settings": "Some modules of your application have some extra global settings. These settings allow you to edit some features like color, name, logos, etc..."
+        }
       }
     },
     "setupagione": {
@@ -2032,7 +2253,20 @@
           "apply": "Apply",
           "editBlockAttributes": "Edit block attributes",
           "sureDiscardBlock": "Have you saved your changes?",
-          "descriptionSureDiscardBlock": "If you continue with this action, you will lose all your progress. Take a moment to make sure!"
+          "descriptionSureDiscardBlock": "If you continue with this action, you will lose all your progress. Take a moment to make sure!",
+          "sureRefreshLayout": "Do you want to reload the layouts?",
+          "descriptionSureRefreshLayout": "Be careful! If you have unsaved changes, they will be lost when you refresh",
+          "administrator": "Go to administrator",
+          "sureChangeView": "Are you sure about this action?",
+          "chooseBlock": "Choose a Block",
+          "clone": "Clone",
+          "relate": "Relate"
+        },
+        "form": {
+          "layoutEntityType": "Defines the context or category to which the layout belongs",
+          "layoutType": "Specifies the presentation type within the selected entity",
+          "layoutDefault": "Indicates whether the layout is set as default for the corresponding entity and type",
+          "layout": "Builder Layout"
         }
       }
     },
@@ -2061,6 +2295,53 @@
           "sureCreateQr": "Do you want to generate a QR code for this record?"
         }
       }
+    },
+    "Icommercepricelist": {
+      "cms": {
+        "sidebar": {
+          "productList": "Prices",
+          "priceLists": "Lists"
+        },
+        "form": {
+          "newProductList": "New Product Price List",
+          "updateProductList": "Update Product Price List",
+          "productPriceListContent": "Choose from multiple price lists for your products."
+        }
+      }
+    },
+    "Iwebhooks": {
+      "sidebar": {
+        "adminGroup": "Webhook",
+        "adminCategories": "Categories",
+        "adminHooks": "Hooks",
+        "adminLogs": "Logs"
+      },
+      "label": {
+        "dispatch": "Dispatch",
+        "noRegistration": "No registration",
+        "offline": "Offline",
+        "online": "Online",
+        "activateWebhookJob": "Enable periodic webhook calls"
+      },
+      "form": {
+        "httpMethod": "HTTP Method",
+        "httpStatus": "HTTP Status",
+        "response": "Response",
+        "endpoint": "Endpoint",
+        "actionLabel": "Action Label",
+        "callEveryMinutes": "Call Every Minute",
+        "body": "Request Body",
+        "headers": "Request Header",
+        "redirectLink": "Redirect link"
+      },
+      "title": {
+        "newCategory": "New Category",
+        "updateCategory": "Update Category",
+        "newHook": "New Hook",
+        "updateHook": "Update Hook",
+        "hook": "Hook",
+        "category": "Category"
+      }
     }
   },
   "es": {
@@ -2073,7 +2354,8 @@
           "providers": "Proveedores"
         },
         "message": {
-          "noMessages": "No tienes mensajes..."
+          "noMessages": "No tienes mensajes...",
+          "couldNotSend": "No se pudo enviar el mensaje"
         },
         "newProvider": "Nuevo Proveedor",
         "updateProvider": "Actualizar Proveedor",
@@ -2129,6 +2411,9 @@
           "addYourImages": "Agrega tus imagenes aquí",
           "limitFiles": "Limite de Archivos",
           "messageLimitFiles": "El limite de archivos es de <b>{quantity}</b>. para seleccionar otro archivo primero debes quitar algunos de los seleccionados"
+        },
+        "documentation": {
+          "providers": "Con el modulo de notificaciones puedes enviar diferentes tipos de mensajes para algunas acciones de la aplicación como notificar una nueva orden de compra de la tienda por correo, es necesario configurar los proveedores que permiten notificar."
         }
       }
     },
@@ -2159,6 +2444,9 @@
           "internal": "Página Interna",
           "external": "Página Externa",
           "frontend": "Página de frontend"
+        },
+        "documentation": {
+          "menus": "Tu sitio WEB cuenta con uno o varios menos que ayudan con la navegación está funcionalidad te permite administrar estos menus, modificando posiciones, elementos y textos de cada menu"
         }
       }
     },
@@ -2177,7 +2465,14 @@
           "showAsPopup": "Mostrar como ventana emergente",
           "buttonText": "Texto del Botón"
         },
-        "createSlider": "Crear Slider"
+        "createSlider": "Crear Slider",
+        "documentation": {
+          "sliders": "Los sliders son elementos rotatorios que se muestran comúnmente al inicio de la pagina de inicio de tu sitio WEB, permiten mostrar imágenes, videos o textos con un tamaña bastante visible"
+        },
+        "form": {
+          "slider": "Slider",
+          "banner": "Banner"
+        }
       }
     },
     "iredirect": {
@@ -2190,6 +2485,9 @@
         "label": {
           "redirectFrom": "Redirigir desde",
           "redirectTo": "Redirigir a"
+        },
+        "documentation": {
+          "redirects": "Cuando se elimina o cambia alguna pagina, como buena practica para un buen SEO de tu sitio WEB es necesario crear redirecciones de estas url para que siempre carguen un contenido en tu sitio WEB. Las redirecciones ayudan con esto"
         }
       }
     },
@@ -2216,7 +2514,8 @@
           "adminSubscriptionLimits": "Límites de Suscripción",
           "createSubscriptionLimits": "Crear Límite de Suscripción",
           "editSubscriptionLimits": "Editar Límite de Suscripción",
-          "panelSubscriptions": "Mis Suscripciones"
+          "panelSubscriptions": "Mis Suscripciones",
+          "adminMySubscriptions": "Mis Suscripciones"
         },
         "newCategory": "Nueva Categoría",
         "updateCategory": "Actualizar Categoría",
@@ -2250,7 +2549,15 @@
         "options": {
           "yes": "Sí",
           "no": "No"
-        }
+        },
+        "documentation": {
+          "plans": "Con los planes puedes diseñar características y capacidades que ofrece un módulo a tus usuarios. Estos planes son diseñados para que el usuario pueda elegir de entre las opciones cual se acomoda mejor según el uso que necesite darle a tu aplicación.",
+          "limits": "Puedes limitar o restringir la características y capacidades de cada plan, según cada modulo. Estos limites pueden incluir desde cantidades hasta fechas limites",
+          "categories": "Es posible crear categories en tu Plan, con un nombre, descripción y organizarlas en modo de árbol (categorías padres y categorías hijas) con el fin de categorizar todos tus planes.",
+          "entityplans": "Es necesario que se especifique que módulos deben de estar limitados por los planes, de está manera la aplicación sabra como y cuando limitar las características que se definan en un plan.",
+          "subscriptions": "Cada plan que un usuario adquiera, se llamará subscripción, de está manera tu aplicación es capaz de identificar que características y capacidades le estas permitiendo a tus usuarios."
+        },
+        "helpFieldTrial": "Para habilitar una versión de prueba, ingresa el numero de días para el plan"
       }
     },
     "iplaces": {
@@ -2272,6 +2579,10 @@
           "untilDay": "Hasta el día",
           "fromTime": "Desde la hora",
           "untilTime": "Hasta la hora"
+        },
+        "documentation": {
+          "places": "Con los Lugares, puedes publicar en tu sitio información sobre lugares reales, con titulo, descripción imágenes y una ubicación dentro de un mapa con dirección. Está información es usada para dar información sobre sedes de tu empresa.",
+          "categories": "Es posible crear categories, con un nombre, descripción y organizarlas en modo de árbol (categorías padres y categorías hijas) con el fin de categorizar todos tus lugares."
         }
       }
     },
@@ -2335,6 +2646,14 @@
           "code": "Código",
           "points": "Puntos",
           "geozone": "Geo zona"
+        },
+        "documentation": {
+          "countries": "Para diferentes funcionalidades dentro de tu aplicación y sitio WEB es necesario disponer de una lista de países, aquí encontraras una extensa lista que te brindamos y también puedes agregar nuevos de ser necesario.",
+          "provinces": "Para diferentes funcionalidades dentro de tu aplicación y sitio WEB es necesario disponer de una lista de provincias/departamentos/estados, aquí encontraras una extensa lista que te brindamos y también puedes agregar nuevos de ser necesario.",
+          "cities": "Para diferentes funcionalidades dentro de tu aplicación y sitio WEB es necesario disponer de una lista de ciudades, aquí encontraras una extensa lista que te brindamos y también puedes agregar nuevos de ser necesario.",
+          "neighborhoods": "Para diferentes funcionalidades dentro de tu aplicación y sitio WEB es necesario disponer de una lista de barrios, aquí encontraras una extensa lista que te brindamos y también puedes agregar nuevos de ser necesario.",
+          "polygons": "Para diferentes funcionalidades es necesario definir un area limite dentro de un mapa, para brindar información. Estas areas las llamamos polígonos.",
+          "geozones": "Las geoZonas son usadas para agrupar varios polígonos"
         }
       }
     },
@@ -2376,7 +2695,11 @@
         "maxFileSize": "Tamaño maximo por archivo (MB)",
         "maxFiles": "Cantidad maxima de archivos seleccionados",
         "directUpload": "Subida directa",
-        "thumbnailsConfig": "Configuración de Miniaturas"
+        "thumbnailsConfig": "Configuración de Miniaturas",
+        "documentation": {
+          "medias": "Aquí se almacenan todos los archivos que se cargan en tu aplicación, y se ordenan por carpetas",
+          "zones": "La aplicación identifica los archivos relacionados con otros módulos por zonas, estas zonas definen cuantos archivos y de que manera seleccionarlo en relación"
+        }
       }
     },
     "igamification": {
@@ -2397,6 +2720,9 @@
         "activities": {
           "repeatAction": "Tour",
           "repeatActionDescription": "Desde aquí puedes repetir este tour cuando quieras"
+        },
+        "documentation": {
+          "categories": "El modulo de gamificación se usa para mejorar la experiencia del usuario en la aplicación, con está funcionalidad es posible crear tours, popups, o actividades especificas por modulo. Es posible crear una categoría que actual como el elemento agrupador y asignado a esta una o varias actividades que el usuario tendrá disponible para ver."
         }
       }
     },
@@ -2445,7 +2771,8 @@
             "full": "Full Ancho"
           },
           "successText": "Texto de exito",
-          "submitText": "Texto de enviado"
+          "submitText": "Texto de enviado",
+          "formNotExist": "ID del formulario: {id} <b class='text-red-7'>(No existe)</b>"
         },
         "message": {
           "helpToOptionsField": "Escribe la opción y preciona enter...",
@@ -2457,6 +2784,10 @@
         "feedBack": {
           "newForm": "Enviar otra respuesta",
           "message": "¡Todo listo!  Tu formulario ha sido enviado con éxito."
+        },
+        "documentation": {
+          "forms": "Los formularios permiten capturar información de diferentes tipos, puedes crear formularios y configurar cada campo de el, nombres, tipos... los formularios pueden ser usados por otros módulos como relaciones para permitir capturar más información que la estándar en cada caso.",
+          "leads": "Los Lead son la información capturada de los formularios, puedes listar, filtrar y exportar está información, al igual que identificar desde que formulario ingreso está información."
         }
       }
     },
@@ -2532,6 +2863,11 @@
           "noRequested": "Tu anuncio aún no está verificado, debes crear una petición para que sea revisado",
           "requested": "Solo un poco más, estamos verificando tu anuncio",
           "rejected": "Tu anuncio no pudo ser verificado, revisa tu información y vuelve a crear la petición para que sea revisado"
+        },
+        "documentation": {
+          "ads": "Los anuncios son publicados en tu sitio WEB. Son usados para promover o impulsar algún producto externo a la aplicación",
+          "categories": "Es posible crear categories, con un nombre, descripción y organizarlas en modo de árbol (categorías padres y categorías hijas) con el fin de categorizar todos tus planes.",
+          "ups": "Cuando un anunció es publicado, se pone en una lista que crece constantemente con cada nuevo anuncio, con está funcionalidad de Subidas es posible decirle a tu aplicación que mejore la posición de cada anunció con algunas reglas definidas"
         }
       }
     },
@@ -2602,7 +2938,8 @@
         "auction": "Licitación | Licitaciones",
         "bid": "Puja | Pujas",
         "setAsWinner": "Marcar como Ganador",
-        "existBid": "Ya tienes una puja para esta licitación"
+        "existBid": "Ya tienes una puja para esta licitación",
+        "description": "Descripción"
       }
     },
     "ibanners": {
@@ -2619,6 +2956,9 @@
         "label": {
           "codeAds": "Codigo ADS",
           "showAsPopup": "Mostrar como ventana emergente"
+        },
+        "documentation": {
+          "banners": "Los banners son elementos estáticos en ubicaciones definidas dentro del sitio WEB que muestran un contenido normalmente publicitario de gran tamaño"
         }
       }
     },
@@ -2666,7 +3006,13 @@
             "success": "Todo está listo! Nosotros nos encargamos de crear las reuniones en Zoom por ti..."
           }
         },
-        "helpShareUserResource": "Puedes copiar los link de tus servicios y/o de tu recurso para compartirlos de una forma más facil"
+        "helpShareUserResource": "Puedes copiar los link de tus servicios y/o de tu recurso para compartirlos de una forma más facil",
+        "documentation": {
+          "categories": "Es posible crear categories, con un nombre, descripción y organizarlas en modo de árbol (categorías padres y categorías hijas) con el fin de categorizar todos tus servicios.",
+          "services": "Son los servicios los que tus usuarios pueden reservar dentro de tu aplicación, estos servicios incluyen el tiempo que puede durar cada turno y un precio ademas de toda la información necesaria para describirlo",
+          "resources": "El recurso es el encargado de ejecutar un servicio reservado, cada recurso puede tener uno o varios servicios asignados pero puede realizar solo uno a la vez, en cada recurso es posible configurar un horario de disponibilidad para que un servicio suyo pueda ser reservado.",
+          "reservations": "Cuando un usuario adquiere un servicio se le llama 'Reservación' así la aplicacion es capaz de identificar que servicio reservo un usuario junto a su recurso."
+        }
       }
     },
     "icheckin": {
@@ -2721,6 +3067,8 @@
           "adminCoupons": "Cupones",
           "createCoupons": "Crear cupon",
           "editCoupons": "Editar cupon",
+          "adminQuotes": "Cotizaciones",
+          "adminQuoteCreate": "Crear Cotización",
           "adminStores": "Tiendas",
           "adminStoresCreate": "Nueva Tienda",
           "adminStoresEdit": "Editar Tienda",
@@ -2740,9 +3088,19 @@
           "adminItemTypes": "Tipos",
           "adminItemTypesCreate": "Crear Tipos",
           "adminItemTypesEdit": "Editar Tipos",
-          "adminQuotes": "Cotizaciones",
-          "adminQuoteCreate": "Crear Cotización",
           "panelOrders": "Mis Compras",
+          "newWeightClasses": "Nuevo tipo de peso",
+          "updateWeightClasses": "Actualizar tipo de peso",
+          "weightClasses": " Tipos de Peso",
+          "newLengthClasses": "Nuevo tipo de longitud",
+          "updateLengthClasses": "Actualizar tipo de longitud",
+          "lengthClasses": " Tipos de longitud",
+          "newVolumeClasses": "Nuevo tipo de volumen",
+          "updateVolumeClasses": "Actualizar tipo de volumen",
+          "volumeClasses": " Tipos de volumen",
+          "newQuantityClasses": "Nuevo tipo de cantidad",
+          "updateQuantityClasses": "Actualizar tipo de cantidad",
+          "quantityClasses": " Tipos de cantidad",
           "newCurrencies": "Nuevas monedas",
           "updateCurrency": "Actualizar moneda",
           "currencies": " Monedas",
@@ -2804,6 +3162,12 @@
         "orderHistory": "Historial de Orden",
         "newWarehouse": "Nueva Bodega",
         "updateWarehouse": "Editar Bodega",
+        "label": {
+          "warehouse": "Bodega | Bodegas",
+          "bannerPriceList": "Dirígete a tu lista personal de productos para empezar a explorar. ¡Disfruta de los mejores precios!",
+          "explorePriceList": "Explorar Lista de Productos",
+          "dataSheet": "Ficha técnica"
+        },
         "form": {
           "formContent": "Aquí podrás encontrar la información relacionada al nombre, slug, resumen y descripción.",
           "statusContent": "Aquí podrás cambiar el estado de tu producto.",
@@ -2861,6 +3225,9 @@
           "priority": "Prioridad",
           "rate": "Tasa",
           "discountType": "Tipo de Descuento",
+          "quantitySold": "Cantidad Vendida",
+          "running": "Activo",
+          "finished": "Finalizado",
           "usersGroup": "Grupo de Usuarios",
           "manufacturer": "Fabricante | Fabricantes",
           "customerGroup": "Grupo de Usuario",
@@ -2885,6 +3252,7 @@
           "color": "Color",
           "featured": "Destacado",
           "isCall": "Producto para Cotizar",
+          "showPriceIsCall": "Mostrar precio cuando el producto es para cotizar",
           "sortOrder": "Orden de prioridad",
           "operationPrefix": "Operación",
           "value": "Valor | Valores",
@@ -2898,25 +3266,29 @@
           "withDiscount": "Con descuento",
           "symbolLeft": "Símbolo Izquierdo",
           "symbolRight": "Símbolo Derecho",
-          "running": "Activo",
-          "finished": "Finalizado",
+          "decimals": "Decimales",
+          "decimalSeparator": "Separador de Decimales",
+          "thousandsSeparator": "Separador de Miles",
+          "unit": "Unidad",
+          "volume": "Volumen",
           "mapHelp": "Busca la dirección o localíza la bodega en el mapa.",
           "productWarehouse": "Bodegas",
           "productWarehouseContent" : "Selecciona las diferentes bodegas donde se encuentra ubicado tu producto.",
           "generalWarehouse": "Bodega general",
           "generalWarehouseHelp": "Puedes gestionar de manera eficiente la información detallada de cada producto, segmentada de acuerdo a las distintas bodegas. Así, puedes organizar y administrar de forma centralizada los datos específicos de tus productos en cada ubicación, simplificando la gestión de inventario y optimizando tu control operativo.",
           "warehouseByOptions": "Bodega por Opcion",
-          "warehouseByOptionsHelp": "Te brindamos la capacidad de administrar de manera eficiente la información detallada de cada opción de producto, organizada según las distintas bodegas. Esto te permite centralizar la gestión de datos específicos para cada variante en cada ubicación, simplificando la administración del inventario y mejorando el control operativo de manera óptima."
+          "warehouseByOptionsHelp": "Te brindamos la capacidad de administrar de manera eficiente la información detallada de cada opción de producto, organizada según las distintas bodegas. Esto te permite centralizar la gestión de datos específicos para cada variante en cada ubicación, simplificando la administración del inventario y mejorando el control operativo de manera óptima.",
+          "advancedSummaryHelp": "Agrega contenidos detallados y complejos, aparece en la parte superior derecha del producto, ofreciendo tablas, secciones plegables y más."
         },
         "message": {
+          "advanceEdit": "Ir al formulario avanzado",
+          "quickEdit": "Edición Rapida",
           "warnAddOpt": "Para agregar opciones, primero debe crear el producto",
           "noOptions": "No hay opciones agregadas",
           "noDeleteOption": "No puede borrar está opción, es padre de {name}",
           "selectProduct": "Seleccione una opción de producto",
           "warnAddDiscount": "Para agregar descuentos, primero debe crear el producto",
           "viewProduct": "Ver producto",
-          "advanceEdit": "Edición Avanzada",
-          "quickEdit": "Edición Rapida",
           "btnAddProduct": "Agregar Producto",
           "chooseProduct": "Elegir Producto",
           "productSetup": "Configuración de Producto",
@@ -2940,7 +3312,24 @@
           "lastOrders": "Tienda - Ultimas Ordenes",
           "productsToSoldOut": "Tienda - Productos por agotar"
         },
-        "advancedSummary": "Resumen Avanzado"
+        "advancedSummary": "Resumen Avanzado",
+        "documentation": {
+          "products": "Los productos son los que puedes vender a través de tu tienda, cada producto puede contar con muchas características como un SKU único, cantidad o existencia, precio o valor, también puedes categorizarlos para que en tu tienda se puedan filtrar de una manera más organizada, agregarle opciones como color, talla, tamaños y muchas otras características que te permitan tener una tienda lo suficientemente completa.",
+          "categories": "Es posible crear categories en tu tienda, con un nombre, descripción y organizarlas en modo de árbol (categorías padres y categorías hijas) con el fin de categorizar todos tus productos.",
+          "options": "Puedes crear opciones como Colores (rojo, verde, amarillo...), tallas (xs, sm, md...) y todas las opciones que tus productos necesiten.",
+          "payment-methods": "Para poder vender tus productos te brindamos la opción de que configures uno o varios métodos de pago los cuales se mostraran como opciones en el check-out de tus clientes al momento de realizar una compra.",
+          "shipping-methods": "Puedes configurar que métodos de envío brindaras a tus clientes para que ellos reciban todos los productos que tu les vendes y también definir un costo extra por cada método.",
+          "orders": "Las ordenes son todas las compras que recibes por medio de tu tienda, puedes aceptar o rechazarlas, verificar pagos, dejar comentarios y procesar las compras.",
+          "coupons": "Los cupones son una herramienta promocional que permite a tus usuarios obtener descuentos sobre productos específicos de tu tienda.",
+          "manufacturers": "Los fabricantes se refieren a las compañías u organizaciones que producen o suple los productos que son vendidos en tu tienda. Los fabricantes pueden jugar un papel importante en tu tienda, brindando información acerca del origen de tus productos.",
+          "taxclasses": "Los impuestos son una forma de categorizar tus productos en función de la tasa de impuestos que se les aplica. Esto permite que la aplicación calcule y aplique los impuestos correctos durante el proceso de pago según el producto que está comprando.",
+          "currencies": "Puedes configurar uno o varios tipos de moneda como Pesos o Dólares, los cuales serán usados para cobrar los productos que se compren a través de tu tienda. Es importante tener en cuenta que el valor de las monedas tradicionales puede estar sujeto a la volatilidad y es posible que no siempre mantenga su valor percibido a lo largo del tiempo.",
+          "quotes": "Una cotización se refiere a una solicitud de cotización de precio personalizada para un producto específico o grupo de productos. Las cotizaciones a menudo se usan para productos que tienen precios variables o requieren personalización, como pedidos grandes o productos especializados."
+        },
+        "newWarehouse": "Nueva Bodega",
+        "updateWarehouse": "Editar Bodega",
+        "fieldEditableOnlyWarehouse": "Este campo se modifica por bodegas",
+        "changeOnlyNestedOptionValue": "Esta opción tiene opciones hijas, solo puedes modificar este campo en ellas"
       }
     },
     "ioffline": {
@@ -2970,10 +3359,10 @@
     "idocs": {
       "cms": {
         "sideba": {
-          "adminGroup": "Documents",
-          "adminDocuments": "List Documents",
-          "adminCategories": "Document Categories",
-          "panelDocuments": "My Documents"
+          "adminGroup": "Documentos",
+          "adminDocuments": "Lista de Documentos",
+          "adminCategories": "Categorias de Documentos",
+          "panelDocuments": "Mis Documentos"
         },
         "newDocument": "Nuevo documento",
         "updateDocument": "Actualizar Documento",
@@ -2984,6 +3373,10 @@
           "adminDocuments": "Lista de Documentos",
           "adminCategories": "Categorias de Documentos",
           "panelDocuments": "Mis Documentos"
+        },
+        "documentation": {
+          "documents": "Los documentos que publiques con este modulo tienen funcionalidades extra a la hora de controlar que usuarios, grupos de usuario o roles pueden tener acceso a estos tanto en tu CMS como en tu sitio WEB",
+          "categories": "Es posible crear categories, con un nombre, descripción y organizarlas en modo de árbol (categorías padres y categorías hijas) con el fin de categorizar todos tus documentos."
         }
       }
     },
@@ -3042,7 +3435,9 @@
           "userGroup": "Grupo de usuario | Grupos de usuario",
           "registerAs": "Registrarme como",
           "incognitoProfile": "Perfil incógnito",
-          "reset": "Restablecer Contraseña"
+          "reset": "Restablecer Contraseña",
+          "withPassword": "Con contraseña",
+          "withEmail": "Solo con email"
         },
         "form": {
           "lastLogin": "Ultima sesión",
@@ -3077,6 +3472,11 @@
         },
         "quickCard": {
           "lastUsers": "Usuarios - Ultimos usuarios registrados"
+        },
+        "documentation": {
+          "user": "Los usuarios son la manera en que una persona tiene acceso a tu aplicación por medio de un usuario/email y contraseña. Cada usuario puede tener uno o varios Roles los cuales definen los permisos a las funcionalidades de la aplicación. Gracias a los usuarios la aplicación puede identificar quien realiza cada acción como por ejemplo quien creo cierto registro o quien lo actualizó.",
+          "departments": "De esta manera es posible agrupar varios Usuarios, con está funcionalidad es posible filtrar, limitar o asignar ciertas funcionalidades para usuarios de una manera más rápida y sencilla.",
+          "role": "Con los roles es posible asignar permisos a los usuarios con los que se le dará acceso a cada funcionalidad de la aplicación. También puede vincular un Formulario a cada rol, con esto es posible capturar más datos al momento de que un usuario se registre con este rol"
         }
       }
     },
@@ -3093,6 +3493,7 @@
         "newCategory": "Nueva Categoría",
         "updateCategory": "Actualizar Categoría",
         "post": "Entrada",
+        "category": "Categoría",
         "quickCard": {
           "lastPosts": "Blog - Ultimos Posts"
         },
@@ -3101,6 +3502,10 @@
           "featured": "Destacado",
           "sortOrder": "Orden de prioridad",
           "availableDate": "Disponible desde"
+        },
+        "documentation": {
+          "posts": "Los artículos son el contenido publicado en las paginas de Blog en tu sitio WEB, estos artículos son importantes para tu sitio por que ayudan a mantener tu sitio en constante actualización. Es posible que los edites agregando imágenes, videos o links externos, al igual que poder modificar el contenido de tus textos.",
+          "categories": "Es posible crear categories en tu Blog, con un nombre, descripción y organizarlas en modo de árbol (categorías padres y categorías hijas) con el fin de categorizar todos tus artículos."
         }
       }
     },
@@ -3111,7 +3516,8 @@
           "status": "Estados",
           "categories": "Categorias",
           "mainRequestable": "Peticiones",
-          "mainRequestableCreate": "Nueva Petición"
+          "mainRequestableCreate": "Nueva Petición",
+          "sources": "Fuentes"
         },
         "newRequest": "Nueva Petición",
         "updateRequest": "Actualizar Petición",
@@ -3132,7 +3538,29 @@
         },
         "newRule": "Nueva Regla",
         "updateRule": "Actualizar Regla",
-        "newRequestedBy": "Nuevo Contacto"
+        "newRequestedBy": "Nuevo Contacto",
+        "updateSource": "Actualizar Fuente",
+        "newSource": "Nueva Fuente",
+        "documentation": {
+          "requestables": "Las peticiones son registros con un flujo más complejo, pueden variar las funcionalidades en torno a reglas definidas como cuando el registro ingresa o cambia a un estado especifico. Está funcionalidad se presta para trabajar como un funnel de ventas",
+          "categories": "Es posible crear categories, con un nombre, descripción y organizarlas en modo de árbol (categorías padres y categorías hijas) con el fin de categorizar todas tus peticiones.",
+          "statuses": "Cada petición puede contar con un estado que puede variar su flujo o funcionalidad, es posible administrar estos estados."
+        },
+        "label": {
+          "plan": "Plan",
+          "analytics": "Analítica",
+          "automationRules": "Reglas De Automatización",
+          "responsible": "Responsable"
+        },
+        "requestables": {
+          "table": {
+            "requestedBy": "Solicitado Por",
+            "createdBy": "Creado por"
+          }
+        },
+        "hints": {
+          "categoryFormField": "Si dejas este campo vacío nosotros crearemos un formulario inicial para tu embudo."
+        }
       }
     },
     "page": {
@@ -3141,7 +3569,11 @@
           "adminPages": "Paginas"
         },
         "newPage": "Nueva pagina",
-        "updatePage": "Actualizar pagina"
+        "updatePage": "Actualizar pagina",
+        "page": "Pagina",
+        "documentation": {
+          "pages": "Puedes administrar las paginas estáticas de tu sitio WEB de forma que modifiques el contenido que en está se muestra, como títulos, párrafos, colores de texto, agregar imágenes, tec..."
+        }
       }
     },
     "ifly": {
@@ -3257,6 +3689,14 @@
           "location": {
             "title": "Localización",
             "description": "Aquí tienes la posibilidad de compartir tu ubicación exacta con los visitantes de tu sitio web. Aquí puedes ingresar detalles como la provincia y la ciudad, así como la dirección exacta de tu oficina."
+          },
+          "layouts": {
+            "title": "Plantillas",
+            "description": "En la sección 'plantillas, puedes elegir el diseño que mejor se adapte a las necesidades de tu sitio web. Contamos con una variedad de plantillas predefinidas que han sido cuidadosamente diseñadas para ofrecerte una amplia gama de estilos y funcionalidades. Al seleccionar una plantilla, estarás definiendo la estructura y el aspecto general de tu página, por lo que te sugerimos escoger la que mejor refleje la identidad de tu marca."
+          },
+          "meta": {
+            "title": "Metadatos",
+            "description": "Usa palabras claves para mejorar la visibilidad de tu sitio en el buscador"
           }
         },
         "sidebar": {
@@ -3306,7 +3746,8 @@
           "newExportItemHelpText": "Exportar <b class=\"text-blue-grey\">Registro ID: {id}</b>",
           "exportReady": "Tu report <b>{fileName}</b> está listo!",
           "noOrganization": "Todavía no perteneces a una organización",
-          "wantToCreateAChildForm": "¿Quieres crear un formulario hijo de"
+          "wantToCreateAChildForm": "¿Quieres crear un formulario hijo de",
+          "copyDisclosureLink": "El enlace de divulgación se ha copiado en el portapapeles"
         },
         "startTime": "Hora de inicio",
         "endTime": "Hora de finalización",
@@ -3679,8 +4120,19 @@
           "copy": "Copiar",
           "insert": "Insertar",
           "phoneNumber": "Número de teléfono",
-          "quickLook": "Vistazo rápido"
-
+          "quickLook": "Vistazo rápido",
+          "gridPosition": "Espació en la Grid",
+          "us": "Nosotros",
+          "massiveSynchronization": "Sincronización Masiva",
+          "migration": "Migración",
+          "wantToCreateAChildForm": "¿Quieres crear un formulario hijo de {title}?",
+          "whatsappNumber": "Numero de Whatsapp",
+          "codeCountry": "Código de Pais",
+          "defaultMessage": "Mensaje por defecto",
+          "informationTitle": "Información del sitio",
+          "trial": "Versión de prueba",
+          "copyDisclosureLink": "Copiar enlace",
+          "print": "Imprimir"
         },
         "message": {
           "requestAdded": "Petición agregada a la cola sin conexión",
@@ -3762,7 +4214,12 @@
           "noTemplates": "No existen plantillas",
           "recordModalTitle": "¡Felicidades por completar el registro de tu cuenta!",
           "recordModalMessage": "<p>Has dado el primer paso importante al registrarte, y ahora estamos listos para llevarte a  través de nuestro sencillo proceso para personalizar y crear el sitio web perfecto que refleje tu visión y objetivos.</p><p> ¡Bienvenid@ y adelante! 👋</p>",
-          "emailInvalid": "Correo invalido"
+          "emailInvalid": "Correo invalido",
+          "showDemo": "Ver Demo",
+          "organizationNoCreated": "¡Estamos emocionados de contarte que estamos en el proceso de crear tu sitio! Agradecemos tu paciencia mientras te brindamos una experiencia en línea mejorada. tan pronto todo este listo, recibirás una notificación por correo electrónico",
+          "creatingTenant": "¡Estamos emocionados de contarte que estamos en el proceso de crear tu sitio! Agradecemos tu paciencia mientras te brindamos una experiencia en línea mejorada. tan pronto todo este listo, te llevaremos a tu sitio!",
+          "organizationCreated": "¡Nos complace informarte que tu sitio está listo! Estamos emocionados de brindarte una experiencia en línea mejorada. Puedes acceder a tu nuevo sitio haciendo clic en el siguiente boton. Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. ¡Esperamos que disfrutes explorando tu nuevo sitio!",
+          "advanceEdit": "Edición Avanzada"
         },
         "form": {
           "whatsappNumber": "Número de Whatsapp",
@@ -3884,7 +4341,10 @@
           "feature": "Característica | Características",
           "fieldsDetails": "Detalles de la Característica",
           "filtersDetails": "Detalles de los filtros",
-          "warehouse": "Bodega"
+          "warehouse": "Bodega",
+          "h1": "Título H1",
+          "slider": "Slider",
+          "banner": "Banner"
         },
         "configList": {
           "loggedAs": "Registrado como",
@@ -3906,7 +4366,50 @@
         "selectedRows": "{num} Filas seleccionadas",
         "reportQueue": "Ya tienes un reporte en progreso, lo solicitaste en <b>{date}</b>. Tan pronto este termine habilitaremos la función de 'crear' para ti... Esto lo hacemos para que la aplicación funcione mucho mejor!",
         "sessionFound": "Hay una sesión activa",
-        "alreadyInUse": "¡Ups! Parece que el nombre que has elegido ya está en uso. ¿Podrías intentar seleccionar otro nombre? ¡Queremos asegurarnos de que tu identidad única brille con fuerza!"
+        "alreadyInUse": "¡Ups! Parece que el nombre que has elegido ya está en uso. ¿Podrías intentar seleccionar otro nombre? ¡Queremos asegurarnos de que tu identidad única brille con fuerza!",
+        "usersToNotify": "Usuarios a Notificar",
+        "emailsToNotify": "Emails a Notificiar",
+        "dateCache": "Última actualización: {date}. Refresca cuando quieras.",
+        "modal": {
+          "welcomeMassiveSync": "¡Bienvenido a la funcionalidad de Importación y Exportación Masiva!",
+          "integrateCloudFramework": "Integramos una potente herramienta en la nube. Esta funcionalidad te permite llevar a cabo estas tareas de manera sencilla, sin complicaciones, y de forma centralizada. ¡Optimiza tus procesos y ahorra tiempo!",
+          "generateStepOne": "Paso 1: Especificar Correos Electrónicos",
+          "generateBodyStepOne": "Se te pedirá que ingreses al menos una dirección de correo electrónico válida. Esto es crucial para garantizar la seguridad de tus datos y restringir el acceso solo a personas autorizadas.",
+          "generateStepTwo": "Paso 2: Generación Automática de la Hoja de Cálculo",
+          "generateBodyStepTwo": "Después de ingresar los correos electrónicos y hacer clic en el botón 'Activar', el sistema generará automáticamente una hoja de cálculo en nuestro servicio en la nube. Esta hoja estará lista y disponible para que puedas importar y exportar tus productos de manera eficiente y conveniente.",
+          "generateStepThree": "Paso 3: Acceso a la Hoja de Cálculo y Funciones de Importación/Exportación",
+          "generateBodyStepThree": "Se te proporcionará un enlace que te llevará directamente a la hoja de cálculo generada en el servicio en la nube. Aquí podrás utilizar las funciones de importación y exportación para administrar de manera efectiva.",
+          "importantNote": "Nota Importante",
+          "importantNoteBody": "Recuerda que para mantener la seguridad de tus datos, solo aquellos con acceso a la hoja de cálculo podrán realizar cambios en los productos. Asegúrate de compartir los correos electrónicos con precaución y solo con las personas que necesitas.",
+          "activate": "Activar",
+          "syncNow": "¡Sincroniza Ahora!",
+          "syncStepOne": "Paso 1: Accede a tu Documento",
+          "syncBodyStepOne": "Para acceder a tu documento, simplemente haz clic en el enlace a continuación:",
+          "syncBodyLinkStepOne": "Accede aquí",
+          "syncStepTwo": "Paso 2: Exportar Dependencias",
+          "syncBodyStepTwo": "Antes de importar los datos de manera efectiva, asegúrate de realizar primero una exportación de dependencias. Este paso es esencial para que la importación sea exitosa.",
+          "syncImportantNoteBody": "Si los botones no están habilitados, significa que se está ejecutando un proceso de sincronización masiva para este módulo. Hasta que este proceso no termine, no tendrás acceso a las acciones.",
+          "import": "Importar",
+          "exportDataTitle": "Exporta tus Datos",
+          "exportDataBody": "Cuando estés listo para exportar información, simplemente presiona el botón 'Exportar'. Ten en cuenta que puede llevar un tiempo procesar la información antes de que puedas realizar una acción.",
+          "importDataTitle": "Importa tus datos",
+          "importDataBody": "Puedes proceder con la importación de tus datos presionando el botón 'Importar'. Ten en cuenta que puede llevar un tiempo procesar la información antes de que puedas realizar una acción.",
+          "registerEmails": "Debe ingresar emails validos",
+          "generateSuccess": "Se ha generado exitosamente el archivo",
+          "syncSuccess": "Se inicio correctamente la sincronización",
+          "categories": "Categorias",
+          "products": "Productos",
+          "generateFile": "Generando Archivo, espere un momento...",
+          "inProgress": "En progreso...",
+          "failedSync": "La sincronización fallo",
+          "syncFinished": "¡La sincronización de :entity se ha completado con éxito!",
+          "syncCompleted": "Sincronización de datos completada",
+          "dependencies": "Dependencias",
+          "updateNewVersion": "<b>¡Tenemos nuevas mejoras para ti!</b><br/>Es necesario actualizar uno de tus archivos. Es importante que sepas que al realizar esta actualización, la información contenida en el archivo actual será borrada. Te recomendamos respaldar cualquier información relevante que desees conservar antes de proceder con la actualización."
+        },
+        "documentation": {
+          "settings": "Algunos módulos de tu aplicación cuentan con configuraciones globales extra. Estas configuraciones te permiten editar algunas características como el color, nombre, logos, etc..."
+        }
       }
     },
     "setupagione": {
@@ -3957,7 +4460,20 @@
           "apply": "Aplicar",
           "editBlockAttributes": "Editar los atributos del bloque",
           "sureDiscardBlock": "¿Has guardado tus cambios?",
-          "descriptionSureDiscardBlock": "Si continuas con esta acción, perderás todo tu progreso. ¡Tómate un momento para asegurarte!"
+          "descriptionSureDiscardBlock": "Si continuas con esta acción, perderás todo tu progreso. ¡Tómate un momento para asegurarte!",
+          "sureRefreshLayout": "¿Deseas volver a cargar los layouts?",
+          "descriptionSureRefreshLayout": "¡Ten cuidado! Si tienes cambios sin guardar, se perderán al refrescar",
+          "administrator": "Ir al administrador",
+          "sureChangeView": "¿Está seguro de esta acción?",
+          "chooseBlock": "Escoge un Bloque",
+          "clone": "Clonar",
+          "relate": "Relacionar"
+        },
+        "form": {
+          "layoutEntityType": "Define el contexto o categoría al que pertenece el layout",
+          "layoutType": "Especifica el tipo de presentación dentro de la entidad seleccionada",
+          "layoutDefault": "Indica si el layout se establece como predeterminado para la entidad y el tipo correspondiente",
+          "layout": "Builder Layout"
         }
       }
     },
@@ -3985,6 +4501,53 @@
         "messages": {
           "sureCreateQr": "¿Quieres generar un código QR para este registro?"
         }
+      }
+    },
+    "Icommercepricelist": {
+      "cms": {
+        "sidebar": {
+          "productList": "Precios",
+          "priceLists": "Listas"
+        },
+        "form": {
+          "newProductList": "Nueva Lista de Precios de Productos",
+          "updateProductList": "Actualizar Lista de Precios de Productos",
+          "productPriceListContent": "Elige entre varias listas de precios para tus productos."
+        }
+      }
+    },
+    "Iwebhooks": {
+      "sidebar": {
+        "adminGroup": "Webhook",
+        "adminCategories": "Categorias",
+        "adminHooks": "Hooks",
+        "adminLogs": "Registros"
+      },
+      "label": {
+        "dispatch": "Ejecutar",
+        "noRegistration": "Sin Registro",
+        "offline": "Desconectado",
+        "online": "Conectado",
+        "activateWebhookJob": "Activar llamadas periódicas a webhooks"
+      },
+      "form": {
+        "httpMethod": "Metodo HTTP",
+        "httpStatus": "Estado HTTP",
+        "response": "Respuesta",
+        "endpoint": "Url de la solicitud",
+        "actionLabel": "Label de acción",
+        "callEveryMinutes": "Llamada cada minuto",
+        "body": "Cuerpo de la solicitud",
+        "headers": "Encabezado de la solicitud",
+        "redirectLink": "Enlace de redirección"
+      },
+      "title": {
+        "newCategory": "Nueva Categoría",
+        "updateCategory": "Actualizar Categoría",
+        "newHook": "Nuevo Hook",
+        "updateHook": "Actualizar Hook",
+        "hook": "Hook",
+        "category": "Categoría"
       }
     }
   }
