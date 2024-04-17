@@ -92,7 +92,7 @@ import { eventBus } from 'src/plugins/utils';
 import appConfig from 'src/setup/app'
 
 export default {
-  beforeDestroy() {
+  beforeUnmount() {
     this.clearInterval();
     eventBus.off('page.data.filter.read');
   },
@@ -282,10 +282,10 @@ export default {
             },
             {
               label: this.$tr('isite.cms.label.refreshEveryMinutes', { min: 15 }),
-              action: () => this.refreshByTime(5)
+              action: () => this.refreshByTime(15)
             }
           ],
-          action: this.emitRefresh
+          action: () => this.emitRefresh()
         }
       ];
 
