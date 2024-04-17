@@ -68,7 +68,7 @@
 import { eventBus } from 'src/plugins/utils';
 
 export default {
-  beforeDestroy() {
+  beforeMount() {
     eventBus.off('export.data.refresh');
     eventBus.off('isite.export.ready');
   },
@@ -197,7 +197,7 @@ export default {
         });
       });
       //Listen refresh report
-      eventBus.on('export.data.refresh', () => this.getData(true));
+      eventBus.on('export.data.refresh', () => this.getData());
     },
     //Get data
     async getData() {
