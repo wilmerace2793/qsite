@@ -45,7 +45,6 @@ import controller from './controller'
 import "leaflet/dist/leaflet.css";
 import 'leaflet-geosearch/dist/geosearch.css';
 import "./plugins/fullscreen/Leaflet.fullscreen.js"
-import "./plugins/fullscreen/Leaflet.fullscreen.css"
 import "./plugins/editable/Leaflet.Editable.js"
 
 export default defineComponent({
