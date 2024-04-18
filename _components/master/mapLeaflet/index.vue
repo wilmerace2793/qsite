@@ -127,7 +127,7 @@ export default defineComponent({
   (-webkit-min-device-pixel-ratio:2),
   (min-resolution:192dpi) {
     .leaflet-control-fullscreen a {
-      background-image:url(fullscreen@2x.png);
+      background-image:url(./plugins//fullscreen/fullscreen2x.png);
     }
   }
 </style>
