@@ -38,13 +38,13 @@
         <template #footer>
           <div class="tw-flex tw-space-x-4">
             <template v-if="loading">
-              <div 
+              <div
                  v-for="(item, index) in 10"
                  :key="index"
                  class="
-                  tw-bg-gray-200 
-                  tw-animate-pulse 
-                  tw-w-[250px] 
+                  tw-bg-gray-200
+                  tw-animate-pulse
+                  tw-w-[250px]
                   tw-h-[700px]
                   tw-shadow-md
                   tw-rounded-md"
@@ -177,7 +177,7 @@ export default {
     automation: {
       type: Boolean,
       default: () => false
-    }, 
+    },
     filter: {
       type: Object,
       default: () => ({})
@@ -342,7 +342,7 @@ export default {
       const route = this.routes.column;
       const parameters = { params: {}, refresh };
       parameters.params.include = route.include;
-      const id = { id: this.filter.statusId } || {};      
+      const id = { id: this.filter.statusId } || {};
       parameters.params.filter = {
         [route.filter.name]: this.funnelSelectedComputed, ...id,
         order: { field: 'type', way: 'asc' }
@@ -628,7 +628,6 @@ export default {
       this.kanbanColumns.forEach(item => {
         if (item.id == columId) {
           item.data.forEach(card => {
-            card.status.id = columId;
             card.statusId = columId;
           });
         }
