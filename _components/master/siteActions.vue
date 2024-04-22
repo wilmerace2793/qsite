@@ -35,6 +35,14 @@
           </q-menu>
           <!-- Tooltip -->
           <q-tooltip>{{ btn.label }}</q-tooltip>
+          <!-- Badge -->
+          <q-badge 
+            v-if="btn.badgeLabel" 
+            :color="btn.badgeColor || 'orange'" 
+            rounded floating
+          >
+            {{ btn.badgeLabel }}
+          </q-badge>
         </q-btn>
       </template>
       <!--Auth section-->
