@@ -47,7 +47,6 @@
             <q-list
               dense
               class="
-                tw-p-2
                 kd-list-without-arrow
                 tw-bg-gray-100
                 tw-text-xs"
@@ -63,13 +62,13 @@
                 v-bind="action.props"
                 @click.native="runAction(action)"
               >
-                  <q-item-section avatar>
-                    <q-icon :name="action.icon" />
-                  </q-item-section>
                   <q-item-section>
-                    <q-item-label>
-                      {{ action.label || action.tooltip }}
-                    </q-item-label>
+                    <div class="tw-flex tw-space-x-2 tw-py-2">
+                      <q-icon :name="action.icon" color="primary" size="20px"/>
+                      <div class="tw-mt-0.5 tw-font-semibold">
+                        {{ action.label || action.tooltip }}
+                      </div>
+                    </div>
                   </q-item-section>
               </q-item>
               </template>
@@ -239,7 +238,7 @@ export default {
       let response = [
        //Delete action
         {
-          icon: 'fas fa-trash-alt',
+          icon: 'fa-light fa-trash-can',
           color: 'red',
           label: this.$tr('isite.cms.label.delete'),
           action: (item) => {
@@ -247,7 +246,7 @@ export default {
           }
         },
         {
-          icon: 'fas fa-pencil',
+          icon: 'fa-light fa-pencil',
           color: 'red',
           label: this.$tr('isite.cms.label.edit'),
           action: (item) => {
@@ -297,12 +296,10 @@ export default {
   },
 };
 </script>
-<style scoped>
-.kd-without-arrow .q-btn-dropdown__arrow {
-  @apply tw-hidden !important;
+<style lang="scss">
+.kd-without-arrow {
+  .q-btn-dropdown__arrow {
+    @apply tw-hidden;
+  }
 }
-.kd-list-without-arrow .q-item__section--avatar {
-  @apply tw-mx-1 tw-pr-1 tw-min-w-0;
-}
-
 </style>
