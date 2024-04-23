@@ -90,19 +90,11 @@ export default defineComponent({
   width: 380px;
 }
 
-.leaflet-control-fullscreen a {
-  background:#fff url(./plugins//fullscreen/fullscreen.png) no-repeat 0 0;
-  background-size:26px 52px;
-  }
-  .leaflet-touch .leaflet-control-fullscreen a {
-    background-position: 2px 2px;
-    }
-  .leaflet-fullscreen-on .leaflet-control-fullscreen a {
-    background-position:0 -26px;
-    }
-  .leaflet-touch.leaflet-fullscreen-on .leaflet-control-fullscreen a {
-    background-position: 2px -24px;
-    }
+.leaflet-control-fullscreen a i {
+  font-size: 18px;
+  height: 20px;
+  padding-top: 6px;
+}
 
 /* Do not combine these two rules; IE will break. */
 .leaflet-container:-webkit-full-screen {
@@ -121,13 +113,5 @@ export default defineComponent({
   top:0!important;
   left:0!important;
   z-index:99999;
-  }
-
-@media
-  (-webkit-min-device-pixel-ratio:2),
-  (min-resolution:192dpi) {
-    .leaflet-control-fullscreen a {
-      background-image:url(./plugins//fullscreen/fullscreen2x.png);
-    }
   }
 </style>
