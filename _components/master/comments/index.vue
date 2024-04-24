@@ -116,7 +116,7 @@
                             flat
                             v-if="permisionComments.destroy && !Boolean(item.internal)"
                             class="tw-text-gray-500"
-                            icon="fa-sharp fa-regular fa-trash"
+                            icon="fa-light fa-trash"
                             size="xs"
                             @click="deleteComment(item.id)"
                           >
