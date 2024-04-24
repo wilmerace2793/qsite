@@ -30,7 +30,7 @@
             avatar
             class="f-cursor-grab"
           >
-            <i class="fa-solid fa-bars drag_handle"/>
+            <i class="fa-solid fa-grip-lines drag_handle tw-text-blue-900 tw-text-base"/>
           </q-item-section>
           <q-item-section>
             <q-item-label
@@ -163,21 +163,21 @@ export default {
 </script>
 <style>
 .folder-item:hover .folder-title {
-  color: var(--q-color-primary);
+  color: var(--q-primary);
 }
 .folder-item .q-focus-helper:before,
 .folder-item .q-focus-helper:after,
 .list-report-menu .q-focus-helper:before,
 .list-report-menu .q-focus-helper:after {
-    background: var(--q-color-primary) !important;
+    background: var(--q-primary) !important;
     opacity: 1 !important;
 }
 .list-report-menu .q-item {
     min-height: 46px;
 }
 .folder-item .q-item__section--avatar .q-icon {
-  color: var(--q-color-primary);
-  background: var(--q-color-primary);
+  color: var(--q-primary);
+  background: var(--q-primary);
   opacity: .5;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

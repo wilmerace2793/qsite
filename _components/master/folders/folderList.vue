@@ -6,7 +6,7 @@
           v-model="folder.isCollapse"
           bordered
           expand-icon-toggle
-          class="tw-shadow-lg tw-bg-white tw-rounded-xl"
+          class="tw-shadow-lg tw-rounded-xl"
           @show="getRelation"
         >
           <template v-slot:header>

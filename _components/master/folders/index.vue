@@ -79,13 +79,14 @@ export default {
   min-width: 30px !important;
 }
 .list-report-menu > .q-item .q-icon {
-  color: var(--q-color-primary);
+  color: var(--q-primary);
 }
 .group-list-report {
   @apply tw--mx-4;
 }
 .group-list-report .q-item__section--side > .q-icon {
-  color: var(--q-color-primary);
+  @apply tw-text-sm;
+  color: var(--q-primary);
 }
 .group-list-report .q-expansion-item__container > .q-item {
   @apply tw-pr-5 tw-py-0 tw-rounded-xl;
