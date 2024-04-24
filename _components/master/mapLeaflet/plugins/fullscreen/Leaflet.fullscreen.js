@@ -19,6 +19,10 @@
             title: {
                 'false': 'View Fullscreen',
                 'true': 'Exit Fullscreen'
+            },
+            icon: {
+                'false': 'fa-light fa-expand',
+                'true': 'fa-light fa-compress'
             }
         },
 
@@ -28,6 +32,7 @@
             this.link = L.DomUtil.create('a', 'leaflet-control-fullscreen-button leaflet-bar-part', container);
             this.link.href = '#';
 
+            this.icon = L.DomUtil.create('i', this.options.icon.false, this.link);
             this._map = map;
             this._map.on('fullscreenchange', this._toggleTitle, this);
             this._toggleTitle();
@@ -45,6 +50,7 @@
 
         _toggleTitle: function() {
             this.link.title = this.options.title[this._map.isFullscreen()];
+            this.icon.className = this.options.icon[this._map.isFullscreen()]
         }
     });
 
