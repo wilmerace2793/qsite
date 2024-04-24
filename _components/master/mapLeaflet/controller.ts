@@ -138,11 +138,7 @@ export default function controller(props: any, emit: any) {
       }).addTo(state.map);
 
       state.map.addControl(new L.Control.Fullscreen({
-        position: controlsPosition,
-        title: {
-          'false': 'pantalla completa',
-          'true': 'salir pantalla'
-        }
+        position: controlsPosition
       }));
       
       if(methods.isPositionMarkerMap()){
