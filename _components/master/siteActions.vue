@@ -37,7 +37,7 @@
           <q-tooltip>{{ btn.label }}</q-tooltip>
           <!-- Badge -->
           <q-badge 
-            v-if="btn.badgeLabel" 
+            v-if="btn.badgeLabel || btn.badge" 
             :color="btn.badgeColor || 'orange'" 
             rounded floating
           >
@@ -203,10 +203,11 @@ export default {
             name: 'chat',
             label: 'Chat',
             vIf: (config('app.mode') == 'iadmin') && this.$hasAccess('ichat.conversations.index'),
+            badge: this.badge.chat,
             props: {
               ...this.defaultButtonProps,
               icon: 'fa-light fa-message-lines',
-              class: `btn-small ${this.badge.chat ? 'active-badge' : ''}`
+              class: 'btn-small'
             },
             action: () => eventBus.emit('toggleMasterDrawer', 'chat')
           },
@@ -215,10 +216,11 @@ export default {
             name: 'notifications',
             label: this.$trp('isite.cms.label.notification'),
             vIf: this.$hasAccess('notification.notifications.manage'),
+            badge: this.badge.notification,
             props: {
               ...this.defaultButtonProps,
               icon: 'fa-light fa-bell',
-              class: `btn-small ${this.badge.notification ? 'active-badge' : ''}`
+              class: 'btn-small'
             },
             action: () => eventBus.emit('toggleMasterDrawer', 'notification')
           },
