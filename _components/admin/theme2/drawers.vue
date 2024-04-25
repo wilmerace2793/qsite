@@ -202,11 +202,10 @@ export default {
 <style lang="scss">
 #masterDrawers2 {
   background-color: $primary;
-  aside {
+
+  #menuMaster2 {
     background: $primary;
     z-index: 3000;
-  }
-  #menuMaster2 {
     #logoSite2 {
       padding: 20px 25px 26px 25px;
       height: 120px;
