@@ -271,9 +271,13 @@
           <upload-image v-model="responseValue" v-bind="fieldProps.field"/>
         </q-field>
         <!--Media-->
-        <q-field v-model="responseValue" v-if="loadField('media')" label=""
-                 class="field-no-padding no-border media-dinamyc-field"
-                 v-bind="fieldProps.fieldComponent">
+        <q-field 
+          v-model="responseValue" 
+          v-if="loadField('media') && configModules('main.qmedia.moduleName')" 
+          label=""
+          class="field-no-padding no-border media-dinamyc-field"
+          v-bind="fieldProps.fieldComponent"
+        >
           <!--<media v-model="responseValue" class="bg-white" v-bind="fieldProps.field" />-->
           <select-media v-model="responseValue" class="bg-white" v-bind="fieldProps.field"/>
         </q-field>
@@ -1691,6 +1695,10 @@ export default {
       if(props["fill-input"]) {
         this.responseValue = val
       }
+    },
+    configModules(name) {
+      if (!name) return
+      return Boolean(config(name))
     }
   }
 }

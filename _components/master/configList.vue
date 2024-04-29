@@ -193,8 +193,7 @@
 
       <!--Clear Cache-->
       <div class="q-px-sm cursor-pointer q-pt-md" @click="clearCache()">
-        <q-spinner color="primary" size="20px" v-if="loadingCacheClear" class="q-mr-sm"/>
-        <q-icon v-else color="primary" size="18px" name="fas fa-broom" class="q-mr-sm"/>
+        <q-icon color="primary" size="18px" name="fas fa-broom" class="q-mr-sm"/>
         {{ $t('isite.cms.configList.clearCache', {capitalize: true}) }}
       </div>
 
@@ -397,11 +396,6 @@ export default {
 
     //Clear cache
     clearCache() {
-      this.loadingCacheClear = true
-      //Request
-      this.$crud.post('apiRoutes.qsite.cacheClear').then(response => {
-      }).catch(error => this.loadingCacheClear = false)
-      this.loadingCacheClear = false
       this.$store.dispatch('qsiteApp/REFRESH_PAGE');
     },
 
