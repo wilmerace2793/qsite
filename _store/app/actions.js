@@ -14,6 +14,9 @@ export const REFRESH_PAGE = ({state, commit, dispatch, getters}) => {
   return new Promise(async (resolve, reject) => {
     let currentRoute = state.currentRoute
     Loading.show()
+    crud.post('apiRoutes.qsite.cacheClear')
+      .then(response => {
+      }).catch(error => console.error(error))
     commit('LOAD_PAGE', false)
     await cache.restore(config('app.saveCache.refresh'))//Reset cache
     //await dispatch('RESET_STORE')//Reset Vuex
@@ -24,7 +27,9 @@ export const REFRESH_PAGE = ({state, commit, dispatch, getters}) => {
     dispatch('qsiteApp/SET_SITE_COLORS', null, {root: true})//Load colors
     commit('LOAD_PAGE', true)
     Loading.hide()
+    
     resolve(true)
+    window.location.reload()
   })
 }
 
