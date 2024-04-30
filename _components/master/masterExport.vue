@@ -36,7 +36,7 @@
           <div id="lastReportContent" v-if="fileExport.length" class="q-mb-md col-12">
             <template v-for="(file, keyFile) in fileExport" :key="keyFile">
               <div v-if="file.path">
-                <q-separator class="q-my-md"/>
+                <q-separator class="q-my-md" />
                 <!--Title-->
                 <div class="text-blue-grey q-mb-sm">
                   <b>{{ $tr('isite.cms.messages.lastReport') }}{{ file.fileFormat ? ` (${file.fileFormat})` : '' }}</b>
@@ -44,7 +44,7 @@
                 <!--Date-->
                 <div class="text-caption">
                   <label class="text-blue-grey">{{ $tr('isite.cms.label.date') }}:</label>
-                  {{ $trd(file.lastModified, {type: 'long'}) }}
+                  {{ $trd(file.lastModified, { type: 'long' }) }}
                 </div>
                 <!--Size-->
                 <div class="text-caption">
@@ -54,7 +54,7 @@
                 <!--Action-->
                 <div class="text-right q-mt-md">
                   <q-btn :label="$tr('isite.cms.label.download')" color="green" rounded unelevated size="13px"
-                         padding="xs sm" @click="$helper.downloadFromURL(file.path)"/>
+                         padding="xs sm" @click="$helper.downloadFromURL(file.path)" />
                 </div>
               </div>
             </template>
@@ -73,7 +73,7 @@ export default {
     eventBus.off('isite.export.ready');
   },
   props: {
-    exportItem: {type: Boolean, default: false},
+    exportItem: { type: Boolean, default: false },
     dynamicFilterValues: {}
   },
   components: {},
@@ -177,27 +177,29 @@ export default {
   },
   methods: {
     init() {
-      //Get data
-      this.getData();
-      //Listen event to push new messages
-      eventBus.on('isite.export.ready', (response) => {
-        this.$alert.info({
-          message: this.$tr('isite.cms.messages.exportReady', { fileName: response.data.fileName }),
-          timeOut: 12000,
-          actions: [
-            {
-              label: this.$tr('isite.cms.label.showMore'),
-              icon: 'fas fa-file-download',
-              color: 'white',
-              handler: () => {
-                this.showReport(response.data);
+      if (this.$hasAccess('isite.export.manage')) {
+        //Get data
+        this.getData();
+        //Listen event to push new messages
+        eventBus.on('isite.export.ready', (response) => {
+          this.$alert.info({
+            message: this.$tr('isite.cms.messages.exportReady', { fileName: response.data.fileName }),
+            timeOut: 12000,
+            actions: [
+              {
+                label: this.$tr('isite.cms.label.showMore'),
+                icon: 'fas fa-file-download',
+                color: 'white',
+                handler: () => {
+                  this.showReport(response.data);
+                }
               }
-            }
-          ]
+            ]
+          });
         });
-      });
-      //Listen refresh report
-      eventBus.on('export.data.refresh', () => this.getData());
+        //Listen refresh report
+        eventBus.on('export.data.refresh', () => this.getData());
+      }
     },
     //Get data
     async getData() {
