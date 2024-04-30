@@ -117,13 +117,13 @@ export default {
       }
     },
     expiresIn: {type: Number},
-    dynamicFilter: { 
+    dynamicFilter: {
       required: false,
       type: Object,
       default: () => {
         return {}
       }
-    }, 
+    },
     dynamicFilterValues: {
       required: false,
       type: Object,
@@ -226,7 +226,7 @@ export default {
         //Tour
         {
           label: 'Tour',
-          vIf: (this.tourName && !config('app.disableTours')),
+          vIf: (this.tourName && !config('app.disableTours') && (this.$store.getters['qsiteApp/getConfigApp']('igamification') != undefined)),
           props: {
             icon: 'fa-light fa-shoe-prints',
             id: 'actionStartTour'
@@ -250,7 +250,7 @@ export default {
           props: {
             icon: 'fa-light fa-filter',
             id: 'filter-button-crud'
-          },          
+          },
           action: () => this.$emit('toggleDynamicFilterModal')
         },
 
