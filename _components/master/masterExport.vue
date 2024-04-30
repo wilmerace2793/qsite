@@ -115,7 +115,7 @@ export default {
     },
     //Page title
     pageTitle() {
-      return this.$tr(this.$route.meta.title)
+      return this.$tr(this.$route.meta.title);
     },
     //Modal export title
     modalTitle() {
@@ -177,29 +177,29 @@ export default {
   },
   methods: {
     init() {
-      if (this.$hasAccess('isite.export.manage')) {
-        //Get data
-        this.getData();
-        //Listen event to push new messages
-        eventBus.on('isite.export.ready', (response) => {
-          this.$alert.info({
-            message: this.$tr('isite.cms.messages.exportReady', { fileName: response.data.fileName }),
-            timeOut: 12000,
-            actions: [
-              {
-                label: this.$tr('isite.cms.label.showMore'),
-                icon: 'fas fa-file-download',
-                color: 'white',
-                handler: () => {
-                  this.showReport(response.data);
-                }
+      //if (this.$hasAccess('isite.export.manage')) {
+      //Get data
+      this.getData();
+      //Listen event to push new messages
+      eventBus.on('isite.export.ready', (response) => {
+        this.$alert.info({
+          message: this.$tr('isite.cms.messages.exportReady', { fileName: response.data.fileName }),
+          timeOut: 12000,
+          actions: [
+            {
+              label: this.$tr('isite.cms.label.showMore'),
+              icon: 'fas fa-file-download',
+              color: 'white',
+              handler: () => {
+                this.showReport(response.data);
               }
-            ]
-          });
+            }
+          ]
         });
-        //Listen refresh report
-        eventBus.on('export.data.refresh', () => this.getData());
-      }
+      });
+      //Listen refresh report
+      eventBus.on('export.data.refresh', () => this.getData());
+      //}
     },
     //Get data
     async getData() {
@@ -238,8 +238,8 @@ export default {
     //Get data
     getExportData() {
       return new Promise(async (resolve, reject) => {
-        if (!this.params) return resolve(false)
-        this.loading = true
+        if (!this.params) return resolve(false);
+        this.loading = true;
         const filter = this.dynamicFilterValues;
         //Request params
         let requestParams = {
@@ -264,7 +264,7 @@ export default {
       return new Promise(async (resolve, reject) => {
         this.loading = true;
         //Instance de apiRoute
-        const apiRoute = this.params.apiRoute || 'apiRoutes.qsite.export'
+        const apiRoute = this.params.apiRoute || 'apiRoutes.qsite.export';
         const filter = this.dynamicFilterValues;
         //Request params
         let requestParams = {
@@ -323,7 +323,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },
+    }
     /*
     async storeFilter() {
       const filterClone = this.filterPlugin.storeFilter
