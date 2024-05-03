@@ -134,6 +134,13 @@
             </q-icon>
           </template>
         </q-input>
+        <!--Date range -->
+        <dateRangePicker v-if="loadField('dateRange')" 
+                         v-model="responseValue" 
+                         :fieldProps="fieldProps"
+                         :label="fieldLabel"
+                         :class="`${field.help ? 'full-date-dynamic-field' : ''}`"
+        />
         <!--Select-->
         <q-select v-model="responseValue" v-bind="fieldProps" :label="fieldLabel" use-input  :options="formatOptions"
                   @update:modelValue="matchTags(field)" v-if="loadField('select')" @filter="filterSelectOptions"
@@ -435,7 +442,8 @@ import googleMapMarker from 'modules/qsite/_components/master/googleMapMarker'
 import JsonEditorVue from 'json-editor-vue'
 import expressionField from 'modules/qsite/_components/master/expressionField/index.vue';
 import localizedPhone from 'modules/qsite/_components/master/localizedPhone/index.vue';
-import multipleDynamicFields from 'modules/qsite/_components/master/multipleDynamicFields/views'
+import multipleDynamicFields from 'modules/qsite/_components/master/multipleDynamicFields/views';
+import dateRangePicker from 'modules/qsite/_components/master/dateRangePicker';
 import { eventBus } from 'src/plugins/utils'
 
 export default {
@@ -477,6 +485,7 @@ export default {
     expressionField,
     localizedPhone,
     multipleDynamicFields,
+    dateRangePicker
   },
   watch: {
     modelValue: {
@@ -669,6 +678,35 @@ export default {
             slot: {
               ...props,
               mask: maskDate,
+            }
+          }
+          break;
+        case'dateRange':
+          //Instance the mask
+          const maskDateRange = "YYYY/MM/DD - YYYY/MM/DD"
+
+          props = {
+            field: {
+              bgColor: 'white',
+              color: 'primary',
+              outlined: true,
+              dense: true,
+              icon: 'fa-light fa-calendar-days',
+              placeHolder: maskDateRange,
+              hint: `${this.$tr("isite.cms.label.format")}: ${maskDateRange}`,
+              ...props,
+              mask: maskDateRange.replace(/[a-z,A-Z]/g, "#"),
+              rules: [
+                ...(props.rules || []),
+                val => {
+                  if (!val) return true
+                  return this.$moment(val, maskDateRange, true).isValid() || `${this.$tr('isite.cms.message.invalidFormat')} (${maskDateRange})`
+                }
+              ]
+            },
+            slot: {
+              ...props,
+              mask: maskDateRange,
             }
           }
           break;
@@ -1185,6 +1223,11 @@ export default {
           load: true
         },
         fullDate: {
+          class: 'absolute-right',
+          margin: '1em',
+          load: true
+        },
+        dateRange: {
           class: 'absolute-right',
           margin: '1em',
           load: true
