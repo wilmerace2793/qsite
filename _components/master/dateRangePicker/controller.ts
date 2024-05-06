@@ -6,6 +6,7 @@ import moment from "moment";
 export default function controller(props: any, emit: any) {
   const proxy = getCurrentInstance()!.appContext.config.globalProperties
 
+  const field = props.fieldProps.slot.field;
   const rangeDateFormat = props.fieldProps.slot.mask;
   const dateFormat = rangeDateFormat.split(' - ')[0];
   const startOfDayFormat = `${dateFormat} 00:00:00`;
@@ -111,6 +112,7 @@ export default function controller(props: any, emit: any) {
         const from = value?.from ? value?.from : value
         const to = value?.to ? value?.to : value
         toEmit = {
+          field,
           type: state.type,
           from: moment(from).format(startOfDayFormat),
           to : moment(to).format(endOfDayFormat)

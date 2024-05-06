@@ -707,6 +707,7 @@ export default {
             slot: {
               ...props,
               mask: maskDateRange,
+              field: props?.field || null
             }
           }
           break;
