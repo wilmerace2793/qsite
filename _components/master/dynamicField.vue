@@ -364,14 +364,16 @@
             tw-flex
             tw-flex-col
             tw-items-end
+            tw-mb-4
           '
         >
           <div
             class='
               tw-border
               tw-border-solid
-              tw-rounded-2xl
-              tw-p-5
+              tw-rounded-xl
+              tw-w-full
+              tw-p-3.5
             '
             :style="{ 
               borderColor: fieldProps.colorValue,
@@ -379,18 +381,21 @@
             }"
           >
             <!--content-->
-            <div class='tw-flex tw-item-center'>
+            <div 
+              class='tw-flex tw-items-center'
+              :class="{
+                'tw-mb-2': fieldProps.actions.length > 0
+              }"
+            >
               <!--Icon-->
               <q-icon
                 v-if="fieldProps.icon"
                 :name="fieldProps.icon"
                 :color="fieldProps.color || 'info'" 
-                size="50px"
+                size="26px"
               />
               <!--message-->
-              <p class='tw-ml-2'>
-                {{ fieldProps.message }}
-              </p>
+              <p class='tw-ml-3.5' v-html="fieldProps.message" />
             </div>
           </div>
           <!--Actions-->
