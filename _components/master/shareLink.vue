@@ -106,9 +106,9 @@
             apiUrl: `https://api.whatsapp.com/send?text=${this.link}`
           },
           twitter: {
-            icon: 'fab fa-twitter',
-            color: 'cyan',
-            label: 'Twitter',
+            icon: 'fas fa-times',
+            color: 'dark',
+            label: 'Twitter / X',
             apiUrl: `http://www.twitter.com/share?url=${this.link}`
           },
         }
