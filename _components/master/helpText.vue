@@ -1,13 +1,13 @@
 <template>
-  <q-btn 
+  <q-btn
     size="xs"
     :style="btnStyle"
     round :color="defaultColor"
     icon="fa-solid fa-info"
     style="z-index: 4"
-    unelevated
+    outline
   >
-    <q-menu 
+    <q-menu
       class="
         tw-rounded-2xl
         tw-shadow-2xl
@@ -15,7 +15,7 @@
       "
     >
       <!--Icon and title-->
-      <div 
+      <div
         v-if="title"
         class="
           tw-flex
@@ -24,20 +24,20 @@
           tw-mb-2.5
         "
       >
-        <section 
+        <section
           class="
             tw-flex
             tw-flex-row
             tw-items-center
           "
         >
-          <q-icon 
-            :name="icon || defaultIcon" 
-            :color="defaultColor" 
-            size="20px" 
+          <q-icon
+            :name="icon || defaultIcon"
+            :color="defaultColor"
+            size="20px"
             class="tw-mr-2.5"
           />
-          <h3 
+          <h3
             class="
               tw-text-base
               tw-font-semibold
@@ -47,9 +47,9 @@
           </h3>
         </section>
         <!--Close actions-->
-        <q-btn 
-          icon="fas fa-times" 
-          v-close-popup color="blue-grey" 
+        <q-btn
+          icon="fas fa-times"
+          v-close-popup color="blue-grey"
           size="8px" unelevated
           round flat
         />
@@ -65,9 +65,9 @@
       >
         <q-icon
           v-if="!title"
-          :name="icon || defaultIcon" 
-          :color="defaultColor" 
-          size="20px" 
+          :name="icon || defaultIcon"
+          :color="defaultColor"
+          size="20px"
           class="tw-mr-2.5 tw-mt-1"
         />
         <p class="tw-max-w-80">
@@ -75,8 +75,8 @@
         </p>
         <q-btn
           v-if="!title"
-          icon="fas fa-times" 
-          v-close-popup color="blue-grey" 
+          icon="fas fa-times"
+          v-close-popup color="blue-grey"
           size="8px" unelevated
           round flat
         />
