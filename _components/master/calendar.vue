@@ -69,7 +69,7 @@
           <!--Body content | Year-->
           <template #day="{ timestamp }">
             <div class="q-pa-sm row q-col-gutter-y-xs">
-              <div v-for="(event, index) in getEventsList(timestamp)" :key="index" class="col-12">
+              <template v-for="(event, index) in getEventsList(timestamp)" :key="index" class="col-12">
                 <div class="event-content q-px-sm q-py-xs relative-position text-caption ellipsis"
                      style="margin: 0 !important;" @click="modal.data = event; modal.show = true">
                   <q-avatar :icon="event.icon" :color="event.color" size="sm"
@@ -77,7 +77,7 @@
                   {{ event.time }} - {{ event.title }}
                   <q-tooltip>{{ event.title }}</q-tooltip>
                 </div>
-              </div>
+              </template>
             </div>
           </template>
         </q-calendar>
@@ -109,7 +109,7 @@
         </div>
       </div>
       <!--Service appointment modal-->
-      <master-modal v-model="modal.show" custom-position :actions="eventActions || []"
+      <master-modal v-model="modal.show" custom-position :actions="eventActions || []" :loading="loading"
                     :title="$tr('isite.cms.label.event') + (modal.data.id ? ' ID: ' + modal.data.id : '')">
         <!--Card Component-->
         <component v-if="modal.data.card" :is="modal.data.card.component" :row="modal.data.card.row"/>
@@ -137,10 +137,14 @@
 </template>
 <script>
 //Components
-import QCalendar from '@quasar/quasar-ui-qcalendar'
+import { QCalendar, parseDate } from '@quasar/quasar-ui-qcalendar/src/index.js'
+import '@quasar/quasar-ui-qcalendar/src/QCalendarVariables.sass'
+import '@quasar/quasar-ui-qcalendar/src/QCalendarTransitions.sass'
+import '@quasar/quasar-ui-qcalendar/src/QCalendar.sass'
 import { eventBus } from 'src/plugins/utils'
 
 export default {
+  components: { QCalendar },
   props: {
     eventsData: {default: false},
     eventActions: {default: false}
@@ -175,17 +179,19 @@ export default {
       return {
         month: {
           view: 'month',
+          mode: 'month',
           style: 'min-width: 1200px;',
-          type: 'badge'
+          type: 'badge',
         },
         week: {
-          view: 'week-agenda',
+          view: 'week',
           eventClass: 'col-12',
           style: 'min-width: 1200px;',
           type: 'card'
         },
         day: {
-          view: 'day-agenda',
+          view: 'day',
+          mode: 'day',
           eventClass: 'col-6 col-md-4 col-lg-3',
           type: 'card'
         },
@@ -209,7 +215,7 @@ export default {
       //Transform event data
       events.forEach(event => {
         //Parse date
-        let eventDate = QCalendar.parseDate(new Date(event.date))
+        let eventDate = parseDate(new Date(event.date))
         let fullDate = `${eventDate.date} ${eventDate.time}`
 
         //Validate if event is date
