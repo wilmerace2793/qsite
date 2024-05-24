@@ -35,7 +35,7 @@
               v-if="btn.props?.vIf != undefined ? btn.props?.vIf : true"
               v-bind="{...actionBtnProps, ...(btn.props || {})}"
               @click="btn.action ? btn.action() : null"
-              :loading="btn.props.loading != undefined ? btn.props.loading : false"
+              :loading="btn?.props?.loading || false"
             />
           </template>
         </div>
