@@ -49,14 +49,11 @@
           <q-tooltip v-if="btn.label">{{ btn.label }}</q-tooltip>
         </q-btn>
         <q-btn v-else v-bind="{...buttonProps, ...btn.props}" @click="btn.action != undefined ? btn.action() : null">
-          <q-tooltip v-if="btn.label">{{ btn.label }}</q-tooltip>
+          <q-badge v-if="btn?.badge?.vIf" v-bind="{...btn?.badge }" />
+          <q-tooltip v-if="btn.label && btn.badge?.show" v-model="showExpires">{{ btn.label }}</q-tooltip>
+          <q-tooltip v-else-if="btn.label">{{ btn.label }}</q-tooltip>
         </q-btn>
       </div>
-    </div>
-    <!--ExpiresIn-->
-    <div v-if="!!expiresIn" class="full-width row justify-end">
-      <q-chip removable v-model="showExpires" color="orange" outline text-color="white" icon="fa-light fa-rotate-right"
-              :label="$tr('isite.cms.dateCache', { date: getDiffCacheTime() })" />
     </div>
     <!--Description-->
     <span
@@ -168,8 +165,16 @@ export default {
       drawer: {
         filter: false
       },
-      showExpires: true
+      showExpires: false,
+      badgeAppear: false,
+      timeOuts: []
     };
+  },
+  watch: {
+    expiresIn(newValue) {
+      this.timeOuts.forEach(timeId => clearTimeout(timeId))
+      this.showBadgeRefresh(newValue)
+    }
   },
   computed: {
     isAppOffline() {
@@ -256,12 +261,19 @@ export default {
 
         //Refresh
         {
-          label: this.$trp('isite.cms.label.refresh'),
+          label: !!this.expiresIn ? this.$tr('isite.cms.dateCache', { date: this.getDiffCacheTime() }) : this.$trp('isite.cms.label.refresh'),
           type: this.multipleRefresh ? 'btn-dropdown' : '',
           vIf: (this.params.refresh && !excludeActions.includes('refresh') && !this.isAppOffline),
           props: {
             icon: 'fa-light fa-rotate-right',
             id: 'refresh-button-crud'
+          },
+          badge: {
+            vIf: (!!this.expiresIn && this.badgeAppear),
+            floating: true,
+            color: 'warning',
+            rounded: true,
+            show: true
           },
           items: [
             {
@@ -372,6 +384,7 @@ export default {
   },
   methods: {
     init() {
+      this.showBadgeRefresh(this.expiresIn)
       //this.handlerEvent();
     },
     /*
@@ -399,6 +412,7 @@ export default {
       eventBus.emit('page.data.refresh');
       eventBus.emit('crud.data.refresh');
       eventBus.emit('export.data.refresh');
+      this.badgeAppear = false
     },
     //Emit filter
     emitFilter() {
@@ -430,6 +444,8 @@ export default {
       this.drawer.filter = value;
     },
     getDiffCacheTime() {
+      // Helper function to add a leading zero if the number is less than 10
+      const addZero = (num) => num < 10 ? `0${num}` : num;
       const diffCache = this.expiresIn - appConfig.cacheTime
       const cacheDate = new Date(diffCache * 1000);
       const hours = cacheDate.getHours() > 12 ? cacheDate.getHours() - 12 : cacheDate.getHours();
@@ -439,7 +455,35 @@ export default {
       const day = cacheDate.getDate();
       const month = cacheDate.getMonth() + 1;
       const year = cacheDate.getFullYear();
-      return `${hours}:${minutes}${ampm} el ${day}/${month}/${year}`
+      return `${addZero(hours)}:${addZero(minutes)}${ampm}, ${addZero(day)}/${addZero(month)}/${year}`
+    },
+    //Show badge
+    showBadgeRefresh(expires) {
+      if (expires) {
+        this.showExpires = true
+        //Disappear in 7sec
+        this.timeOuts.push(setTimeout(() => {
+          this.showExpires = false
+        }, 7000));
+        const diffCache = expires - appConfig.cacheTime
+
+        const cacheDate = diffCache * 1000;
+        const currentTimeMillis = Date.now();
+        // Calculate the difference in milliseconds
+        const timeDifferenceMillis = currentTimeMillis - cacheDate;
+        // Check if 15 minutes have passed
+        const fifteenMinutesInMillis = 15 * 60 * 1000;
+        if (timeDifferenceMillis >= fifteenMinutesInMillis) {
+          this.badgeAppear = true
+        } else {
+          this.badgeAppear = false
+          const timeToAppear = fifteenMinutesInMillis - timeDifferenceMillis
+          //Appear bagde
+          this.timeOuts.push(setTimeout(() => {
+            this.badgeAppear = true
+          }, timeToAppear));
+        }
+      }
     }
   }
 };
