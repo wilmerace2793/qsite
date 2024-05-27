@@ -17,7 +17,8 @@
           behavior="menu"
           input-debounce="500"
           bg-color="white"
-          hide-dropdown-icon        
+          hide-dropdown-icon
+          hide-bottom-space
           clearable
           use-input
           emit-value
@@ -87,7 +88,13 @@ export default defineComponent({
 }
 
 .leaflet-search-box-input {
-  width: 380px;
+  max-width: 500px;
+  width: 70vw;
+}
+
+.leaflet-search-popup {
+  max-width: 600px;
+  width: 80vw;
 }
 
 .leaflet-control-fullscreen a i {

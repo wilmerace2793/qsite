@@ -72,7 +72,8 @@ export default function controller(props: any, emit: any) {
           info.label = item.label != '' ? item.label : item?.raw.display_name
           if(info.label){
             // state.geolocations = []
-            state.marker.bindPopup(info.label).openPopup();
+            state.marker.bindPopup(info.label, {className: 'leaflet-search-popup'})
+                        .openPopup();
             //state.marker.bindTooltip(info.label).openTooltip();
           }
         }
@@ -171,6 +172,14 @@ export default function controller(props: any, emit: any) {
           await methods.getMarkerInfo(lat, lng)
         }
       })
+
+      state.map.on('movestart', async (event) => {
+        state.showSearch = false
+      });
+
+      state.map.on('moveend', async (event) => {
+        state.showSearch = true
+      });
       
       // Polygons
       // Getcoordinates and type       
