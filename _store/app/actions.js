@@ -38,17 +38,14 @@ export const CLEAR_CACHE_STORAGE = async ({}, excludedKeyList=[]) => {
 }
 
 //Refresh page
-export const REFRESH_PAGE = ({state, commit, dispatch, getters}) => {
-  return new Promise(async (resolve, reject) => {
-    await Promise.all([
+export const REFRESH_PAGE = async ({state, commit, dispatch, getters}) => {
+    await Promise.allSettled([
       crud.post('apiRoutes.qsite.cacheClear'),//Clear laravel cache
       cache.restore(config('app.saveCache.refresh')),//Reset cache
       dispatch('quserAuth/AUTH_UPDATE', null, {root: true}),//Update user data
       dispatch('qsiteApp/GET_SITE_SETTINGS', null, {root: true})//update settings sites
     ])
     dispatch('qsiteApp/SET_SITE_COLORS', null, {root: true})//Load colors
-    resolve(true)
-  })
 }
 
 export const DELETE_SW = async () => {
