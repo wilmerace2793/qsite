@@ -39,7 +39,7 @@ export const CLEAR_CACHE_STORAGE = async ({}, excludedKeyList=[]) => {
 
 //Refresh page
 export const REFRESH_PAGE = async ({state, commit, dispatch, getters}) => {
-    Promise.allSettled([
+    await Promise.allSettled([
       crud.post('apiRoutes.qsite.cacheClear'),//Clear laravel cache
       cache.restore(config('app.saveCache.refresh')),//Reset cache
       dispatch('quserAuth/AUTH_UPDATE', null, {root: true}),//Update user data
