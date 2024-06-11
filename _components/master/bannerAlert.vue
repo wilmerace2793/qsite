@@ -3,7 +3,7 @@
       <div 
         :class="classWrapper"
         class="banner" 
-        @click="eventBus.emit('toggleMasterDrawer', 'offline')"
+        @click="action"
       >
         <q-icon
             v-if="icon && icon.name"
@@ -39,11 +39,15 @@ export default {
       },
       icon: {
         type: Object,
-        default: () => {}
+        default: () => ({})
       },
       message: {
         type: String,
         default: ''
+      },
+      action: {
+        type: Function,
+        default: () => {}
       }
     },
 }
