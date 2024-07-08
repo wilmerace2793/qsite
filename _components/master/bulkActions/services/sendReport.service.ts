@@ -7,7 +7,7 @@ export const sendReport = async (
     selectedAction: SelectedAction | null, 
     optionsForSelectedBulkActions: { [key: string]: string },
     dynamicFilterValues: any,
-    permission: string
+    permission: string | null
 ) => {
     try {
         const payload = {

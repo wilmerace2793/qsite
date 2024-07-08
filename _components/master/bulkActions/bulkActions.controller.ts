@@ -27,8 +27,8 @@ export const bulkActionsController = (props, { expose, emit }) => {
 
     const { dynamicFilterValues } = toRefs(props)
 
-    const { module, entity } = helper.getInfoFromPermission(route.meta?.permission)
-    const permission = `${module}.${entity}`
+    const { module, entity } = helper.getInfoFromPermission(route.meta?.permission) || {}
+    const permission = module && entity ? `${module}.${entity}` : null
 
     const { 
         status, 
