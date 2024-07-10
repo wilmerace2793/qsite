@@ -1,15 +1,8 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
+import { Message } from '../models/interfaces';
 
-defineProps({
-    messages: {
-        required: true,
-        type: Array,
-        default: () => {
-            return []
-        }
-    }
-})
+defineProps<{ messages: Message[] }>()
 </script>
 <template>
     <div
