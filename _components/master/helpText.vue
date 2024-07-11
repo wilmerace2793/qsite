@@ -2,7 +2,8 @@
   <q-btn
     size="xs"
     :style="btnStyle"
-    round :color="defaultColor"
+    round 
+    :color="iconColor || defaultColor"
     icon="fa-solid fa-info"
     style="z-index: 4"
     outline
@@ -88,9 +89,10 @@
 export default {
   props: {
     icon: {default: null},
-    title: {type: String, default: null, required: true},
+    title: {type: String, default: null, required: false },
     description: {type: String, required: true},
-    btnStyle: {type: String, default: ''}
+    btnStyle: {type: String, default: ''},
+    iconColor: {type: String, default: null}
   },
   data() {
     return {

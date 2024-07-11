@@ -17,6 +17,12 @@
         <div class="master-dialog__header-title row items-center">
           <q-icon v-if="icon" :name="icon" class="q-mr-sm" size="20px" />
           <b>{{ title }}</b>
+          <q-chip
+            v-if="chip"
+            class="tw-ml-3 tw-font-medium"
+            square
+            v-bind="chip"
+          />
         </div>
         <!--Close Button-->
         <q-btn v-close-popup icon="fa-light fa-xmark" round textColor="blue-grey" unelevated class="btn-medium"
@@ -62,7 +68,8 @@ export default {
     hideCloseAction: { type: Boolean, default: false },
     customPosition: { type: Boolean, default: false },
     modalWidthSize: { type: String, default: '65vw' },
-    customClass: { type: String, default: '' }
+    customClass: { type: String, default: '' },
+    chip: { type: Object || null, default: null }
   },
   emits: ['update:modelValue'],
   components: {},
