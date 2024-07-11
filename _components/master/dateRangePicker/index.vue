@@ -5,7 +5,8 @@
     v-bind="fieldProps.field"
     :label="label"
     :class="class"
-    debounce="300"
+    debounce="600"
+    :clearable="true"
   >
     <template v-slot:prepend>
       <q-icon 
@@ -25,6 +26,7 @@
               flat
               :mask="mask"
               :subtitle="inputRange"
+              color="primary"              
               @update:model-value="(value) => changeType(value)"
             >
             <div class="row items-center justify-end">
