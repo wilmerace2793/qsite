@@ -21,17 +21,13 @@
       <!--Button Actions-->
       <div v-for="(btn, keyAction) in actions" :key="keyAction">
         <!-- if the button is dropdown -->
-        <q-btn-dropdown split v-bind="{...buttonProps}" padding="xs 15px"
-                        v-if="btn.type == 'btn-dropdown'" class="btn-border-dropdown-custom"
+        <q-btn-dropdown
+          v-bind="{...buttonProps}"
+          v-if="btn.type == 'btn-dropdown'"
+          class="btn-border-dropdown-custom"
+          :label="btn.props.label"
+          :icon="btn.props.icon"
         >
-          <template v-slot:label>
-            <div class="row items-center no-wrap" @click="refreshByTime(timeRefresh)">
-              <q-icon left :name="btn.props.icon" />
-              <div class="text-center" v-if="multipleRefresh">
-                {{ titleRefresh }}
-              </div>
-            </div>
-          </template>
           <q-list>
             <q-item v-for="(item, index) in btn.items" :key="index" clickable v-close-popup
                     @click="item.action != undefined ? item.action() : null" class="tw-px-4">
@@ -68,10 +64,10 @@
       ref="exportComponent"
       :dynamicFilterValues="dynamicFilterValues"
     />
-    <bulk-actions 
-      v-if="bulkActionsPermission" 
+    <bulk-actions
+      v-if="bulkActionsPermission"
       :dynamicFilterValues="dynamicFilterValues"
-      @bulkActionsConfig="(value) => bulkActionsConfig = value" 
+      @bulkActionsConfig="(value) => bulkActionsConfig = value"
       ref="bulkActions"
     />
     <!-- Master Filter Component -->
