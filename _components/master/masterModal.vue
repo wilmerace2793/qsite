@@ -28,7 +28,7 @@
         <q-btn v-close-popup icon="fa-light fa-xmark" round textColor="blue-grey" unelevated class="btn-medium"
                 v-if="!hideCloseAction" />
       </div>
-      <q-separator inset />
+      <q-separator class="tw-h-0.5" />
       <!--Slot content-->
       <div class="master-dialog__body">
         <slot />
@@ -113,7 +113,6 @@ export default {
 .master-dialog {
   &__content {
     background: white;
-    padding: 0 10px;
   }
 
   &__header {
@@ -123,7 +122,7 @@ export default {
   }
 
   &__body {
-    padding: 0 6px 0 16px;
+    padding: 0 16px;
     margin: 16px 0;
     overflow-y: auto;
   }
