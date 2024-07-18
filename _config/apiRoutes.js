@@ -23,6 +23,6 @@ export default {
   synchronizables: `${urlBase}/synchronizables`,
   generateFile: `${urlBase}/synchronizables/generate-spread-sheet`,
   sync: `${urlBase}/synchronizables/sync`,
-  logs: `${urlBase}/logs`,
   bulkActions: `${urlBase}/bulk-actions`,
+  favourites: `${urlBase}/favourites`,
 }
