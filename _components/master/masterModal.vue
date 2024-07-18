@@ -17,12 +17,18 @@
         <div class="master-dialog__header-title row items-center">
           <q-icon v-if="icon" :name="icon" class="q-mr-sm" size="20px" />
           <b>{{ title }}</b>
+          <q-chip
+            v-if="chip"
+            class="tw-ml-3 tw-font-medium"
+            square
+            v-bind="chip"
+          />
         </div>
         <!--Close Button-->
         <q-btn v-close-popup icon="fa-light fa-xmark" round textColor="blue-grey" unelevated class="btn-medium"
                 v-if="!hideCloseAction" />
       </div>
-      <q-separator inset />
+      <q-separator class="tw-h-0.5" />
       <!--Slot content-->
       <div class="master-dialog__body">
         <slot />
@@ -62,7 +68,8 @@ export default {
     hideCloseAction: { type: Boolean, default: false },
     customPosition: { type: Boolean, default: false },
     modalWidthSize: { type: String, default: '65vw' },
-    customClass: { type: String, default: '' }
+    customClass: { type: String, default: '' },
+    chip: { type: Object || null, default: null }
   },
   emits: ['update:modelValue'],
   components: {},
@@ -106,7 +113,6 @@ export default {
 .master-dialog {
   &__content {
     background: white;
-    padding: 0 10px;
   }
 
   &__header {
@@ -116,7 +122,7 @@ export default {
   }
 
   &__body {
-    padding: 0 6px 0 16px;
+    padding: 0 16px;
     margin: 16px 0;
     overflow-y: auto;
   }
