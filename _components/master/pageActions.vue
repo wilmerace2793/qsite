@@ -235,7 +235,7 @@ export default {
         // Bulk Actions
         {
           label: this.$tr('isite.cms.label.newBulkAction'),
-          vIf: this.bulkActionsPermission && this.bulkActionsConfig,
+          vIf: this.bulkActionsPermission && this.bulkActionsConfig && !this.isAppOffline,
           props: {
             icon: 'fa-duotone fa-boxes-packing'
           },
