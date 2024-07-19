@@ -293,7 +293,7 @@
           v-bind="fieldProps.fieldComponent"
         >
           <!--<media v-model="responseValue" class="bg-white" v-bind="fieldProps.field" />-->
-          <select-media v-model="responseValue" class="bg-white" v-bind="fieldProps.field" />
+          <select-media v-model="responseValue" class="bg-white" v-bind="fieldProps.field" @files="field.getFiles" />
         </q-field>
         <!--Manage Permission-->
         <manage-permissions v-model="responseValue" class="q-mb-sm" v-if="loadField('permissions')"
@@ -624,7 +624,19 @@ export default {
     //Return field props
     fieldProps() {
       //Default props
-      let props = { ...this.field.props || {} };
+      let props = { ...this.field.props || {} }
+
+      //Add ruler to required field
+      if (this.field.required) {
+        let requireRule = val => !!val || this.$tr('isite.cms.message.fieldRequired')
+        if (this.field.type == 'media') {
+          const zone = props.zone
+          if(props.multiple || props.zone == 'gallery') requireRule = val => val[zone]?.orders.length || this.$tr('isite.cms.message.fieldRequired')
+          else requireRule = val => !!val[zone] || this.$tr('isite.cms.message.fieldRequired')
+        }
+        if (!props.rules) props.rules = []
+        props.rules.push(requireRule)
+      }
 
       //Case per type field
       switch (this.field.type) {
@@ -1103,17 +1115,6 @@ export default {
             ...props
           };
           break;
-      }
-
-      //Add ruler to required field
-      if (this.field.required) {
-        if (props.field) {
-          if (!props.field.rules) props.field.rules = [];
-          props.field.rules.push(val => !!val || this.$tr('isite.cms.message.fieldRequired'));
-        } else {
-          if (!props.rules) props.rules = [];
-          props.rules.push(val => !!val || this.$tr('isite.cms.message.fieldRequired'));
-        }
       }
 
       //Response
