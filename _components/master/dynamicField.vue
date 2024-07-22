@@ -296,8 +296,8 @@
           <select-media v-model="responseValue" class="bg-white" v-bind="fieldProps.field" />
         </q-field>
         <!--Manage Permission-->
-        <manage-permissions v-model="responseValue" class="q-mb-sm" v-if="loadField('permissions')"
-                            @update:modelValue="watchValue" :allow-inherit="field.allowInherit ? true : false" />
+        <manage-permissions v-model="responseValue" class="tw-mb-5" v-if="loadField('permissions')"
+                            @update:modelValue="watchValue" :allow-inherit="field.allowInherit ? true : false"/>
         <!--Manage Settings-->
         <manage-settings v-model="responseValue" class="q-mb-sm" :settings="field.settings"
                          v-if="loadField('settings')" @update:modelValue="watchValue" />

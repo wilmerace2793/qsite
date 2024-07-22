@@ -101,16 +101,14 @@
           <template v-for="(item, itemKey) in readValues"  :key="itemKey" >
             <q-chip
               v-if="item.label !== ''"
-              removable
-              color="primary" 
-              text-color="white"
-              outline
-              square
+              class="tw-pr-5 tw-bg-gray-100"
+              removable 
+              text-color="primary"
               @remove="removeReadValue(itemKey)" 
             >
               <span class="text-weight-bold">{{ item.label }}</span>
               &nbsp;
-              <span>{{ item.option }}</span>
+              <span class="tw-mr-1">{{ item.option }}</span>
             </q-chip>
         </template>
         </div>
