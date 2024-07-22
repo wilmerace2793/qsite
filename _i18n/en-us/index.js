@@ -480,7 +480,9 @@ export default {
         "cacheCleanup": "Cache Cleanup",
         "newBulkAction": "New Bulk Action",
         "history": "History",
-        "dispatch": "Dispatch"
+        "dispatch": "Dispatch",
+        "bulkPermissions": "Bulk Permissions",
+        "entityPermissions": "Entity Permissions",
       },
       "message": {
         "requestAdded": "Request added to the offline queue successfully",

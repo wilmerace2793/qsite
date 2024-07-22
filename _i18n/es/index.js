@@ -479,7 +479,9 @@ export default {
         "cacheCleanup": "Limpieza de Caché",
         "newBulkAction": "Nueva acción masiva",
         "history": "Historial",
-        "dispatch": "Despachar"
+        "dispatch": "Despachar",
+        "bulkPermissions": "Permisos masivos",
+        "entityPermissions": "Permisos de entidad"
       },
       "message": {
         "requestAdded": "Petición agregada a la cola sin conexión",

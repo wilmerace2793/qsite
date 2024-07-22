@@ -2,117 +2,143 @@
   <q-card id="componentSelectPermissions" class="no-shadow col-12"
           v-if="$hasAccess('profile.permissions.manage')">
     <!--===== Title =====-->
-    <div id="barTitle" class="q-px-sm q-py-sm">
-      <div class="row justify-between items-center">
+    <div>
+      <div 
+          class="
+            row 
+            justify-between 
+            items-center 
+            tw-border 
+            tw-border-gray-300 
+            tw-p-1 tw-rounded-xl
+            tw-cursor-pointer
+          "
+          @click="modal.show = true"
+        >
         <!--Title-->
-        <div class="text-subtitle1 text-primary text-capitalize">
-          <q-icon name="fas fa-tasks"></q-icon>
-          {{this.$trp('isite.cms.label.permission')}}
+        <div class="tw-text-base tw-text-gray-500 tw-flex tw-items-center">
+          <q-icon name="fa-solid fa-key" class="tw-mx-2" />
+          <span>{{this.$trp('isite.cms.label.permission')}}</span>
         </div>
         <!--Loading-->
         <q-spinner v-if="loading" color="blue-grey" :size="30"/>
         <!--Toogle list-->
-        <q-btn icon="fas fa-edit" size="sm" @click="modal.show = true" rounded unelevated
-               color="green" class="q-ml-sm" v-else-if="Object.keys(modal.listPermissions).length"/>
+        <q-btn 
+          icon="fa-regular fa-pen-to-square" 
+          size="sm" @click="modal.show = true" flat round
+          color="secondary" v-else-if="Object.keys(modal.listPermissions).length"
+        />
       </div>
     </div>
 
     <!--===== Dialog Content =====-->
-    <q-dialog id="modalFormPermissions" v-model="modal.show" v-if="modal.show" no-esc-dismiss no-backdrop-dismiss>
-      <q-card>
+    <q-dialog
+      v-model="modal.show" 
+      v-if="modal.show" 
+      no-esc-dismiss 
+      no-backdrop-dismiss
+    >
+      <q-card 
+        class="
+          tw-flex 
+          tw-flex-col 
+          tw-gap-6
+          tw-p-5 
+          md:tw-min-w-[524px] 
+          md:!tw-max-w-3xl 
+          !tw-rounded-xl
+          no-shadow
+        "
+      >
         <!--== Header == -->
-        <q-toolbar class="bg-primary text-white">
-          <q-toolbar-title class="text-capitalize">
-            <q-icon name="fas fa-tasks"></q-icon>
-            {{this.$trp('isite.cms.label.permission')}}
+        <q-toolbar class="tw-p-0 text-blue-grey">
+          <q-toolbar-title class="tw-flex tw-items-center">
+            <i class="fa-regular fa-toggle-on tw-mr-3"></i>
+            <h2 class="tw-text-lg tw-font-bold">
+              {{ this.$trp('isite.cms.label.permission') }}
+            </h2>
           </q-toolbar-title>
-          <q-btn flat v-close-popup icon="fas fa-times"/>
+          <q-btn flat round dense v-close-popup size="16px">
+            <i class="fas fa-times"></i>
+          </q-btn>
         </q-toolbar>
 
         <!--=== Content ===-->
-        <!--Tabs-->
-        <q-tabs v-model="modal.tab" class="text-grey" active-color="primary"
-                indicator-color="primary" dense inline-label align="justify">
-          <q-tab icon="fas fa-filter" name="filter" :label="$tr('isite.cms.label.filter')"/>
-          <q-tab icon="fas fa-exchange-alt" name="change" :label="$tr('isite.cms.label.change')"/>
-        </q-tabs>
+        <!--== Filters ==-->
+        <section class="tw-flex tw-items-center tw-gap-3.5 tw-flex-col md:tw-flex-row">
+          <!--By Module-->
+          <q-select 
+            outlined dense v-model="modal.filter.module" :options="optionsModule"
+            :label="$tr('isite.cms.label.module')" popup-content-class="text-capitalize"
+            class="tw-w-full text-capitalize" emit-value map-options
+          />
+  
+          <!--By entity-->
+          <q-select
+            outlined dense v-model="modal.filter.entity" :options="optionsEntity"
+            :label="$tr('isite.cms.label.entity')" popup-content-class="text-capitalize"
+            class="tw-w-full text-capitalize" emit-value map-options
+          />
+        </section>
 
-        <q-separator/>
+        <section class="tw-flex tw-flex-col tw-gap-3.5">
+          <p class="tw-text-base tw-text-gray-400 tw-font-semibold">
+            {{ $tr('isite.cms.label.bulkPermissions') }}
+          </p>
+          <q-btn-toggle
+            class="tw-rounded-lg"
+            unelevated
+            v-model="modal.change.type"
+            @click="changePermissionsMassively"
+            :toggle-color="toggleColor(modal.change.type)"
+            color="grey-2" 
+            size="14px"
+            text-color="grey-8"
+            :options="options.typeChange"
+            no-caps
+          />
+        </section>
 
-        <!--Tab panels-->
-        <q-tab-panels v-model="modal.tab">
-          <!--Tab pane Filter-->
-          <q-tab-panel name="filter" class="q-pa-sm">
-            <!--== Filters ==-->
-            <!--By Module-->
-            <q-select outlined dense v-model="modal.filter.module" :options="optionsModule"
-                      :label="$tr('isite.cms.label.module')" popup-content-class="text-capitalize"
-                      class="full-width text-capitalize" emit-value map-options/>
-
-            <!--By entity-->
-            <q-select outlined dense v-model="modal.filter.entity" :options="optionsEntity"
-                      :label="$tr('isite.cms.label.entity')" popup-content-class="text-capitalize"
-                      class="full-width q-mt-sm text-capitalize" emit-value map-options/>
-
-            <q-separator class="q-my-md"/>
-
-            <!--== List Permissions ==-->
-            <q-card-section class="content-permissions q-px-xs q-pt-none">
-              <!--List Entities-->
-              <div v-for="(entity,entityName) in modal.listPermissions[modal.filter.module]" :key="entityName">
-                <q-expansion-item popup v-if="showEntity(entityName)" style="border-bottom: 1px solid whitesmoke">
-                  <!--Header slot-->
-                  <template v-slot:header>
-                    <q-item-section avatar>
-                      <q-icon color="primary" size="xs" name="fas fa-bookmark"/>
-                    </q-item-section>
-                    <q-item-section> {{entityName}}</q-item-section>
-                  </template>
-
-                  <!--List permissions-->
-                  <q-list no-border link separator>
-                    <q-item v-for="(permission,permissionName) in entity"
-                            :key="`${entityName}.${permissionName}`"
-                            :label="permissionName" class="q-py-sm">
-                      <!--Title-->
-                      <q-item-section>{{permissionName}}</q-item-section>
-                      <!--Actions-->
-                      <q-item-section side>
-                        <q-btn-toggle
-                          rounded unelevated
-                          v-model="entity[permissionName]"
-                          toggle-color="green"
-                          color="grey-2" size="8px"
-                          text-color="grey-8"
-                          :key="`${entityName}.${permissionName}`"
-                          :options="options.status"
-                        />
-                      </q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-expansion-item>
-              </div>
-            </q-card-section>
-          </q-tab-panel>
-
-          <!--Tab pane change permissions-->
-          <q-tab-panel name="change" class="q-pa-sm">
-            <!--Type change-->
-            <q-select outlined dense v-model="modal.change.type" :options="options.typeChange"
-                      :label="$tr('isite.cms.form.type')" popup-content-class="text-capitalize"
-                      class="full-width text-capitalize" emit-value map-options/>
-            <!--Apply to-->
-            <q-select outlined dense v-model="modal.change.applyTo" :options="options.typeApply"
-                      :label="$tr('isite.cms.label.module')" popup-content-class="text-capitalize"
-                      class="full-width q-mt-sm text-capitalize" emit-value map-options/>
-
-            <!--btn to apply changes-->
-            <div class="text-center q-mt-sm">
-              <q-btn :label="$tr('isite.cms.label.change')" rounded unelevated icon="fas fa-share-square"
-                     color="green" @click="changePermissions()"/>
+        <section v-if="!modal.filter.entity == '0'">
+          <p class="tw-text-base tw-text-gray-400 tw-font-semibold tw-mb-3.5">
+            {{ $tr('isite.cms.label.entityPermissions') }}
+          </p>
+          <div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-3.5">
+            <div
+              v-for="(permission, permissionName) in modal.listPermissions[modal.filter.module][modal.filter.entity]"
+              :key="permissionName"
+              :label="permissionName" 
+              class="tw-flex tw-flex-col tw-gap-2.5"
+            >
+              <!--Title-->
+              <p class="tw-font-medium">{{ permissionName }}</p>
+              <!--Actions-->
+              <q-btn-toggle
+                class="tw-rounded-lg"
+                unelevated
+                v-model="modal.listPermissions[modal.filter.module][modal.filter.entity][permissionName]"
+                :toggle-color="toggleColor(modal.listPermissions[modal.filter.module][modal.filter.entity][permissionName])"
+                color="grey-2" 
+                size="14px"
+                text-color="grey-8"
+                :key="permissionName"
+                :options="options.status"
+                no-caps
+              />
             </div>
-          </q-tab-panel>
-        </q-tab-panels>
+          </div>
+        </section>
+
+        <!--btn to apply changes-->
+        <div class="tw-flex tw-justify-end">
+          <q-btn
+            v-close-popup
+            :label="$tr('isite.cms.label.close')" 
+            rounded unelevated color="green-5" 
+            @click="changePermissions()"
+            no-caps
+          />
+        </div>
       </q-card>
     </q-dialog>
   </q-card>
@@ -125,7 +151,11 @@
           return {}
         }
       },
-      allowInherit: {default: false}
+      allowInherit: {default: false},
+      apiRoute: {
+        type: String, 
+        default: ''
+      }
     },
     emits: ['update:modelValue'],
     watch: {
@@ -161,7 +191,6 @@
           tab: 'filter',
           change: {
             type: 'allow',
-            applyTo: 'all'
           }
         }
       }
@@ -169,7 +198,7 @@
     computed: {
       //Return options of module names
       optionsModule() {
-        let optionsResponse = []
+        let optionsResponse = [{label: this.$tr('isite.cms.label.all'), value: 0}]
         let options = Object.keys(this.modal.listPermissions).sort()
 
         if (options && options.length) {
@@ -178,7 +207,7 @@
             optionsResponse.push({label: item, value: item})
           })
           //set default filter
-          this.modal.filter.module = options[0]
+          this.modal.filter.module = 0
         }
 
         return optionsResponse//Response
@@ -201,15 +230,17 @@
           }
         }
 
+        if (filterModule == 0) this.modal.filter.entity = 0
+
         return optionsResponse//Response
       },
       //Ootions to toggle buttons
       options() {
         let response = {
           typeChange: [
-            {label: this.$tr('isite.cms.label.allow'), value: 'allow'},
+            {label: this.$tr('isite.cms.label.allow'), slot: 'allow', value: 'allow'},
             {label: this.$tr('isite.cms.label.inherit'), value: 'inherit'},
-            {label: this.$tr('isite.cms.label.deny'), value: 'deny'},
+            {label: this.$tr('isite.cms.label.deny'), slot: 'deny', value: 'deny'},
           ],
           typeApply: [
             {label: this.$tr('isite.cms.label.all'), value: 'all'},
@@ -290,31 +321,34 @@
       },
       //Change permissions
       changePermissions() {
-        let type = this.$clone(this.modal.change.type)//Get type of change
-        let applyTo = this.$clone(this.modal.change.applyTo)//Get option to apply
-        let permissions = this.$clone(this.modal.listPermissions)//Clone current permissions
-        let permissionsToChange = {}//To response
-
-        //Define value to change permissions
-        let valuePermission = (type == 'allow') ? true : ((type == 'deny') ? false : 0)
-
-        //Filter only by module or all modules to change
-        if (applyTo == 'all') permissionsToChange = permissions
-        else permissionsToChange[applyTo] = permissions[applyTo]
-
-        //Apply change to all permissions
-        for (let moduleName in permissionsToChange) {
-          let moduleValues = permissions[moduleName]
-          for (let entityName in moduleValues) {
-            let entityValues = permissions[moduleName][entityName]
-            for (let permissionName in entityValues) {
-              permissions[moduleName][entityName][permissionName] = valuePermission
+        if (this.modal.filter.module == 0 || this.modal.filter.entity == 0) {
+          let type = this.$clone(this.modal.change.type)//Get type of change
+          let module = this.$clone(this.modal.filter.module)//Get option to apply
+          let permissions = this.$clone(this.modal.listPermissions)//Clone current permissions
+          let permissionsToChange = {}//To response
+  
+          //Define value to change permissions
+          let valuePermission = (type == 'allow') ? true : ((type == 'deny') ? false : 0)
+  
+          //Filter only by module or all modules to change
+          if (module == 0) permissionsToChange = permissions
+          else permissionsToChange[module] = permissions[module]
+  
+          //Apply change to all permissions
+          for (let moduleName in permissionsToChange) {
+            let moduleValues = permissions[moduleName]
+            for (let entityName in moduleValues) {
+              let entityValues = permissions[moduleName][entityName]
+              for (let permissionName in entityValues) {
+                permissions[moduleName][entityName][permissionName] = valuePermission
+              }
             }
           }
+
+          this.modal.listPermissions = this.$clone(permissions)//Set new permissions
         }
 
-        this.modal.listPermissions = this.$clone(permissions)//Set new permissions
-        this.$alert.info(this.$tr('isite.cms.label.success'))//Message success
+        this.$alert.info('Click "Update" to save the permission changes')//Message success
       },
       //Return permission with format to backend
       getPermissions() {
@@ -344,42 +378,27 @@
         }
 
         return responsePermissions//Response
+      },
+      changePermissionsMassively() {
+        if (this.modal.filter.entity == 0) return
+        const permissionValues = {
+          'allow': true,
+          'inherit': 0,
+          'deny': false
+        }
+        const entity = this.modal.listPermissions[this.modal.filter.module][this.modal.filter.entity]
+        Object.keys(entity).map(permission => {
+          entity[permission] = permissionValues[this.modal.change.type]
+        })
+      },
+      toggleColor(value) {
+        if (value === 'allow' || value === true) return 'green-5'
+        if (value === 'inherit' || value === 0) return 'light-blue-6'
+        if (value === 'deny' || value === false) return 'red-5'
       }
     }
   }
 </script>
 <style lang="scss">
-  #barTitle {
-    border: 1px solid $grey-4;
-  }
 
-  #modalFormPermissions {
-    .q-card {
-      max-width: max-content !important;
-      min-width: 345px;
-
-      .content-permissions {
-        max-height: 60vh !important;
-        overflow-y: scroll;
-
-        .q-expansion-item--expanded {
-          .q-expansion-item__container {
-            border: 2px solid $primary;
-          }
-        }
-
-        .q-btn-group {
-          border: 2px solid $green;
-
-          .q-btn {
-            padding: 4px 10px;
-
-            .q-btn__content {
-              font-size: 12px;
-            }
-          }
-        }
-      }
-    }
-  }
 </style>
