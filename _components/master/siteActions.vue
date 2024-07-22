@@ -251,6 +251,7 @@ export default {
               ...this.defaultButtonProps,
               icon: "fa-light fa-broom",
             },
+            vIf: !this.isAppOffline,
             action: () => this.$router.push({
               name: 'app.update.app',
               query: { fromCache: 1 }
