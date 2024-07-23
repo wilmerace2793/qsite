@@ -156,13 +156,14 @@ export default function controller(props: any, emit: any) {
     },
     setReadValues(){
       const result = {}      
+      const toEmit = {}
       Object.keys(state.readOnlyData).forEach(key => {
         const field = state.props.filters[key];
-        if(!field?.quickFilter){
+       // if(!field?.quickFilter){
           if(state.readOnlyData[key].value != null && state.readOnlyData[key].value && field?.type){
             
             result[key] = { 
-              label: state.readOnlyData[key].label,
+              label: state.readOnlyData[key].label || state.props.filters[key].label,
               value: state.readOnlyData[key].value, 
               option: '' 
             }
@@ -180,10 +181,14 @@ export default function controller(props: any, emit: any) {
             } else if(field?.type == 'dateRange'){
               result[key].option = `${moment(state.readOnlyData[key].value.from).format('LL')} - ${moment(state.readOnlyData[key].value.to).format('LL')}`
             }
+
+            if(result[key]['value']) toEmit[key] = {...result[key]}
+            if(field?.quickFilter) delete result[key]
           }
-        }
+        //}
       });
       state.readValues = result
+      emit('update:summary', toEmit)
     },
 
     restoreFilterValues(){
