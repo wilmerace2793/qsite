@@ -226,7 +226,7 @@ export default {
         //Export
         {
           label: this.$tr('isite.cms.label.export'),
-          vIf: (this.exportParams && !excludeActions.includes('export')),
+          vIf: (this.exportParams && !excludeActions.includes('export')) && !this.isAppOffline,
           props: {
             icon: 'fa-light fa-file-arrow-down'
           },
@@ -237,7 +237,7 @@ export default {
           label: this.$tr('isite.cms.label.newBulkAction'),
           vIf: this.bulkActionsPermission && this.bulkActionsConfig && !this.isAppOffline,
           props: {
-            icon: 'fa-duotone fa-boxes-packing'
+            icon: 'fa-light fa-boxes-packing'
           },
           action: () => this.$refs.bulkActions.showReport()
         },
