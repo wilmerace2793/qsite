@@ -130,7 +130,14 @@ export default {
       default: () => {
         return {}
       }
-    }
+    },
+    dynamicFilterSummary: {
+      required: false,
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
   },
   emits: ['search', 'new', 'refresh', 'toggleDynamicFilterModal'],
   /*
