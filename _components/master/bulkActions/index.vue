@@ -77,6 +77,15 @@
                 </div>
             </section>
 
+            <section class="tw-flex tw-flex-col">
+                <span class="text-blue-grey tw-mb-2">
+                    <b>Filters</b>
+                </span>
+                <section>
+                    <filterChip :summary="dynamicFilterSummary" />
+                </section>
+            </section>
+
             <section class="tw-w-full tw-mt-5">
                 <h4 class="tw-font-bold tw-text-sm text-blue-grey tw-mb-3.5">
                     {{ i18n.tr('isite.cms.label.history') }}
@@ -95,6 +104,7 @@ import { bulkActionsController } from './bulkActions.controller'
 import actionsForm from './components/actionsForm.vue'
 import logTable from './components/logTable.vue'
 import warning from './components/warning.vue'
+import filterChip from '../dynamicFilter/components/filterChip.vue'
 
 export default {
     emits: ['bulkActionsConfig'],
@@ -105,12 +115,20 @@ export default {
             default: () => {
                 return {}
             }
+        },
+        dynamicFilterSummary: {
+            required: false,
+            type: Object,
+            default: () => {
+                return {}
+            }
         }
     },
     components: {
         logTable,
         warning,
-        actionsForm
+        actionsForm,
+        filterChip
     },
     setup(props, { expose, emit }) {
         return { ...bulkActionsController(props, { expose, emit }) }

@@ -67,6 +67,7 @@
     <bulk-actions
       v-if="bulkActionsPermission"
       :dynamicFilterValues="dynamicFilterValues"
+      :dynamicFilterSummary="dynamicFilterSummary"
       @bulkActionsConfig="(value) => bulkActionsConfig = value"
       ref="bulkActions"
     />
