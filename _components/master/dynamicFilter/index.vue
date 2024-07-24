@@ -91,7 +91,7 @@
       </q-card>
     </q-dialog>
     <!-- quick filters --->
-      <div class="col-12 tw-mt-3" v-if="(Object.keys(readValues).length > 0) || (Object.keys(quickFilters).length > 0)">
+      <div class="col-12 tw-mt-1" v-if="(Object.keys(readValues).length > 0) || (Object.keys(quickFilters).length > 0)">
       <!--<q-separator class="q-mb-sm"/>-->
         <div class="text-blue-grey ellipsis text-caption items-center row">          
           <q-btn flat no-caps @click="showModal()">
