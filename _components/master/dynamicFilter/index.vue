@@ -14,9 +14,9 @@
           <div id="masterFilterContent">
             <!--Title-->            
             <div class="row justify-between items-center q-pa-md">
-              <div class="text-subtitle1 row items-center">
-                <q-icon name="fa-regular fa-filter" color="primary" size="20px" class="q-mr-sm"/>
-                <label class="text-primary text-weight-bold">{{ $trp('isite.cms.label.filter', {capitalize: true}) }}</label>
+              <div class="text-subtitle1 row items-center text-blue-grey">
+                <q-icon name="fa-light fa-filter" size="20px" class="q-mr-sm"/>
+                <label class="text-weight-bold">{{ $trp('isite.cms.label.filter', {capitalize: true}) }}</label>
               </div>
               <!-- Close icon -->
               <q-icon name="fas fa-times" color="blue-grey" size="20px" class="cursor-pointer"
@@ -24,7 +24,7 @@
             </div>
 
             <!--Tabs-->
-            <q-separator class="q-mb-md" inset/>
+            <q-separator class="tw-h-0.5" />
             <div id="tabsContent" class="full-width" v-if="false">
               <q-tabs v-model="tabName" dense class="text-grey" active-color="primary" indicator-color="primary"
                       align="justify" v-if="filter.hasValues" :breakpoint="0">
@@ -34,7 +34,7 @@
           </div>
 
           <!--Content-->
-          <q-scroll-area id="contentMasterField" class="q-pm-md" style="height: calc(100vh - 253px)">
+          <q-scroll-area id="contentMasterField" class="tw-mt-3.5" style="height: calc(100vh - 253px)">
             <!--Tab panels-->
             <q-tab-panels v-model="tabName" animated keep-alive>
               <!--Tab form-->

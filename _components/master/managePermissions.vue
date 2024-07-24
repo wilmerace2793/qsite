@@ -190,7 +190,7 @@
           listPermissions: [],
           tab: 'filter',
           change: {
-            type: 'allow',
+            type: !this.allowInherit ? 'allow' : 'inherit',
           }
         }
       }

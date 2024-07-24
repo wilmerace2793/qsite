@@ -1,7 +1,7 @@
 <template>
     <master-modal 
         v-model="showModal" 
-        icon="fa-solid fa-boxes-packing"
+        icon="fa-light fa-boxes-packing"
         width="380px" 
         :loading="loading"
         :title="modalTitle" 
