@@ -25,7 +25,7 @@ export const bulkActionsController = (props, { expose, emit }) => {
     const log = ref([])
     const route = useRoute()
 
-    const { dynamicFilterValues } = toRefs(props)
+    const { dynamicFilterValues, dynamicFilterSummary } = toRefs(props)
 
     const { module, entity } = helper.getInfoFromPermission(route.meta?.permission) || {}
     const permission = module && entity ? `${module}.${entity}` : null
@@ -187,6 +187,7 @@ export const bulkActionsController = (props, { expose, emit }) => {
         optionsForBulkActions,
         optionsForSelectedBulkActions,
         i18n,
+        dynamicFilterSummary,
         init,
         newReport,
         showReport,
