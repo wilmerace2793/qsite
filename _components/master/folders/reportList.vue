@@ -37,7 +37,12 @@
               class="tw-font-bold folder-title"
               lines="1"
             >
-              {{ element.title || element.id }}
+              <span
+                class="tw-cursor-pointer"
+                @click="show(element)"
+              >
+                {{ element.title || element.id }}
+              </span>
             </q-item-label>
             <q-item-label caption lines="1">
               {{ element.name || element.description }}
@@ -60,7 +65,7 @@
                     <q-item
                       clickable
                       v-close-popup
-                      @click.native="item.action(element)"
+                      @click="item.action(element)"
                       v-if="item.vIf !== undefined ? item.vIf : true"
                     >
                       <q-item-section avatar>
@@ -157,6 +162,12 @@ export default {
     },
     uniqBy(data){
       return _.uniqBy(data, 'id');
+    },
+    show(report) {
+      const action = this.fieldRelationActions.find(item => item.name =='Show');
+      if(action) {
+        action.action(report)
+      }
     },
   },
 };
