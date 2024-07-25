@@ -13,9 +13,19 @@
             <!--Generate new report-->
             <div class="col-12">
                 <!--Title-->
-                <span class="text-blue-grey">
+                <span class="text-blue-grey tw-text-base">
                     <b>{{ i18n.tr('isite.cms.label.newBulkAction') }}</b>
                 </span>
+
+                <section v-if="isDynamicFilterSummary" class="tw-flex tw-flex-col tw-mt-3.5">
+                    <span class="text-blue-grey tw-mb-1">
+                        <b>Filters</b>
+                    </span>
+                    <section>
+                        <filterChip :summary="dynamicFilterSummary" />
+                    </section>
+                </section>
+
                 <h4
                     class="tw-mb-2 tw-mt-3.5 tw-text-sm"
                     v-html="i18n.tr('isite.cms.messages.dispatchBulkAction', { pageTitle })"
@@ -75,15 +85,6 @@
                         </template>
                     </q-btn>
                 </div>
-            </section>
-
-            <section class="tw-flex tw-flex-col">
-                <span class="text-blue-grey tw-mb-2">
-                    <b>Filters</b>
-                </span>
-                <section>
-                    <filterChip :summary="dynamicFilterSummary" />
-                </section>
             </section>
 
             <section class="tw-w-full tw-mt-5">

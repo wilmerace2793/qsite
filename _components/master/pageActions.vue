@@ -63,6 +63,7 @@
       v-model="exportParams"
       ref="exportComponent"
       :dynamicFilterValues="dynamicFilterValues"
+      :dynamicFilterSummary="dynamicFilterSummary"
     />
     <bulk-actions
       v-if="bulkActionsPermission"
