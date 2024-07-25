@@ -11,7 +11,11 @@
         <q-img fit="contain" :src="minilogo"/>
       </div>
       <!--List iadmin-->
-      <q-scroll-area id="adminMenu" class="bg-primary" :style="`height: calc(100vh - 146px`">
+      <q-scroll-area 
+        id="adminMenu" 
+        :style="`height: calc(100vh - 146px)`"
+        :thumb-style="{ width: '3px' }"
+      >
         <!--Menu-->
         <menu-list ref="menuList" group :translatable="menuTranslatable" :menu="menuSelect"
                    :with-tooltip="miniState" :tooltip-props="{anchor:'center right'}"/>
@@ -118,6 +122,9 @@ export default {
     secondaryContrast() {
       return this.$getSetting('isite::secondaryContrast')
     },
+    backgroundColorNav() {
+      return this.$getSetting('isite::brandMasterMenuBackground')
+    },
     minilogo() {
       return this.$getMediaSetting('isite::logoIadminSM')['path']
     },
@@ -160,6 +167,8 @@ export default {
       const contrast2 = this.$helper.pickTextColor(bgColor2)
       this.primaryContrast ? master.style.setProperty('--q-color-contrast', this.primaryContrast) : master.style.setProperty('--q-color-contrast', contrast)
       this.secondaryContrast ? master.style.setProperty('--q-color-contrast-two', this.secondaryContrast) : master.style.setProperty('--q-color-contrast-two', contrast2)
+      this.secondaryContrast ? master.style.setProperty('--q-color-contrast-two', this.secondaryContrast) : master.style.setProperty('--q-color-contrast-two', contrast2)
+      this.backgroundColorNav ? master.style.setProperty('--q-background-color-nav', this.backgroundColorNav) : master.style.setProperty('--q-background-color-nav', bgColor)
       return this.primaryContrast ? this.primaryContrast : contrast
     },
     handlerEvent() {
@@ -198,15 +207,15 @@ export default {
 </script>
 <style lang="scss">
 #masterDrawers2 {
-  background-color: $primary;
+  background-color: var(--q-background-color-nav);
 
   #menuMaster2 {
-    background: $primary;
+    background: var(--q-background-color-nav);
     z-index: 3000;
     #logoSite2 {
       padding: 20px 25px 26px 25px;
       height: 120px;
-      background-color: #fff;
+      background-color: var(--q-background-color-nav);
     }
     #miniLogoSite {
       padding: 30px 7px;
@@ -219,7 +228,7 @@ export default {
     }
     .q-item {
       padding-left: 0;
-      background-color: $primary;
+      background-color: var(--q-background-color-nav);
       min-height: 50px;
       color: var(--q-color-contrast);
       .q-focus-helper {
@@ -253,7 +262,7 @@ export default {
         }
       }
       & > .q-expansion-item {
-        background-color: $primary;
+        background-color: var(--q-background-color-nav);
         .q-expansion-item__container {
           & > .q-item {
             .q-item__label {
@@ -269,7 +278,7 @@ export default {
           }
           & > .q-expansion-item__content {
             padding: 0 0 0 3px;
-            border-left: 18px solid $primary;
+            border-left: 18px solid var(--q-background-color-nav);
             #listMenu {
               .content-item {
                 border-left: 3px solid $secondary;
@@ -306,7 +315,7 @@ export default {
       }
     }
     .expansion-selected {
-      background-color: $primary;
+      background-color: var(--q-background-color-nav);
     }
     .q-drawer--mini {
       .q-item {
