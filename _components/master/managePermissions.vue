@@ -17,7 +17,7 @@
         >
         <!--Title-->
         <div class="tw-text-base tw-text-gray-500 tw-flex tw-items-center">
-          <q-icon name="fa-solid fa-key" class="tw-mx-2" />
+          <i class="fa-light fa-shield-keyhole tw-mx-2" />
           <span>{{this.$trp('isite.cms.label.permission')}}</span>
         </div>
         <!--Loading-->
@@ -53,8 +53,8 @@
         <!--== Header == -->
         <q-toolbar class="tw-p-0 text-blue-grey">
           <q-toolbar-title class="tw-flex tw-items-center">
-            <i class="fa-regular fa-toggle-on tw-mr-3"></i>
-            <h2 class="tw-text-lg tw-font-bold">
+            <i class="fa-light fa-shield-keyhole tw-mr-3"></i>
+            <h2 class="tw-text-lg tw-font-bold tw-m-0">
               {{ this.$trp('isite.cms.label.permission') }}
             </h2>
           </q-toolbar-title>

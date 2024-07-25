@@ -7,9 +7,19 @@
           <!--Generate new report-->
           <div id="newReportContent" class="col-12" v-if="!customExportData && allowCreation">
             <!--Title-->
-            <div class="text-blue-grey q-mb-sm">
+            <div class="text-blue-grey tw-mb-3.5 tw-text-base">
               <b>{{ $tr('isite.cms.messages.newReport') }}</b>
             </div>
+
+            <section v-if="isDynamicFilterSummary" class="tw-flex tw-flex-col tw-mb-3.5">
+                <span class="text-blue-grey tw-mb-1">
+                  <b>Filters</b>
+                </span>
+                <section>
+                  <filterChip :summary="dynamicFilterSummary" />
+                </section>
+            </section>
+
             <!--Text help Item-->
             <div class="text-caption q-mb-xs" v-if="exportItem && paramsItem.item"
                  v-html="$tr('isite.cms.messages.newExportItemHelpText', {id: paramsItem.item.id})"></div>
@@ -66,6 +76,7 @@
 </template>
 <script>
 import { eventBus } from 'src/plugins/utils';
+import filterChip from './dynamicFilter/components/filterChip.vue';
 
 export default {
   beforeUnmount() {
@@ -74,9 +85,12 @@ export default {
   },
   props: {
     exportItem: { type: Boolean, default: false },
-    dynamicFilterValues: {}
+    dynamicFilterValues: {},
+    dynamicFilterSummary: {},
   },
-  components: {},
+  components: {
+    filterChip
+  },
   watch: {
     '$route.name': {
       deep: true,
@@ -173,6 +187,9 @@ export default {
     reportQueue() {
       let lockReport = this.fileExport.find(item => item.reportQueue);
       return lockReport?.reportQueue || null;
+    },
+    isDynamicFilterSummary() {
+      return Object.keys(this.dynamicFilterSummary).length > 0;
     }
   },
   methods: {

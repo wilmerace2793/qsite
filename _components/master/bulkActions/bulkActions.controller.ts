@@ -168,6 +168,10 @@ export const bulkActionsController = (props, { expose, emit }) => {
         }
     })
 
+    const isDynamicFilterSummary = computed(() => {
+        return Object.keys(dynamicFilterSummary.value).length > 0
+    })
+
     expose({ showReport })
 
     return {
@@ -188,6 +192,7 @@ export const bulkActionsController = (props, { expose, emit }) => {
         optionsForSelectedBulkActions,
         i18n,
         dynamicFilterSummary,
+        isDynamicFilterSummary,
         init,
         newReport,
         showReport,
