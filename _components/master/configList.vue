@@ -193,7 +193,8 @@
 
       <!--Clear Cache-->
       <div 
-        class="q-px-sm cursor-pointer q-pt-md" 
+        v-if="!isAppOffline" 
+        class="q-px-sm cursor-pointer q-pt-md"
         @click="$router.push({
           name: 'app.update.app', 
           query: { fromCache: 1 }
@@ -210,7 +211,7 @@
       </div>
 
       <!--Logout  -->
-      <q-no-ssr>
+      <q-no-ssr v-if="!isAppOffline">
         <div class="q-px-sm cursor-pointer q-pt-md" @click="$router.push({name:'auth.logout'})"
              v-if="quserState.authenticated">
           <q-icon color="red" size="18px" name="fas fa-sign-out-alt" class="q-mr-sm" />
