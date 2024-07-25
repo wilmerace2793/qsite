@@ -422,7 +422,7 @@
           :class="`${field.help ? 'expression-dinamyc-field' : ''}`"
         />
         <localizedPhone
-          v-if="loadField('localizedPhone')"
+          v-if="loadField('localizedPhone') && configModules('main.qlocations.moduleName')"
           v-model="responseValue"
           :fieldProps="fieldProps"
         />
