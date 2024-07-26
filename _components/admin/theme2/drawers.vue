@@ -215,7 +215,7 @@ export default {
     #logoSite2 {
       padding: 20px 25px 26px 25px;
       height: 120px;
-      background-color: var(--q-background-color-nav);
+      background-color: #fff;
     }
     #miniLogoSite {
       padding: 30px 7px;
