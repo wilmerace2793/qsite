@@ -483,10 +483,10 @@ export default {
         "dispatch": "Dispatch",
         "bulkPermissions": "Bulk Permissions",
         "entityPermissions": "Entity Permissions",
+        "cancelled": "Cancelled",
       },
       "message": {
         "requestAdded": "Request added to the offline queue successfully",
-        "appOffline": "It seems you have no connection. Some actions may not work.",
         "phoneHint": "Enter a phone number and press enter",
         "appOffline": "You have lost connection to the internet. This app is offline.",
         "activitiesDescription": "Select the activity you want",
