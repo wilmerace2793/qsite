@@ -52,6 +52,13 @@ export const constants = () => ({
             sortable: true, 
         },
         { 
+            name: 'description', 
+            label: i18n.tr('isite.cms.label.description'), 
+            align: 'left', 
+            field: 'description', 
+            sortable: true, 
+        },
+        { 
             name: 'createdAt', 
             label: i18n.tr('isite.cms.label.date'), 
             align: 'left', 
