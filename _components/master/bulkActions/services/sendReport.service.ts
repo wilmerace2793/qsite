@@ -8,7 +8,7 @@ export const sendReport = async (
     optionsForSelectedBulkActions: { [key: string]: string },
     dynamicFilterValues: any,
     permission: string | null,
-    dynamicFilterSummary: string
+    description: string
 ) => {
     try {
         const payload = {
@@ -16,7 +16,7 @@ export const sendReport = async (
             title: selectedAction?.label,
             name: selectedAction?.value,
             type: permission,
-            description: dynamicFilterSummary
+            description
         }
 
         const requestParams = {
