@@ -49,7 +49,7 @@ export default {
       responseValue: '',
       configEditor: {
         allowedContent: true,
-        filebrowserBrowseUrl: this.$router.resolve({name: 'app.media.select'}).href,
+        filebrowserBrowseUrl: this.configModules('main.qmedia.moduleName') ? this.$router.resolve({name: 'app.media.select'}).href : null,
         extraPlugins: 'colorbutton,colordialog,justify,collapsibleItem,font,btgrid,simplebox,ckeditorfa',
         embed_provider: '//iframe.ly/api/oembed?url={url}&callback={callback}&api_key=7e0aa12b0cd2c01651346b',
         contentsCss: 'https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css',
@@ -74,7 +74,11 @@ export default {
       pluginEmbed.load(CKEDITOR);
       pluginFa.load(CKEDITOR);
       CKEDITOR.dtd.$removeEmpty['span'] = false;
-    }
+    },
+    configModules(name) {
+      if (!name) return;
+      return Boolean(config(name));
+    },
   }
 }
 </script>
