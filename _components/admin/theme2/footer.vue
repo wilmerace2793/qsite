@@ -12,11 +12,17 @@
         </div>
         <!-- Profile -->
         <div id="footerMobileProfile" class="item-footer col cursor-pointer">
-          <q-btn :to="{name: 'user.profile.me'}" flat no-caps v-if="quserState.authenticated"
-                 class="item-icon" padding="none">
-            <q-avatar size="20px">
+          <q-btn 
+            :to="{name: 'user.profile.me'}" 
+            flat 
+            no-caps 
+            v-if="quserState.authenticated"
+            class="item-icon" padding="none"
+          >
+            <q-avatar v-if="quserState?.userData?.mainImage" size="20px">
               <img :src="quserState?.userData?.mainImage">
             </q-avatar>
+            <i v-else class="fa-solid fa-user"></i>
           </q-btn>
           <div>{{ $tr('isite.cms.label.profile') }}</div>
         </div>
