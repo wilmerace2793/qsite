@@ -11,7 +11,7 @@
       :val="val"
     />
     <!-- default content -->
-    <div v-if="!isComponent" v-show="!isLoading" class="ellipsis" v-html="val" @click="onClick({val, col, row})"  :class="{ 'cursor-actionable': isClickeable, } "></div>
+    <div v-if="!isComponent" v-show="!isLoading" class="ellipsis tw-flex-1 tw-min-w-1" v-html="val" @click="onClick({val, col, row})"  :class="{ 'content-type-onclick': isClickeable }"></div>
     <q-skeleton v-if="isLoading" animated type="text" />
   </div>
 </template>
@@ -30,4 +30,11 @@ export default defineComponent({
 })
 </script>
 <style lang="scss">
+.content-type-onclick {
+  color: #2067b0;
+  cursor: pointer
+}
+.content-type-onclick:hover {
+  border-bottom: 2px dotted #2067b0;
+}
 </style>
