@@ -23,6 +23,7 @@ export default function controller(props, emit) {
       return props.col?.format ? props.col.format({val: val, col: props.col, row: props.row}) : val
     }),
     onClick: computed(() => props.col?.onClick ? props.col.onClick : () => {}),
+    isClickeable: computed(() => props.col?.onClick ? true : false),
     isComponent: computed(() => props.col?.component || false ),
     isLoading: computed(() => props.row?.isLoading || false),
     showOnLoading: computed(() =>  computeds.isLoading.value && props.col.name != 'id')

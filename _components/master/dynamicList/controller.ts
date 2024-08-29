@@ -1,7 +1,7 @@
 import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance} from "vue";
 
 import services from "modules/qsite/_components/master/dynamicList/services";
-import { store, i18n, clone } from 'src/plugins/utils';
+import { store, i18n, clone, alert } from 'src/plugins/utils';
 
 export default function controller(props: any, emit: any) {
   const proxy = getCurrentInstance()!.appContext.config.globalProperties
@@ -154,6 +154,9 @@ export default function controller(props: any, emit: any) {
           state.pagination.descending = clone(state.pagination.descending);          
           emit('dataLoaded', response.data)
         }
+      }).catch(error => {
+        state.loading = false
+        alert.error({message: i18n.tr('isite.cms.message.errorRequest'), pos: 'bottom'})
       })
     },
     updateRow(row){      
