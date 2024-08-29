@@ -93,6 +93,7 @@ export default function controller(props: any, emit: any) {
         toEmit = {
           field,
           type: state.type,
+          label: dateRanges[state.type].label,
           from: moment(`${from} ${startOfDay}`).format(emitFormat),
           to : moment(`${to} ${endOfDay}`).format(emitFormat)
         }        

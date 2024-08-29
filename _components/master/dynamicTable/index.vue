@@ -31,7 +31,7 @@
           >
             <!---quick click edit popup-->
             <editablePopup 
-              v-if="col.name != 'actions' && props.row[col.name] && col?.dynamicField && !props.row?.isLoading"
+              v-if="col.name != 'actions' && col?.dynamicField && !props.row?.isLoading"
               :row="props.row"
               :col="col"
               :beforeUpdate="beforeUpdate"
