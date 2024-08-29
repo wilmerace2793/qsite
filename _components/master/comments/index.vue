@@ -9,7 +9,7 @@
           >
             <q-item-section top avatar>
               <q-avatar size="md" color="grey-4" class="tw-ml-2">
-                <img :src="dataBase.avatar" />
+                <img :src="`${dataBase.avatar}`" />
               </q-avatar>
             </q-item-section>
             <q-item-section

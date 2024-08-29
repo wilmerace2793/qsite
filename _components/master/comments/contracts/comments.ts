@@ -1,6 +1,7 @@
 export const apiRouteDefault: string = 'apiRoutes.qrequestable.comments';
 export const commentableTypeDefault: string = 'Modules\\Requestable\\Entities\\Requestable';
 export const permissionsCommentsDefault: String = 'icomments.comments';
+import defaultImg from 'src/modules/qsite/_components/master/comments/assets/default.jpg'
 
 export interface PermissionsCommentsContract {
     create: string;
@@ -14,8 +15,7 @@ export const commentModelConst: CommentModelContract = {
     active: false,
     user: "",
     loading: false,
-    avatar:
-        "https://dev-gestionhc.ozonohosting.com/modules/iprofile/img/default.jpg",
+    avatar: defaultImg
 }
 export interface CommentModelContract {
     text: string | null;
