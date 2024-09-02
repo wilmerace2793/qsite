@@ -1,7 +1,7 @@
 export const apiRouteDefault: string = 'apiRoutes.qrequestable.comments';
 export const commentableTypeDefault: string = 'Modules\\Requestable\\Entities\\Requestable';
 export const permissionsCommentsDefault: String = 'icomments.comments';
-import defaultImg from 'src/modules/qsite/_components/master/comments/assets/default.jpg'
+import defaultImg from 'src/modules/quser/_assets/default.jpg'
 
 export interface PermissionsCommentsContract {
     create: string;
