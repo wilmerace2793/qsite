@@ -7,6 +7,7 @@
     :persistent="persistent"
     :position="customPosition ? 'right' : 'standard'"
     :style="masterModalWidthSize"
+    :allow-focus-outside="true"
   >
     <!--Content-->
     <div :id="id || 'masterModalContent'" :style="customPosition ? '' : `min-width: ${width}`"
