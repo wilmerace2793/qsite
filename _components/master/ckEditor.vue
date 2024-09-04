@@ -6,6 +6,8 @@
                :ref="`ref-${internalName}`"
                :id="`id-${internalName}`"
     />
+    <!--inner loading-->
+    <inner-loading :visible="loading" />
   </div>
 </template>
 <script>
@@ -47,6 +49,7 @@ export default {
   data() {
     return {
       responseValue: '',
+      loading: false,
       configEditor: {
         allowedContent: true,
         filebrowserBrowseUrl: this.configModules('main.qmedia.moduleName') ? this.$router.resolve({name: 'app.media.select'}).href : null,
@@ -74,11 +77,44 @@ export default {
       pluginEmbed.load(CKEDITOR);
       pluginFa.load(CKEDITOR);
       CKEDITOR.dtd.$removeEmpty['span'] = false;
+      console.dir(CKEDITOR)
+
+
+      CKEDITOR.on('instanceReady', (event) => {
+        //this.onBeforeGetData(event)
+        this.onPaste(event, CKEDITOR)
+      });      
     },
     configModules(name) {
       if (!name) return;
       return Boolean(config(name));
     },
+    onBeforeGetData(event){
+      event.editor.on('beforeGetData', (event) => {
+        console.log('before')
+      })
+
+    },
+    onPaste(event, ckEditor){
+      const editor = event.editor
+      editor.on('paste', (event) => {
+        const value = event.data.dataValue
+        if(value.includes('data:image') || value.includes('src') ){
+          const img = event.data.dataValue
+          const loadingElement = '<span id="imageToUpload">Uploading...</span>'
+          event.data.dataValue = loadingElement
+          event.data.dataValue = ''
+          this.loading = true
+          setTimeout(() => {            
+            const element = ckEditor.dom.element.createFromHtml(img)
+            editor.insertElement(element)
+            this.loading = false
+          }, 2000)
+
+
+        }
+      })
+    }
   }
 }
 </script>
