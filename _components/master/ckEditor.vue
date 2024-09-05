@@ -18,6 +18,7 @@ import pluginCollapsibleItem from 'src/plugins/ckEditorPlugins/collapsibleItem/p
 import pluginGrid from 'src/plugins/ckEditorPlugins/grid/plugin'
 import pluginEmbed from 'src/plugins/ckEditorPlugins/embed/plugin'
 import pluginFa from 'src/plugins/ckEditorPlugins/ckeditorfa-fa6/plugin'
+import { eventBus } from 'src/plugins/utils'
 
 /* range 7px to 36px*/
 let fontSizes =  Array.from({length: 30}, (_, index) => `${7+index * 1}/${7 +index * 1}px;`)
@@ -94,44 +95,66 @@ export default {
       const editor = event.editor
       editor.on('paste', (event) => {
         const value = event.data.dataValue
-        if(value.includes('data:image') || value.includes('src') ){
-          const img = event.data.dataValue
-          const element = ckEditor.dom.element.createFromHtml(img)
+        
+        if(value.includes('img') && value.includes('data:image')){
+          const element = ckEditor.dom.element.createFromHtml(value)
           this.loading = true
           event.data.dataValue = ''
-          this.uploadImage(element).then((response) => {
-            const src = response.url
-            const imgElement = `<img src="${src}"/>`
-            const element = ckEditor.dom.element.createFromHtml(imgElement)
-            editor.insertElement(element)
+          this.uploadImage(element.$.src).then((response) => {
+            if(response?.url){
+              const imgElement = `<img src="${response.url}"/>`
+              const element = ckEditor.dom.element.createFromHtml(imgElement)
+              editor.insertElement(element)             
+            }
             this.loading = false
-          })          
+          })
         }
       })
     },
    
     //upload files
     async uploadImage(data) {
-      /* create a file from base64 data and adds to form*/
-      return new Promise((resolve, reject) => {
-        fetch(data.$.src)
-        .then(res => res.blob())
-          .then(blob => {
-            let fileData = new FormData();
-            fileData.append('parent_id', 0);
-            fileData.append('disk', this.mediaDisk);
-            const file = new File([blob], "ckeditor.png", { type: 'image/png' });        
-            fileData.append('file', file)
-          //Request send file
-          this.$crud.post('apiRoutes.qmedia.files', fileData).then(response => {
-            resolve(response.data)
-          }).catch((error) => {
-            console.log(error)
+      /* create a file from base64 data and adds to form*/      
+      return new Promise((resolve, reject) => {        
+        this.cropper(data).then((response) => {
+          if(response){
+            fetch(response.base64)
+              .then(res => res.blob())
+              .then(blob => {
+
+                let fileData = new FormData();
+                fileData.append('parent_id', 0);
+                fileData.append('disk', this.mediaDisk);
+                const file = new File([blob], "uploaded-from-ckeditor.png", { type: 'image/png' });        
+                fileData.append('file', file)            
+              
+                this.$crud.post('apiRoutes.qmedia.files', fileData).then(response => {
+                  resolve(response.data)
+                }).catch((error) => {
+                  console.log(error)
+                  resolve(false)
+                });
+              })
+          } else {
+            //canceled
             resolve(false)
-          });
+          }              
         })
       })
-    }
+    },
+
+    cropper(base64){      
+      return new Promise((resolve, reject) => {
+        eventBus.emit('master.cropper.image', {
+          src: base64,
+          type: 'image/png',
+          ratio: 'free',
+          callBack: async (fileCropped) => {            
+            resolve(fileCropped)
+          }
+        })
+      })
+    }  
   }
 }
 </script>
