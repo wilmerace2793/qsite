@@ -81,23 +81,14 @@ export default {
       pluginEmbed.load(CKEDITOR);
       pluginFa.load(CKEDITOR);
       CKEDITOR.dtd.$removeEmpty['span'] = false;
-      console.dir(CKEDITOR)
-
-
+      //events
       CKEDITOR.on('instanceReady', (event) => {
-        //this.onBeforeGetData(event)
         this.onPaste(event, CKEDITOR)
       });      
     },
     configModules(name) {
       if (!name) return;
       return Boolean(config(name));
-    },
-    onBeforeGetData(event){
-      event.editor.on('beforeGetData', (event) => {
-        console.log('before')
-      })
-
     },
     onPaste(event, ckEditor){
       const editor = event.editor
