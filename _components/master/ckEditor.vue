@@ -63,6 +63,10 @@ export default {
   computed: {
     internalName(){
       return this.name || this.$uid()
+    },
+    //default disk
+    mediaDisk() {
+      return this.disk || this.$getSetting('media::filesystem');
     }
   },
   methods: {
@@ -101,18 +105,40 @@ export default {
         const value = event.data.dataValue
         if(value.includes('data:image') || value.includes('src') ){
           const img = event.data.dataValue
-          const loadingElement = '<span id="imageToUpload">Uploading...</span>'
-          event.data.dataValue = loadingElement
-          event.data.dataValue = ''
+          const element = ckEditor.dom.element.createFromHtml(img)
           this.loading = true
-          setTimeout(() => {            
-            const element = ckEditor.dom.element.createFromHtml(img)
+          event.data.dataValue = ''
+          this.uploadImage(element).then((response) => {
+            const src = response.url
+            const imgElement = `<img src="${src}"/>`
+            const element = ckEditor.dom.element.createFromHtml(imgElement)
             editor.insertElement(element)
             this.loading = false
-          }, 2000)
-
-
+          })          
         }
+      })
+    },
+   
+    //upload files
+    async uploadImage(data) {
+      /* create a file from base64 data and adds to form*/
+      return new Promise((resolve, reject) => {
+        fetch(data.$.src)
+        .then(res => res.blob())
+          .then(blob => {
+            let fileData = new FormData();
+            fileData.append('parent_id', 0);
+            fileData.append('disk', this.mediaDisk);
+            const file = new File([blob], "ckeditor.png", { type: 'image/png' });        
+            fileData.append('file', file)
+          //Request send file
+          this.$crud.post('apiRoutes.qmedia.files', fileData).then(response => {
+            resolve(response.data)
+          }).catch((error) => {
+            console.log(error)
+            resolve(false)
+          });
+        })
       })
     }
   }
