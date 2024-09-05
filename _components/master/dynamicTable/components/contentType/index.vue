@@ -1,17 +1,27 @@
 <template>
   <!--cell content-->
   <div :style="col?.style">
-    <!-- custom component -->  
-    <component 
+    <!-- custom component -->
+    <component
       v-if="component"
-      v-show="!isLoading" 
-      :is="component" 
+      v-show="!isLoading"
+      :is="component"
       :col="col"
       :row="row"
       :val="val"
     />
     <!-- default content -->
-    <div v-if="!isComponent" v-show="!isLoading" class="ellipsis tw-flex-1 tw-min-w-1" v-html="val" @click="onClick({val, col, row})"  :class="{ 'content-type-onclick': isClickeable }"></div>
+    <div v-if="!isComponent" v-show="!isLoading" class="ellipsis tw-flex-1 tw-min-w-1"
+         @click="onClick({val, col, row})">
+      <label v-html="val" :class="{ 'content-type-onclick': isClickeable }"></label>
+      <!-- help tootlipt -->
+      <q-tooltip>
+        <div v-html="deleteHtml(col.tooltip || val)" />
+        <label v-if="isClickeable" class="text-weight-bold">
+          {{ $tr('isite.cms.label.clickToAction') }}
+        </label>
+      </q-tooltip>
+    </div>
     <q-skeleton v-if="isLoading" animated type="text" />
   </div>
 </template>
