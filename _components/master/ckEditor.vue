@@ -1,5 +1,5 @@
 <template>
-  <div id="ckEditorComponent">
+  <div id="ckEditorComponent" class="relative-position">
     <ck-editor v-model="responseValue"
                :config="configEditor"
                @namespaceloaded="onNamespaceLoaded"
@@ -92,46 +92,61 @@ export default {
       return Boolean(config(name));
     },
     onPaste(event, ckEditor){
-      const editor = event.editor
+      const editor = event.editor;
+      
+      const notification = new ckEditor.plugins.notification( editor, {
+        message: this.$tr('isite.cms.label.loading'),
+        type: 'info'
+      } );
+
       editor.on('paste', (event) => {
-        const value = event.data.dataValue
-        
+        const value = event.data.dataValue        
         if(value.includes('img') && value.includes('data:image')){
-          const element = ckEditor.dom.element.createFromHtml(value)
-          this.loading = true
+
+          const element = ckEditor.dom.element.createFromHtml(value) //ckeditor element to get the src
+          const src = element.$.src //get the base64
           event.data.dataValue = ''
-          this.uploadImage(element.$.src).then((response) => {
+
+          this.uploadImage(src, notification).then((response) => {
             if(response?.url){
               const imgElement = `<img src="${response.url}"/>`
               const element = ckEditor.dom.element.createFromHtml(imgElement)
-              editor.insertElement(element)             
+              editor.insertElement(element)
+              notification.hide();
             }
-            this.loading = false
           })
+
         }
       })
-    },
-   
-    //upload files
-    async uploadImage(data) {
+    },   
+    //upload image
+    async uploadImage(data, notification) {
       /* create a file from base64 data and adds to form*/      
       return new Promise((resolve, reject) => {        
         this.cropper(data).then((response) => {
+          //this.loading = true          
           if(response){
-            fetch(response.base64)
+            notification.show();
+
+            fetch(response.base64) //get blob file from cropper base64 
               .then(res => res.blob())
               .then(blob => {
-
+                
                 let fileData = new FormData();
                 fileData.append('parent_id', 0);
                 fileData.append('disk', this.mediaDisk);
-                const file = new File([blob], "uploaded-from-ckeditor.png", { type: 'image/png' });        
-                fileData.append('file', file)            
-              
+                //create a file from blob data to be append
+                const file = new File([blob], "ckeditor.png", { type: 'image/png' });        
+                fileData.append('file', file)
+
                 this.$crud.post('apiRoutes.qmedia.files', fileData).then(response => {
-                  resolve(response.data)
+                  this.loading = false
+                  resolve(response.data)                  
+                
                 }).catch((error) => {
                   console.log(error)
+                  notification.hide();
+                  this.loading = false
                   resolve(false)
                 });
               })
