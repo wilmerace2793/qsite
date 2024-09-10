@@ -27,7 +27,8 @@ fontSizes.push('48/48px;72/72px;96/96px;')
 export default {
   props: {
     modelValue: {default: ''},
-    name: {default: null}
+    name: {default: null},
+    disk: { default: null },
   },
   emits: ['update:modelValue'],
   components: {ckEditor: CKEditor.component},
@@ -108,8 +109,8 @@ export default {
           event.data.dataValue = ''
 
           this.uploadImage(src, notification).then((response) => {
-            if(response?.url){
-              const imgElement = `<img src="${response.url}"/>`
+            if(response?.relativePath){
+              const imgElement = `<img src="${response.relativePath}"/>`
               const element = ckEditor.dom.element.createFromHtml(imgElement)
               editor.insertElement(element)
               notification.hide();
