@@ -1,11 +1,13 @@
 <template>
-  <div id="ckEditorComponent">
+  <div id="ckEditorComponent" class="relative-position">
     <ck-editor v-model="responseValue"
                :config="configEditor"
                @namespaceloaded="onNamespaceLoaded"
                :ref="`ref-${internalName}`"
                :id="`id-${internalName}`"
     />
+    <!--inner loading-->
+    <inner-loading :visible="loading" />
   </div>
 </template>
 <script>
@@ -16,6 +18,7 @@ import pluginCollapsibleItem from 'src/plugins/ckEditorPlugins/collapsibleItem/p
 import pluginGrid from 'src/plugins/ckEditorPlugins/grid/plugin'
 import pluginEmbed from 'src/plugins/ckEditorPlugins/embed/plugin'
 import pluginFa from 'src/plugins/ckEditorPlugins/ckeditorfa-fa6/plugin'
+import { eventBus } from 'src/plugins/utils'
 
 /* range 7px to 36px*/
 let fontSizes =  Array.from({length: 30}, (_, index) => `${7+index * 1}/${7 +index * 1}px;`)
@@ -24,7 +27,8 @@ fontSizes.push('48/48px;72/72px;96/96px;')
 export default {
   props: {
     modelValue: {default: ''},
-    name: {default: null}
+    name: {default: null},
+    disk: { default: null },
   },
   emits: ['update:modelValue'],
   components: {ckEditor: CKEditor.component},
@@ -47,6 +51,7 @@ export default {
   data() {
     return {
       responseValue: '',
+      loading: false,
       configEditor: {
         allowedContent: true,
         filebrowserBrowseUrl: this.configModules('main.qmedia.moduleName') ? this.$router.resolve({name: 'app.media.select'}).href : null,
@@ -60,6 +65,10 @@ export default {
   computed: {
     internalName(){
       return this.name || this.$uid()
+    },
+    //default disk
+    mediaDisk() {
+      return this.disk || this.$getSetting('media::filesystem');
     }
   },
   methods: {
@@ -74,11 +83,94 @@ export default {
       pluginEmbed.load(CKEDITOR);
       pluginFa.load(CKEDITOR);
       CKEDITOR.dtd.$removeEmpty['span'] = false;
+      //events
+      CKEDITOR.on('instanceReady', (event) => {
+        this.onPaste(event, CKEDITOR)
+      });      
     },
     configModules(name) {
       if (!name) return;
       return Boolean(config(name));
     },
+    onPaste(event, ckEditor){
+      const editor = event.editor;
+      
+      const notification = new ckEditor.plugins.notification( editor, {
+        message: this.$tr('isite.cms.label.loading'),
+        type: 'info'
+      } );
+
+      editor.on('paste', (event) => {
+        const value = event.data.dataValue        
+        if(value.includes('img') && value.includes('data:image')){
+
+          const element = ckEditor.dom.element.createFromHtml(value) //ckeditor element to get the src
+          const src = element.$.src //get the base64
+          event.data.dataValue = ''
+
+          this.uploadImage(src, notification).then((response) => {
+            if(response?.relativePath){
+              const imgElement = `<img src="${response.relativePath}"/>`
+              const element = ckEditor.dom.element.createFromHtml(imgElement)
+              editor.insertElement(element)
+              notification.hide();
+            }
+          })
+
+        }
+      })
+    },   
+    //upload image
+    async uploadImage(data, notification) {
+      /* create a file from base64 data and adds to form*/      
+      return new Promise((resolve, reject) => {        
+        this.cropper(data).then((response) => {
+          //this.loading = true          
+          if(response){
+            notification.show();
+
+            fetch(response.base64) //get blob file from cropper base64 
+              .then(res => res.blob())
+              .then(blob => {
+                
+                let fileData = new FormData();
+                fileData.append('parent_id', 0);
+                fileData.append('disk', this.mediaDisk);
+                //create a file from blob data to be append
+                const file = new File([blob], "ckeditor.png", { type: 'image/png' });        
+                fileData.append('file', file)
+
+                this.$crud.post('apiRoutes.qmedia.files', fileData).then(response => {
+                  this.loading = false
+                  resolve(response.data)                  
+                
+                }).catch((error) => {
+                  console.log(error)
+                  notification.hide();
+                  this.loading = false
+                  resolve(false)
+                });
+              })
+          } else {
+            //canceled
+            resolve(false)
+          }              
+        })
+      })
+    },
+
+    cropper(base64){      
+      return new Promise((resolve, reject) => {
+        eventBus.emit('master.cropper.image', {
+          src: base64,
+          type: 'image/png',
+          ratio: 'free',
+          callBack: async (fileCropped) => {            
+            resolve(fileCropped)
+          }
+        })
+      })
+    }  
   }
 }
 </script>
