@@ -1820,7 +1820,8 @@ export default {
               if (responseData.length) {
                 if (Array.isArray(this.modelValue)) {
                   //Remove value if isn't on response.data
-                  const results = this.modelValue.filter((value) => responseData.find((data) => data.id == value)) || null;
+                  const keyForValue = loadOptions?.select?.id || 'id'
+                  const results = this.modelValue.filter((value) => responseData.find((data) => data[keyForValue] == value)) || null;
                   this.setDefaultVModel(results);
                 }
                 this.rootOptions = [
