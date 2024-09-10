@@ -23,6 +23,9 @@ const en = {
   shortHuman: {
     weekday: 'long', day: '2-digit', month: 'long',
     hour: '2-digit', minute: 'numeric', hour12: true
+  },
+  dayHuman: {
+    weekday: 'long', day: '2-digit', month: 'long'
   }
 }
 
@@ -56,6 +59,9 @@ export default {
     shortHuman: {
       weekday: 'long', day: '2-digit', month: 'long',
       hour: '2-digit', minute: 'numeric', hour12: true
+    },
+    dayHuman: {
+      weekday: 'long', day: '2-digit', month: 'long'
     }
   },
 }
