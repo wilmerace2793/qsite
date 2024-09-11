@@ -86,7 +86,7 @@
             {{ $tr('isite.cms.label.bulkPermissions') }}
           </p>
           <q-btn-toggle
-            class="tw-rounded-lg"
+            class="tw-rounded-lg border-toggle"
             unelevated
             v-model="modal.change.type"
             @click="changePermissionsMassively"
@@ -190,7 +190,7 @@
           listPermissions: [],
           tab: 'filter',
           change: {
-            type: !this.allowInherit ? 'allow' : 'inherit',
+            type: '',
           }
         }
       }
@@ -400,5 +400,11 @@
   }
 </script>
 <style lang="scss">
+  .border-toggle > button:nth-child(1) {
+    @apply tw-border-r tw-border-gray-200 tw-border-solid;
+  }
 
+  .border-toggle > button:nth-child(3) {
+    @apply tw-border-l tw-border-gray-200 tw-border-solid;
+  }
 </style>
