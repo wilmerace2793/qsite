@@ -51,8 +51,8 @@
               v-if="col.name != 'actions'"
               :col="col"
               :row="props.row"
-            />            
-
+              :val="getVal(col, props.row)"
+            />
             
           </q-td>
         </q-tr>
@@ -148,7 +148,7 @@ export default defineComponent({
     initialPagination: {default: []},
     beforeUpdate: {        
       type: Function,
-      default: () => {}
+      default: false
     }
   },
   components: {

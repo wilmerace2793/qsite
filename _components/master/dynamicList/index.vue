@@ -59,19 +59,19 @@ import dynamicFilter from 'modules/qsite/_components/master/dynamicFilter';
 
 export default defineComponent({
   props: {
+    loadPageActions: {default: true},
     listData: {      
       apiRoute: { default: ''},
-      title: { default: ''},
       columns: {default: []},
       actions: {default: []},
       permission: {default: ''}, 
       requestParams: {default: {}}, 
       filters: { default: {}},
-      help: { default: {}},
-      pageActions: {default: true},
+      help: { default: {}},      
       beforeUpdate: {        
-        type: Function,
-        default: () => {}
+        type: Function as PropType<() => void>,
+        required: false,
+        default: null,
       }
     }
   },

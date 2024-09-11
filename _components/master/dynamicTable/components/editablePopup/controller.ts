@@ -28,18 +28,27 @@ export default function controller(props, emit) {
     async runBeforeUpdate(scope){      
       let response = true
 
-      const val = computeds.isSelectField.value ? scope.value.id : scope.value //if selectField      
+      const value = computeds.isSelectField.value ? scope.value.id : scope.value //if selectField      
       const tempRow = {...props.row}      
-      tempRow[computeds.fieldName.value] = val
+      tempRow[computeds.fieldName.value] = value
       
       if(props.beforeUpdate){        
-        await props.beforeUpdate({val, row: tempRow, col: props.col}).then((val) => {
-          scope.set()
+        await props.beforeUpdate({val: value, row: tempRow }).then((val) => {
+          if(val){
+            //replaces the value by the val returned on the promise
+            scope.value = val 
+            tempRow[computeds.fieldName.value] = val
+          } else {
+            scope.set()
+          }
           emit('updateRow', tempRow)
-        }).catch(error => {
-          scope.value = scope.initialValue
+        }).catch((val) => {          
+          scope.value =  val ? val : scope.initialValue
           response = false
         })
+      } else {
+        scope.set()
+        emit('updateRow', tempRow)
       }
       return response
     }       

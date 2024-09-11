@@ -18,7 +18,6 @@ export default function controller(props: any, emit: any) {
     loading: false,
     columns: [],
     rows: [],
-    loadPageActions: false,
     requestParams: {}, 
     showModal: false, 
     expiresIn: null,     
@@ -49,8 +48,8 @@ export default function controller(props: any, emit: any) {
         destroy: props.listData?.permission ? store.hasAccess(`${props.listData?.permission}.destroy`) : true
       };
     }), 
-    beforeUpdate: computed(() => props.listData?.beforeUpdate || false),
-    title: computed(() => props?.listData?.read.title || false),
+    beforeUpdate: computed(() => props.listData?.beforeUpdate || null),
+    title: computed(() => props?.listData?.read.title || ''),
     help: computed(() => props?.listData?.read.help || false),
     actions: computed(() => props?.listData?.actions || false),
     tableProps: computed(() => props?.listData?.read?.tableProps || null),
@@ -80,24 +79,17 @@ export default function controller(props: any, emit: any) {
     systemName: computed(() => {
       return props.listData.read?.systemName || props.listData?.permission || props.listData?.entityName;
     }),
-
   }
   
   // Methods
   const methods = {
     // methodKey: () => {}
     async init(){
-      await methods.setPageActions()
       await methods.setColumns()
 
       if(!dynamicFilter){
         methods.getData({pagination: {page: 1}}, true)
       }      
-    },
-    setPageActions(){      
-      if(props.listData?.read.filters){
-        state.loadPageActions = true
-      }
     },
     search(val){      
       if(val){        
