@@ -11,8 +11,7 @@
       :val="val"
     />
     <!-- default content -->
-    <div v-if="!isComponent" v-show="!isLoading" class="ellipsis tw-flex-1 tw-min-w-1"
-         @click="onClick({val, col, row})">
+    <div v-if="!isComponent" v-show="!isLoading" class="ellipsis tw-flex-1 tw-min-w-1">
       <label v-html="val" :class="{ 'content-type-onclick': isClickeable }"></label>
       <!-- help tootlipt -->
       <q-tooltip>

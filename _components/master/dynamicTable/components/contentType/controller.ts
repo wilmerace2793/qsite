@@ -17,8 +17,6 @@ export default function controller(props, emit) {
   // Computed
   const computeds = {
     // key: computed(() => {})
-    //data to display
-    onClick: computed(() => props.col?.onClick ? props.col.onClick : () => {}),
     isClickeable: computed(() => props.col?.onClick ? true : false),
     isComponent: computed(() => props.col?.component || false ),
     isLoading: computed(() => props.row?.isLoading || false),

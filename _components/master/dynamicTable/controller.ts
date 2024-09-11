@@ -59,6 +59,9 @@ export default function controller(props, emit) {
     deleteHtml(val) {
       if (!val) return '';
       return typeof val === 'string' ? val.replace(/<[^>]+>/g, '') : val
+    },
+    onClick(col, row){
+      if(col?.onClick) col.onClick(methods.getVal(col, row), row)
     }
   }
 

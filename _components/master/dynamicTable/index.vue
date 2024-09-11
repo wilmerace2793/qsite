@@ -28,6 +28,7 @@
             :key="col.name"
             :props="props"
             :class="`${(col?.dynamicField || col?.onClick) && !props.row?.isLoading ? 'cursor-pointer' : ''}`"
+            @click="onClick(col, props.row)"
           >
             <!---quick click edit popup-->
             <editablePopup 
