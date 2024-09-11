@@ -17,12 +17,6 @@ export default function controller(props, emit) {
   // Computed
   const computeds = {
     // key: computed(() => {})
-    //data to display
-    val: computed(() => { 
-      const val = props.col?.deleteHtml ? methods.deleteHtml(props.row[props.col.name]) : props.row[props.col.name]
-      return props.col?.format ? props.col.format({val: val, col: props.col, row: props.row}) : val
-    }),
-    onClick: computed(() => props.col?.onClick ? props.col.onClick : () => {}),
     isClickeable: computed(() => props.col?.onClick ? true : false),
     isComponent: computed(() => props.col?.component || false ),
     isLoading: computed(() => props.row?.isLoading || false),
@@ -39,10 +33,6 @@ export default function controller(props, emit) {
       if(computeds.isComponent.value){        
         state.component = markRaw(props.col.component)
       }
-    },
-    deleteHtml(val) {
-      if (!val) return '';
-      return typeof val === 'string' ? val.replace(/<[^>]+>/g, '') : val
     }
   }
 

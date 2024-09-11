@@ -29,9 +29,6 @@ export default function controller(props, emit) {
     // key: computed(() => {})    
 
     //pagination: computed(() => props.pagination),
-
-    
-
     rowsPerPageOption: computed(() => [5, 10, 20, 50, 100, 300, 500]),
     /*
     windowSize: computed(() => props.window >= '500' ? 'desktop' : 'mobile'),
@@ -54,6 +51,9 @@ export default function controller(props, emit) {
       const end = showTable < rowsPerPage ? totalPage : page * rowsPerPage;
       return `${start} - ${end} ${i18n.tr('isite.cms.label.of')} ${totalPage}`
     },
+    onClick(col, row){
+      if(col?.onClick) col.onClick(col.value, row)
+    }
   }
 
   // Mounted

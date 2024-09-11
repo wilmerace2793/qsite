@@ -28,6 +28,7 @@
             :key="col.name"
             :props="props"
             :class="`${(col?.dynamicField || col?.onClick) && !props.row?.isLoading ? 'cursor-pointer' : ''}`"
+            @click="onClick(col, props.row)"
           >
             <!---quick click edit popup-->
             <editablePopup 
@@ -51,9 +52,8 @@
               v-if="col.name != 'actions'"
               :col="col"
               :row="props.row"
-            />            
-
-            
+              :val="col.value"
+            />
           </q-td>
         </q-tr>
       </template>
@@ -148,7 +148,7 @@ export default defineComponent({
     initialPagination: {default: []},
     beforeUpdate: {        
       type: Function,
-      default: () => {}
+      default: false
     }
   },
   components: {

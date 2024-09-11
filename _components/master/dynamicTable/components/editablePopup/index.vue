@@ -59,11 +59,10 @@ export default defineComponent({
   props: {
     row: { type: Object, default: null },
     col: { type: Object, default: null },
-    beforeUpdate: {
-      type: Function,
-      default: () =>
-      {
-      }
+    beforeUpdate: {        
+      type: Function as PropType<() => void>,
+      required: false,
+      default: null,
     }
   },
   setup (props, { emit })

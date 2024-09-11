@@ -11,12 +11,11 @@
       :val="val"
     />
     <!-- default content -->
-    <div v-if="!isComponent" v-show="!isLoading" class="ellipsis tw-flex-1 tw-min-w-1"
-         @click="onClick({val, col, row})">
+    <div v-if="!isComponent" v-show="!isLoading" class="ellipsis tw-flex-1 tw-min-w-1">
       <label v-html="val" :class="{ 'content-type-onclick': isClickeable }"></label>
       <!-- help tootlipt -->
       <q-tooltip>
-        <div v-html="deleteHtml(col.tooltip || val)" />
+        <div v-html="col.tooltip || val" />
         <label v-if="isClickeable" class="text-weight-bold">
           {{ $tr('isite.cms.label.clickToAction') }}
         </label>
@@ -31,8 +30,18 @@ import controller from 'modules/qsite/_components/master/dynamicTable/components
 
 export default defineComponent({
   props: {
-    col: {default: []},
-    row: {default: []}
+    col: {
+      type: Object,
+      default: () => ({})
+    },
+    row: {
+      type: Object,
+      default: () => ({})
+    }, 
+    val: {
+      type: Object,
+      default: null
+    }
   },
   setup(props, {emit}) {
     return controller(props, emit)
