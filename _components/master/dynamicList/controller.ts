@@ -1,4 +1,4 @@
-import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance} from "vue";
+import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance, useSlots} from "vue";
 
 import services from "modules/qsite/_components/master/dynamicList/services";
 import { store, i18n, clone, alert } from 'src/plugins/utils';
@@ -11,6 +11,8 @@ export default function controller(props: any, emit: any) {
     // refKey: ref(defaultValue)
     //crudComponent: ref('crudComponent')
   }
+
+  const slots = useSlots()
 
   // States
   const state = reactive({
@@ -38,46 +40,46 @@ export default function controller(props: any, emit: any) {
   // Computed
   const computeds = {
     // key: computed(() => {})
-    
+    hasTopTableSlot : computed(() => !!slots['top-table']),
     hasPermission: computed(() => {
       //Default permission
       return  {
-        create: props.listData?.permission ? store.hasAccess(`${props.listData?.permission}.create`) : true,
-        index: props.listData?.permission ? store.hasAccess(`${props.listData?.permission}.index`) : true,
-        edit: props.listData?.permission ? store.hasAccess(`${props.listData?.permission}.edit`) : true,
-        destroy: props.listData?.permission ? store.hasAccess(`${props.listData?.permission}.destroy`) : true
+        create: props.listConfig?.permission ? store.hasAccess(`${props.listConfig?.permission}.create`) : true,
+        index: props.listConfig?.permission ? store.hasAccess(`${props.listConfig?.permission}.index`) : true,
+        edit: props.listConfig?.permission ? store.hasAccess(`${props.listConfig?.permission}.edit`) : true,
+        destroy: props.listConfig?.permission ? store.hasAccess(`${props.listConfig?.permission}.destroy`) : true
       };
     }), 
-    beforeUpdate: computed(() => props.listData?.beforeUpdate || null),
-    title: computed(() => props?.listData?.read.title || ''),
-    help: computed(() => props?.listData?.read.help || false),
-    actions: computed(() => props?.listData?.actions || false),
-    tableProps: computed(() => props?.listData?.read?.tableProps || null),
+    beforeUpdate: computed(() => props.listConfig?.beforeUpdate || null),
+    title: computed(() => props?.listConfig?.read?.title || ''),
+    help: computed(() => props?.listConfig?.read?.help || false),
+    actions: computed(() => props?.listConfig?.actions || false),
+    tableProps: computed(() => props?.listConfig?.read?.tableProps || null),
     tableActions: computed(() => {
       //Default response
       let response = []      
       //Add search action
-      if (props.listData.read.search !== false) response.push('search')      
+      if (props.listConfig.read?.search !== false) response.push('search')      
       //Add create action
-      if (props.listData.create && computeds.hasPermission.value['create']) {
+      if (computeds.hasPermission.value['create']) {
        response.push('new')
       }     
       // extras for page action
-      if (props.listData?.extraActions?.length > 0) response.push(...props.listData.extraActions)
+      if (props.listConfig?.extraActions?.length > 0) response.push(...props.listConfig.extraActions)
       return response.filter((item) => !item.vIfAction)      
     }),
 
     dynamicFilter: computed(() =>  {
-      if (props.listData.read?.filters) {
-        if (Object.keys(props.listData.read?.filters).length > 0) {
-          return props.listData.read?.filters;
+      if (props.listConfig.read?.filters) {
+        if (Object.keys(props.listConfig.read?.filters).length > 0) {
+          return props.listConfig.read?.filters;
         }
       }
       return {};
     }),
 
     systemName: computed(() => {
-      return props.listData.read?.systemName || props.listData?.permission || props.listData?.entityName;
+      return props.listConfig.read?.systemName || props.listConfig?.permission || props.listConfig?.entityName;
     }),
   }
   
@@ -87,7 +89,7 @@ export default function controller(props: any, emit: any) {
     async init(){
       await methods.setColumns()
 
-      if(!dynamicFilter){
+      if(!state.dynamicFilterValues){
         methods.getData({pagination: {page: 1}}, true)
       }      
     },
@@ -95,7 +97,7 @@ export default function controller(props: any, emit: any) {
       if(val){        
         state.requestParams.filter = {search: val} 
       } else {
-        state.requestParams = {...props.listData.read.requestParams}
+        state.requestParams = {...props.listConfig.read.requestParams}
       }
       state.requestParams['filter'] = {...state.requestParams['filter'], ...state.dynamicFilterValues}
       state.pagination.page = 1
@@ -103,9 +105,10 @@ export default function controller(props: any, emit: any) {
       methods.getData()
     },
     setColumns(){
-      state.columns = props.listData.read.columns      
+      state.columns = props.listConfig.read.columns      
       //set isEditable
       state.columns.forEach(col => {
+        col.align = col?.align || 'center'
         col['isEditable'] = computeds.hasPermission.value['edit'] && col.hasOwnProperty('dynamicField')
       });      
     },
@@ -118,9 +121,9 @@ export default function controller(props: any, emit: any) {
     
     async getData(pagination = false, refresh = false){  
       //get include: 
-      if(props.listData.read?.requestParams?.include ) state.requestParams.include = props.listData.read.requestParams.include 
+      if(props.listConfig.read?.requestParams?.include ) state.requestParams.include = props.listConfig.read.requestParams.include 
       //get filters:
-      state.requestParams.filter = {...state.requestParams?.filter || {}, ...props.listData.read?.requestParams?.filter || {}, ...state.dynamicFilterValues}
+      state.requestParams.filter = {...state.requestParams?.filter || {}, ...props.listConfig.read?.requestParams?.filter || {}, ...state.dynamicFilterValues}
       
       state.requestParams['page'] = pagination?.page || state.pagination.page
       state.requestParams['take'] = state.pagination.rowsPerPage
@@ -133,7 +136,7 @@ export default function controller(props: any, emit: any) {
       };      
 
       state.loading = true
-      services.getData(props.listData.apiRoute, refresh,  state.requestParams).then((response) => {
+      services.getData(props.listConfig.apiRoute, refresh,  state.requestParams).then((response) => {
         state.expiresIn = response?.expiresIn;
         if(response?.data){
           state.rows = response.data
@@ -155,11 +158,11 @@ export default function controller(props: any, emit: any) {
       const foundIndex = state.rows.findIndex(r => r.id == row.id);
       state.rows[foundIndex]['isLoading'] = true
 
-      services.updateItem(props.listData.apiRoute, row.id, row).then((response) => {        
+      services.updateItem(props.listConfig.apiRoute, row.id, row).then((response) => {        
         if(response?.data){
-          const requestParams = props.listData.read?.requestParams ? {...props.listData.read.requestParams} : {}
+          const requestParams = props.listConfig.read?.requestParams ? {...props.listConfig.read.requestParams} : {}
             
-          services.showItem(props.listData.apiRoute, row.id, {params: requestParams, refresh: true}).then((response) => {            
+          services.showItem(props.listConfig.apiRoute, row.id, {params: requestParams, refresh: true}).then((response) => {            
             state.rows[foundIndex] = response.data
             state.rows[foundIndex]['isLoading'] = false
             emit('updatedRow', response.data)
@@ -171,9 +174,9 @@ export default function controller(props: any, emit: any) {
       const foundIndex = state.rows.findIndex(r => r.id == row.id);
       state.rows[foundIndex]['isLoading'] = true
       
-      const requestParams = props.listData.read?.requestParams ? {...props.listData.read.requestParams} : {}
+      const requestParams = props.listConfig.read?.requestParams ? {...props.listConfig.read.requestParams} : {}
             
-      await services.showItem(props.listData.apiRoute, row.id, {params: requestParams, refresh: true}).then((response) => {
+      await services.showItem(props.listConfig.apiRoute, row.id, {params: requestParams, refresh: true}).then((response) => {
         state.rows[foundIndex] = response.data
         state.rows[foundIndex]['isLoading'] = false
       })

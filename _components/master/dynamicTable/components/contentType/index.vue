@@ -30,9 +30,18 @@ import controller from 'modules/qsite/_components/master/dynamicTable/components
 
 export default defineComponent({
   props: {
-    col: {default: []},
-    row: {default: []}, 
-    val: {default: ''}
+    col: {
+      type: Object,
+      default: () => ({})
+    },
+    row: {
+      type: Object,
+      default: () => ({})
+    }, 
+    val: {
+      type: Object,
+      default: null
+    }
   },
   setup(props, {emit}) {
     return controller(props, emit)

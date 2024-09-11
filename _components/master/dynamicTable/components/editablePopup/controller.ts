@@ -35,14 +35,15 @@ export default function controller(props, emit) {
       if(props.beforeUpdate){        
         await props.beforeUpdate({val: value, row: tempRow }).then((val) => {
           if(val){
-            //replaces the value by the val returned on the promise
+            //replaces the value by returned on resolve(val)
             scope.value = val 
             tempRow[computeds.fieldName.value] = val
           } else {
             scope.set()
           }
           emit('updateRow', tempRow)
-        }).catch((val) => {          
+        }).catch((val) => {
+          //replaces the value by returned on reject(val) or into its inital state
           scope.value =  val ? val : scope.initialValue
           response = false
         })

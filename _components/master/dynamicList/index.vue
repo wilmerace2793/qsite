@@ -37,6 +37,7 @@
         <slot name="top-table" >
         </slot>
         <dynamicTable
+          :class="{'q-mt-md q-pt-md': !hasTopTableSlot }"
           :tableProps="tableProps"
           :columns="columns"
           :rows="rows"
@@ -52,7 +53,7 @@
   </div>
 </template>
 <script lang="ts">
-import {defineComponent, toRaw} from 'vue'
+import {defineComponent}  from 'vue'
 import controller from 'modules/qsite/_components/master/dynamicList/controller'
 import dynamicTable from 'modules/qsite/_components/master/dynamicTable'
 import dynamicFilter from 'modules/qsite/_components/master/dynamicFilter';
@@ -60,19 +61,21 @@ import dynamicFilter from 'modules/qsite/_components/master/dynamicFilter';
 export default defineComponent({
   props: {
     loadPageActions: {default: true},
-    listData: {      
+    listConfig: {
       apiRoute: { default: ''},
-      columns: {default: []},
-      actions: {default: []},
-      permission: {default: ''}, 
-      requestParams: {default: {}}, 
-      filters: { default: {}},
-      help: { default: {}},      
+      permission: {default: ''},
+      read: {
+        columns: {default: []},
+        requestParams: {default: {}}, 
+        filters: { default: {}},
+        help: {default: {}}
+      },
       beforeUpdate: {        
         type: Function as PropType<() => void>,
         required: false,
         default: null,
-      }
+      },
+      actions: {default: []},
     }
   },
   components: { dynamicTable, dynamicFilter },

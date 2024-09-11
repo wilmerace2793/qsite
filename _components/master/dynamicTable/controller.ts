@@ -51,17 +51,8 @@ export default function controller(props, emit) {
       const end = showTable < rowsPerPage ? totalPage : page * rowsPerPage;
       return `${start} - ${end} ${i18n.tr('isite.cms.label.of')} ${totalPage}`
     },
-    getVal(col, row){      
-      //returns format(val, row) or just val
-      const val = col?.deleteHtml ? methods.deleteHtml(row[col.field]) : row[col.field]
-      return col?.format ? col.format(val, row) : val
-    },
-    deleteHtml(val) {
-      if (!val) return '';
-      return typeof val === 'string' ? val.replace(/<[^>]+>/g, '') : val
-    },
     onClick(col, row){
-      if(col?.onClick) col.onClick(methods.getVal(col, row), row)
+      if(col?.onClick) col.onClick(col.value, row)
     }
   }
 

@@ -52,9 +52,8 @@
               v-if="col.name != 'actions'"
               :col="col"
               :row="props.row"
-              :val="getVal(col, props.row)"
+              :val="col.value"
             />
-            
           </q-td>
         </q-tr>
       </template>
