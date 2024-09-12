@@ -39,7 +39,7 @@ export default defineComponent({
       default: () => ({})
     }, 
     val: {
-      type: Object,
+      type: null as any, //could be string or object
       default: null
     }
   },
