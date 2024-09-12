@@ -1,16 +1,15 @@
 <template>
   <div id="dynamic-table">
-    <q-table      
+    <q-table 
       v-bind="tableProps"
       :title="title"
       :loading="loading"
       :rows="rows"
       :columns="columns"
       row-key="name"
-      v-model:pagination="pagination"
+      v-model:pagination="paginationModel"
       hide-pagination
-      :pagination.sync="pagination"
-      @request="() => {console.log('request')}"
+      @request="(val) => $emit('onPagination', val.pagination)"
     >    
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
@@ -68,9 +67,9 @@
             <q-pagination
               id="crudPaginationComponent"
               v-if="showPagination(props)"
-              v-model="pagination.page"
+              v-model="paginationModel.page"
               :value="props.pagination"
-              @click.prevent="() => $emit('onPagination', pagination)"
+              @click.prevent="() => $emit('onPagination', paginationModel)"
               round
               input-class="no-shadow"
               color="while"
@@ -78,7 +77,7 @@
               active-color="primary"
               active-text-color="white"
               :max="props.pagesNumber"
-              :max-pages="6"
+              :max-pages="paginationModel.maxPages"
               :ellipses="false"
               :boundary-numbers="false"
               unelevated
@@ -88,9 +87,9 @@
             <div class="flex items-center tw-mr-4 text-blue-grey">
               <span class="sm:tw-text-sm">{{ $tr('isite.cms.label.show') }}</span>
               <q-select
-                v-model="pagination.rowsPerPage"
+                v-model="paginationModel.rowsPerPage"
                 :options="rowsPerPageOption"
-                @update:modelValue="(val) => $emit('onPagination', pagination)"
+                @update:modelValue="(val) => $emit('onPagination', paginationModel)"
                 options-cover
                 dense
                 class="q-mx-sm text-caption"
@@ -145,7 +144,7 @@ export default defineComponent({
     columns: {default: []},
     rows: {default: []},
     actions: {default: []},
-    initialPagination: {default: []},
+    pagination: {default: []},
     beforeUpdate: {        
       type: Function,
       default: false

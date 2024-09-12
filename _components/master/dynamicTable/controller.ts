@@ -8,48 +8,43 @@ export default function controller(props, emit) {
   // Refs
   const refs = {
     // refKey: ref(defaultValue)
-    pagination: ref({
-      page: 1,
-      //rowsNumber: props.initialPagination.rowsNumber,
-      rowsPerPage: 10,
-      descending: true, 
-      //sortBy: 'desc',
-    }),
   }
   
 
   // States
   const state = reactive({
     // Key: Default Value    
-    
+    paginationModel: {
+      page: 1,
+      rowsNumber: null,
+      rowsPerPage: 10,
+      descending: true,
+      maxPages: 7 
+    }    
   })
 
   // Computed
   const computeds = {
-    // key: computed(() => {})    
-
-    //pagination: computed(() => props.pagination),
+    // key: computed(() => {})
     rowsPerPageOption: computed(() => [5, 10, 20, 50, 100, 300, 500]),
-    /*
-    windowSize: computed(() => props.window >= '500' ? 'desktop' : 'mobile'),
-     //showPagination
-    showPagination: computed(() => computeds.windowSize == 'desktop' && props.pagination.pagesNumber > 1)
-    //showPagination: computed(() => true)
-    */
   }
   
 
   // Methods
   const methods = {
-    // methodKey: () => {}    
+    // methodKey: () => {}   
+    init(){
+      state.paginationModel = props.pagination
+    },     
+
     countPage(pagination){
       const page = pagination.pagination.page;
       const rowsPerPage = pagination.pagination.rowsPerPage;
-      const showTable = props.initialPagination.rowsNumber;
-      const totalPage = props.initialPagination.rowsNumber;
+      const showTable = props.rows.length;
+      const totalPage = pagination.pagination.rowsNumber;
       const start = page == 1 ? 1 : page * rowsPerPage - ((rowsPerPage - (page - 1)) <= 0 ? 1 : rowsPerPage - (page - 1));
-      const end = showTable < rowsPerPage ? totalPage : page * rowsPerPage;
-      return `${start} - ${end} ${i18n.tr('isite.cms.label.of')} ${totalPage}`
+      const end = showTable < rowsPerPage ? totalPage : page * showTable;
+      return `${start} - ${end} ${i18n.tr('isite.cms.label.of')} ${totalPage}`;
     },
     onClick(col, row){
       if(col?.onClick) col.onClick(col.value, row)
@@ -58,12 +53,14 @@ export default function controller(props, emit) {
 
   // Mounted
   onMounted(() => {
+    methods.init()
   })
 
   // Watch
-  // watch(key, (newField, oldField): void => {
-  //
-  // }, {deep: true})
+   watch(props, (newField, oldField): void => {
+     state.paginationModel = newField.pagination
+  
+   }, {deep: true})
 
   return {...refs, ...(toRefs(state)), ...computeds, ...methods}
 }

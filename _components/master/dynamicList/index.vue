@@ -42,7 +42,7 @@
           :columns="columns"
           :rows="rows"
           :actions="actions"
-          :initialPagination="pagination"
+          :pagination="pagination"
           :loading="loading"
           :beforeUpdate="beforeUpdate"
           @onPagination="(value) => setPagination(value)"
@@ -50,6 +50,7 @@
         />        
       </div>
     </div>
+    <inner-loading :visible="loading" />
   </div>
 </template>
 <script lang="ts">
