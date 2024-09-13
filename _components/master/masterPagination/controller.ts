@@ -18,7 +18,7 @@ export default function controller(props, emit) {
       rowsNumber: null,
       rowsPerPage: 10,
       descending: true,
-      maxPages: 7 
+      maxPages: 6 
     }
   })
 

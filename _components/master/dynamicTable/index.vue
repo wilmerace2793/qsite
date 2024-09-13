@@ -64,7 +64,7 @@
           :pagesNumber="props.pagesNumber"
           :isFirstPage="props.isFirstPage"
           :isLastPage="props.isLastPage"
-          @update:modelValue="$emit('onPagination', paginationModel)"
+          @update:modelValue="(val) => $emit('onPagination', val)"
         />
 
       </template>
