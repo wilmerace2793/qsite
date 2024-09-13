@@ -9,7 +9,7 @@
       row-key="name"
       v-model:pagination="paginationModel"
       hide-pagination
-      @request="(val) => $emit('onPagination', val.pagination)"
+      @request="(val) => $emit('onPagination', paginationModel)"
     >    
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
@@ -59,6 +59,11 @@
       <!-- pagination -->
       <template #bottom="props">
         <!--pagination-->
+        {{  props }}
+        <br>
+        ---------------------
+        <br>
+        {{ paginationModel }}
         <div :class="`bottonCrud full-width flex items-center ${windowSize == 'mobile' ? 'justify-center' : 'justify-between'}`">
           <div class="sm:tw-text-sm":class="`text-blue-grey ${windowSize == 'mobile' ? 'q-mb-sm' : ''} `">
             {{ $tr('isite.cms.label.showing') }} <b>{{ countPage(props) }}</b> {{ $trp('isite.cms.label.entry') }}

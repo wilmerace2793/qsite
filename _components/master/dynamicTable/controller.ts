@@ -38,13 +38,12 @@ export default function controller(props, emit) {
     },     
 
     countPage(pagination){
-      const page = pagination.pagination.page;
-      const rowsPerPage = pagination.pagination.rowsPerPage;
-      const showTable = props.rows.length;
-      const totalPage = pagination.pagination.rowsNumber;
-      const start = page == 1 ? 1 : page * rowsPerPage - ((rowsPerPage - (page - 1)) <= 0 ? 1 : rowsPerPage - (page - 1));
-      const end = showTable < rowsPerPage ? totalPage : page * showTable;
-      return `${start} - ${end} ${i18n.tr('isite.cms.label.of')} ${totalPage}`;
+      const page = pagination.pagination.page
+      const rowsPerPage = pagination.pagination.rowsPerPage
+      const rowsNumber = pagination.pagination.rowsNumber
+      const start = ((page * rowsPerPage) - rowsPerPage) + 1
+      const ends = pagination.isLastPage ? rowsNumber : (page * rowsPerPage)
+      return `${start} - ${ends} ${this.$tr('isite.cms.label.of')} ${rowsNumber}`
     },
     onClick(col, row){
       if(col?.onClick) col.onClick(col.value, row)
