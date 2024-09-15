@@ -20,11 +20,11 @@ export default function controller(props: any, emit: any) {
       systemName: ''
     },
     tabName: 'tabForm',
-    filterValues: {},    
+    filterValues: {},
     readOnlyData: {},
     currentUrlFilter: '',
-    dynamicFieldCache: true, 
-    quickFilters: {}, 
+    dynamicFieldCache: true,
+    quickFilters: {},
     quickFilterValues: {},
     loadedOptions: {},
     readValues: {},
@@ -48,19 +48,19 @@ export default function controller(props: any, emit: any) {
   })
 
   // Computed
-  const computeds = {    
+  const computeds = {
     filter: computed(() => {
       return {
         fields: state.props.filters,
-      }      
+      }
     }),
-    
+
     model: computed({
       get() {
         return props.modelValue
       },
-      set(newValue) { 
-        //emit('updateModelValue', newValue) 
+      set(newValue) {
+        //emit('updateModelValue', newValue)
       }
     }),
   }
@@ -72,7 +72,7 @@ export default function controller(props: any, emit: any) {
       state.readOnlyData[key] = data
     },
 
-    async init(){      
+    async init(){
       state.userData = clone(store.state.quserAuth.userData)
       state.props = clone(props)
       state.props.filters = methods.removeNullValues(state.props.filters)
@@ -80,16 +80,16 @@ export default function controller(props: any, emit: any) {
       state.useAdminFilter = state.userData.hasOwnProperty('fields')
       await methods.setFilterValues()
       await methods.getUrlFilters()
-      await methods.addLoadedOptionsCallback()      
+      await methods.addLoadedOptionsCallback()
       await methods.setQuickFilters()
       methods.emitValues()
-    },    
+    },
 
     showModal(){
       emit('showModal')
     },
-    
-    hideModal(){      
+
+    hideModal(){
       emit('hideModal')
     },
 
@@ -101,8 +101,8 @@ export default function controller(props: any, emit: any) {
 
           state.filterValues[key] = state.props.filters[key]
           state.readOnlyData[key] = {
-            label: state.props.filters[key]?.props?.label || '', 
-            value: state.props.filters[key].value 
+            label: state.props.filters[key]?.props?.label || '',
+            value: state.props.filters[key].value
           }
 
           if(state.props.filters[key]?.quickFilter){
@@ -112,7 +112,7 @@ export default function controller(props: any, emit: any) {
               state.hidenFields[key] = {...state.props.filters[key]}
             }
           }
-        })       
+        })
       }
     },
 
@@ -142,7 +142,7 @@ export default function controller(props: any, emit: any) {
              if(state.hidenFields[key]){
               state.hidenFields[key].loadOptions.loadedOptions = (data) => {
                 //fix setReadValues twice
-                if(!state.loadedOptions[key]){ 
+                if(!state.loadedOptions[key]){
                  state.loadedOptions[key] = [...options, ...data]
                  methods.setReadValues()
                 }
@@ -165,24 +165,24 @@ export default function controller(props: any, emit: any) {
             if(state.hidenFields[key]){
               state.hidenFields[key]['props']['config']['loadedOptions'] = (data) => {
                 //fix setReadValues twice
-                if(!state.loadedOptions[key]){ 
+                if(!state.loadedOptions[key]){
                   state.loadedOptions[key] = [...data]
                   methods.setReadValues()
                 }
               }
           }
         }
-      })      
+      })
     },
     setReadValues(){
-      const result = {}      
+      const result = {}
       const toEmit = {}
       Object.keys(state.readOnlyData).forEach(key => {
         const field = state.props.filters[key];
         if(state.readOnlyData[key].value != null && state.readOnlyData[key].value && field?.type){
-          
+
           result[key] = {
-            label: state.readOnlyData[key].label || state.props.filters[key].label ||  '' , 
+            label: state.readOnlyData[key].label || state.props.filters[key].label ||  '' ,
             value: state.readOnlyData[key].value,
             option: state.readOnlyData[key].value || ''
           }
@@ -190,7 +190,7 @@ export default function controller(props: any, emit: any) {
           if(field?.type == 'select' || field?.type == 'treeSelect'){
             if(state.loadedOptions[key]){
               const option = state.loadedOptions[key].find((element) => {
-                const value = element.id || element.value
+                const value = element.id ?? element.value
                 return value.toString() == state.readOnlyData[key].value.toString()
               })
               if(option){
@@ -225,7 +225,7 @@ export default function controller(props: any, emit: any) {
       return result
     },
     restoreFilterValues(){
-      if(Object.keys(state.readValues).length > 0){        
+      if(Object.keys(state.readValues).length > 0){
         Object.keys(state.readValues).forEach(key => {
           if(state.readValues[key].value != null && state.readValues[key].value != undefined){
             state.filterValues[key] = state.readValues[key].value
@@ -233,7 +233,7 @@ export default function controller(props: any, emit: any) {
         })
       }
       //restore from quickFilters
-      if(Object.keys(state.quickFilters).length > 0){        
+      if(Object.keys(state.quickFilters).length > 0){
         Object.keys(state.quickFilterValues).forEach(key => {
           state.filterValues[key] = state.quickFilterValues[key]
         })
@@ -266,9 +266,9 @@ export default function controller(props: any, emit: any) {
           delete filters[key];
         } else {
           filters[key] = filters[key].value
-        }        
+        }
       })
-      methods.setReadValues()      
+      methods.setReadValues()
       methods.mutateURLFilters({...filters})
       methods.emitModelValue(filters)
       if(updateUserData && state.useAdminFilter){
@@ -276,22 +276,22 @@ export default function controller(props: any, emit: any) {
       }
       methods.hideModal()
     },
-    //emit 
+    //emit
     emitModelValue:debounce((filters) => emit('update:modelValue', filters) , 800),
 
     /*url handlers */
     mutateURLFilters(filters) {
-      if(!state.systemName) return      
+      if(!state.systemName) return
       const urlParams = methods.getUrlQueries()
       let paramsUrl = ''
-      
+
       //removes the key if key only has value
       Object.keys(filters).forEach(key => {
         if(!state.props.filters[key]?.type){
           delete filters[key]
         }
       })
-      
+
 
       urlParams[state.systemName] = JSON.stringify(filters)
       // remove from url if filters are empty
@@ -314,14 +314,14 @@ export default function controller(props: any, emit: any) {
 
     async getUrlFilters(){
       if(!state.systemName) return
-      
+
       let filterValues = {}
       const urlParams = methods.getUrlQueries()
       if(Object.keys(urlParams).length !== 0){
         if(urlParams[state.systemName]){
           filterValues = JSON.parse(urlParams[state.systemName])
         }
-      }      
+      }
 
       if(state.useAdminFilter){
         if(Object.keys(filterValues).length === 0){
@@ -336,8 +336,8 @@ export default function controller(props: any, emit: any) {
 
           state.filterValues[key] = filterValues[key]
           state.readOnlyData[key] = {
-            label: state.props.filters[key].props.label || '', 
-            value: filterValues[key] 
+            label: state.props.filters[key].props.label || '',
+            value: filterValues[key]
           }
 
           if(state.props.filters[key]?.quickFilter){
@@ -347,20 +347,20 @@ export default function controller(props: any, emit: any) {
               state.hidenFields[key] = {...state.props.filters[key]}
             }
           }
-        })       
+        })
       }
     },
 
     getAdminFilter(){
       let filters = {}
-      
+
       if(state.userData?.fields){
         if (Array.isArray(state.userData.fields)){
           if(state.userData.fields.length > 0){
             const adminFilters = state.userData.fields.find((element) => element.name == 'adminFilters') || false
             if(adminFilters && adminFilters?.value){
               return adminFilters.value
-            }          
+            }
           }
         }
       }
@@ -368,12 +368,12 @@ export default function controller(props: any, emit: any) {
     },
 
     async setAdminFilter(filters){
-      const adminFilters = methods.getAdminFilter()      
-      
+      const adminFilters = methods.getAdminFilter()
+
       if(Object.keys(adminFilters).length !== 0){
         state.userData.fields.find((element) => {
           if(element.name == 'adminFilters'){
-            element.value[state.systemName] = filters            
+            element.value[state.systemName] = filters
           }
         })
       } else {
@@ -387,17 +387,17 @@ export default function controller(props: any, emit: any) {
         }
         state.userData.fields.push(fields)
       }
-      
-      const data = { 
+
+      const data = {
         email: state.userData.email,
-        fields: state.userData.fields, 
+        fields: state.userData.fields,
         first_name: state.userData.firstName,
-        full_name: state.userData.fullName,        
+        full_name: state.userData.fullName,
         id: state.userData.id,
         is_activated: state.userData.isActivated,
         last_name: state.userData.lastName,
       }
-      //update value on backend...      
+      //update value on backend...
       const response = service.updateUserData(false, state.userData.id, data)
     },
 
@@ -448,9 +448,9 @@ export default function controller(props: any, emit: any) {
     const model = newField.modelValue
     if(model) {
       methods.restoreFilterValues()
-    } 
-    
+    }
+
   }, {deep: true})
-  
+
   return {...refs, ...(toRefs(state)), ...computeds, ...methods}
 }
