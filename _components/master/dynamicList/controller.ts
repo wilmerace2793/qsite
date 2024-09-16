@@ -33,6 +33,7 @@ export default function controller(props: any, emit: any) {
       rowsNumber: '',
       rowsPerPage: 10,
       descending: true, 
+      maxPages: 6 
       //sortBy: 'desc',
     },
   })
@@ -114,9 +115,9 @@ export default function controller(props: any, emit: any) {
     },
 
     setPagination(pagination){
-      const getData = pagination.rowsPerPage > state.pagination.rowsNumber
-      state.pagination = {...state.pagination, ...pagination}
-      if(getData) methods.getData()
+      if(pagination.rowsPerPage != state.pagination.rowsPerPage ) pagination.page = 1 //resets pagination
+      state.pagination = pagination
+      methods.getData()
     },
     
     async getData(pagination = false, refresh = false){  

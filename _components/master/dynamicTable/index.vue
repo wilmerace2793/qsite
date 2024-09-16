@@ -1,16 +1,15 @@
 <template>
   <div id="dynamic-table">
-    <q-table      
+    <q-table 
       v-bind="tableProps"
       :title="title"
       :loading="loading"
       :rows="rows"
       :columns="columns"
       row-key="name"
-      v-model:pagination="pagination"
+      v-model:pagination="paginationModel"
       hide-pagination
-      :pagination.sync="pagination"
-      @request="() => {console.log('request')}"
+      
     >    
       <template v-slot:loading>
         <q-inner-loading showing color="primary" />
@@ -60,71 +59,14 @@
       <!-- pagination -->
       <template #bottom="props">
         <!--pagination-->
-        <div :class="`bottonCrud full-width flex items-center ${windowSize == 'mobile' ? 'justify-center' : 'justify-between'}`">
-          <div class="sm:tw-text-sm":class="`text-blue-grey ${windowSize == 'mobile' ? 'q-mb-sm' : ''} `">
-            {{ $tr('isite.cms.label.showing') }} <b>{{ countPage(props) }}</b> {{ $trp('isite.cms.label.entry') }}
-          </div>
-          <div class="col-12 q-ml-sm q-mr-lg flex flex-center">
-            <q-pagination
-              id="crudPaginationComponent"
-              v-if="showPagination(props)"
-              v-model="pagination.page"
-              :value="props.pagination"
-              @click.prevent="() => $emit('onPagination', pagination)"
-              round
-              input-class="no-shadow"
-              color="while"
-              text-color="primary"
-              active-color="primary"
-              active-text-color="white"
-              :max="props.pagesNumber"
-              :max-pages="6"
-              :ellipses="false"
-              :boundary-numbers="false"
-              unelevated
-            />      
-          </div>
-          <div class="flex items-center">
-            <div class="flex items-center tw-mr-4 text-blue-grey">
-              <span class="sm:tw-text-sm">{{ $tr('isite.cms.label.show') }}</span>
-              <q-select
-                v-model="pagination.rowsPerPage"
-                :options="rowsPerPageOption"
-                @update:modelValue="(val) => $emit('onPagination', pagination)"
-                options-cover
-                dense
-                class="q-mx-sm text-caption"
-                outlined
-              />
-              <span class="sm:tw-text-sm">{{ $trp('isite.cms.label.entry') }}</span>
-            </div>
-            <div class="actionsBtnPag">
-              <q-btn
-                color="primary"
-                class="tw-mr-2"
-                dense
-                size="14px"
-                round
-                flat
-                :disable="props.isFirstPage"
-                @click="props.prevPage"
-              >
-                <i class="fa-solid fa-chevron-left"></i>
-              </q-btn>
-              <q-btn
-                color="primary"
-                dense
-                size="14px"
-                round
-                flat
-                :disable="props.isLastPage"
-                @click="props.nextPage"
-              >
-                <i class="fa-solid fa-chevron-right"></i>
-              </q-btn>
-            </div>
-          </div>
-        </div>
+        <master-pagination 
+          v-model="paginationModel"
+          :pagesNumber="props.pagesNumber"
+          :isFirstPage="props.isFirstPage"
+          :isLastPage="props.isLastPage"
+          @update:modelValue="(val) => $emit('onPagination', val)"
+        />
+
       </template>
     </q-table>
   </div>
@@ -135,6 +77,8 @@ import controller from 'modules/qsite/_components/master/dynamicTable/controller
 import editablePopup from 'modules/qsite/_components/master/dynamicTable/components/editablePopup'
 import contentType from 'modules/qsite/_components/master/dynamicTable/components/contentType'
 import contextMenu from 'modules/qsite/_components/master/dynamicTable/components/contextMenu'
+import masterPagination from 'modules/qsite/_components/master/masterPagination'
+
 
 
 export default defineComponent({
@@ -145,7 +89,7 @@ export default defineComponent({
     columns: {default: []},
     rows: {default: []},
     actions: {default: []},
-    initialPagination: {default: []},
+    pagination: {default: []},
     beforeUpdate: {        
       type: Function,
       default: false
@@ -155,20 +99,13 @@ export default defineComponent({
     editablePopup,
     contextMenu, 
     contentType,
+    masterPagination
   },
   setup(props, {emit}) {
     return controller(props, emit)
   }, 
-  computed: {
-    windowSize() {
-      return window.innerWidth >= '500' ? 'desktop' : 'mobile'
-    },
-  }, 
-  methods: {
-    showPagination(props) { 
-      return this.windowSize == 'desktop' && props.pagesNumber > 1
-    }
-  },
+  computed: {}, 
+  methods: {},
 })
 </script>
 <style lang="scss">
