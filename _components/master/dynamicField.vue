@@ -389,8 +389,8 @@
           <q-option-group class="q-pt-md" v-model="responseValue" v-bind="fieldProps.field" />
         </q-field>
         <!--captcha-->
-        <q-field v-model="responseValue" v-if="loadField('captcha')" v-bind="fieldProps.fieldComponent">
-          <captcha v-model="responseValue" @input="responseValue = $event" ref="captcha"/>
+        <q-field v-model="responseValue" v-if="loadField('captcha')" v-bind="fieldProps.fieldComponent" >
+          <captcha v-model="responseValue" @input="responseValue = $event" :ref="field?.ref"/>
         </q-field>
         <!--Schedulable-->
         <div class="round bg-white" v-if="loadField('schedulable')">
@@ -1430,12 +1430,6 @@ export default {
       };
       return objectOptions[this.field.type] || result;
     },
-    //Settings
-    settings() {
-      return {
-        mapType: this.$getSetting('isite::mapInShow')
-      };
-    },
     badgeColor() {
       return (field, scope) => {
         return field.props.colorType === 'tailwindcss'
@@ -1873,9 +1867,9 @@ export default {
       };
 
       if(this.modelValue) this.$emit('update:modelValue', this.$date.calculateNewDate(this.modelValue, params))
-    },
-    async getCaptchaToken(){
-      return await this.$refs.captcha.getToken()
+    },   
+    getRef(){
+      return this.field?.ref ? this.$refs[this.field.ref] : null      
     }
   }
 };

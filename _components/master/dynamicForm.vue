@@ -97,7 +97,6 @@
                     </div>
                   </template>
                 </div>
-                {{  locale.formTemplate['captcha'] }}
                 <!--Actions-->
                 <div :class="`tw-space-x-1 actions__content row justify-${step == 0 ? 'end' : 'between'}`"
                      v-if="(formType == 'stepper') && !noActions">
@@ -525,9 +524,9 @@ export default {
         const lastBlock = blocks[blocks.length - 1];
 
         if (!Array.isArray(lastBlock.fields)) {
-          lastBlock.fields.captcha = { type: 'captcha' };
+          lastBlock.fields.captcha = { type: 'captcha', ref: 'captcha' };
         } else {
-          lastBlock.fields.push({ type: 'captcha', name: 'captcha', value: '' });
+          lastBlock.fields.push({ type: 'captcha', name: 'captcha', value: '', ref: 'captcha', });
         }
       }
 
@@ -843,10 +842,7 @@ export default {
     async changeStep(toStep, isSubmit = false) {
 
       if(isSubmit && this.useCaptcha){
-        await this.$refs.captcha[0].getCaptchaToken().then((response) => {          
-          this.locale.formTemplate['captcha'] = response          
-        })
-        return
+        await this.captchaHandler()
       }
       //Validate if new Step it's not same to current step
       let isValid = (toStep == 'previous') ? true : await this.$refs.formContent.validate();
@@ -904,6 +900,15 @@ export default {
       this.locale.form = false;
       this.init();
       this.$emit('newForm');
+    },
+    async captchaHandler(){
+      const {version} = this.locale.formTemplate['captcha']
+      if(version == 3){
+        const ref = this.$refs.captcha[0].getRef()
+        await ref.getToken().then((response) => {
+          this.locale.formTemplate['captcha'] = response
+        })
+      }
     }
   }
 };
