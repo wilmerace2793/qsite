@@ -526,7 +526,7 @@ export default {
         if (!Array.isArray(lastBlock.fields)) {
           lastBlock.fields.captcha = { type: 'captcha', ref: 'captcha' };
         } else {
-          lastBlock.fields.push({ type: 'captcha', name: 'captcha', value: '', ref: 'captcha', });
+          lastBlock.fields.push({ type: 'captcha', name: 'captcha', value: '', ref: 'captcha' });
         }
       }
 
@@ -840,12 +840,12 @@ export default {
     },
     //Handler step transition
     async changeStep(toStep, isSubmit = false) {
-
-      if(isSubmit && this.useCaptcha){
-        await this.captchaHandler()
-      }
       //Validate if new Step it's not same to current step
       let isValid = (toStep == 'previous') ? true : await this.$refs.formContent.validate();
+
+      if(isSubmit && this.useCaptcha && isValid){
+        await this.captchaHandler()
+      }
       //Dispatch event to know if if is valid
       this.$emit('validated', isValid);
       //Validate if new Step it's not same to current step

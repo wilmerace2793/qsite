@@ -390,7 +390,7 @@
         </q-field>
         <!--captcha-->
         <q-field v-model="responseValue" v-if="loadField('captcha')" v-bind="fieldProps.fieldComponent" >
-          <captcha v-model="responseValue" @input="responseValue = $event" :ref="field?.ref"/>
+          <captcha v-model="responseValue" @input="responseValue = $event" :ref="fieldProps.field.ref" />
         </q-field>
         <!--Schedulable-->
         <div class="round bg-white" v-if="loadField('schedulable')">
@@ -1127,8 +1127,10 @@ export default {
           };
           break;
         case'captcha':
+          const ref = props?.ref || 'captcha'
           props = {
             field: {
+              ref,
               ...props
             },
             fieldComponent: {
@@ -1869,7 +1871,7 @@ export default {
       if(this.modelValue) this.$emit('update:modelValue', this.$date.calculateNewDate(this.modelValue, params))
     },   
     getRef(){
-      return this.field?.ref ? this.$refs[this.field.ref] : null      
+      return this.$refs[this.fieldProps.field.ref]
     }
   }
 };
