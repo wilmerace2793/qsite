@@ -58,6 +58,7 @@
                 <!--Fields-->
                 <div class="row q-col-gutter-x-md q-mb-sm">
                   <template v-for="(field, key) in block.fields" :key="key">
+                    
                     <div v-if="hidenFields(field)"
                          :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)">
                       <!--fake field-->
@@ -71,7 +72,8 @@
                                        :item-id="field.fieldItemId" />
                         <!--Sample field-->
                         <dynamic-field v-else :field="field" :item-id="field.fieldItemId"
-                                       v-model="locale.formTemplate[field.name || key]" :language="locale.language" />
+                                       v-model="locale.formTemplate[field.name || key]" :language="locale.language" 
+                                       :ref="field.type" />
                         <!--Child fields-->
                         <div v-if="field.children">
                           <!--Title-->
@@ -95,6 +97,7 @@
                     </div>
                   </template>
                 </div>
+                {{  locale.formTemplate['captcha'] }}
                 <!--Actions-->
                 <div :class="`tw-space-x-1 actions__content row justify-${step == 0 ? 'end' : 'between'}`"
                      v-if="(formType == 'stepper') && !noActions">
@@ -838,11 +841,19 @@ export default {
     },
     //Handler step transition
     async changeStep(toStep, isSubmit = false) {
+
+      if(isSubmit && this.useCaptcha){
+        await this.$refs.captcha[0].getCaptchaToken().then((response) => {          
+          this.locale.formTemplate['captcha'] = response          
+        })
+        return
+      }
       //Validate if new Step it's not same to current step
       let isValid = (toStep == 'previous') ? true : await this.$refs.formContent.validate();
       //Dispatch event to know if if is valid
       this.$emit('validated', isValid);
       //Validate if new Step it's not same to current step
+      
       if (isValid) {
         //Emit submit form
         if (isSubmit) {

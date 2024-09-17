@@ -390,7 +390,7 @@
         </q-field>
         <!--captcha-->
         <q-field v-model="responseValue" v-if="loadField('captcha')" v-bind="fieldProps.fieldComponent">
-          <captcha v-model="responseValue" @input="responseValue = $event" />
+          <captcha v-model="responseValue" @input="responseValue = $event" ref="captcha"/>
         </q-field>
         <!--Schedulable-->
         <div class="round bg-white" v-if="loadField('schedulable')">
@@ -1873,6 +1873,9 @@ export default {
       };
 
       if(this.modelValue) this.$emit('update:modelValue', this.$date.calculateNewDate(this.modelValue, params))
+    },
+    async getCaptchaToken(){
+      return await this.$refs.captcha.getToken()
     }
   }
 };
