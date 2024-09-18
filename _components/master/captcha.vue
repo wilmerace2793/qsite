@@ -78,15 +78,22 @@ export default {
             })
           } else {//(V3)
             grecaptcha.ready(() => {
-              grecaptcha.execute(this.captcha.key, {action: 'submit'}).then(token => {
-                this.$emit('update:modelValue', {version: 3, token: token})
-              })
+              this.$emit('update:modelValue', {version: 3, token: null})
             })
           }
         }, 500)
       } catch (error) {
         console.error(error)
       }
+    },
+    async getToken(){
+      return new Promise((resolve, reject) => {
+        grecaptcha.execute(this.captcha.key, {action: 'submit'}).then(token => {
+          const response = {version: 3, token}
+          this.$emit('update:modelValue', response)
+          resolve(response)
+        })
+      })
     }
   }
 }
