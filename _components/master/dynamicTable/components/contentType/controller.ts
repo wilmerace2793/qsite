@@ -33,6 +33,13 @@ export default function controller(props, emit) {
       if(computeds.isComponent.value){        
         state.component = markRaw(props.col.component)
       }
+    },   
+    deleteHtml(data) {
+      if (!data) return '';
+      return typeof data === 'string' ? data.replace(/<[^>]+>/g, '') : data;      
+    }, 
+    getTooltip(){
+      return props.col?.tooltip ? props.col?.tooltip : this.deleteHtml(props.val)
     }
   }
 
