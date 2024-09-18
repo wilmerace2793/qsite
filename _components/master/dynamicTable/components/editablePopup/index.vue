@@ -1,6 +1,6 @@
 <template>
   <q-popup-edit
-    v-if="col?.isEditable && col?.dynamicField || false"
+    v-if="dynamicField"
     ref="popupEditRef"
     v-model="row[col.name]"
     v-slot="scope"
@@ -26,12 +26,12 @@
         <dynamic-field
           v-if="isSelectField"
           v-model="scope.value.id"
-          :field="col['dynamicField']"
+          :field="dynamicField"
           :enableCache="true"
         />
         <dynamic-field v-else
                        v-model="scope.value"
-                       :field="col['dynamicField']"
+                       :field="dynamicField"
                        :enableCache="true"
         />
         <div class="justify-end row q-gutter-sm">
@@ -59,7 +59,7 @@ export default defineComponent({
   props: {
     row: { type: Object, default: null },
     col: { type: Object, default: null },
-    beforeUpdate: {        
+    beforeUpdate: {
       type: Function as PropType<() => void>,
       required: false,
       default: null,

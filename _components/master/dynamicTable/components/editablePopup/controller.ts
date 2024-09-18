@@ -1,43 +1,49 @@
 import {computed, reactive, ref, onMounted, toRefs, watch, markRaw, shallowRef} from "vue";
 
 
-export default function controller(props, emit) {  
+export default function controller(props, emit) {
 
   // Refs
   const refs = {
-    // refKey: ref(defaultValue)    
+    // refKey: ref(defaultValue)
   }
 
   // States
   const state = reactive({
     // Key: Default Value
-    dynamicModel: null,    
+    dynamicModel: null,
   })
 
   // Computed
   const computeds = {
-    // key: computed(() => {})
-    maxWidth: computed(() => props.col.dynamicField?.maxWidth ? props.col.dynamicField.maxWidth : '300px' ),
-    isSelectField: computed(() => props.col.dynamicField.type == 'select'), 
-    fieldName: computed(() => props.col.dynamicField?.name ? props.col.dynamicField.name : props.col.name) //field to update
-  }
+    dynamicField: computed(() => {
+      let field = props.col.dynamicField ?? null;
+      if (!field || !props.col.isEditable) return null;
+      // Validate if field is a function and format it
+      if (typeof field == 'function') field = field(props.row);
+      // Return field
+      return { name: props.col.name, maxWidth: '300px', ...field };
+    }),
+    maxWidth: computed(() => computeds.dynamicField?.value.maxWidth ?? ''),
+    isSelectField: computed(() => computeds.dynamicField.value.type == 'select')
+  };
 
   // Methods
   const methods = {
     // methodKey: () => {}
-    async runBeforeUpdate(scope){      
+    async runBeforeUpdate(scope){
       let response = true
 
-      const value = computeds.isSelectField.value ? scope.value.id : scope.value //if selectField      
-      const tempRow = {...props.row}      
-      tempRow[computeds.fieldName.value] = value
-      
-      if(props.beforeUpdate){        
+      const value = computeds.isSelectField.value ? scope.value.id : scope.value //if selectField
+      const tempRow = {...props.row}
+      tempRow[computeds.dynamicField.value.name] = value
+
+      if(props.beforeUpdate){
         await props.beforeUpdate({val: value, row: tempRow }).then((val) => {
           if(val){
             //replaces the value by returned on resolve(val)
-            scope.value = val 
-            tempRow[computeds.fieldName.value] = val
+            scope.value = val
+            tempRow[computeds.dynamicField.value.name] = val
           } else {
             scope.set()
           }
@@ -52,11 +58,11 @@ export default function controller(props, emit) {
         emit('updateRow', tempRow)
       }
       return response
-    }       
+    }
   }
 
   // Mounted
-  onMounted(() => {    
+  onMounted(() => {
   })
 
   // Watch
