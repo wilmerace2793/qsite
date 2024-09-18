@@ -19,14 +19,13 @@ export default function controller(props, emit) {
       rowsNumber: null,
       rowsPerPage: 10,
       descending: true,
-      maxPages: 7 
+      maxPages: 6
     }    
   })
 
   // Computed
   const computeds = {
-    // key: computed(() => {})
-    rowsPerPageOption: computed(() => [5, 10, 20, 50, 100, 300, 500]),
+    // key: computed(() => {})    
   }
   
 
@@ -35,18 +34,18 @@ export default function controller(props, emit) {
     // methodKey: () => {}   
     init(){
       state.paginationModel = props.pagination
-    },     
-
-    countPage(pagination){
-      const page = pagination.pagination.page
-      const rowsPerPage = pagination.pagination.rowsPerPage
-      const rowsNumber = pagination.pagination.rowsNumber
-      const start = ((page * rowsPerPage) - rowsPerPage) + 1
-      const ends = pagination.isLastPage ? rowsNumber : (page * rowsPerPage)
-      return `${start} - ${ends} ${this.$tr('isite.cms.label.of')} ${rowsNumber}`
+    },
+    isColActions(col){
+      return col.name == 'actions'
+    },
+    isColEditable(col, row){
+      return col?.dynamicField && !row?.isLoading
     },
     onClick(col, row){
       if(col?.onClick) col.onClick(col.value, row)
+    },    
+    getCellClass(col, row){
+      return (col?.dynamicField || col?.onClick) && !row?.isLoading ? 'cursor-pointer' : ''
     }
   }
 

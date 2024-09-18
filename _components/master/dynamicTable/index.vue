@@ -18,6 +18,7 @@
         <q-tr :props="props">
           <!---right click --->
           <contextMenu
+            :v-if="actions" 
             :actions="actions"
             :action-data="props.row"
           />
@@ -26,12 +27,12 @@
             v-for="col in props.cols"
             :key="col.name"
             :props="props"
-            :class="`${(col?.dynamicField || col?.onClick) && !props.row?.isLoading ? 'cursor-pointer' : ''}`"
+            :class="getCellClass(col, props.row)"
             @click="onClick(col, props.row)"
           >
             <!---quick click edit popup-->
             <editablePopup 
-              v-if="col.name != 'actions' && col?.dynamicField && !props.row?.isLoading"
+              v-if="!isColActions(col) && isColEditable(col, props.row)"
               :row="props.row"
               :col="col"
               :beforeUpdate="beforeUpdate"
@@ -39,7 +40,7 @@
             />
 
             <!--Actions column-->
-            <div v-if="col.name == 'actions'">              
+            <div v-if="isColActions(col)">
               <btn-menu
                 :actions="actions"
                 :action-data="props.row"
@@ -48,7 +49,7 @@
 
             <!-- dynamic content  -->
             <contentType
-              v-if="col.name != 'actions'"
+              v-if="!isColActions(col)"
               :col="col"
               :row="props.row"
               :val="col.value"
