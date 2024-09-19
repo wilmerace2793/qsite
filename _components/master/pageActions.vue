@@ -60,6 +60,7 @@
     </span>
     <!-- Export Component -->
     <master-export
+      v-if="(this.exportParams && !excludeActions.includes('export')) && !this.isAppOffline"
       v-model="exportParams"
       ref="exportComponent"
       :dynamicFilterValues="dynamicFilterValues"
@@ -419,7 +420,7 @@ export default {
       if(this.tourName && !config('app.disableTours') &&
         (this.$store.getters['qsiteApp/getConfigApp']('igamification') != undefined)){
         let tour = await this.$tour.getTourData(this.tourName, true)
-        if(tour) { 
+        if(tour) {
           this.enableTourAction = true
           this.$emit('activateTour');
         }

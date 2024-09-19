@@ -245,6 +245,10 @@
                   </div>
                 </div>
               </q-item-section>
+
+              <q-item-section @click.stop.prevent side>
+                <slot name="actions" :opt="scope.opt"></slot>
+              </q-item-section>
             </q-item>
           </template>
           <!--Icon-->
@@ -826,7 +830,7 @@ export default {
                   return regexTimeSpent.test(val) || `${this.$tr('isite.cms.message.invalidFormat')} (${maskTimeSpent})`;
                 }
               ]
-              
+
             },
             slot: {
               ...props,
@@ -834,7 +838,7 @@ export default {
             }
           };
           break;
-          
+
         case'hour':
           //Instance the mask
           const maskHour = 'HH:mm';
@@ -1869,7 +1873,7 @@ export default {
       };
 
       if(this.modelValue) this.$emit('update:modelValue', this.$date.calculateNewDate(this.modelValue, params))
-    },   
+    },
     getRef(){
       return this.$refs[this.fieldProps.field.ref]
     }
