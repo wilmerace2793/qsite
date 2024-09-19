@@ -3,7 +3,8 @@ import {computed, reactive, ref, onMounted, toRefs, watch, getCurrentInstance, u
 import services from "modules/qsite/_components/master/dynamicList/services";
 import { store, i18n, clone, alert } from 'src/plugins/utils';
 
-export default function controller(props: any, emit: any) {
+export default function controller (props: any, emit: any)
+{
   const proxy = getCurrentInstance()!.appContext.config.globalProperties
 
   // Refs
@@ -20,9 +21,9 @@ export default function controller(props: any, emit: any) {
     loading: false,
     columns: [],
     rows: [],
-    requestParams: {}, 
-    showModal: false, 
-    expiresIn: null,     
+    requestParams: {},
+    showModal: false,
+    expiresIn: null,
     /* dynamicFilter */
     showDynamicFilterModal: false,
     dynamicFilterValues: {},
@@ -32,8 +33,8 @@ export default function controller(props: any, emit: any) {
       page: 1,
       rowsNumber: '',
       rowsPerPage: 10,
-      descending: true, 
-      maxPages: 6 
+      descending: true,
+      maxPages: 6
       //sortBy: 'desc',
     },
   })
@@ -41,62 +42,73 @@ export default function controller(props: any, emit: any) {
   // Computed
   const computeds = {
     // key: computed(() => {})
-    hasTopTableSlot : computed(() => !!slots['top-table']),
-    hasPermission: computed(() => {
+    hasTopTableSlot: computed(() => !!slots['top-table']),
+    hasPermission: computed(() =>
+    {
       //Default permission
-      return  {
+      return {
         create: props.listConfig?.permission ? store.hasAccess(`${props.listConfig?.permission}.create`) : true,
         index: props.listConfig?.permission ? store.hasAccess(`${props.listConfig?.permission}.index`) : true,
         edit: props.listConfig?.permission ? store.hasAccess(`${props.listConfig?.permission}.edit`) : true,
         destroy: props.listConfig?.permission ? store.hasAccess(`${props.listConfig?.permission}.destroy`) : true
       };
-    }), 
+    }),
     beforeUpdate: computed(() => props.listConfig?.beforeUpdate || null),
     title: computed(() => props?.listConfig?.read?.title || ''),
     help: computed(() => props?.listConfig?.read?.help || false),
     actions: computed(() => props?.listConfig?.actions || false),
     tableProps: computed(() => props?.listConfig?.read?.tableProps || null),
-    tableActions: computed(() => {
+    tableActions: computed(() =>
+    {
       //Default response
-      let response = []      
+      let response = []
       //Add search action
-      if (props.listConfig.read?.search !== false) response.push('search')      
+      if (props.listConfig.read?.search !== false) response.push('search')
       //Add create action
-      if (computeds.hasPermission.value['create']) {
+      if (computeds.hasPermission.value['create'])
+      {
        response.push('new')
-      }     
+      }
       // extras for page action
       if (props.listConfig?.extraActions?.length > 0) response.push(...props.listConfig.extraActions)
-      return response.filter((item) => !item.vIfAction)      
+      return response.filter((item) => !item.vIfAction)
     }),
 
-    dynamicFilter: computed(() =>  {
-      if (props.listConfig.read?.filters) {
-        if (Object.keys(props.listConfig.read?.filters).length > 0) {
+    dynamicFilter: computed(() =>
+    {
+      if (props.listConfig.read?.filters)
+      {
+        if (Object.keys(props.listConfig.read?.filters).length > 0)
+        {
           return props.listConfig.read?.filters;
         }
       }
       return {};
     }),
 
-    systemName: computed(() => {
+    systemName: computed(() =>
+    {
       return props.listConfig.read?.systemName || props.listConfig?.permission || props.listConfig?.entityName;
     }),
   }
-  
+
   // Methods
   const methods = {
     // methodKey: () => {}
-    async init(){
+    async init ()
+    {
       await methods.setColumns()
 
-      if(!state.dynamicFilterValues){
+      if (!state.dynamicFilterValues)
+      {
         methods.getData({pagination: {page: 1}}, true)
-      }      
+      }
     },
-    search(val){      
-      if(val){        
-        state.requestParams.filter = {search: val} 
+    search (val)
+    {
+      if (val)
+      {
+        state.requestParams.filter = {search: val}
       } else {
         state.requestParams = {...props.listConfig.read.requestParams}
       }
@@ -105,41 +117,50 @@ export default function controller(props: any, emit: any) {
       state.pagination.take = 10
       methods.getData()
     },
-    setColumns(){
-      state.columns = props.listConfig.read.columns      
+    setColumns ()
+    {
+      state.columns = props.listConfig.read.columns
       //set isEditable
-      state.columns.forEach(col => {
+      state.columns.forEach(col =>
+      {
         col.align = col?.align || 'center'
         col['isEditable'] = computeds.hasPermission.value['edit'] && col.hasOwnProperty('dynamicField')
-      });      
+      });
     },
 
-    setPagination(pagination){
+    setPagination (pagination)
+    {
       if(pagination.rowsPerPage != state.pagination.rowsPerPage ) pagination.page = 1 //resets pagination
       state.pagination = pagination
       methods.getData()
     },
-    
-    async getData(pagination = false, refresh = false){  
-      //get include: 
-      if(props.listConfig.read?.requestParams?.include ) state.requestParams.include = props.listConfig.read.requestParams.include 
-      //get filters:
-      state.requestParams.filter = {...state.requestParams?.filter || {}, ...props.listConfig.read?.requestParams?.filter || {}, ...state.dynamicFilterValues}
-      
-      state.requestParams['page'] = pagination?.page || state.pagination.page
-      state.requestParams['take'] = state.pagination.rowsPerPage
 
-      //Set order by      
-      let sortBy = state.pagination?.sortBy || 'id';
-      state.requestParams.filter.order = {
-        field: sortBy,
-        way: (state.pagination.descending != undefined) ? (state.pagination.descending ? 'desc' : 'asc') : 'desc'
-      };      
+    async getData (pagination = false, refresh = false)
+    {
+      state.loading = true;
 
-      state.loading = true
-      services.getData(props.listConfig.apiRoute, refresh,  state.requestParams).then((response) => {
+      //Instancre the requestParams
+      state.requestParams = {
+        order: {
+          field: (state.pagination?.sortBy || 'id'),
+          way: (state.pagination.descending != undefined) ? (state.pagination.descending ? 'desc' : 'asc') : 'desc'
+        },
+        ...(props.listConfig.read.requestParams ?? {}),
+        filter: {
+          ...state.requestParams?.filter || {},
+          ...props.listConfig.read?.requestParams?.filter || {},
+          ...state.dynamicFilterValues
+        },
+        page: pagination?.page || state.pagination.page,
+        take: state.pagination.rowsPerPage
+      };
+
+      //Request data
+      services.getData(props.listConfig.apiRoute, refresh, state.requestParams).then((response) =>
+      {
         state.expiresIn = response?.expiresIn;
-        if(response?.data){
+        if (response?.data)
+        {
           state.rows = response.data
           state.loading = false
 
@@ -147,59 +168,76 @@ export default function controller(props: any, emit: any) {
           state.pagination.rowsNumber = clone(response?.meta.page.total);
           state.pagination.rowsPerPage = clone(state.pagination.rowsPerPage);
           //state.pagination.sortBy = clone(state.pagination.sortBy);
-          state.pagination.descending = clone(state.pagination.descending);          
+          state.pagination.descending = clone(state.pagination.descending);
           emit('dataLoaded', response.data)
         }
-      }).catch(error => {
+      }).catch(error =>
+      {
         state.loading = false
         alert.error({message: i18n.tr('isite.cms.message.errorRequest'), pos: 'bottom'})
       })
     },
-    updateRow(row){      
+    updateRow (row)
+    {
       const foundIndex = state.rows.findIndex(r => r.id == row.id);
       state.rows[foundIndex]['isLoading'] = true
 
-      services.updateItem(props.listConfig.apiRoute, row.id, row).then((response) => {        
-        if(response?.data){
+      services.updateItem(props.listConfig.apiRoute, row.id, row).then((response) =>
+      {
+        if (response?.data)
+        {
           const requestParams = props.listConfig.read?.requestParams ? {...props.listConfig.read.requestParams} : {}
-            
-          services.showItem(props.listConfig.apiRoute, row.id, {params: requestParams, refresh: true}).then((response) => {            
+
+          services.showItem(props.listConfig.apiRoute, row.id, {
+            params: requestParams,
+            refresh: true
+          }).then((response) =>
+          {
             state.rows[foundIndex] = response.data
             state.rows[foundIndex]['isLoading'] = false
             emit('updatedRow', response.data)
-          })          
+          })
         }
       })
     },
-    async reloadRow(row){
+    async reloadRow (row)
+    {
       const foundIndex = state.rows.findIndex(r => r.id == row.id);
       state.rows[foundIndex]['isLoading'] = true
-      
+
       const requestParams = props.listConfig.read?.requestParams ? {...props.listConfig.read.requestParams} : {}
-            
-      await services.showItem(props.listConfig.apiRoute, row.id, {params: requestParams, refresh: true}).then((response) => {
+
+      await services.showItem(props.listConfig.apiRoute, row.id, {
+        params: requestParams,
+        refresh: true
+      }).then((response) =>
+      {
         state.rows[foundIndex] = response.data
         state.rows[foundIndex]['isLoading'] = false
       })
       return state.rows[foundIndex]
-      
+
     },
-    toggleDynamicFilterModal() {
+    toggleDynamicFilterModal ()
+    {
       state.showDynamicFilterModal = !state.showDynamicFilterModal;
     },
-    updateFilter(key, value){
+    updateFilter (key, value)
+    {
       state.dynamicFilterValues[key] = value;
     },
-    updateDynamicFilterValues(filters) {      
+    updateDynamicFilterValues (filters)
+    {
       state.dynamicFilterValues = filters;
       state.requestParams.filter = state.dynamicFilterValues
       state.pagination.page = 1
       methods.getData();
     },
-  }
+    }
 
   // Mounted
-  onMounted(() => {
+  onMounted(() =>
+  {
     methods.init()
   })
 
