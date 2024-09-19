@@ -6,7 +6,8 @@
       <div class="q-my-md">        
         <page-actions 
           v-if="loadPageActions"
-          :extra-actions="tableActions"          
+          :extra-actions="extraActions"
+          :excludeActions="excludeActions"
           :title="title" 
           :help="help"
           :expires-in="expiresIn"

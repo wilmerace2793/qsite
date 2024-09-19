@@ -55,25 +55,21 @@ export default function controller (props: any, emit: any)
     }),
     beforeUpdate: computed(() => props.listConfig?.beforeUpdate || null),
     title: computed(() => props?.listConfig?.read?.title || ''),
-    help: computed(() => props?.listConfig?.read?.help || false),
+    help: computed(() => props?.listConfig?.read?.help || {}),
     actions: computed(() => props?.listConfig?.actions || false),
     tableProps: computed(() => props?.listConfig?.read?.tableProps || null),
-    tableActions: computed(() =>
+    extraActions: computed(() =>
     {
       //Default response
-      let response = []
-      //Add search action
-      if (props.listConfig.read?.search !== false) response.push('search')
-      //Add create action
-      if (computeds.hasPermission.value['create'])
-      {
-       response.push('new')
-      }
+      let response = [];
       // extras for page action
-      if (props.listConfig?.extraActions?.length > 0) response.push(...props.listConfig.extraActions)
+      if (props.listConfig?.pageActions?.extraActions?.length > 0) response.push(...props.listConfig.pageActions.extraActions)
+      //remove new action
+      if(response.includes('new') && !computeds.hasPermission.value['create'])  response.splice(response.indexOf('new'), 1);
       return response.filter((item) => !item.vIfAction)
     }),
-
+    //Exclude actions
+    excludeActions: computed(() => props.listConfig?.pageActions?.excludeActions || []),
     dynamicFilter: computed(() =>
     {
       if (props.listConfig.read?.filters)
