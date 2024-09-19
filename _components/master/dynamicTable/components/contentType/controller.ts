@@ -1,4 +1,5 @@
 import {computed, reactive, ref, onMounted, toRefs, watch, markRaw, shallowRef} from "vue";
+import { helper } from 'src/plugins/utils';
 
 
 export default function controller(props, emit) {  
@@ -33,6 +34,9 @@ export default function controller(props, emit) {
       if(computeds.isComponent.value){        
         state.component = markRaw(props.col.component)
       }
+    },
+    getTooltip(){
+      return props.col?.tooltip ? props.col?.tooltip : helper.deleteHtml(props.val)
     }
   }
 

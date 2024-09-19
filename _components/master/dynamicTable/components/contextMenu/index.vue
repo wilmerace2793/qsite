@@ -1,5 +1,6 @@
 <template>
   <q-menu
+    v-if="actions && actions.length"
     touch-position
     context-menu
     max-width="200px"
