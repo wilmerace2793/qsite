@@ -12,12 +12,15 @@ export default function controller(props, emit) {
   // States
   const state = reactive({
     // Key: Default Value
-    component: shallowRef()
+    component: shallowRef(),
+    componentProps: null
+
   })
 
   // Computed
   const computeds = {
     // key: computed(() => {})
+
     isClickeable: computed(() => props.col?.onClick ? true : false),
     isComponent: computed(() => props.col?.component || false ),
     isLoading: computed(() => props.row?.isLoading || false),
@@ -30,11 +33,26 @@ export default function controller(props, emit) {
     init() {
       methods.loadComponent();
     },
+    /*
     loadComponent(){
       if(computeds.isComponent.value){        
         state.component = markRaw(props.col.component)
       }
     },
+    */
+   loadComponent(){
+      if(computeds.isComponent.value){
+        if(typeof computeds.isComponent.value === 'function'){
+          const component = props.col.component(props.row)
+          state.componentProps = {...component}
+          state.component = markRaw(component.template)
+        } else {
+          //legacy
+          state.component = markRaw(props.col.component)        
+        }
+      }
+    },
+
     getTooltip(){
       return props.col?.tooltip ? props.col?.tooltip : helper.deleteHtml(props.val)
     }
