@@ -1,13 +1,13 @@
 <template>
   <div
-    v-if="val"
-    :style="{ 'background-color': background, 'color': color}"
+    v-if="label"
+    :style="{ 'background-color': background, 'color': textColor}"
     v-ripple
   >
     <div class="flex justify-center items-center " style="width: 140px;  height: 36px; padding: 8px;">
       <div class="ellipsis">
-        <i v-if="val?.icon" :class="val?.icon"></i>&nbsp;
-        {{ val.title }}
+        <i v-if="icon" :class="icon"></i>&nbsp;
+        {{ label }}
       </div>
     </div>
   </div>
@@ -16,17 +16,17 @@
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-  props: {
-    row: {default: {}},
-    col: {default: {}},
-    val: {default: {}}
+  props: {    
+    label: {default: null},
+    color: {default: null}, 
+    icon: {default: null}, 
   },
   computed: {
     background(){
-      return this.val?.color ? this.val.color : '#000000'
+      return this.color ? this.color : '#000000'
     },
-    color(){
-      return this.val?.color ? '#ffffff' : '#000000'
+    textColor(){
+      return this.color ? '#ffffff' : '#000000'
     }
   }
 })

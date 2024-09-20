@@ -51,7 +51,6 @@
         />        
       </div>
     </div>
-    <inner-loading :visible="loading" />
   </div>
 </template>
 <script lang="ts">

@@ -1,18 +1,17 @@
 <template>
   <!--cell content-->
-  <div :style="col?.style">
+  <div :style="style">
     <!-- custom component -->
     <component
       v-if="component"
-      v-show="!isLoading"
+      v-show="!isLoading"      
       :is="component"
-      :col="col"
-      :row="row"
-      :val="val"
+      v-bind="componentProps"
+      v-on="componentEvents || {}"
     />
     <!-- default content -->
     <div v-if="!isComponent" v-show="!isLoading" class="ellipsis tw-flex-1 tw-min-w-1">
-      <label v-html="val" :class="{ 'content-type-onclick': isClickeable }"></label>
+      <label v-html="val" :class="{ 'content-type-onclick':  isClickeable, 'cursor-pointer': isEditable }"></label>
       <!-- help tootlipt -->
       <q-tooltip>
         <div v-html="getTooltip()" />
@@ -26,7 +25,7 @@
 </template>
 <script lang="ts">
 import {defineComponent} from 'vue'
-import controller from 'modules/qsite/_components/master/dynamicTable/components/contentType/controller'
+import controller from 'modules/qsite/_components/master/contentType/controller'
 
 export default defineComponent({
   props: {
