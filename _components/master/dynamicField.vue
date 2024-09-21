@@ -748,7 +748,8 @@ export default {
           //Instance the mask
           const maskDate = props.mask || 'YYYY/MM/DD';
           const hint = props.hintAsHuman && this.responseValue ?
-            this.$trd(this.responseValue) : `${this.$tr('isite.cms.label.format')}: ${maskDate}`;
+            this.$trd(this.responseValue, { type: 'dayHuman' }) :
+            `${this.$tr('isite.cms.label.format')}: ${maskDate}`;
           props = {
             field: {
               bgColor: 'white',
