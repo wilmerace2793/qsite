@@ -173,11 +173,11 @@
           </template>
         </q-input>
         <!--Time spent -->
-         <timeSpent v-if="loadField('timeSpent')"
-                         v-model="responseValue"
-                         :fieldProps="fieldProps"
-                         :label="fieldLabel"
-                         :class="`${field.help ? 'full-date-dynamic-field' : ''}`"
+        <timeSpent v-if="loadField('timeSpent')"
+                   v-model="responseValue"
+                   :fieldProps="fieldProps"
+                   :label="fieldLabel"
+                   :class="`${field.help ? 'full-date-dynamic-field' : ''}`"
         />
         <!--Date range -->
         <dateRangePicker v-if="loadField('dateRange')"
@@ -342,7 +342,7 @@
         </q-field>
         <!--Manage Permission-->
         <manage-permissions v-model="responseValue" class="tw-mb-5" v-if="loadField('permissions')"
-                            @update:modelValue="watchValue" :allow-inherit="field.allowInherit ? true : false"/>
+                            @update:modelValue="watchValue" :allow-inherit="field.allowInherit ? true : false" />
         <!--Manage Settings-->
         <manage-settings v-model="responseValue" class="q-mb-sm" :settings="field.settings"
                          v-if="loadField('settings')" @update:modelValue="watchValue" />
@@ -393,7 +393,7 @@
           <q-option-group class="q-pt-md" v-model="responseValue" v-bind="fieldProps.field" />
         </q-field>
         <!--captcha-->
-        <q-field v-model="responseValue" v-if="loadField('captcha')" v-bind="fieldProps.fieldComponent" >
+        <q-field v-model="responseValue" v-if="loadField('captcha')" v-bind="fieldProps.fieldComponent">
           <captcha v-model="responseValue" @input="responseValue = $event" :ref="fieldProps.field.ref" />
         </q-field>
         <!--Schedulable-->
@@ -671,18 +671,18 @@ export default {
     //Return field props
     fieldProps() {
       //Default props
-      let props = { ...this.field.props || {} }
+      let props = { ...this.field.props || {} };
 
       //Add ruler to required field
       if (this.field.required) {
-        let requireRule = val => !!val || this.$tr('isite.cms.message.fieldRequired')
+        let requireRule = val => !!val || this.$tr('isite.cms.message.fieldRequired');
         if (this.field.type == 'media') {
-          const zone = props.zone
-          if(props.multiple || props.zone == 'gallery') requireRule = val => val[zone]?.orders.length || this.$tr('isite.cms.message.fieldRequired')
-          else requireRule = val => !!val[zone] || this.$tr('isite.cms.message.fieldRequired')
+          const zone = props.zone;
+          if (props.multiple || props.zone == 'gallery') requireRule = val => val[zone]?.orders.length || this.$tr('isite.cms.message.fieldRequired');
+          else requireRule = val => !!val[zone] || this.$tr('isite.cms.message.fieldRequired');
         }
-        if (!props.rules) props.rules = []
-        props.rules.push(requireRule)
+        if (!props.rules) props.rules = [];
+        props.rules.push(requireRule);
       }
 
       //Case per type field
@@ -747,7 +747,8 @@ export default {
         case'date':
           //Instance the mask
           const maskDate = props.mask || 'YYYY/MM/DD';
-
+          const hint = props.hintAsHuman && this.responseValue ?
+            this.$trd(this.responseValue) : `${this.$tr('isite.cms.label.format')}: ${maskDate}`;
           props = {
             field: {
               bgColor: 'white',
@@ -756,7 +757,7 @@ export default {
               dense: true,
               icon: 'fa-light fa-calendar-days',
               placeHolder: maskDate,
-              hint: `${this.$tr('isite.cms.label.format')}: ${maskDate}`,
+              hint,
               ...props,
               mask: maskDate.replace(/[a-z,A-Z]/g, '#'),
               rules: [
@@ -808,7 +809,7 @@ export default {
           break;
         case'timeSpent':
           //Instance the mask
-          const maskTimeSpent = '2w 4d 6h 45m'
+          const maskTimeSpent = '2w 4d 6h 45m';
           const regexTimeSpent = /^\s*(\d+[wdhmWDHM]\s*)+\s*$/; //numbers and wdhm
           props = {
             field: {
@@ -838,7 +839,6 @@ export default {
             }
           };
           break;
-
         case'hour':
           //Instance the mask
           const maskHour = 'HH:mm';
@@ -1131,7 +1131,7 @@ export default {
           };
           break;
         case'captcha':
-          const ref = props?.ref || 'captcha'
+          const ref = props?.ref || 'captcha';
           props = {
             field: {
               ref,
@@ -1820,7 +1820,7 @@ export default {
               if (responseData.length) {
                 if (Array.isArray(this.modelValue)) {
                   //Remove value if isn't on response.data
-                  const keyForValue = loadOptions?.select?.id || 'id'
+                  const keyForValue = loadOptions?.select?.id || 'id';
                   const results = this.modelValue.filter((value) => responseData.find((data) => data[keyForValue] == value)) || null;
                   this.setDefaultVModel(results);
                 }
@@ -1872,10 +1872,10 @@ export default {
         amount: this.fieldProps.field.navigation?.amount || 1
       };
 
-      if(this.modelValue) this.$emit('update:modelValue', this.$date.calculateNewDate(this.modelValue, params))
+      if (this.modelValue) this.$emit('update:modelValue', this.$date.calculateNewDate(this.modelValue, params));
     },
-    getRef(){
-      return this.$refs[this.fieldProps.field.ref]
+    getRef() {
+      return this.$refs[this.fieldProps.field.ref];
     }
   }
 };
