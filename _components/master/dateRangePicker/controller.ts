@@ -94,8 +94,8 @@ export default function controller(props: any, emit: any) {
           field,
           type: state.type,
           label: dateRanges[state.type].label,
-          from: moment(`${from} ${startOfDay}`).format(emitFormat),
-          to : moment(`${to} ${endOfDay}`).format(emitFormat)
+          from: moment(new Date(`${from} ${startOfDay}`)).format(emitFormat),
+          to : moment(new Date(`${to} ${endOfDay}`)).format(emitFormat)
         }        
       }
       if(fieldProps?.autoClose && toEmit != null) state.modal = false      
@@ -170,8 +170,8 @@ export default function controller(props: any, emit: any) {
       if(props.modelValue != null){
         const value = props.modelValue
         if(value?.from && value?.to){
-          refs.dateRange.value.from = moment(value.from).format(dateFormat) ?? null
-          refs.dateRange.value.to = moment(value.to).format(dateFormat) ?? null
+          refs.dateRange.value.from = moment(new Date(value.from)).format(dateFormat) ?? null
+          refs.dateRange.value.to = moment(new Date(value.to)).format(dateFormat) ?? null
           state.type = value?.type ?? null
         
           methods.setInputRange({from: refs.dateRange.value.from, to: refs.dateRange.value.to})
@@ -189,8 +189,8 @@ export default function controller(props: any, emit: any) {
   watch(props, (newField, oldField): void => {
     const model = newField.modelValue
     if(model?.type != null  && model?.from != null && model?.to != null){
-        const from = model?.from ? moment(model.from).format(dateFormat) : null
-        const to = model?.to ? moment(model.to).format(dateFormat) : null
+        const from = model?.from ? moment(new Date(model.from)).format(dateFormat) : null
+        const to = model?.to ? moment(new Date(model.to)).format(dateFormat) : null
         methods.setInputRange({ from, to})
         methods.getType({from, to})
         methods.setDateRange({from, to})
