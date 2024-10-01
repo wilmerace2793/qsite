@@ -43,7 +43,8 @@
                   </div>
                   <!--Actions-->
                   <div :class="`col-6 text-right ${block.title ? '' : 'offset-6'}`">
-                    <q-btn text-color="primary" outline rounded v-if="canEditForm && (keyBlock == 0)" dense class="btn-small"
+                    <q-btn text-color="primary" outline rounded v-if="canEditForm && (keyBlock == 0)" dense
+                           class="btn-small"
                            icon="fa-solid fa-pencil"
                            style="border: 1px solid rgba(0, 13, 71, 0.15)"
                            @click="$refs.editFormModal.editForm(formId)">
@@ -156,7 +157,7 @@
       </div>
     </div>
     <!-- Edit form Modal-->
-    <edit-form-modal ref="editFormModal" @hide="init"/>
+    <edit-form-modal ref="editFormModal" @hide="init" />
   </div>
 </template>
 
@@ -843,7 +844,7 @@ export default {
       //Validate if new Step it's not same to current step
       let isValid = (toStep == 'previous') ? true : await this.$refs.formContent.validate();
 
-      if(isSubmit && this.useCaptcha && isValid){
+      if (isSubmit && this.useCaptcha && isValid) {
         await this.captchaHandler()
       }
       //Dispatch event to know if if is valid
@@ -856,7 +857,15 @@ export default {
           if (this.sendTo && this.sendTo.apiRoute) {
             this.innerLoading = true;
             //Request Data
-            let requestData = { ...this.locale.form, ...(this.sendTo.extraData || {}) };
+            let requestData = { ...this.locale.form };
+            if (this.sendTo.extraData) {
+              requestData = {
+                ...requestData,
+                ...((typeof this.sendTo.extraData == 'function') ?
+                  this.sendTo.extraData(requestData) : this.sendTo.extraData)
+              };
+            }
+
             //Request
             this.$crud.create(this.sendTo.apiRoute, requestData).then(response => {
               this.innerLoading = false;
@@ -900,9 +909,9 @@ export default {
       this.init();
       this.$emit('newForm');
     },
-    async captchaHandler(){
+    async captchaHandler() {
       const {version} = this.locale.formTemplate['captcha']
-      if(version == 3){
+      if (version == 3) {
         const ref = this.$refs.captcha[0].getRef()
         await ref.getToken().then((response) => {
           this.locale.formTemplate['captcha'] = response
