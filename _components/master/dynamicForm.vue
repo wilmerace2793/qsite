@@ -58,7 +58,7 @@
                 <!--Fields-->
                 <div class="row q-col-gutter-x-md q-mb-sm">
                   <template v-for="(field, key) in block.fields" :key="key">
-                    
+
                     <div v-if="hidenFields(field)"
                          :class="field.children ? 'col-12' : (field.colClass || field.columns || defaultColClass)">
                       <!--fake field-->
@@ -72,7 +72,7 @@
                                        :item-id="field.fieldItemId" />
                         <!--Sample field-->
                         <dynamic-field v-else :field="field" :item-id="field.fieldItemId"
-                                       v-model="locale.formTemplate[field.name || key]" :language="locale.language" 
+                                       v-model="locale.formTemplate[field.name || key]" :language="locale.language"
                                        :ref="field.type" />
                         <!--Child fields-->
                         <div v-if="field.children">
@@ -849,7 +849,7 @@ export default {
       //Dispatch event to know if if is valid
       this.$emit('validated', isValid);
       //Validate if new Step it's not same to current step
-      
+
       if (isValid) {
         //Emit submit form
         if (isSubmit) {
@@ -862,12 +862,11 @@ export default {
               this.innerLoading = false;
               this.reset();
               this.$emit('sent', this.$clone(this.locale.form));
-
+              this.$emit('feedBack', this.$clone(response.data));
               //feedBack
-              if (this.withFeedBack && response?.data) {
+              if (this.withFeedBack) {
                 this.showForm = false;
                 this.showFeedBack = true;
-                this.$emit('feedBack', this.$clone(response.data));
               }
 
             }).catch(error => {
