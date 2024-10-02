@@ -1238,7 +1238,6 @@ export default {
       };
       //Filter the unique options
       var response = toString(this.$clone(this.options));
-      console.warn(">>>>", response)
       //response the unique options
       return [...new Map(response.map(item => [item['value'], item])).values()];
     },
