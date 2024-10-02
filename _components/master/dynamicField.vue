@@ -1547,7 +1547,10 @@ export default {
           this.responseValue = [];
           propValue.forEach(item => {
             if (this.fieldProps['emit-value']) {
-              let value = (typeof item == 'object') ? item.id : item;
+              //Map the value
+              let value = (typeof item != 'object') ? item :
+                (this.field.mapValue ? this.field.mapValue(item) : item.id);
+              //Set the value to response
               this.responseValue.push(value.toString());
             } else {
               this.responseValue.push(item);
