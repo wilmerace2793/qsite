@@ -26,7 +26,7 @@ export default function controller(props, emit) {
     }),
     maxWidth: computed(() => computeds.dynamicField?.value.maxWidth ?? ''),
     isSelectField: computed(() => {
-      return computeds.dynamicField.value.type == 'select' && !computeds.dynamicField.props?.multiple
+      return computeds.dynamicField.value.type == 'select' && !computeds.dynamicField.value.props?.multiple
     })
   };
 
