@@ -290,7 +290,7 @@ export default {
             fileFormat: this.filters.fileFormat
           },
           filter: {
-            ...(this.exportItem ? (this.paramsItem.filter || {}) : (filter ? filter.values : {})),
+            ...(this.exportItem ? (this.paramsItem.filter || {}) : (filter ? filter : {})),
             ...this.filters
           }
         };
