@@ -302,26 +302,26 @@ export default {
           items: [
             {
               label: this.$tr('isite.cms.label.refreshAtOnce'),
-              action: () => this.refreshByTime(0)
+              action: () => {this.refreshByTime(0)}
             },
             {
               label: this.$tr('isite.cms.label.refreshEveryMinutes', { min: 1 }),
-              action: () => this.refreshByTime(1)
+              action: () => {this.refreshByTime(1)}
             },
             {
               label: this.$tr('isite.cms.label.refreshEveryMinutes', { min: 5 }),
-              action: () => this.refreshByTime(5)
+              action: () => {this.refreshByTime(5)}
             },
             {
               label: this.$tr('isite.cms.label.refreshEveryMinutes', { min: 10 }),
-              action: () => this.refreshByTime(10)
+              action: () => {this.refreshByTime(10)}
             },
             {
               label: this.$tr('isite.cms.label.refreshEveryMinutes', { min: 15 }),
-              action: () => this.refreshByTime(15)
+              action: () => {this.refreshByTime(15)}
             }
           ],
-          action: () => this.emitRefresh()
+          action: () => {this.emitRefresh()}
         }
       ];
 
