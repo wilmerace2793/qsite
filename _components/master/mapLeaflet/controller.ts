@@ -17,6 +17,7 @@ export default function controller(props: any, emit: any) {
     countries: Object,
     map: Object,
     marker: Object,
+    markers: [],
     responseValue: false,
     mapZoom: 6,
     searchLoading: false,
@@ -42,9 +43,11 @@ export default function controller(props: any, emit: any) {
       methods.setMap()
       methods.setDefaultValue()
       methods.setPolygon()
+      methods.setMarkers()
     },
     //Set default values
     async setDefaultValue() {
+      if(props.markers) return
       //Validate map types
       if(methods.isPositionMarkerMap()){
         //Set default value and response value
@@ -125,7 +128,7 @@ export default function controller(props: any, emit: any) {
       state.searchProvider =  new OpenStreetMapProvider({params: {countrycodes: methods.getCountries()}})
       state.map = L.map(props.mapId, {
         editable: true,
-        zoomControl: false
+        zoomControl: false,
       }).setView([props.defaultCenter.lat, props.defaultCenter.lng], state.mapZoom);
 
       L.tileLayer(layer, {
@@ -146,7 +149,7 @@ export default function controller(props: any, emit: any) {
         position: controlsPosition
       }));
 
-      if(methods.isPositionMarkerMap()){
+      if(methods.isPositionMarkerMap() && !props.markers){
         state.marker = L.marker([props.defaultCenter.lat, props.defaultCenter.lng]).addTo(state.map)
       }
 
@@ -357,9 +360,35 @@ export default function controller(props: any, emit: any) {
           state.map.fitBounds(polygon.getBounds());
         }
       }
+    },
+
+    setMarkers(){
+      const model = props.modelValue
+      if(props.markers){
+        state.map.dragging.enable();
+        state.map.setZoom(15);
+        if(Array.isArray(model) && model.length){
+          model.forEach(m => {
+            const marker = L.marker([m.lat, m.lng], {title: m.title}).addTo(state.map)
+            //add content
+            if(m?.content) marker.bindPopup(m.content)
+            //callback to add data when click
+            if(m?.onClick){
+              marker.on('click', () => {
+                if(m?.loadingLabel) marker.bindPopup(m.loadingLabel).openPopup()
+                m.onClick().then(response => {
+                  marker.bindPopup(response).openPopup()
+                })
+              })
+            }
+            state.markers.push(marker)
+          })
+          /* calculate zoom*/
+          const fg = L.featureGroup(state.markers);
+          state.map.fitBounds(fg.getBounds());
+        }
+      }
     }
-
-
   }
 
   // Mounted
@@ -376,6 +405,10 @@ export default function controller(props: any, emit: any) {
     }
     if(props.polygonControls){
       if(Array.isArray(model) && model.length) methods.setPolygon()
+    }
+
+    if(props.markers){
+      if(Array.isArray(model) && model.length) methods.setMarkers()
     }
 
   }, {deep: true})
