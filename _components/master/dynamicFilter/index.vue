@@ -90,15 +90,25 @@
         </div>
       </q-card>
     </q-dialog>
+      <!-- show only on mobile -->
+      <div class="row col-12 q-pt-md" v-if="!showFilters && hasAppliedFilters">
+        <q-btn flat no-caps bordered  @click="showModal()" class="full-width">
+          <span class="text-blue-grey">
+            <q-icon name="fa-light fa-filter" color="amber" size="18px" />
+            &nbsp;
+            {{ $tr('isite.cms.label.appliedFilters') }}
+          </span>
+        </q-btn>
+      </div>
     <!-- quick filters --->
-      <div class="col-12 tw-mt-1" v-if="(Object.keys(readValues).length > 0) || (Object.keys(quickFilters).length > 0)">
-      <!--<q-separator class="q-mb-sm"/>-->
-        <div class="text-blue-grey ellipsis text-caption items-center row">          
+      <div class="col-12 tw-mt-1" v-if="(Object.keys(readValues).length > 0) || (Object.keys(quickFilters).length > 0)" >
+        <!-- show only desktop -->
+        <div class="text-blue-grey ellipsis text-caption items-center row" v-if="showFilters">
           <q-btn flat no-caps @click="showModal()">
             <q-icon name="fa-light fa-filter" class="q-mr-xs" color="amber" size="18px" />
             <b>{{ $trp('isite.cms.label.filter') }}:</b>
           </q-btn>          
-          <template v-for="(item, itemKey) in readValues"  :key="itemKey" >
+          <template v-for="(item, itemKey) in readValues"  :key="itemKey">
             <q-chip
               v-if="item.label !== ''"
               class="tw-pr-5 tw-bg-gray-100"
@@ -110,14 +120,14 @@
               &nbsp;
               <span class="tw-mr-1">{{ item.option }}</span>
             </q-chip>
-        </template>
-        </div>
+          </template>
+        </div>        
         <!-- Hiden Filters -->
         <div v-if="Object.keys(hidenFields).length" v-show="false">
           <dynamic-field v-for="(field, keyField) in hidenFields" :key="keyField" :field="field" :keyField="keyField"/>    
         </div>
         <!-- Quick Filters-->
-        <div v-if="Object.keys(quickFilters).length" class="row q-col-gutter-md q-pt-sm">
+        <div v-if="Object.keys(quickFilters).length" class="row q-col-gutter-md q-pt-sm" v-show="showFilters">
           <dynamic-field v-for="(field, keyField) in quickFilters" :key="keyField" :field="field"
                          v-model="quickFilterValues[keyField]"
                          class="col-12 col-md-4 col-xl-3"
@@ -137,7 +147,8 @@ export default defineComponent({
   props: {    
     systemName: {default: ''},
     filters: {type: Object, default: null},    
-    modelValue: { default: false}
+    modelValue: { default: false},
+    showOnMobile: { default: false}
   },
   emits:['update:modelValue', 'hideModal', 'showModal', 'update:summary'],
   components: {},
