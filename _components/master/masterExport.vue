@@ -215,7 +215,7 @@ export default {
         });
       });
       //Listen refresh report
-      eventBus.on('export.data.refresh', () => this.getData());
+      eventBus.on('export.data.refresh', () => this.getData);
       //}
     },
     //Get data
