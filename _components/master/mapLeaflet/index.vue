@@ -121,4 +121,8 @@ export default defineComponent({
   left:0!important;
   z-index:99999;
   }
+a.leaflet-popup-close-button {
+  font-size: 24px !important;
+  margin: 4px;
+}
 </style>

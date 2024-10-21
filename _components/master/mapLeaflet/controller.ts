@@ -371,9 +371,7 @@ export default function controller(props: any, emit: any) {
           model.forEach(m => {
             const marker = L.marker([m.lat, m.lng], {title: m.title}).addTo(state.map)
             //add content
-            if(m?.content) marker.bindPopup(m.content, {
-              autoClose: false,
-            }).openPopup()
+            if(m?.content) marker.bindPopup(m.content)
             //callback to add data when click
             if(m?.onClick){
               marker.on('click', () => {
@@ -395,10 +393,10 @@ export default function controller(props: any, emit: any) {
       m.onClick().then(response => {
         marker.bindPopup(response, {
           autoClose: false,
+          closeOnClick: false,
           autoPan: true, 
           keepInView: true
         }).openPopup()
-        console.log('open')
       })      
 
       marker.on('popupclose', () => {
