@@ -403,9 +403,6 @@ export default function controller(props: any, emit: any) {
         marker.unbindPopup()
       })
     }
-
-    
-    
   }
 
   // Mounted
